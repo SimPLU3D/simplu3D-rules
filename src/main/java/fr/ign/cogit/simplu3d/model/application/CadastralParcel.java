@@ -9,9 +9,9 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.sig3d.convert.geom.FromGeomToLineString;
-import fr.ign.cogit.sig3d.model.citygml.landuse.CG_LandUse;
 
 
 public class CadastralParcel extends CG_LandUse {

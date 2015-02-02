@@ -19,6 +19,7 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.Proximity;
 import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTM;
+import fr.ign.cogit.geoxygene.sig3d.topology.TriangulationLoader;
 import fr.ign.cogit.geoxygene.sig3d.util.MathConstant;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
@@ -27,7 +28,6 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.sig3d.topology.TriangulationLoader;
 
 public class TransformBuilding {
 

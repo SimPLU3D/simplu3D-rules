@@ -32,9 +32,9 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.spatial.geomcomp.GM_CompositeCurve;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableCurve;
 import fr.ign.cogit.simplu3d.model.application.Building;
-import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.Materiau;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
+import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 
 public class RepresentationBatiment extends Default3DRep {
 

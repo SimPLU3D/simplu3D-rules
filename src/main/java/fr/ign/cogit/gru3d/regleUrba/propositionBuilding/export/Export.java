@@ -7,35 +7,30 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.gru3d.regleUrba.Executor;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Batiment;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
-import fr.ign.cogit.sig3d.io.out.image.ExportObjectAsImage;
-import fr.ign.cogit.sig3d.io.out.obj.OBJExport;
 
 public class Export {
-  
-  
+
   private static String export = "E:/mbrasebin/Donnees/Strasbourg/TestRegles/Test2/Image/";
-  public static enum AvailableExport  {IMAGE,SCENE,IMAGE_SCENE, NONE};
+
+  public static enum AvailableExport {
+    IMAGE, SCENE, IMAGE_SCENE, NONE
+  };
+
   public static AvailableExport doExport = AvailableExport.IMAGE_SCENE;
   public static boolean exportAll = false;
-  
-  
-  private static void exportImg(Parcelle p, String val) {
 
-    ExportObjectAsImage.export(p, export + val + ".png",
-        Executor.fen.getInterfaceMap3D(), true);
-
-  }
-
-  private static void exportObj(Parcelle p, String val) {
-
-    OBJExport.export(export + val + ".obj", Executor.fen.getInterfaceMap3D()
-        .getCurrent3DMap());
-
-  }
+  /*
+   * private static void exportImg(Parcelle p, String val) {
+   * 
+   * ExportObjectAsImage.export(p, export + val + ".png",
+   * Executor.fen.getInterfaceMap3D(), true);
+   * 
+   * }
+   */
 
   public static void export(Batiment b, Parcelle p, String c) {
-    
-    if(doExport == AvailableExport.NONE){
+
+    if (doExport == AvailableExport.NONE) {
       return;
     }
 
@@ -56,17 +51,11 @@ public class Export {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
-    if (doExport == AvailableExport.IMAGE) {
-      exportImg(p, c);
-    } else if (doExport == AvailableExport.SCENE) {
-      exportObj(p,c);
-    }else if (doExport == AvailableExport.IMAGE_SCENE) {
-      exportObj(p,c);
-      exportImg(p, c);
-    }
-
-
+    /*
+     * if (doExport == AvailableExport.IMAGE) { exportImg(p, c); } else if
+     * (doExport == AvailableExport.SCENE) { exportObj(p,c); }else if (doExport
+     * == AvailableExport.IMAGE_SCENE) { exportObj(p,c); exportImg(p, c); }
+     */
 
     Executor.fen.getInterfaceMap3D().getCurrent3DMap().removeLayer("Bati");
 

@@ -5,8 +5,8 @@ import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_RoofSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_RoofSurface;
 import fr.ign.cogit.simplu3d.indicator.RoofAngle;
 
 public class RoofSurface extends CG_RoofSurface {

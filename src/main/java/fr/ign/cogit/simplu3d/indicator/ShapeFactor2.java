@@ -1,6 +1,5 @@
 package fr.ign.cogit.simplu3d.indicator;
 
-import fr.ign.cogit.sig3d.indicator.util.PointBasType;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 
 

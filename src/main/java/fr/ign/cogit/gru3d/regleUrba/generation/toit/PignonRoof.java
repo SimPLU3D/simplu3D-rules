@@ -3,7 +3,6 @@ package fr.ign.cogit.gru3d.regleUrba.generation.toit;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.contrib.CampSkeleton;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -18,6 +17,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Noeud;
+import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;

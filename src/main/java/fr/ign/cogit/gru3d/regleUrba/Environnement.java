@@ -17,6 +17,7 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
+import fr.ign.cogit.geoxygene.sig3d.util.correction.CorrectionBati3D;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
@@ -30,7 +31,6 @@ import fr.ign.cogit.gru3d.regleUrba.schemageo.Batiment;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Route;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Toit;
-import fr.ign.cogit.sig3d.util.correction.CorrectionBati3D;
 
 /**
  * Classe permettant le chargement du modèle de résolution des règles urbas

@@ -15,6 +15,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.delaunay.TriangulationJTS;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.sig3d.topology.TriangulationLoader;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
@@ -23,7 +24,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.DistanceFHauteur;
-import fr.ign.cogit.sig3d.topology.TriangulationLoader;
 
 public class ExtrusionTriangulation {
 

@@ -18,7 +18,6 @@ import fr.ign.cogit.geoxygene.schema.schemaConceptuelISOJeu.AttributeType;
 import fr.ign.cogit.geoxygene.schema.schemaConceptuelISOJeu.FeatureType;
 import fr.ign.cogit.geoxygene.sig3d.convert.java3d.ConversionJava3DGeOxygene;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.representation.basic.Object2d;
 import fr.ign.cogit.geoxygene.sig3d.representation.sample.ObjectCartoon;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;

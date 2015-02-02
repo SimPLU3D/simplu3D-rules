@@ -1,6 +1,5 @@
 package fr.ign.cogit.gru3d.regleUrba.generation.toit;
 
-import fr.ign.cogit.contrib.CampSkeleton;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -14,12 +13,12 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Noeud;
+import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_RoofSurface;
 
 public class FourPlanesRoof  extends AbstractRoof {
 

@@ -11,8 +11,8 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
-import fr.ign.cogit.sig3d.model.citygml.landuse.CG_LandUse;
 
 public class SubParcel extends CG_LandUse {
 

@@ -6,8 +6,6 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-import fr.ign.cogit.sig3d.indicator.GeometryComplexity;
-import fr.ign.cogit.sig3d.indicator.util.PointBasType;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 
 /**
@@ -159,11 +157,10 @@ public class Saliency {
     AttributeManager.addAttribute(b, DEVIATION_ATT_NAME, sB.getValue(),
         "Double");
 
-    GeometryComplexity gC = new GeometryComplexity(
-        FromPolygonToTriangle.convertAndTriangle(b.getLod2MultiSurface()
-            .getList()));
-    AttributeManager.addAttribute(b, GEOMETRY_COMPLEXITY_ATT_NAME,
-        gC.getValue(), "Double");
+    int complexity = FromPolygonToTriangle.convertAndTriangle(
+        b.getLod2MultiSurface().getList()).size();
+    AttributeManager.addAttribute(b, GEOMETRY_COMPLEXITY_ATT_NAME, complexity,
+        "Integer");
 
     ShapeFactor sF = new ShapeFactor(b);
     AttributeManager.addAttribute(b, SHAPE_FACTOR_ATT_NAME, sF.getValue(),

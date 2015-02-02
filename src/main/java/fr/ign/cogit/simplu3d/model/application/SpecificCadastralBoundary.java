@@ -4,7 +4,7 @@ import org.citygml4j.model.citygml.core.CityObject;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.sig3d.model.citygml.core.CG_CityObject;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityObject;
 
 public class SpecificCadastralBoundary extends CG_CityObject {
 

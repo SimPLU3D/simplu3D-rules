@@ -21,7 +21,6 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 import fr.ign.cogit.gru3d.regleUrba.propositionBuilding.export.Export;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.io.Chargement;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.PLU;
-import fr.ign.cogit.sig3d.gui.toolbar.IOToolBar;
 
 /**
  * Classe principale pour exécuter le module d'urbanisme A FAIRE : - Gestion des
@@ -92,7 +91,7 @@ public class Executor {
       bR.setEnvironnement(env);
       bR.setRegles(plu.getZonePLU().get(0).getRegles());
 
-      new IOToolBar(fen);
+   //   new IOToolBar(fen);
 
       carte.addLayer(new VectorLayer(env.getlToits(), "Toits"));
       carte.addLayer(new VectorLayer(env.getlBatiments(), "Batiments"));

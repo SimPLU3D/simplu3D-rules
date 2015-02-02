@@ -2,8 +2,8 @@ package fr.ign.cogit.gru3d.regleUrba.generation.toit;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_RoofSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_RoofSurface;
 
 
 /**

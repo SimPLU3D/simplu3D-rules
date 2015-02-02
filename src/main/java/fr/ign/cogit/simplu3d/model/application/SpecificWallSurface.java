@@ -1,6 +1,7 @@
 package fr.ign.cogit.simplu3d.model.application;
 
-import fr.ign.cogit.sig3d.model.citygml.building.CG_WallSurface;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
+
 
 
 /**

@@ -12,20 +12,19 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.analysis.roof.ClassifyRoof;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
 import fr.ign.cogit.geoxygene.sig3d.equation.PlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.geometry.topology.Triangle;
 import fr.ign.cogit.geoxygene.sig3d.representation.basic.Object1d;
 import fr.ign.cogit.geoxygene.sig3d.representation.basic.Object2d;
+import fr.ign.cogit.geoxygene.sig3d.representation.sample.CartooMod2;
 import fr.ign.cogit.geoxygene.sig3d.representation.sample.ObjectCartoon;
 import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
+import fr.ign.cogit.geoxygene.sig3d.util.ColorLocalRandom;
 import fr.ign.cogit.geoxygene.sig3d.util.ColorRandom;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-import fr.ign.cogit.sig3d.analysis.roof.ClassifyRoof;
-import fr.ign.cogit.sig3d.representation.color.ColorLocalRandom;
-import fr.ign.cogit.sig3d.representation.noLight.Object2dNoLight;
-import fr.ign.cogit.sig3d.representation.rendering.CartooMod2;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
@@ -411,7 +410,7 @@ public class RepEnvironnement {
         Color c = ColorLocalRandom.getRandomColor(Color.LIGHT_GRAY, 50, 50, 50);
 
         IFeature feat = new DefaultFeature(new GM_MultiSurface<Triangle>(lTri));
-        feat.setRepresentation(new Object2dNoLight(feat, c));
+        feat.setRepresentation(new Object2d(feat, c));
         pans.add(feat);
 
       }
@@ -452,10 +451,10 @@ public class RepEnvironnement {
             if (Math.abs(vTemp.equationValue(t.getCorners(0).getDirect())) < 0.9) {
               if (Math.abs(vTemp.equationValue(t.getCorners(1).getDirect())) < 0.9) {
                 if (Math.abs(vTemp.equationValue(t.getCorners(2).getDirect())) < 0.9) {
-                lTT.get(i).add(t);
-                continue tri;
+                  lTT.get(i).add(t);
+                  continue tri;
+                }
               }
-            }
             }
           }
 
@@ -470,7 +469,7 @@ public class RepEnvironnement {
         for (List<ITriangle> lT : lTT) {
 
           IFeature feat = new DefaultFeature(new GM_MultiSurface<Triangle>(lT));
-          feat.setRepresentation(new Object2dNoLight(feat, ColorLocalRandom
+          feat.setRepresentation(new Object2d(feat, ColorLocalRandom
               .getRandomColor(Color.white, 50, 50, 50)));
           pans.add(feat);
 

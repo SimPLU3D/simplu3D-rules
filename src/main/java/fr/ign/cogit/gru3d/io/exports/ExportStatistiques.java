@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import fr.ign.cogit.geoxygene.sig3d.calculation.raycasting.IndicatorVisu;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-import fr.ign.cogit.sig3d.calculation.raycasting.IndicatorVisu;
 
 public class ExportStatistiques {
   

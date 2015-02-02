@@ -46,6 +46,7 @@ import tudresden.ocl20.pivot.modelbus.modelinstance.internal.ModelInstanceRegist
 import tudresden.ocl20.pivot.modelbus.modelinstance.internal.ModelInstanceTypeRegistry;
 import tudresden.ocl20.pivot.modelinstance.IModelInstanceRegistry;
 import tudresden.ocl20.pivot.modelinstance.IModelInstanceTypeRegistry;
+import tudresden.ocl20.pivot.standalone.facade.StandaloneMetamodelRegistry;
 
 /**
  * <p>

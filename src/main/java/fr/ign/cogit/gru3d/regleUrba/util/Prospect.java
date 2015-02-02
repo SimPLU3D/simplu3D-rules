@@ -28,6 +28,7 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.sig3d.analysis.ProspectCalculation;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion3DObject;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
 import fr.ign.cogit.geoxygene.sig3d.representation.ConstantRepresentation;
@@ -39,7 +40,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.DistanceFHauteur;
-import fr.ign.cogit.sig3d.analysis.ProspectCalculation;
 
 /**
  * Classe utile permettant de : - Générer des distance de prospect - Générer des

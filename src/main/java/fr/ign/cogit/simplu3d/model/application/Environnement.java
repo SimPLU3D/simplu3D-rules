@@ -6,8 +6,8 @@ import tudresden.ocl20.pivot.model.IModel;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceEnvironnement;
 import fr.ign.cogit.simplu3d.importer.model.ModelProviderClass;
 

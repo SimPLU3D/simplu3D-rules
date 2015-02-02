@@ -22,7 +22,6 @@ import tudresden.ocl20.pivot.metamodels.java.JavaMetaModelPlugin;
 import tudresden.ocl20.pivot.pivotmodel.Namespace;
 import tudresden.ocl20.pivot.pivotmodel.Type;
 import tudresden.ocl20.pivot.pivotmodel.base.AbstractNamespace;
-import tudresden.ocl20.pivot.pivotmodel.impl.NamedElementImpl;
 
 /**
  * <p>

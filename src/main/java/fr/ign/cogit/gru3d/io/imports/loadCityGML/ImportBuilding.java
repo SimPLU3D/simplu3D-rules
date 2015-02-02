@@ -9,15 +9,14 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.geometry.topology.Triangle;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_Building;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_BuildingPart;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_RoofSurface;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
+import fr.ign.cogit.geoxygene.sig3d.topology.CarteTopo3D;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_AbstractBuilding;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_Building;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_BuildingPart;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_RoofSurface;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_WallSurface;
-import fr.ign.cogit.sig3d.model.citygml.core.CG_CityModel;
-import fr.ign.cogit.sig3d.representation.citygml.core.RP_CityObject;
-import fr.ign.cogit.sig3d.topology.CarteTopo3D;
 
 /**
  * Classe pour charger des bâtiments dans le modèle CityGML
@@ -110,7 +109,7 @@ public class ImportBuilding {
 
     }
 
-    RP_CityObject.generateCityObjectRepresentation(cg_B, null);
+
     return cg_B;
 
   }

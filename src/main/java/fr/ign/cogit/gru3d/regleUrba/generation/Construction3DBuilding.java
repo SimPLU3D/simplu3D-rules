@@ -26,7 +26,6 @@ import fr.ign.cogit.gru3d.regleUrba.generation.toit.FlatRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.FourPlanesRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.OnePlaneRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.PignonRoof;
-import fr.ign.cogit.sig3d.gui.toolbar.IOToolBar;
 
 public class Construction3DBuilding {
 
@@ -213,7 +212,7 @@ public class Construction3DBuilding {
 
     carte.addLayer(new VectorLayer(featC, "Tt"));
 
-    new IOToolBar(fen);
+ //   new IOToolBar(fen);
 
     // ShapefileWriter.write(featC,
     // "E:/mbrasebin/Donnees/Strasbourg/TestGeneration/test.shp");

@@ -33,7 +33,6 @@
 package tudresden.ocl20.pivot.modelbus.metamodel.internal;
 
 import org.apache.log4j.Logger;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;

@@ -5,8 +5,8 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTM;
+import fr.ign.cogit.geoxygene.sig3d.util.correction.CorrectionBati3D;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
-import fr.ign.cogit.sig3d.util.correction.CorrectionBati3D;
 
 public class LoadBati3D {
 

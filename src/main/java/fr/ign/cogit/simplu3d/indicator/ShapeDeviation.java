@@ -1,8 +1,9 @@
 package fr.ign.cogit.simplu3d.indicator;
 
+import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
+import fr.ign.cogit.geoxygene.sig3d.calculation.OrientedBoundingBox;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.sig3d.calculation.OrientedBoundingBox;
-import fr.ign.cogit.sig3d.indicator.Volume;
+import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 
 public class ShapeDeviation {
@@ -31,8 +32,8 @@ public class ShapeDeviation {
       }
 
       
-      double vBati = (new Volume(FromPolygonToTriangle.convertAndTriangle(bP.getToit()
-          .getLod2MultiSurface().getList()))).getValue();
+      double vBati = Calculation3D.volume(new GM_Solid(FromPolygonToTriangle.convertAndTriangle(bP.getToit()
+          .getLod2MultiSurface().getList())));
 
       value = vBati / volArea;
 

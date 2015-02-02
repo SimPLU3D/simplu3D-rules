@@ -11,7 +11,6 @@ import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion3DObject;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.sig3d.model.citygml.building.CG_RoofSurface;
 
 public class OnePlaneRoof  extends AbstractRoof {
 

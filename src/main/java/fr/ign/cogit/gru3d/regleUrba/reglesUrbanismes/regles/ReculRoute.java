@@ -27,6 +27,7 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.sig3d.analysis.ProspectCalculation;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Proximity;
 import fr.ign.cogit.geoxygene.sig3d.convert.java3d.ConversionJava3DGeOxygene;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
@@ -41,7 +42,6 @@ import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Route;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Toit;
 import fr.ign.cogit.gru3d.regleUrba.util.Prospect;
-import fr.ign.cogit.sig3d.analysis.ProspectCalculation;
 
 /**
  * <p>
