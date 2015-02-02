@@ -67,7 +67,7 @@ public class SubParcel extends CG_LandUse {
   // FT_FeatureCollection<Voirie>();
   public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
-  public List<SpecificCadastralBoundary> getBoundary() {
+  public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
     return sCBoundary.getElements();
   }
 

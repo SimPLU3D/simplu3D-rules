@@ -36,8 +36,8 @@ public class OCLoaderTest {
   public void testImport() {
 
 
-    oclConstraints = new File("src/main/resources/ocl/simple_allConstraintsThese.ocl");
-    // String folderEnv = "E:/mbrasebin/Donnees/Strasbourg/GTRU/Project1/";
+    oclConstraints = new File("src/test/resources/ocl/ocl/simple_allConstraintsThese.ocl");
+
 
     try {
 
@@ -78,16 +78,6 @@ public class OCLoaderTest {
       modelInstance.addModelInstanceElement(p);
       modelInstance.addModelInstanceElement(t);
 
-      // create an empty model instance and put objects into it
-      /*
-       * IModelInstance modelInstance = new JavaModelInstance(model);
-       * Person student = new Student(); student.setName("Student-work-a-lot");
-       * student.setAge(23);
-       * Person prof = new Professor(); prof.setName("Prof. Invalid");
-       * prof.setAge(-42);
-       * modelInstance.addModelInstanceElement(student);
-       * modelInstance.addModelInstanceElement(prof);
-       */
 
       System.out.println("*******************************************");
       System.out.println("****Chargement des contraintes OCL*********");
@@ -96,28 +86,6 @@ public class OCLoaderTest {
       /* List<Constraint> constraintList = */StandaloneFacade.INSTANCE.parseOclConstraints(model,
           oclConstraints);
 
-      /*
-       * System.out.println("*******************************************");
-       * System.out.println("**Interprétation des contraintes OCL*******");
-       * System.out.println("*******************************************");
-       * for (IInterpretationResult result : interpretEverything(modelInstance, constraintList)) {
-       * System.out.println("  " + result.getModelObject() + " ("
-       * + result.getConstraint().getKind() + ": "
-       * + result.getConstraint().getSpecification().getBody() + "): "
-       * + result.getResult());
-       * }
-       * IOcl2DeclSettings settings = Ocl2DeclCodeFactory.getInstance()
-       * .createOcl2DeclCodeSettings();
-       * settings.setSourceDirectory("src-gen/simple/");
-       * settings.setModus(Ocl2DeclSettings.MODUS_TYPED);
-       * settings.setSaveCode(true);
-       * settings.setTemplateGroup(TemplatePlugin.getTemplateGroupRegistry()
-       * .getTemplateGroup("Standard(SQL)"));
-       * StandaloneFacade.INSTANCE.generateSQLCode(constraintList, settings,
-       * model);
-       * System.out.println("Finished code generation.");
-       * settings.setSaveCode(false);
-       */
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -125,34 +93,5 @@ public class OCLoaderTest {
 
   }
 
-  /**
-   * @param modelInstance
-   * @param constraintList
-   * @return
-   */
-  private static List<IInterpretationResult> interpretEverything(IModelInstance modelInstance,
-      List<Constraint> constraintList) {
-
-    new OclInterpreterPlugin();
-
-    List<IInterpretationResult> resultList = new LinkedList<IInterpretationResult>();
-
-    IOclInterpreter interpreter = new OCLInterpreterSimplu3D(modelInstance);
-
-    for (IModelInstanceObject imiObject : modelInstance.getAllModelInstanceObjects()) {
-
-      if (imiObject.getObject() instanceof SubParcel) {
-        System.out.println(imiObject.getName());
-      }
-
-      for (Constraint constraint : constraintList) {
-        IInterpretationResult result = interpreter.interpretConstraint(constraint, imiObject);
-        if (result != null)
-          resultList.add(result);
-      }
-    }
-
-    return resultList;
-  }
 
 }

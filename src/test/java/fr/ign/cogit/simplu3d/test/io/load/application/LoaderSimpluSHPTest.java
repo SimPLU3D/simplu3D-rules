@@ -29,7 +29,7 @@ public class LoaderSimpluSHPTest {
   public static Environnement getENVTest() {
     if (ENV_SINGLETON == null) {
       String folder = LoaderSimpluSHPTest.class.getClassLoader()
-          .getResource("data3d/").getPath();
+          .getResource("fr/ign/cogit/simplu3d/data/").getPath();
 
       try {
         ENV_SINGLETON = LoaderSHP.load(folder);

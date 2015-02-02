@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -16,7 +15,6 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.delaunay.TriangulationJTS;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Proximity;
 import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
@@ -32,13 +30,13 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
 import fr.ign.cogit.sig3d.topology.TriangulationLoader;
 
 public class TransformBuilding {
-  
+
   public static Logger LOGGER = Logger.getLogger(TransformBuilding.class);
 
   @SuppressWarnings("unchecked")
   public static IMultiSurface<IOrientableSurface> createBDTopoBuilding(
       IGeometry geom, DTM dtm) {
-    
+
     if (geom instanceof IPolygon) {
       try {
         return TransformBuilding.createBDTopoBuildingFromPolygon(
@@ -80,7 +78,7 @@ public class TransformBuilding {
 
   private static IMultiSurface<IOrientableSurface> createBDTopoBuildingFromPolygon(
       IPolygon surf, DTM dtm) throws Exception {
-    
+
     // Les surfaces qui constitueront le bâtiment final
     IMultiSurface<IOrientableSurface> finalSurface = new GM_MultiSurface<IOrientableSurface>();
 
@@ -204,8 +202,6 @@ public class TransformBuilding {
         finalSurface.add(geom);
 
       } else {
-
-
 
       }
 

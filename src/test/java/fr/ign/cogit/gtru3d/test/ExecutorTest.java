@@ -24,7 +24,7 @@ public class ExecutorTest {
     
     
     fr.ign.cogit.gru3d.regleUrba.Executor.DATA_REPOSITORY = ExecutorTest.class.getClassLoader()
-        .getResource("data3d-gtru/").getPath();
+        .getResource("fr/ign/cogit/gtru/data/").getPath();
     
     try {
       Executor.main(null);

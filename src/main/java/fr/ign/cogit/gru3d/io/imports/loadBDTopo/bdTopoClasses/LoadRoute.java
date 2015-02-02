@@ -33,7 +33,7 @@ public class LoadRoute {
    * @return
    */
   public static VectorLayer load(IPopulation<IFeature> featCol, DTM mnt) {
-    int nbElem = featCol.size();
+
 
     for ( IFeature feat : featCol) {
       // On récupère les informations relatives à chaque éléments

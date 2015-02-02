@@ -8,7 +8,7 @@ context AbstractBuilding inv:
 Sequence{'Habitation', 'Bureau' , 'Commerce', 'Artisanat'}->includes(self.destination)
 
 context AbstractBuilding inv:
-Sequence{'Garage'}->includes(self.destination) and Prescription_SURF.allInstances().select(type=8).exists(p | p.geom.intersects(self.footprint)) implies self.height('BPb', 'HPr') < 3
+Sequence{'Garage'}->includes(self.destination) and Prescription_SURF.allInstances().select(type=8).exists(p | p.geom.intersects(self.footprint)) implies self.height(1, 2) < 3
 
 
 context BasicPropertyUnit inv:
@@ -76,7 +76,7 @@ context SubParcel inv:
 self.builtRatio() <= 0.8
 
 context SubParcel inv:
-if self.getBuildingsParts()->forAll(b | b.height('BPb', 'HPr') < 3.5 ) then
+if self.getBuildingsParts()->forAll(b | b.height(1, 2) < 3.5 ) then
 self.builtRatio() <= 0.55
 else
 self.builtRatio() <= 0.5
@@ -84,10 +84,10 @@ endif
 
 
 context BuildingPart inv:
-Sequence{'Bureau' , 'Habitation'}->includes(self.destination) implies self.height('BPpe',
-'HPg') + 8 <= self.height('BPpe','HPr')
+Sequence{'Bureau' , 'Habitation'}->includes(self.destination) implies self.height(2,
+0) + 8 <= self.height(2,1)
 
 context SubParcel inv:
-self.getBuildingsParts().height('BPpe', 'HPg')->forAll(h|h<28)
+self.getBuildingsParts().height(2, 0)->forAll(h|h<28)
 
 endpackage

@@ -33,8 +33,6 @@ import fr.ign.cogit.sig3d.gui.toolbar.IOToolBar;
  */
 public class Executor {
 
-  // private static String REPERTOIRE =
-  // "E://mbrasebin//Donnees//JeuDonneesSAGEO//EnvironnementUDMS//";
 
   public static String DATA_REPOSITORY = "";
 
