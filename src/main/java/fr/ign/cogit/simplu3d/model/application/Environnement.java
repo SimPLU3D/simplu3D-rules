@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.model.application;
 
+import java.net.URL;
+
 import tudresden.ocl20.pivot.model.IModel;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
@@ -7,6 +9,7 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceEnvironnement;
+import fr.ign.cogit.simplu3d.importer.model.ModelProviderClass;
 
 /**
  * @author MBrasebin
@@ -20,8 +23,17 @@ public class Environnement extends CG_CityModel {
   
   public static IModel getModel(){
     if(model == null){
+      
+      ClassLoader load = ModelProviderClass.class.getClassLoader();
+      URL path = load.getResource("fr/ign/cogit/simplu3d/importer/model/ModelProviderClass.class");
       model =  ImportModelInstanceEnvironnement
-      .getModel("target/classes/fr/ign/cogit/simplu3d/importer/model/ModelProviderClass.class");
+          .getModel(path.getFile());
+      
+      
+      
+      /*
+      model =  ImportModelInstanceEnvironnement
+      .getModel("target/classes/fr/ign/cogit/simplu3d/importer/model/ModelProviderClass.class");*/
     }
     
     return model;

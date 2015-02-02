@@ -1,19 +1,12 @@
 package fr.ign.cogit.simplu3d.test.io.load.application;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.Test;
 
-import tudresden.ocl20.pivot.interpreter.IInterpretationResult;
-import tudresden.ocl20.pivot.interpreter.IOclInterpreter;
-import tudresden.ocl20.pivot.interpreter.OclInterpreterPlugin;
 import tudresden.ocl20.pivot.model.IModel;
 import tudresden.ocl20.pivot.modelinstance.IModelInstance;
 import tudresden.ocl20.pivot.modelinstancetype.java.internal.modelinstance.JavaModelInstance;
-import tudresden.ocl20.pivot.modelinstancetype.types.IModelInstanceObject;
-import tudresden.ocl20.pivot.pivotmodel.Constraint;
 import tudresden.ocl20.pivot.standalone.facade.StandaloneFacade;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ITriangle;
@@ -24,7 +17,6 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Triangle;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceEnvironnement;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
-import fr.ign.cogit.simplu3d.solver.interpreter.OCLInterpreterSimplu3D;
 
 public class OCLoaderTest {
 
@@ -35,9 +27,8 @@ public class OCLoaderTest {
   @Test
   public void testImport() {
 
-
-    oclConstraints = new File("src/test/resources/ocl/ocl/simple_allConstraintsThese.ocl");
-
+    oclConstraints = new File(
+        "src/test/resources/ocl/ocl/simple_allConstraintsThese.ocl");
 
     try {
 
@@ -78,20 +69,17 @@ public class OCLoaderTest {
       modelInstance.addModelInstanceElement(p);
       modelInstance.addModelInstanceElement(t);
 
-
       System.out.println("*******************************************");
       System.out.println("****Chargement des contraintes OCL*********");
       System.out.println("*******************************************");
 
-      /* List<Constraint> constraintList = */StandaloneFacade.INSTANCE.parseOclConstraints(model,
-          oclConstraints);
-
+      /* List<Constraint> constraintList = */StandaloneFacade.INSTANCE
+          .parseOclConstraints(model, oclConstraints);
 
     } catch (Exception e) {
       e.printStackTrace();
     }
 
   }
-
 
 }

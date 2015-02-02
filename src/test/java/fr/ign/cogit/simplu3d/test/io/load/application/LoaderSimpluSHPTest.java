@@ -8,7 +8,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
+import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
@@ -24,36 +24,12 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
  */
 public class LoaderSimpluSHPTest {
 
-  private static Environnement ENV_SINGLETON = null;
-
-  public static Environnement getENVTest() {
-    if (ENV_SINGLETON == null) {
-      String folder = LoaderSimpluSHPTest.class.getClassLoader()
-          .getResource("fr/ign/cogit/simplu3d/data/").getPath();
-
-      try {
-        ENV_SINGLETON = LoaderSHP.load(folder);
-      } catch (CloneNotSupportedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-
-    return ENV_SINGLETON;
-
-  }
-
   @Test
   public void testImport() {
-    
-    if(ENV_SINGLETON != null){
- 
-      return;
-    }
 
-    getENVTest();
+    Environnement env = LoadDefaultEnvironment.getENVDEF();
 
-    PLU plu = ENV_SINGLETON.getPlu();
+    PLU plu = env.getPlu();
 
     Assert.assertNotNull(plu);
     Assert.assertEquals(1, plu.getlUrbaZone().size());
@@ -77,15 +53,15 @@ public class LoaderSimpluSHPTest {
     IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
     int count = 0;
-    Assert.assertEquals("Toutes les parcelles sont chargées.", 19,
-        ENV_SINGLETON.getParcelles().size());
+    Assert.assertEquals("Toutes les parcelles sont chargées.", 19, env
+        .getParcelles().size());
 
-    Assert.assertNotNull(ENV_SINGLETON.getBpU());
+    Assert.assertNotNull(env.getBpU());
 
-    Assert.assertEquals("Toutes les unités foncières sont chargées.", 19,
-        ENV_SINGLETON.getBpU().size());
+    Assert.assertEquals("Toutes les unités foncières sont chargées.", 19, env
+        .getBpU().size());
 
-    for (BasicPropertyUnit bPU : ENV_SINGLETON.getBpU()) {
+    for (BasicPropertyUnit bPU : env.getBpU()) {
 
       Assert.assertNotNull(bPU.getCadastralParcel());
       Assert.assertFalse(bPU.getCadastralParcel().isEmpty());
@@ -108,27 +84,27 @@ public class LoaderSimpluSHPTest {
     Assert.assertEquals("Toutes les limites séparatives sont chargées.", 140,
         count);
 
-    Assert.assertEquals("Toutes les sous parcelles sont chargées.", 19,
-        ENV_SINGLETON.getSubParcels().size());
+    Assert.assertEquals("Toutes les sous parcelles sont chargées.", 19, env
+        .getSubParcels().size());
 
     IFeatureCollection<IFeature> featToits = new FT_FeatureCollection<IFeature>();
 
-    Assert.assertEquals("Les emprises sont générées.", 40, ENV_SINGLETON
-        .getBuildings().size());
+    Assert.assertEquals("Les emprises sont générées.", 40, env.getBuildings()
+        .size());
 
-    for (AbstractBuilding b : ENV_SINGLETON.getBuildings()) {
+    for (AbstractBuilding b : env.getBuildings()) {
       featToits.add(new DefaultFeature(b.getFootprint()));
     }
 
     IFeatureCollection<IFeature> featFaitage = new FT_FeatureCollection<IFeature>();
-    for (AbstractBuilding b : ENV_SINGLETON.getBuildings()) {
+    for (AbstractBuilding b : env.getBuildings()) {
       featFaitage.add(new DefaultFeature(b.getToit().getRoofing()));
     }
 
     Assert.assertEquals("Les faîtages sont générés.", 40, featFaitage.size());
 
-    Assert.assertNotNull(ENV_SINGLETON.getRoads());
-    Assert.assertFalse(ENV_SINGLETON.getRoads().isEmpty());
+    Assert.assertNotNull(env.getRoads());
+    Assert.assertFalse(env.getRoads().isEmpty());
 
     Assert.assertTrue("Le test est un succès", true);
   }

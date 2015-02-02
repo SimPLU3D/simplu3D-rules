@@ -4,10 +4,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.test.io.load.application.LoaderSimpluSHPTest;
 
 public class COSHONTest {
   
@@ -20,7 +20,7 @@ public class COSHONTest {
   @Test
   public void testCOS() {
 
-    BasicPropertyUnit sp = LoaderSimpluSHPTest.getENVTest().getBpU().get(0);
+    BasicPropertyUnit sp = LoadDefaultEnvironment.getENVDEF().getBpU().get(0);
 
     double cos1 = COSCalculation.assess(sp, METHOD.SIMPLE);
     double cos2 = COSCalculation.assess(sp, METHOD.FLOOR_CUT);
