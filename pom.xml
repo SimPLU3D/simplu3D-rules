@@ -56,7 +56,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<environmentVariables>
-						<PATH>${basedir}\lib\native\amd-64\</PATH>
+						<PATH>${basedir}\lib\native_libraries\amd-64\</PATH>
 					</environmentVariables>
 				</configuration>
 			</plugin>
