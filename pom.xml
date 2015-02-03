@@ -1,9 +1,7 @@
-<?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+  <modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.ign.cogit</groupId>
 	<artifactId>simplu3d-rules</artifactId>
@@ -17,7 +15,7 @@
 	</scm>
 
 	<description>Implémentation d'un module de gestion des règles d'urbanisme </description>
-	<url>http://maven.apache.org</url>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +56,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<environmentVariables>
-						<PATH>${basedir}\lib\native_libraries\windows-amd64\</PATH>
+						<PATH>${basedir}\lib\native\amd-64\</PATH>
 					</environmentVariables>
 				</configuration>
 			</plugin>
@@ -180,14 +178,14 @@
 	</build>
 
 	<repositories>
-		<repository>
-			<id>Central</id>
-			<name>Central Repository</name>
-			<url>http://repo1.maven.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+	   <repository>
+            <id>Central</id>
+            <name>Central Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 		<repository>
 			<id>cogit-snapshots</id>
 			<name>Cogit Snapshots Repository</name>
@@ -211,17 +209,12 @@
 			</releases>
 		</repository>
 		<repository>
-			<id>Imagej</id>
-			<url>http://maven.imagej.net/content/repositories/public</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>Atlassian</id>
-			<name>Atlassian</name>
-			<url>https://maven.atlassian.com/maven1/maven2</url>
-		</repository>
+            <id>Imagej</id>
+            <url>http://maven.imagej.net/content/repositories/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 	</repositories>
 
 
