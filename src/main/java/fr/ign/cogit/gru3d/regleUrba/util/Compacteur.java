@@ -8,7 +8,22 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class Compacteur {
 
   public static void main(String[] args) {

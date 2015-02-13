@@ -6,7 +6,22 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
 import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class LoaderSHP {
 
   /*

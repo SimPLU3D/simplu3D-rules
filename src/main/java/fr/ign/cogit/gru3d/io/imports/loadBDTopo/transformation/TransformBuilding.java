@@ -28,7 +28,22 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class TransformBuilding {
 
   public static Logger LOGGER = Logger.getLogger(TransformBuilding.class);

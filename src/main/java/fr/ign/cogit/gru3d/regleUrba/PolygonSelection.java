@@ -30,11 +30,25 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
 import fr.ign.cogit.gru3d.regleUrba.representation.PolygonCapture;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Outil permettant de sélectionner un polygone point calculé par picking
  * 
  * Tools to select a polygon by picking
  * 
- * @author MBrasebin
  */
 public class PolygonSelection extends Behavior {
 

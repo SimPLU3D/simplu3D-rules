@@ -8,7 +8,22 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_RoofSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.indicator.RoofAngle;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class RoofSurface extends CG_RoofSurface {
 
   public IMultiCurve<IOrientableCurve> gutter;

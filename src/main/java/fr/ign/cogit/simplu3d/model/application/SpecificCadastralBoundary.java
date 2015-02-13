@@ -5,7 +5,22 @@ import org.citygml4j.model.citygml.core.CityObject;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityObject;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class SpecificCadastralBoundary extends CG_CityObject {
 
   public final static int BOT = 0;

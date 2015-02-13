@@ -36,10 +36,24 @@ import fr.ign.cogit.gru3d.regleUrba.util.ExtrusionTriangulation;
 import fr.ign.cogit.gru3d.regleUrba.util.Prospect;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe permettant à partir d'un environnement : - d'établir des contraintes
  * géométriques - de vérifier les contraintes
  * 
- * @author MBrasebin
  */
 public class Moteur {
 

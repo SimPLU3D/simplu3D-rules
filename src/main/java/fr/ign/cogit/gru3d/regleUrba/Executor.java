@@ -23,12 +23,26 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.io.Chargement;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.PLU;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe principale pour exécuter le module d'urbanisme A FAIRE : - Gestion des
  * textures à l'affichage - Intégrer les informations concernant le type du
  * batiment - Gérer le système de zone du PLU (1 zone étudiée pour l'instant
  * mais pas compliqué à rajouter ...)
  * 
- * @author MBrasebin
  */
 public class Executor {
 

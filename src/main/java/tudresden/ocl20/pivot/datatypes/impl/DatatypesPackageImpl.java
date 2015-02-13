@@ -55,7 +55,7 @@ import tudresden.ocl20.pivot.pivotmodel.impl.PivotModelPackageImpl;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
+ * @author Mickael Brasebin : Minor updates to increase evaluation time 
  * @generated
  */
 public class DatatypesPackageImpl extends EPackageImpl implements

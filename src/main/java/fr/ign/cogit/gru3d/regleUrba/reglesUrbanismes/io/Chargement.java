@@ -9,7 +9,22 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.PLU;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class Chargement {
 
   public static String PATH_PACKAGE_RULES = "fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles";

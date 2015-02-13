@@ -13,7 +13,22 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class CadastralParcel extends CG_LandUse {
 
 

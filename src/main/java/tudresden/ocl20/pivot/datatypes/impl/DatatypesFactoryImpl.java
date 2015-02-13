@@ -45,7 +45,7 @@ import tudresden.ocl20.pivot.datatypes.DatatypesPackage;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
  * end-user-doc -->
- * 
+ * @author Mickael Brasebin : Minor updates to increase evaluation time  
  * @generated
  */
 public class DatatypesFactoryImpl extends EFactoryImpl implements

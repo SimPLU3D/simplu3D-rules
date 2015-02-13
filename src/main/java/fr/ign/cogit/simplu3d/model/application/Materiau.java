@@ -3,9 +3,20 @@ package fr.ign.cogit.simplu3d.model.application;
 
 /**
  * 
- * @author MBrasebin
- *
- */
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
   public enum Materiau{
     
     BRIQUE("Brique", Materiau.folderMat + "texture.jpg", 5, 5),

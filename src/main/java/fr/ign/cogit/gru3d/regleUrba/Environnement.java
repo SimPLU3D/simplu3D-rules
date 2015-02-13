@@ -33,9 +33,23 @@ import fr.ign.cogit.gru3d.regleUrba.schemageo.Route;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Toit;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe permettant le chargement du modèle de résolution des règles urbas
  * 
- * @author MBrasebin
  */
 public class Environnement {
   // Nom des différents fichiers

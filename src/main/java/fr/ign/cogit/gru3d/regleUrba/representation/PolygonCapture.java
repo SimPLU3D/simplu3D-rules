@@ -34,11 +34,25 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 
 /**
  * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
+ * 
  * Représentation utilisée lors de la saisie de polygone dans un univers 3D
  * 
  * Representation used during the capture of a polygon in 3D
  * 
- * @author MBrasebin
  * 
  */
 public class PolygonCapture extends Default3DRep {

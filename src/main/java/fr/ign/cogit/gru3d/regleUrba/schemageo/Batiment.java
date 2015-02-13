@@ -14,10 +14,24 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableSurface;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe de corps de batiments pour les règles d'urbanisme Définir le type du
  * batiment ...
  * 
- * @author MBrasebin
  */
 public class Batiment extends DefaultFeature {
 

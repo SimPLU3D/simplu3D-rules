@@ -15,7 +15,22 @@ import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class BuildingImporter {
 
   /**

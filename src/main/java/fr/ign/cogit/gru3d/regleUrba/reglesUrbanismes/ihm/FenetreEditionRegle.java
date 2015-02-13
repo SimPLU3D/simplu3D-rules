@@ -46,7 +46,22 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Recul;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Regle;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.RouteBordante;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.TypeBatiment;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class FenetreEditionRegle extends JDialog implements WindowListener,
     ActionListener, WindowFocusListener {
 

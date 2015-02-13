@@ -6,8 +6,21 @@
 package fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.ihm;
 
 /**
- * @author benoitpoupeau/MBrasebin
  * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  *         Cette classe permet de ne sélectionner que des fichiers XML
  * 
  *         This class enables to select only .xml files

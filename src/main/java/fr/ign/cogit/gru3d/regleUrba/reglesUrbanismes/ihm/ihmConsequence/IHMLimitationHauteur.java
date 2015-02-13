@@ -24,12 +24,27 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Regle;
 
 /**
  * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
+ * 
  * Fenetre permettant l'ajout de shape, en fonction de paramêtres de passage é
  * la 3D choisis
  * 
  * The windows of this class enable shapefile loading according to 3D-parameters
  * 
- * @author MBrasebin TODO rajouter MNT une fois la solution trouvée
+ * @TODO rajouter MNT une fois la solution trouvée
  */
 public class IHMLimitationHauteur extends JDialog implements WindowListener,
     ActionListener {

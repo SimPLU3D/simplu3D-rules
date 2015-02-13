@@ -26,6 +26,8 @@ import tudresden.ocl20.pivot.pivotmodel.base.AbstractNamespace;
 /**
  * <p>
  * An implementation of the Pivot Model {@link Namespace} concept for Java.
+ *
+ * @author Mickael Brasebin : Minor updates to increase evaluation time 
  * </p>
  */
 public class JavaPackage extends AbstractNamespace implements Namespace {

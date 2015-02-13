@@ -37,8 +37,22 @@ import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Toit;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * La barre à ajouter pour que l'on ait les règles d'urbanismes
- * @author MBrasebin
  * 
  */
 public class BarreReglesUrbanisme extends JMenu implements ActionListener {

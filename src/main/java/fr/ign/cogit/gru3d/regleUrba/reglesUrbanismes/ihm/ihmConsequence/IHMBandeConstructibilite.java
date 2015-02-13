@@ -17,12 +17,26 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.BandeConstructibilit
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Regle;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Cette fenêtre permet l'affichage des différents types de données chargeables
  * 
  * Windows of this class manage the loadinf of different kinds of available data
  * 
  * 
- * @author MBrasebin TODO rajouter MNT une fois la solution trouvée
  */
 public class IHMBandeConstructibilite extends JDialog implements
     WindowListener, ActionListener {

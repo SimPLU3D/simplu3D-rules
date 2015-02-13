@@ -23,7 +23,22 @@ import fr.ign.cogit.simplu3d.model.application.Rule;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 import fr.ign.cogit.simplu3d.util.AssignZ;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class LoadFromCollection {
 
   public final static boolean SURSAMPLED = true;

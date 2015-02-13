@@ -24,9 +24,23 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.Constant;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Parcelle pour le projet de contraintes de règles d'urbanisme
  * 
- * @author MBrasebin
  */
 public class Parcelle extends DefaultFeature {
 

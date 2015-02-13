@@ -10,10 +10,25 @@ public class ShapeFactor {
 
   private double value;
 
-  /**
-   *  Hauteur bâtiment / largeur + longueur
-   * @param bP
-   */
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
+ *  Hauteur bâtiment / largeur + longueur
+ * @param bP
+ */
   public ShapeFactor(AbstractBuilding bP) {
 
 

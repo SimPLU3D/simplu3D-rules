@@ -19,9 +19,23 @@ import fr.ign.cogit.gru3d.regleUrba.Environnement;
 import fr.ign.cogit.gru3d.regleUrba.Executor;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Route pour le projet de calcul des contraintes d'urbanisme
  * 
- * @author MBrasebin
  */
 public class Route extends FT_Feature {
 

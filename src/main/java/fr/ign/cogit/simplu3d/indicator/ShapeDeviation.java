@@ -10,7 +10,22 @@ public class ShapeDeviation {
 
   private double value;
 
-  /**
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
    * Rapport entre le volume d'un objet de le volume de sa boite orientée
    * @param bP
    */

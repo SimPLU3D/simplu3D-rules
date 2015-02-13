@@ -42,6 +42,21 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.DistanceFHauteur;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe utile permettant de : - Générer des distance de prospect - Générer des
  * représentations Java3D basiques
  * 

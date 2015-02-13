@@ -9,10 +9,24 @@ import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Détecte les landmarks. Calculé à partir de Ganitseva 2010
  * 
  * 
- * @author MBrasebin
  * 
  */
 public class Saliency {

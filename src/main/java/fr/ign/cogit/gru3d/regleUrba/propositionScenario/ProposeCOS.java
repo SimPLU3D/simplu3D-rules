@@ -15,7 +15,22 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.ReculBordure;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Regle;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Batiment;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class ProposeCOS {
 
   public static List<String> optimizeCOS(Moteur m, double hMin, double hMax,

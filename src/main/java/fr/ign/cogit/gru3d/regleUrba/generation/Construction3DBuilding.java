@@ -26,7 +26,22 @@ import fr.ign.cogit.gru3d.regleUrba.generation.toit.FlatRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.FourPlanesRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.OnePlaneRoof;
 import fr.ign.cogit.gru3d.regleUrba.generation.toit.PignonRoof;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class Construction3DBuilding {
 
   public static void main(String[] args) {

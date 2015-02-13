@@ -43,7 +43,22 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.Map3D;
 import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class ContrainteHauteurRepresentation extends Default3DRep {
 
   public static void main(String[] args) {

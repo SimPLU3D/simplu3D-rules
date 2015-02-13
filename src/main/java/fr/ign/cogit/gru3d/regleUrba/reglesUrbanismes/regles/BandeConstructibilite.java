@@ -21,6 +21,21 @@ import fr.ign.cogit.gru3d.regleUrba.representation.Incoherence;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * <p>
  * Java class for BandeConstructibilite complex type.
  * 

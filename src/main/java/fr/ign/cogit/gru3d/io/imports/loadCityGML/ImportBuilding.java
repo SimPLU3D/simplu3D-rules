@@ -19,6 +19,21 @@ import fr.ign.cogit.geoxygene.sig3d.topology.CarteTopo3D;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe pour charger des bâtiments dans le modèle CityGML
  * @author MBrasebin
  * 

@@ -7,7 +7,22 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTM;
 import fr.ign.cogit.geoxygene.sig3d.util.correction.CorrectionBati3D;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class LoadBati3D {
 
   public static IFeatureCollection<IFeature> loadBati3D(String pathBati3D,

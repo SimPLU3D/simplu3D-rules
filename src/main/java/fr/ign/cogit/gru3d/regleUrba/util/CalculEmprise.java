@@ -51,11 +51,25 @@ import fr.ign.cogit.gru3d.regleUrba.schemageo.Batiment;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Toit;
 
-/***
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe exclue ancienne classe d'interface Contient l'algo de découpage de
  * batiments au cas ou ...
  * 
- * @author MBrasebin
  */
 public class CalculEmprise implements ActionListener {
   public static int NB_Cont = 0;

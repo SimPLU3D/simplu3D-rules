@@ -11,9 +11,20 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 
 /**
  * 
- * @author MBrasebin
+ *        This software is released under the licence CeCILL
  * 
- */
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class UrbaZone extends CG_LandUse {
 
   public final String CLASSE = "Zone";

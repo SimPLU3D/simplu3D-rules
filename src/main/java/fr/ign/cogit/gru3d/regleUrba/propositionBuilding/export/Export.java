@@ -7,7 +7,22 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.gru3d.regleUrba.Executor;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Batiment;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class Export {
 
   private static String export = "E:/mbrasebin/Donnees/Strasbourg/TestRegles/Test2/Image/";

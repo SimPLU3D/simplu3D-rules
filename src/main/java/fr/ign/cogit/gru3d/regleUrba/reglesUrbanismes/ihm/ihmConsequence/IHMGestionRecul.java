@@ -24,7 +24,22 @@ import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.ReculAutreBatiment;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.ReculBordure;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.ReculRoute;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Regle;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class IHMGestionRecul extends JDialog implements WindowListener,
     ActionListener {
   // Il s'agit des éléments que l'on renvoie gréce à ce formulaire

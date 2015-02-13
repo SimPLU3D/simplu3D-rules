@@ -9,7 +9,22 @@ import java.sql.Statement;
 import org.apache.log4j.Logger;
 
 import fr.ign.parameters.Parameters;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class ParametersPostgis extends Parameters {
 
   public final static String PARAMETERS_TABLE = "parameters";

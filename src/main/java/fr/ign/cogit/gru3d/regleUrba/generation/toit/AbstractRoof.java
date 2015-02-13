@@ -7,9 +7,23 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * @TODO : vérifier la compatibilité avec CG_RoofSurface
  * 
- * @author MBrasebin
  *
  */
 public abstract class AbstractRoof extends CG_RoofSurface implements IRoof {

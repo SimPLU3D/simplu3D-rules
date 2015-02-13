@@ -5,7 +5,22 @@ import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
 import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class AverageSlope {
 
   public static double averageSlope(SubParcel p, DTMArea dtm)

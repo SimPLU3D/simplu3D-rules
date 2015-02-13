@@ -9,7 +9,22 @@ import fr.ign.cogit.geoxygene.sig3d.representation.sample.ObjectCartoon;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTM;
 import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.gru3d.io.imports.loadBDTopo.transformation.TransformBuilding;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class LoadBatiRemarquable {
 
   private static Color ALEZAN = new Color(167, 103, 38);

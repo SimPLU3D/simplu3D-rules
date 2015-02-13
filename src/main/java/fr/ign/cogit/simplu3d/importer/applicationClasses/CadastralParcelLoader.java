@@ -37,10 +37,24 @@ import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.util.PointInPolygon;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Assigne les bordures aux parcelles 3 types de bordure (voirie, fond ou
  * latéral) en fonction du voisinage
  * 
- * @author MBrasebin
  */
 public class CadastralParcelLoader {
 

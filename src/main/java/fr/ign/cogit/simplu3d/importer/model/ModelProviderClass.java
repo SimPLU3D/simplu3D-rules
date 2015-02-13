@@ -19,7 +19,22 @@ import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class ModelProviderClass {
   protected UrbaZone zone;
   protected CadastralParcel parcelle;

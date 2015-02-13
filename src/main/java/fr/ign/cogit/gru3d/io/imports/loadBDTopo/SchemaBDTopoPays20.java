@@ -10,6 +10,22 @@ import fr.ign.cogit.geoxygene.schema.schemaConceptuelISOProduit.AttributeType;
 import fr.ign.cogit.geoxygene.schema.schemaConceptuelISOProduit.FeatureType;
 import fr.ign.cogit.geoxygene.schema.schemaConceptuelISOProduit.SchemaConceptuelProduit;
 
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class SchemaBDTopoPays20 {
   
   private static Logger LOGGER= Logger.getLogger(SchemaBDTopoPays20.class);

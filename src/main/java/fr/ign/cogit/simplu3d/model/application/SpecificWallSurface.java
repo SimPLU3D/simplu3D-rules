@@ -6,12 +6,20 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
 
 /**
  * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
- * @author MBrasebin
- *
- */
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class SpecificWallSurface extends CG_WallSurface{
   
 

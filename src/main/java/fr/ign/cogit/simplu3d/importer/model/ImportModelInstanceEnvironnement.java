@@ -11,7 +11,22 @@ import tudresden.ocl20.pivot.standalone.facade.StandaloneFacade;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class ImportModelInstanceEnvironnement {
 
   public static IModel getModel(String modelPorviderURL) {

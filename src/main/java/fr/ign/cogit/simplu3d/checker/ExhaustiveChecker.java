@@ -12,19 +12,33 @@ import tudresden.ocl20.pivot.modelinstancetype.exception.TypeNotFoundInModelExce
 import tudresden.ocl20.pivot.modelinstancetype.types.IModelInstanceElement;
 import tudresden.ocl20.pivot.modelinstancetype.types.IModelInstanceObject;
 import tudresden.ocl20.pivot.pivotmodel.Constraint;
+import tudresden.ocl20.pivot.simplu3d.OCLInterpreterSimplu3D;
 import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceBasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.Rule;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
-import fr.ign.cogit.simplu3d.solver.interpreter.OCLInterpreterSimplu3D;
 
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe permettant la vérification des règles d'urbanisme sur une unité
  * foncière
- * @author MBrasebin
  */
 public class ExhaustiveChecker {
 

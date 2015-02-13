@@ -9,7 +9,22 @@ import fr.ign.cogit.geoxygene.feature.FT_Feature;
 import fr.ign.cogit.geoxygene.sig3d.representation.sample.ObjectCartoon;
 import fr.ign.cogit.gru3d.regleUrba.reglesUrbanismes.regles.Consequence;
 import fr.ign.cogit.gru3d.regleUrba.schemageo.Parcelle;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class Contrainte extends FT_Feature {
 
   private Parcelle p = null;

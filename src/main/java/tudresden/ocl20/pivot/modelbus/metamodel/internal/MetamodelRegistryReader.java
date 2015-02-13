@@ -50,6 +50,7 @@ import tudresden.ocl20.pivot.modelbus.ModelBusPlugin;
  * </p>
  * 
  * @author Matthias Braeuer
+ * @author Mickael Brasebin : Minor updates to increase evaluation time 
  */
 public class MetamodelRegistryReader {
 

@@ -56,7 +56,7 @@ import tudresden.ocl20.pivot.pivotmodel.TypeParameter;
  * <em>Generic Element</em>}</li>
  * </ul>
  * </p>
- * 
+ * @author Mickael Brasebin : Minor updates to increase evaluation time 
  * @generated
  */
 public class TypeParameterImpl extends NamedElementImpl implements

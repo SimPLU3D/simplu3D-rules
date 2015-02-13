@@ -7,10 +7,24 @@ import fr.ign.cogit.geoxygene.sig3d.representation.basic.Object2d;
 import fr.ign.cogit.geoxygene.spatial.geomroot.GM_Object;
 
 /**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ *
  * Classe de toits pour les règles d'urbanisme
  * 
  * @todo intégrer représentation en fonction de la texture
- * @author MBrasebin
  */
 public class Toit extends FT_Feature {
 

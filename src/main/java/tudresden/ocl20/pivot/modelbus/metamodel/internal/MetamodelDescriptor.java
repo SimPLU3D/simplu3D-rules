@@ -53,6 +53,7 @@ import tudresden.ocl20.pivot.modelbus.metamodel.IMetamodelDescriptor;
  * @see IMetamodelDescriptor
  * 
  * @author Matthias Braeuer
+ * @author Mickael Brasebin : Minor updates to increase evaluation time 
  */
 public class MetamodelDescriptor extends AbstractDescriptor implements
 		IMetamodel, IMetamodelDescriptor {

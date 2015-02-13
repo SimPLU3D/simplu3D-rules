@@ -21,7 +21,22 @@ import fr.ign.cogit.simplu3d.importer.applicationClasses.EmpriseGenerator;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoofImporter;
 import fr.ign.cogit.simplu3d.indicator.HauteurCalculation;
 import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
   public List<BuildingPart> buildingPart = new ArrayList<BuildingPart>();

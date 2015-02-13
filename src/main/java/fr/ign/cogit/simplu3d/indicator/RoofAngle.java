@@ -3,7 +3,22 @@ package fr.ign.cogit.simplu3d.indicator;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.sig3d.calculation.AngleFromSurface;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
-
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 public class RoofAngle {
 
   public static double angleMin(RoofSurface t) {

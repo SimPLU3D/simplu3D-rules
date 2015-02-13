@@ -63,7 +63,7 @@ import tudresden.ocl20.pivot.pivotmodel.TypeParameter;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
  * end-user-doc -->
- * 
+ *  @author Mickael Brasebin : Minor updates to increase evaluation time 
  * @generated
  */
 public class PivotModelFactoryImpl extends EFactoryImpl implements
