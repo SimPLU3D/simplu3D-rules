@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

@@ -22,7 +22,7 @@ import fr.ign.cogit.geoxygene.contrib.appariement.Lien;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

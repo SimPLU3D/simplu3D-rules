@@ -21,7 +21,7 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

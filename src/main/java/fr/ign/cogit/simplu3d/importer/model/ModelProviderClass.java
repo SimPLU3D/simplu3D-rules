@@ -31,7 +31,7 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

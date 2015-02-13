@@ -30,7 +30,7 @@ import fr.ign.cogit.gru3d.regleUrba.Executor;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  *

@@ -25,7 +25,7 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

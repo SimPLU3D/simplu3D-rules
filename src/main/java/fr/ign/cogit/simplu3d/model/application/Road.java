@@ -15,7 +15,7 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

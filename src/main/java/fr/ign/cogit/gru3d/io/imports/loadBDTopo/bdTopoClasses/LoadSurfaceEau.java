@@ -18,7 +18,7 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

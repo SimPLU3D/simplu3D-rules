@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRegistry;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  *

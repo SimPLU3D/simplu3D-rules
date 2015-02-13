@@ -32,7 +32,7 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

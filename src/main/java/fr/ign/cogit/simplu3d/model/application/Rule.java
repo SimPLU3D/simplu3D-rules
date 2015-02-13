@@ -13,7 +13,7 @@ import tudresden.ocl20.pivot.pivotmodel.Constraint;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

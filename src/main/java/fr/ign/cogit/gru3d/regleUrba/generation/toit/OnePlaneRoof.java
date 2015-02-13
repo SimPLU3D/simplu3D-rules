@@ -23,7 +23,7 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

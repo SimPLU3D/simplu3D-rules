@@ -19,7 +19,7 @@ import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/

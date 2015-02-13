@@ -16,7 +16,7 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
  * 
  * @copyright IGN
  * 
- * @author Brasebin Mickaël
+ * @author Brasebin MickaÃ«l
  * 
  * @version 1.0
  **/
