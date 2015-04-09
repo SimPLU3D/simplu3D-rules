@@ -266,7 +266,7 @@
       <name>Central Repository</name>
       <url>http://repo1.maven.org/maven2</url>
       <snapshots>
-	<enabled>false</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
     <repository>
@@ -274,10 +274,10 @@
       <name>Cogit Snapshots Repository</name>
       <url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
       <snapshots>
-	<enabled>true</enabled>
+        <enabled>true</enabled>
       </snapshots>
       <releases>
-	<enabled>false</enabled>
+        <enabled>false</enabled>
       </releases>
     </repository>
     <repository>
@@ -285,7 +285,7 @@
       <name>Cogit Releases Repository</name>
       <url>https://forge-cogit.ign.fr/nexus/content/repositories/releases/</url>
       <snapshots>
-	<enabled>false</enabled>
+        <enabled>false</enabled>
       </snapshots>
       <releases>
 	<enabled>true</enabled>
@@ -295,17 +295,23 @@
       <id>Imagej</id>
       <url>http://maven.imagej.net/content/repositories/public</url>
       <snapshots>
-	<enabled>false</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
     <repository>
       <id>iscpif-ign-releases</id>
       <name>ISCPIF Release repository for IGN</name>
       <url>http://maven.iscpif.fr/ign-releases/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
     <repository>
       <id>osgeo-geotools</id>
       <url>http://download.osgeo.org/webdav/geotools/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
