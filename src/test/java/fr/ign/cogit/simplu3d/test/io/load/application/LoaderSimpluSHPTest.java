@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.test.io.load.application;
 
+import java.io.FileNotFoundException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -25,7 +27,7 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 public class LoaderSimpluSHPTest {
 
   @Test
-  public void testImport() {
+  public void testImport() throws FileNotFoundException {
 
     Environnement env = LoadDefaultEnvironment.getENVDEF();
 

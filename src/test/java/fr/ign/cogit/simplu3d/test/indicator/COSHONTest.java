@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.test.indicator;
 
+import java.io.FileNotFoundException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -12,13 +14,13 @@ import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 public class COSHONTest {
   
   
-  public static void main(String[] args){
+  public static void main(String[] args) throws FileNotFoundException{
     
     (new COSHONTest()).testCOS();
   }
 
   @Test
-  public void testCOS() {
+  public void testCOS() throws FileNotFoundException {
 
     BasicPropertyUnit sp = LoadDefaultEnvironment.getENVDEF().getBpU().get(0);
 

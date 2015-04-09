@@ -25,7 +25,7 @@ public class SaveEnergyPostGIS {
   public final static String TABLE_SAVE_ENERGY = "volgeneratedbyparcel";
 
   public static void save(String host, String port, String database,
-      String user, String pw, int id_exp, int id_parcelle, double energy)
+      String user, String pw, int id_exp, int id_parcelle, int run, double energy)
       throws SQLException {
 
     String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
@@ -34,8 +34,8 @@ public class SaveEnergyPostGIS {
 
     Statement s = conn.createStatement();
 
-    String sql = "insert into " + TABLE_SAVE_ENERGY + "(id_exp, id_parcelle, energy) VALUES  ( " + id_exp
-        + "," + id_parcelle + "," + energy + ")";
+    String sql = "insert into " + TABLE_SAVE_ENERGY + "(id_exp, id_parcelle, run, energy) VALUES  ( " + id_exp
+        + "," + id_parcelle + "," +run+ ","+ energy + ")";
 
     System.out.println(sql);
     s.execute(sql);

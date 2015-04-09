@@ -42,8 +42,8 @@ public class ParametersPostgis extends Parameters {
 
     Statement s = conn.createStatement();
 
-    String sql = "Select * from " + PARAMETERS_TABLE + " where id ="
-        + PARAMETERS_ID;
+    String sql = "Select * from " + PARAMETERS_TABLE + " where "+PARAMETERS_ID+" ="
+        + id;
 
     rs = s.executeQuery(sql);
 

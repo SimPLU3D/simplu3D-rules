@@ -1,6 +1,7 @@
 package fr.ign.cogit.simplu3d.exe;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -41,9 +42,9 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 public class LoaderSHPExec {
   public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
 
-  public static void main(String[] args) throws CloneNotSupportedException {
-    String folder = LoaderSHPExec.class.getClassLoader()
-        .getResource("fr/ign/cogit/simplu3d/data/").getPath();
+  public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException {
+    String folder = LoaderSHPExec.class.getClass()
+        .getResource("/fr/ign/cogit/simplu3d/data/").getPath();
     
     String folderOut =folder + "out/";
     
