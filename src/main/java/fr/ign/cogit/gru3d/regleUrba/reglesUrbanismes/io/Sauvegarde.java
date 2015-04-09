@@ -44,7 +44,7 @@ public class Sauvegarde {
       SchemaFactory scf = SchemaFactory
           .newInstance("http://www.w3.org/2001/XMLSchema");
       URL schemaFile = Sauvegarde.class
-          .getResource("/demo3D/reglesurba/reglesUrba.xsd");
+          .getResource(Chargement.REL_PATH_TO_SCHEMA);
       Schema schema = scf.newSchema(schemaFile);
 
       // Affectation du schéma au marshaller

@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.exe;
 
+import java.io.FileNotFoundException;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
@@ -39,7 +41,7 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 public class TestLoaderSHP {
   public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
 
-  public static void main(String[] args) throws CloneNotSupportedException {
+  public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException {
     String folder = "E:/mbrasebin/Donnees/Strasbourg/GTRU/ProjectT3/";
     String folderOut =folder + "out/";
 

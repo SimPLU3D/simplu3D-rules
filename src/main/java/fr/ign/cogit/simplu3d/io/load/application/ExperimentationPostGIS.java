@@ -52,10 +52,10 @@ public class ExperimentationPostGIS extends Parameters {
     Statement s = conn.createStatement();
 
     String sql = "Select * from " + EXPERIMENTATION_TABLE + " where "
-        + EXPERIMENTATION_ID + " =" + id;
+        + EXPERIMENTATION_ID + " =" + id  ;
 
     rs = s.executeQuery(sql);
-
+System.out.println(sql);
     boolean next = rs.next();
 
     if (!next) {
@@ -68,6 +68,9 @@ public class ExperimentationPostGIS extends Parameters {
 
   }
 
+  
+  
+  
   public boolean setProcessed() throws SQLException {
 
     Connection conn = DriverManager.getConnection(url, user, pw);

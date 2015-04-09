@@ -24,11 +24,11 @@ public class LoadDefaultEnvironment {
 
   public static Environnement getENVDEF() {
     if (ENV_SINGLETON == null) {
-      String folder = LoadDefaultEnvironment.class.getClassLoader()
-          .getResource("fr/ign/cogit/simplu3d/data/").getPath();
+      String folder = LoadDefaultEnvironment.class.getClassLoader().getResource("fr/ign/cogit/simplu3d/data/").getPath();
 
       try {
-        ENV_SINGLETON = LoaderSHP.load(folder);
+        ENV_SINGLETON = LoaderSHP.load(folder, LoadDefaultEnvironment.class.getResourceAsStream("/fr/ign/cogit/simplu3d/data/"
+                + LoaderSHP.NOM_FICHIER_TERRAIN));
       } catch (CloneNotSupportedException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();

@@ -1,5 +1,6 @@
 package fr.ign.cogit.simplu3d.test.checker;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -16,7 +17,7 @@ import fr.ign.cogit.simplu3d.model.application.Environnement;
 public class TestOCLConstraint {
 
   @Test
-  public void testInterpretation() {
+  public void testInterpretation() throws FileNotFoundException {
     Environnement env = LoadDefaultEnvironment.getENVDEF();
 
     for (BasicPropertyUnit bPU : env.getBpU()) {
