@@ -15,6 +15,7 @@ Sequence{'Garage'}->includes(self.destination) and Prescription_SURF.allInstance
 
 ------ Article 3 ------
 
+
 -- Terrain must touch a private or public roads on a length greater than 4.5m
 
 context BasicPropertyUnit inv:
