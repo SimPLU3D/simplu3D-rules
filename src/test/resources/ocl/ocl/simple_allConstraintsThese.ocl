@@ -18,7 +18,7 @@ Sequence{'Garage'}->includes(self.destination) and Prescription_SURF.allInstance
 
 -- Terrain must touch a private or public roads on a length greater than 4.5m
 
-context BasicPropertyUnit inv:
+context BasicPropertyUnit inv: 
 self.getCadastralParcel().getSubParcel().getSpecificCadastralBoundary()->select(b | b.type = 'FRONT' and  b.geom.length()>4.5)->notEmpty()
 
 ------ Article 6 ------
