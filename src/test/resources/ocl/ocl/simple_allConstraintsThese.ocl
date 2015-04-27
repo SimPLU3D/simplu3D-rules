@@ -1,18 +1,28 @@
 package  fr::ign::cogit::simplu3d::model::application
 
 
+------ Article 1 ------
 
+-- Are allowed buildings with "bureau", "habitation", "commerce" or "artisanat" use.
 
--- Aire d'une sous parcelle positive
 context AbstractBuilding inv:
 Sequence{'Habitation', 'Bureau' , 'Commerce', 'Artisanat'}->includes(self.destination)
+
+-- Building of type "Garage" are allowed if they have an area smaller than 10m² and total height smaller than 3m.
 
 context AbstractBuilding inv:
 Sequence{'Garage'}->includes(self.destination) and Prescription_SURF.allInstances().select(type=8).exists(p | p.geom.intersects(self.footprint)) implies self.height(1, 2) < 3
 
+------ Article 3 ------
+
+-- Terrain must touch a private or public roads on a length greater than 4.5m
 
 context BasicPropertyUnit inv:
 self.getCadastralParcel().getSubParcel().getSpecificCadastralBoundary()->select(b | b.type = 'FRONT' and  b.geom.length()>4.5)->notEmpty()
+
+------ Article 6 ------
+
+-- When it is not locally specified, new buildings must be aligned with existing road borders or be built at a distance greater than 1.5 m
 
 
 context SubParcel inv:
@@ -20,22 +30,26 @@ let geomL :Sequence(IGeometry)=self.getSpecificCadastralBoundary()->select(b | b
 let geomB :Bag(IOrientableSurface)=self.getBuildingsParts().footprint in
 geomB->forAll(gB | geomL->forAll(gL | gL.distance(gB) > 1.5))
 
+-- If recoil graphical prescription are present on a parcel, buildings have to respect them.
 
 context SubParcel inv:
 let recoils :Sequence(Recoil)=self.getSpecificCadastralBoundary().getRecoil() in
 let geomB :Bag(IOrientableSurface)=self.getBuildingsParts().footprint in
 geomB->forAll(gB | recoils->forAll(rec | gB.distance(rec.getObjRef().getGeom()) > rec.getDistance()))
 
-
+-- If alignment graphical prescription are present on a parcel, buildings have to respect them.
 
 context SubParcel inv:
 let alignements :Sequence(Alignement)=self.getSpecificCadastralBoundary().getAlignement() in
 let geomB :Bag(IOrientableSurface)=self.getBuildingsParts().footprint in
 geomB->forAll(gB | alignements->forAll(ali | gB.distance(ali.getGeom()) > 0))
 
+-- Buildings must be built at a distance greater than 25 m from rail areas except if they are from type "Garage"
 
 context AbstractBuilding inv:
 self.destination <> 'Garage' implies  PublicSpace.allInstances().select(type='SNCF').geom->forAll(g |g.distance(self.footprint) > 25)
+
+-- Buildings must be built at a distance of 12 m from existing channels except if local prescriptions (type 26) indicate an other distance
 
 context SubParcel inv:
 let pInter = Prescription_SURF.allInstances().select(p | p.type=26 and p.geom.intersects(self.geom)) in
@@ -44,6 +58,10 @@ if (pInter->isEmpty()) then
 else
     pInter->forAll(p | self.getBuildingsParts()->forAll(bp | not p.geom.intersects(bp.footprint)))
 endif
+
+------ Article 7 ------
+
+-- Building have to be built along separative parcel, if there is a building with a free gable in adjacent parcel
 
 context SubParcel inv:
 let lBPNeigh : Sequence(AbstractBuilding)= self.getSpecificCadastralBoundary().select(type='LAT').getFeatAdj().oclAsType(CadastralParcel).getSubParcel().getBuildingsParts()->select(bP | bP.footprint.contains(self.geom)) in
@@ -54,26 +72,36 @@ else
 self.getBuildingsParts() = occupGable 
 endif
 
+-- Building must be built at a distance greater than 1.9 m from all separative limits.
+
 context SubParcel inv:
 self.getSpecificCadastralBoundary().select(type<>'FIC').geom ->forAll(g |
 self.getBuildingsParts().footprint .distance(g)->min() > 1.9)
+
+-- At a distance smaller than 13 m from road border, building must be buildt under a plan define by a height 0 along separative limits and a coefficent of 0.5.
 
 context SubParcel inv:
 self.getBuildingsParts().bandEpsilon(self.getConsLine(), 0, 13).forAll(bP |
 self.getSpecificCadastralBoundary().select(type<>'FIC').geom.forAll(g | bP.prospect(g,0,0.5)))
 
+-- At a distance greater than 20 m  from road border, building must be buildt under a plan define by a height 0 along back and lateral separative limits and a coefficent of 0.5.
+
 context SubParcel inv:
 self.getBuildingsParts().bandEpsilon(self.getConsLine(), 20, 1).forAll(bP | self.getSpecificCadastralBoundary().select(type='BACK' or type='LAT').geom.forAll(g | bP.prospect(g,0,0.5)))
+
+-- At a distance greater than 20 m  from road border, building must be buildt at a distance greater than 3 m from back and lateral separative 
 
 context SubParcel inv:
 self.getSpecificCadastralBoundary().select(type='BACK' or type='LAT').geom->forAll(g |self.getBuildingsParts().bandEpsilon(self.getConsLine(), 20, 1).footprint.distance(g)->min() > 3)
 
---.select(b | f.isInPositiveSpace(b.geom))
-context BasicPropertyUnit inv:
-self.getBuildings().getFacades().select(isWindowLess)->forAll(f | self.getBuildings().forAll(b | b.prospect(f.geom,0,2)))
+------ Article 9 ------
+
+-- Built area ratio must be less than 0.8
 
 context SubParcel inv:
 self.builtRatio() <= 0.8
+
+-- In area where maximal area ratio is 0.4 or 0.5, a 10% bonus is added if all buildings have a height smaller than 3.5 m
 
 context SubParcel inv:
 if self.getBuildingsParts()->forAll(b | b.height(1, 2) < 3.5 ) then
@@ -82,12 +110,19 @@ else
 self.builtRatio() <= 0.5
 endif
 
+------ Article 10 ------
+
+-- Facade height to gutter must be less than 28 m
+
+context SubParcel inv:
+self.getBuildingsParts().height(2, 0)->forAll(h|h<28)
+
+-- For "bureau" and "Habitation" buildings, the maximal height is limited by 8 m above gutter.
 
 context BuildingPart inv:
 Sequence{'Bureau' , 'Habitation'}->includes(self.destination) implies self.height(2,
 0) + 8 <= self.height(2,1)
 
-context SubParcel inv:
-self.getBuildingsParts().height(2, 0)->forAll(h|h<28)
+
 
 endpackage
