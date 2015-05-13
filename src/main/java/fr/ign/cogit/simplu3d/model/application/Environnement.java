@@ -1,5 +1,6 @@
 package fr.ign.cogit.simplu3d.model.application;
 
+import java.io.File;
 import java.net.URL;
 
 import tudresden.ocl20.pivot.model.IModel;
@@ -10,6 +11,8 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceEnvironnement;
 import fr.ign.cogit.simplu3d.importer.model.ModelProviderClass;
+import fr.ign.parameters.ParameterComponent;
+import fr.ign.parameters.Parameters;
 
 /**
  * 
@@ -193,6 +196,16 @@ public class Environnement extends CG_CityModel {
 
   public void setPlu(PLU plu) {
     this.plu = plu;
+  }
+  
+  public Parameters loadParameters(String path){
+	  try {
+		return ParameterComponent.unmarshall(new File(path));
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  return null;
   }
 
 }

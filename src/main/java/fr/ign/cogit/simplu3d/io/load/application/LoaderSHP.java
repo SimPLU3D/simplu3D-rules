@@ -39,10 +39,13 @@ public class LoaderSHP {
   public final static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
   public final static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
 
-  /*
-   * Attributs du fichier zone
-   */
-
+  
+  public Environnement getEnvironnement(String folder) throws FileNotFoundException, CloneNotSupportedException{
+	  return LoaderSHP.load(folder);
+  }
+  
+  
+  
   public static Environnement load(String folder)
       throws CloneNotSupportedException, FileNotFoundException {
 
