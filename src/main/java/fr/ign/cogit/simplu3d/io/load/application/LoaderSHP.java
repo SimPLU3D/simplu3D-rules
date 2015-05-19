@@ -32,12 +32,12 @@ public class LoaderSHP {
   /*
    * Nom des fichiers en entrée
    */
-  public final static String NOM_FICHIER_ZONAGE = "zonage.shp";
-  public final static String NOM_FICHIER_PARCELLE = "parcelle.shp";
-  public final static String NOM_FICHIER_VOIRIE = "route.shp";
-  public final static String NOM_FICHIER_BATIMENTS = "bati.shp";
-  public final static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
-  public final static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
+  public static String NOM_FICHIER_ZONAGE = "zonage.shp";
+  public static String NOM_FICHIER_PARCELLE = "parcelle.shp";
+  public static String NOM_FICHIER_VOIRIE = "route.shp";
+  public static String NOM_FICHIER_BATIMENTS = "bati.shp";
+  public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
+  public static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
 
   
   public Environnement getEnvironnement(String folder) throws FileNotFoundException, CloneNotSupportedException{

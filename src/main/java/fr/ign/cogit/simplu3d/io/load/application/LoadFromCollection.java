@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.io.load.application;
 
+import java.util.logging.Logger;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
@@ -42,6 +44,8 @@ import fr.ign.cogit.simplu3d.util.AssignZ;
 public class LoadFromCollection {
 
   public final static boolean SURSAMPLED = true;
+  
+  private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
 
   public static Environnement load(IFeatureCollection<IFeature> zoneColl,
       IFeatureCollection<IFeature> parcelleColl,
@@ -85,10 +89,15 @@ public class LoadFromCollection {
     // Etape 1 : création de l'objet PLU
     PLU plu = new PLU();
     env.setPlu(plu);
+    
+    
+    logger.info("PLU creation");
 
     // Etape 2 : création des zones et assignation des règles aux zones
     IFeatureCollection<UrbaZone> zones = ZonesImporter.importUrbaZone(zoneColl);
 
+    
+    logger.info("Zones loaded");
     
     if(ruleFolder != null){
       for (UrbaZone z : zones) {
@@ -105,6 +114,8 @@ public class LoadFromCollection {
     // Etape 3 : assignement des zonages au PLU
     plu.lUrbaZone.addAll(zones);
     env.setUrbaZones(zones);
+    
+    logger.info("Zones assigned");
 
     // Etape 4 : chargement des parcelles et créations des bordures
     IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
@@ -112,33 +123,54 @@ public class LoadFromCollection {
 
     env.setCadastralParcels(parcelles);
 
+    
+    logger.info("Parcel borders created");
+    
     // Etape 5 : import des sous parcelles
     IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(
         parcelles, zones);
     env.setSubParcels(sousParcelles);
 
+    
+    
+    logger.info("Sub parcels loaded");
+    
     // Etape 6 : création des unités foncirèes
     IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter
         .importBPU(parcelles);
     env.setBpU(collBPU);
 
+    logger.info("Basic property units created");
+    
     // Etape 7 : import des bâtiments
     IFeatureCollection<Building> buildings = BuildingImporter.importBuilding(
         batiColl, collBPU);
     env.getBuildings().addAll(buildings);
+    
+    
+    logger.info("Buildings imported");
 
     // Etape 8 : chargement des voiries
 
     IFeatureCollection<Road> roads = RoadImporter.importRoad(voirieColl);
     env.setRoads(roads);
+    
+    
+    logger.info("Roads loaded");
 
     // Etape 9 : on affecte les liens entres une bordure et ses objets adjacents
     AssignLinkToBordure.process(parcelles, roads);
+    
+    
+    logger.info("Links with roads created");
 
     // Etape 10 : on importe les alignements
     IFeatureCollection<Alignement> alignementColl = AlignementImporter
         .importRecul(prescriptions, parcelles);
     env.setAlignements(alignementColl);
+    
+
+    logger.info("Alignment loaded");
 
     // Etape 11 : on affecte des z à tout ce bon monde // - parcelles,
     // sous-parcelles route sans z, zonage, les bordures etc...
@@ -153,6 +185,11 @@ public class LoadFromCollection {
     } catch (Exception e) { // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    
+
+    logger.info("3D created");
+
+    
     return env;
   }
 

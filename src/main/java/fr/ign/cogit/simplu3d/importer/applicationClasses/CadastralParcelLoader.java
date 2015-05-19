@@ -62,7 +62,7 @@ public class CadastralParcelLoader {
   public static final int LATERAL_TEMP = 98;
   
   
-  public static final String ATT_ID_PARC = "ID_Parcell";
+  public static  String ATT_ID_PARC = "ID_Parcell";
 
   private static Logger logger = Logger.getLogger(CadastralParcelLoader.class);
 
@@ -74,6 +74,8 @@ public class CadastralParcelLoader {
     // On créer une carte topo avec les parcelles
     CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.2);
 
+  	System.out.println("Je passe là !!!!");
+  	
     // On parcourt les arcs (futures limites de parcelles)
     IPopulation<Arc> arcsParcelles = cT.getPopArcs();
 
@@ -127,6 +129,8 @@ public class CadastralParcelLoader {
     IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
 
     for (Face f : facesParcelles) {
+    	
+    	System.out.println("Je passe là");
 
       double threshold = determineThreshol(f, thresholdIni);
 
@@ -348,8 +352,7 @@ public class CadastralParcelLoader {
       Face f = facesParcelles.get(i);
       CadastralParcel parc = parcelles.get(i);
 
-      Collection<IFeature> coll = parcelCollection.select(
-          PointInPolygon.get(f.getGeometrie()), 0);
+      Collection<IFeature> coll = parcelCollection.select(    PointInPolygon.get(f.getGeometrie()), 0);
 
       if (coll.isEmpty() || coll.size() > 1) {
         logger.error("Several parcels for a single face of CarteTopo");
@@ -385,7 +388,13 @@ public class CadastralParcelLoader {
         }
 
         int indexFCand = facesParcelles.getElements().indexOf(fCand);
-        sCB.setFeatAdj(parcelles.get(indexFCand));
+        
+        if(indexFCand != -1){
+        	sCB.setFeatAdj(parcelles.get(indexFCand));
+        }
+        
+        
+        
 
       }
 

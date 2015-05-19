@@ -205,7 +205,7 @@ public class RepEnvironnement {
 
       RoofSurface t = b.getToit();
 
-      t.setRepresentation(new CartooMod2(t, COLOR_TOIT));
+      t.setRepresentation(new ObjectCartoon(t, COLOR_TOIT));
       toitOut.add(t);
 
     }
