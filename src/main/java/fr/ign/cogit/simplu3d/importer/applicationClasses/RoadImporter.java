@@ -37,9 +37,9 @@ import fr.ign.cogit.simplu3d.model.application.Road;
  **/
 public class RoadImporter {
 
-  public final static String ATT_NOM_RUE = "nom_rue_g";
-  public final static String ATT_LARGEUR = "largeur";
-  public final static String ATT_TYPE = "nature";
+  public  static String ATT_NOM_RUE = "nom_rue_g";
+  public  static String ATT_LARGEUR = "largeur";
+  public  static String ATT_TYPE = "nature";
 
   @SuppressWarnings("unchecked")
   public static IFeatureCollection<Road> importRoad(
