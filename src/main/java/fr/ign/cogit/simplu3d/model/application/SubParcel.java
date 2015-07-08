@@ -120,14 +120,21 @@ public class SubParcel extends CG_LandUse {
     }
     return borduresLat;
   }
+  
+  
+  public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
+	    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+	    for (SpecificCadastralBoundary b : this.sCBoundary) {
+	      if (b.getType() == SpecificCadastralBoundary.ROAD) {
+	        borduresLat.add(b);
+	      }
 
-  /*
-   * public IFeatureCollection<Bordure> getBorduresVoies() {
-   * IFeatureCollection<Bordure> bordureVoie = new
-   * FT_FeatureCollection<Bordure>(); for (Bordure b : this.bordures) { if
-   * (b.getTypeDroit() == Bordure.VOIE) { bordureVoie.add(b); } } return
-   * bordureVoie; }
-   */
+	    }
+	    return borduresLat;
+	  }
+
+
+
 
   public void setParcelle(CadastralParcel cP) {
     this.parcelle = cP;
