@@ -119,7 +119,7 @@ public class LoadFromCollection {
 
     // Etape 4 : chargement des parcelles et créations des bordures
     IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
-        .assignBordureToParcelleWithOrientation(parcelleColl, 3);
+        .assignBordureToParcelleWithOrientation(parcelleColl);
 
     env.setCadastralParcels(parcelles);
 

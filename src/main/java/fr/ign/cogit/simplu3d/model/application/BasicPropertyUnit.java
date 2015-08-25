@@ -30,15 +30,15 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  **/
 public class BasicPropertyUnit extends DefaultFeature {
 
-  private static int ID_COUNT = 0;
 
-  private int id;
+
+
 
   public List<Building> buildings = new ArrayList<Building>();
   public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
 
   public BasicPropertyUnit() {
-    id = ++ID_COUNT;
+
   }
 
   public List<Building> getBuildings() {
@@ -115,6 +115,14 @@ public class BasicPropertyUnit extends DefaultFeature {
   }
   
   
+  private double area = -1;
+  
+  public double getArea(){
+	  if(area == -1){
+		  area = this.getpol2D().area();
+	  }
+	  return area;
+  }
   
 
 }

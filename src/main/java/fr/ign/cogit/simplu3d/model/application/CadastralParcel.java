@@ -2,6 +2,7 @@ package fr.ign.cogit.simplu3d.model.application;
 
 import org.citygml4j.model.citygml.landuse.LandUse;
 
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
@@ -15,11 +16,11 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -31,127 +32,124 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
  **/
 public class CadastralParcel extends CG_LandUse {
 
+	public final String CLASSE = "Parcelle";
 
-  public final String CLASSE = "Parcelle";
-  
-  public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
-  public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
-  
-  
-  public BasicPropertyUnit bPU;
-  
-  
-  
-  public BasicPropertyUnit getbPU() {
-    return bPU;
-  }
+	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
+	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
+	public BasicPropertyUnit bPU;
 
-  public void setbPU(BasicPropertyUnit bPU) {
-    this.bPU = bPU;
-  }
+	public BasicPropertyUnit getbPU() {
+		return bPU;
+	}
 
+	public void setbPU(BasicPropertyUnit bPU) {
+		this.bPU = bPU;
+	}
 
-  public double area = Double.NaN;
-  
+	public double area = Double.NaN;
 
-  public CadastralParcel(){
-    super();
-  }
-      
-  
-  public CadastralParcel(IMultiSurface<IOrientableSurface> iMS) {
-    super();
+	public CadastralParcel() {
+		super();
+	}
 
-    this.setLod2MultiSurface(iMS);
-    this.setGeom(iMS);
+	public CadastralParcel(IMultiSurface<IOrientableSurface> iMS) {
+		super();
 
-    this.setClazz(CLASSE);
+		this.setLod2MultiSurface(iMS);
+		this.setGeom(iMS);
 
-  }
+		this.setClazz(CLASSE);
 
-  public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
-    return specificCB;
-  }
+	}
 
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
+		return specificCB;
+	}
 
-  public void setSpecificCadastralBoundary(IFeatureCollection<SpecificCadastralBoundary> bordures) {
-    this.specificCB = bordures;
-  }
+	public void setSpecificCadastralBoundary(
+			IFeatureCollection<SpecificCadastralBoundary> bordures) {
+		this.specificCB = bordures;
+	}
 
-  
-  
-  
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(
+			int side) {
+		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
 
-  public CadastralParcel(LandUse landUse) {
-    super(landUse);
+		for (SpecificCadastralBoundary sc : specificCB) {
 
-    this.setClazz(CLASSE);
+			if (sc.getSide() == side) {
+				featC.add(sc);
+			}
 
-  }
-  
-  
-  public IFeatureCollection<SubParcel> getSubParcel() {
-    return subParcels;
-  }
+		}
 
-  public void setSubParcel(IFeatureCollection<SubParcel> sousParcelles) {
-    this.subParcels = sousParcelles;
-  }
+		return featC;
+	}
 
-  
-  public double getArea() {
-    
-    if(Double.isNaN(area)){
-      area = this.getGeom().area();
-    }
-    
-    
-    return area;
-  }
+	public CadastralParcel(LandUse landUse) {
+		super(landUse);
 
+		this.setClazz(CLASSE);
 
-  public void setArea(double area) {
-    this.area = area;
-  }
+	}
 
-  
-  public Building getBuilding(){
-    return null;
-  }
-  
-  
-  private IGeometry consLine = null;
+	public IFeatureCollection<SubParcel> getSubParcel() {
+		return subParcels;
+	}
 
-  public IGeometry getConsLine() {
-    
-    if(consLine == null){
-      
+	public void setSubParcel(IFeatureCollection<SubParcel> sousParcelles) {
+		this.subParcels = sousParcelles;
+	}
 
-      IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
+	public double getArea() {
 
-      IFeatureCollection<SpecificCadastralBoundary> sCP = this.getBorduresFront();
+		if (Double.isNaN(area)) {
+			area = this.getGeom().area();
+		}
 
-      for (SpecificCadastralBoundary sCB : sCP) {
-        
-        iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
-      }
+		return area;
+	}
 
-      consLine =  iMS;
-    }
-    
-    return consLine;
+	public void setArea(double area) {
+		this.area = area;
+	}
 
-  }
+	public Building getBuilding() {
+		return null;
+	}
 
-  public IFeatureCollection<SpecificCadastralBoundary> getBorduresFront() {
-    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-    for (SpecificCadastralBoundary b : this.specificCB) {
-      if (b.getType() == SpecificCadastralBoundary.ROAD) {
-        borduresLat.add(b);
-      }
+	private IGeometry consLine = null;
 
-    }
-    return borduresLat;
-  }
+	public IGeometry getConsLine() {
+
+		if (consLine == null) {
+
+			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
+
+			IFeatureCollection<SpecificCadastralBoundary> sCP = this
+					.getBorduresFront();
+
+			for (SpecificCadastralBoundary sCB : sCP) {
+
+				iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
+			}
+
+			consLine = iMS;
+		}
+
+		return consLine;
+
+	}
+
+	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFront() {
+		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.specificCB) {
+			if (b.getType() == SpecificCadastralBoundary.ROAD) {
+				borduresLat.add(b);
+			}
+
+		}
+		return borduresLat;
+	}
 }

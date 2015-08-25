@@ -2,16 +2,25 @@ package fr.ign.cogit.simplu3d.exe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
+
+import straightskeleton.Skeleton;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
+import fr.ign.cogit.geoxygene.sig3d.calculation.SkeletonCalculation;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
@@ -43,8 +52,15 @@ public class LoaderSHPExec {
   public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
 
   public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException {
-    String folder = LoaderSHPExec.class.getClass()
-        .getResource("/fr/ign/cogit/simplu3d/data/").getPath();
+	  
+		RoadImporter.ATT_NOM_RUE = "NOM_VOIE_G";
+		RoadImporter.ATT_LARGEUR = "LARGEUR";
+		RoadImporter.ATT_TYPE = "NATURE";
+		
+		CadastralParcelLoader.WIDTH_DEP = 30;
+		
+
+    String folder = "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
     
     String folderOut =folder + "out/";
     
@@ -76,11 +92,36 @@ public class LoaderSHPExec {
 
     int count = 0;
     
+    
+    IFeatureCollection<IFeature> lTotArc = new FT_FeatureCollection<>();
     System.out.println("nb Parcelles : " + env.getParcelles().size());
     
     for(BasicPropertyUnit bPU:env.getBpU()){
     
+    	if(bPU.getId() == 41) continue;
+   
+    	IPolygon pol = (IPolygon) FromGeomToSurface.convertGeom(bPU.getGeom()).get(0);
+    	
+    	
+    	int coordSize= pol.coord().size() - 1;
+    	
+    	double[] tab = new double[coordSize];
+    	
+    	for(int i=0;i<coordSize;i++){
+    		tab[i] = Math.PI/4;
+    	}
+    	
+   
+    	
+    	CampSkeleton cs = new CampSkeleton(pol, tab);
+    	
+    	lTotArc.addAll(cs.getInteriorArcs());
+    	
+    	
     for (CadastralParcel sp : bPU.getCadastralParcel()) {
+    	
+
+    	
       
       
       
@@ -99,7 +140,7 @@ public class LoaderSHPExec {
         AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
         AttributeManager.addAttribute(b, "Type", b.getType(), "Integer");
         AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");
-
+        AttributeManager.addAttribute(b, "Type", b.getSide(), "Integer");
 
         if (b.getFeatAdj() != null) {
           
@@ -118,7 +159,10 @@ public class LoaderSHPExec {
 
         }
 
-        
+        if(b.getGeom() == null || b.getGeom().isEmpty()){
+        	
+        	continue;
+        }
         
         IDirectPosition centroidGeom = b.getGeom().coord().get(0);
         
@@ -155,6 +199,7 @@ public class LoaderSHPExec {
         
         
         AttributeManager.addAttribute(feat, "Type", b.getType() ,"Integer");
+        AttributeManager.addAttribute(feat, "Side", b.getSide() ,"Integer");
         bordures_translated.add(feat);
         
         
@@ -185,7 +230,8 @@ public class LoaderSHPExec {
     
     
     ShapefileWriter.write(featC, folderOut + "buffer.shp");
-    
+
+    ShapefileWriter.write(lTotArc, folderOut + "arcs.shp");
     
     
     

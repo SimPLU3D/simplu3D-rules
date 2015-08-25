@@ -39,7 +39,7 @@ public class BasicPropertyUnitImporter {
       bPU.add(bP);
       
       
-      
+      bP.setId(c.getId());
       
       bP.setpol2D((IPolygon)FromGeomToSurface.convertGeom(c.getGeom()).get(0));
       

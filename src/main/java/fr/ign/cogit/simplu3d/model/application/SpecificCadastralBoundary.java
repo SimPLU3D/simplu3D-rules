@@ -29,11 +29,19 @@ public class SpecificCadastralBoundary extends CG_CityObject {
   public final static int INTRA = 3;
   public final static int ROAD = 4;
   public final static int PUB = 5;
-
+  
+  
+  public final static int RIGHT_SIDE = 0;
+  public final static int LEFT_SIDE = 1;
+  public final static int UNKOWN_SIDE = 99;
+  
+  
   public Alignement alignement = null;
   public Recoil recoil = null;
   public int type;
-
+  public int side = UNKOWN_SIDE;
+  
+  
   // Il s'agit de l'objet qui ne référence pas cette bordure et qui est adjacent
   // à la bordure
   private IFeature featAdj = null;
@@ -88,5 +96,20 @@ public class SpecificCadastralBoundary extends CG_CityObject {
     this.type = type;
   }
 
+/**
+ * @return the side
+ */
+public int getSide() {
+	return side;
+}
+
+/**
+ * @param side the side to set
+ */
+public void setSide(int side) {
+	this.side = side;
+}
+
+  
 
 }
