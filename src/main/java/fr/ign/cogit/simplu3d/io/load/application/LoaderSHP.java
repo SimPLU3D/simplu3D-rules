@@ -52,6 +52,30 @@ public class LoaderSHP {
     return load(folder, new FileInputStream(folder + NOM_FICHIER_TERRAIN));
 
   }
+  
+  
+  public static Environnement loadNoDTM(String folder) throws CloneNotSupportedException{
+	    Environnement env = Environnement.getInstance();
+	    env.folder = folder;
+
+	    // Chargement des fichiers
+
+	    IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
+	        + NOM_FICHIER_ZONAGE);
+	    IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
+	        + NOM_FICHIER_PARCELLE);
+	    IFeatureCollection<IFeature> voirieColl = ShapefileReader.read(folder
+	        + NOM_FICHIER_VOIRIE);
+	    IFeatureCollection<IFeature> batiColl = ShapefileReader.read(folder
+	        + NOM_FICHIER_BATIMENTS);
+	    IFeatureCollection<IFeature> prescriptions = ShapefileReader.read(folder
+	        + NOM_FICHIER_PRESC_LINEAIRE);
+
+	 
+
+	    return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+	        batiColl, prescriptions, folder, null);
+  }
 
   public static Environnement load(String folder, InputStream dtmStream)
       throws CloneNotSupportedException {
