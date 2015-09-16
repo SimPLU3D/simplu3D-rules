@@ -1,7 +1,6 @@
 package fr.ign.cogit.simplu3d.io.load.application;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
@@ -29,79 +28,72 @@ import fr.ign.cogit.simplu3d.model.application.Environnement;
  **/
 public class LoaderSHP {
 
-  /*
-   * Nom des fichiers en entrée
-   */
-  public static String NOM_FICHIER_ZONAGE = "zonage.shp";
-  public static String NOM_FICHIER_PARCELLE = "parcelle.shp";
-  public static String NOM_FICHIER_VOIRIE = "route.shp";
-  public static String NOM_FICHIER_BATIMENTS = "bati.shp";
-  public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
-  public static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
+	/*
+	 * Nom des fichiers en entrée
+	 */
+	public static String NOM_FICHIER_ZONAGE = "zonage.shp";
+	public static String NOM_FICHIER_PARCELLE = "parcelle.shp";
+	public static String NOM_FICHIER_VOIRIE = "route.shp";
+	public static String NOM_FICHIER_BATIMENTS = "bati.shp";
+	public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
+	public static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
 
-  
-  public Environnement getEnvironnement(String folder) throws FileNotFoundException, CloneNotSupportedException{
-	  return LoaderSHP.load(folder);
-  }
-  
-  
-  
-  public static Environnement load(String folder)
-      throws CloneNotSupportedException, FileNotFoundException {
+	public Environnement getEnvironnement(String folder) throws Exception {
+		return LoaderSHP.load(folder);
+	}
 
-    return load(folder, new FileInputStream(folder + NOM_FICHIER_TERRAIN));
+	public static Environnement load(String folder) throws Exception {
 
-  }
-  
-  
-  public static Environnement loadNoDTM(String folder) throws CloneNotSupportedException{
-	    Environnement env = Environnement.getInstance();
-	    env.folder = folder;
+		return load(folder, new FileInputStream(folder + NOM_FICHIER_TERRAIN));
 
-	    // Chargement des fichiers
+	}
 
-	    IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
-	        + NOM_FICHIER_ZONAGE);
-	    IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
-	        + NOM_FICHIER_PARCELLE);
-	    IFeatureCollection<IFeature> voirieColl = ShapefileReader.read(folder
-	        + NOM_FICHIER_VOIRIE);
-	    IFeatureCollection<IFeature> batiColl = ShapefileReader.read(folder
-	        + NOM_FICHIER_BATIMENTS);
-	    IFeatureCollection<IFeature> prescriptions = ShapefileReader.read(folder
-	        + NOM_FICHIER_PRESC_LINEAIRE);
+	public static Environnement loadNoDTM(String folder) throws Exception {
+		Environnement env = Environnement.getInstance();
+		env.folder = folder;
 
-	 
+		// Chargement des fichiers
 
-	    return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
-	        batiColl, prescriptions, folder, null);
-  }
+		IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_ZONAGE);
+		IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_PARCELLE);
+		IFeatureCollection<IFeature> voirieColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_VOIRIE);
+		IFeatureCollection<IFeature> batiColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_BATIMENTS);
+		IFeatureCollection<IFeature> prescriptions = ShapefileReader
+				.read(folder + NOM_FICHIER_PRESC_LINEAIRE);
 
-  public static Environnement load(String folder, InputStream dtmStream)
-      throws CloneNotSupportedException {
+		return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+				batiColl, prescriptions, folder, null);
+	}
 
-    Environnement env = Environnement.getInstance();
-    env.folder = folder;
+	public static Environnement load(String folder, InputStream dtmStream)
+			throws Exception {
 
-    // Chargement des fichiers
+		Environnement env = Environnement.getInstance();
+		env.folder = folder;
 
-    IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
-        + NOM_FICHIER_ZONAGE);
-    IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
-        + NOM_FICHIER_PARCELLE);
-    IFeatureCollection<IFeature> voirieColl = ShapefileReader.read(folder
-        + NOM_FICHIER_VOIRIE);
-    IFeatureCollection<IFeature> batiColl = ShapefileReader.read(folder
-        + NOM_FICHIER_BATIMENTS);
-    IFeatureCollection<IFeature> prescriptions = ShapefileReader.read(folder
-        + NOM_FICHIER_PRESC_LINEAIRE);
+		// Chargement des fichiers
 
-    // sous-parcelles route sans z, zonage, les bordures etc...
-    DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
-        ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
+		IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_ZONAGE);
+		IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_PARCELLE);
+		IFeatureCollection<IFeature> voirieColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_VOIRIE);
+		IFeatureCollection<IFeature> batiColl = ShapefileReader.read(folder
+				+ NOM_FICHIER_BATIMENTS);
+		IFeatureCollection<IFeature> prescriptions = ShapefileReader
+				.read(folder + NOM_FICHIER_PRESC_LINEAIRE);
 
-    return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
-        batiColl, prescriptions, folder, dtm);
-  }
+		// sous-parcelles route sans z, zonage, les bordures etc...
+		DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
+				ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
+
+		return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+				batiColl, prescriptions, folder, dtm);
+	}
 
 }

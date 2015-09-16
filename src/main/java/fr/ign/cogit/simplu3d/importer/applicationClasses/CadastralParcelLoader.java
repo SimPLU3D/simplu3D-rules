@@ -118,7 +118,9 @@ public class CadastralParcelLoader {
 
 			if (coll.isEmpty() || coll.size() > 1) {
 				logger.error("Several parcels for a single face of CarteTopo");
-				System.exit(0);
+				
+				return null;
+				//System.exit(0);
 			}
 
 			Iterator<IFeature> it = coll.iterator();

@@ -41,7 +41,7 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 public class TestLoaderSHP {
   public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
 
-  public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException {
+  public static void main(String[] args) throws Exception {
     String folder = "E:/mbrasebin/Donnees/Strasbourg/GTRU/ProjectT3/";
     String folderOut =folder + "out/";
 
