@@ -7,12 +7,13 @@ import org.junit.Test;
 
 import tudresden.ocl20.pivot.modelinstancetype.types.IModelInstanceObject;
 
-import com.ibm.icu.impl.Assert;
+
 
 import fr.ign.cogit.simplu3d.checker.ExhaustiveChecker;
 import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
+import junit.framework.Assert;
 
 public class TestOCLConstraint {
 
@@ -26,7 +27,6 @@ public class TestOCLConstraint {
       vFR.check(new ArrayList<IModelInstanceObject>());
 
     }
-
-    Assert.assrt(true);
+    Assert.assertEquals(true, true);
   }
 }

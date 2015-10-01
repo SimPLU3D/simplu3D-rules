@@ -73,14 +73,14 @@ public class CadastralParcelLoader {
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
 			IFeatureCollection<IFeature> parcelCollection) {
 
-		System.out.println("NB Parcelles : " + parcelCollection.size());
+	//	System.out.println("NB Parcelles : " + parcelCollection.size());
 
 		IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 
 		// On créer une carte topo avec les parcelles
 		CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.2);
 
-		System.out.println("Je passe là !!!!");
+		//System.out.println("Je passe là !!!!");
 
 		for (Face f : cT.getPopFaces()) {
 			IFeatureCollection<CadastralParcel> cadastralParcelTemp;
@@ -303,7 +303,7 @@ public class CadastralParcelLoader {
 		// On classe les arcs
 		for (Arc a : listArcTemp) {
 
-			System.out.println("Classement des arcs");
+			//System.out.println("Classement des arcs");
 
 			// On ne garde que les arcs latéraux
 
@@ -596,7 +596,7 @@ public class CadastralParcelLoader {
 		// On classe les arcs
 		for (Arc a : listArcTemp) {
 
-			System.out.println("Classement des arcs");
+		//	System.out.println("Classement des arcs");
 
 			// On ne garde que les arcs latéraux
 
@@ -870,7 +870,7 @@ public class CadastralParcelLoader {
 
 		double largeur = Math.min(l1, l2);
 
-		System.out.println(largeur);
+	//	System.out.println(largeur);
 
 		if (largeur / 2.5 < thresholdIni) {
 
@@ -886,12 +886,12 @@ public class CadastralParcelLoader {
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelle(
 			IFeatureCollection<IFeature> parcelCollection) {
 
-		System.out.println("NB Parcelles : " + parcelCollection.size());
+		//System.out.println("NB Parcelles : " + parcelCollection.size());
 
 		// On créer une carte topo avec les parcelles
 		CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.1);
 
-		System.out.println("NB faces : " + cT.getPopFaces().size());
+	//	System.out.println("NB faces : " + cT.getPopFaces().size());
 
 		// On parcourt les arcs (futures bordures)
 		IPopulation<Arc> arcsParcelles = cT.getPopArcs();
