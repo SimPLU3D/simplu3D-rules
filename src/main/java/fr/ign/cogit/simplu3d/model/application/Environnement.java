@@ -68,7 +68,7 @@ public class Environnement extends CG_CityModel {
   public AbstractDTM terrain;
   public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
 
-  public static double DEFAULT_ZERO_Z = 139; // 41; //138
+
 
   public static IDirectPosition dpTranslate = null;
 
@@ -142,13 +142,7 @@ public class Environnement extends CG_CityModel {
     this.terrain = terrain;
   }
 
-  public static double getDEFAULT_ZERO_Z() {
-    return DEFAULT_ZERO_Z;
-  }
 
-  public static void setDEFAULT_ZERO_Z(double dEFAULT_ZERO_Z) {
-    DEFAULT_ZERO_Z = dEFAULT_ZERO_Z;
-  }
 
   public static IDirectPosition getDpTranslate() {
     return dpTranslate;
