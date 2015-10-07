@@ -10,6 +10,7 @@ import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.BasicPropertyUnitImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.PLUImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RulesImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.SubParcelImporter;
@@ -49,7 +50,9 @@ public class LoadFromCollection {
 	private final static Logger logger = Logger
 			.getLogger(LoadFromCollection.class.getCanonicalName());
 
-	public static Environnement load(IFeatureCollection<IFeature> zoneColl,
+	public static Environnement load(
+			IFeature featPLU,
+			IFeatureCollection<IFeature> zoneColl,
 			IFeatureCollection<IFeature> parcelleColl,
 			IFeatureCollection<IFeature> voirieColl,
 			IFeatureCollection<IFeature> batiColl,
@@ -89,7 +92,15 @@ public class LoadFromCollection {
 		}
 
 		// Etape 1 : création de l'objet PLU
-		PLU plu = new PLU();
+		PLU plu;
+		if(featPLU == null){
+			 plu	= new PLU();
+		}else{
+			plu = PLUImporter.loadPLU(featPLU);
+		}
+	
+		
+		
 		env.setPlu(plu);
 
 		logger.info("PLU creation");

@@ -30,7 +30,9 @@ public class LoadPostGIS {
   public final static String NOM_TABLE_VOIRIE = "route";
   public final static String NOM_TABLE_BATIMENTS = "bati";
   public final static String NOM_TABLE_PRESC_LINEAIRE = "prescription_lin";
-
+  public final static String NOM_TABLE_PLU = "PLU";
+  
+  
   public final static String NOM_TABLE_TERRAIN = "mnt";
 
   String host = "";
@@ -56,7 +58,15 @@ public class LoadPostGIS {
   public Environnement load(String folder) throws Exception {
     Environnement env = Environnement.getInstance();
     env.folder = folder;
-
+    
+    IFeatureCollection<IFeature> pluColl = PostgisManager.loadGeometricTable(
+            host, port, database, user, pw, NOM_TABLE_ZONAGE);
+	IFeature featPLU = null;
+	if(! pluColl.isEmpty()){
+		featPLU = pluColl.get(0);
+	}
+	
+	
     IFeatureCollection<IFeature> zoneColl = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_ZONAGE);
     IFeatureCollection<IFeature> parcelleColl = PostgisManager
@@ -72,7 +82,7 @@ public class LoadPostGIS {
     DTMPostGISNoJava3D dtm = new DTMPostGISNoJava3D(host, port, database,
         NOM_TABLE_TERRAIN, user,pw);
 
-    return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+    return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
         batiColl, prescriptions, folder, dtm);
 
   }

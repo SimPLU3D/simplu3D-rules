@@ -37,6 +37,7 @@ public class LoaderSHP {
 	public static String NOM_FICHIER_BATIMENTS = "bati.shp";
 	public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
 	public static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
+	public static String NOM_FICHIER_PLU = "DOC_URBA.shp";
 
 	public Environnement getEnvironnement(String folder) throws Exception {
 		return LoaderSHP.load(folder);
@@ -53,7 +54,13 @@ public class LoaderSHP {
 		env.folder = folder;
 
 		// Chargement des fichiers
-
+		IFeatureCollection<IFeature> pluColl = ShapefileReader.read(folder + NOM_FICHIER_PLU);
+		
+		IFeature featPLU = null;
+		if(! pluColl.isEmpty()){
+			featPLU = pluColl.get(0);
+		}
+		
 		IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
 				+ NOM_FICHIER_ZONAGE);
 		IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
@@ -65,7 +72,7 @@ public class LoaderSHP {
 		IFeatureCollection<IFeature> prescriptions = ShapefileReader
 				.read(folder + NOM_FICHIER_PRESC_LINEAIRE);
 
-		return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
 				batiColl, prescriptions, folder, null);
 	}
 
@@ -77,6 +84,15 @@ public class LoaderSHP {
 
 		// Chargement des fichiers
 
+		// Chargement des fichiers
+		IFeatureCollection<IFeature> pluColl = ShapefileReader.read(folder + NOM_FICHIER_PLU);
+		
+		IFeature featPLU = null;
+		if(! pluColl.isEmpty()){
+			featPLU = pluColl.get(0);
+		}
+		
+		
 		IFeatureCollection<IFeature> zoneColl = ShapefileReader.read(folder
 				+ NOM_FICHIER_ZONAGE);
 		IFeatureCollection<IFeature> parcelleColl = ShapefileReader.read(folder
@@ -92,7 +108,7 @@ public class LoaderSHP {
 		DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
 				ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
 
-		return LoadFromCollection.load(zoneColl, parcelleColl, voirieColl,
+		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
 				batiColl, prescriptions, folder, dtm);
 	}
 
