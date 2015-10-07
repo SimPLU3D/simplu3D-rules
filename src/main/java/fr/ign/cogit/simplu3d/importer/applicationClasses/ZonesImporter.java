@@ -8,6 +8,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.simplu3d.io.load.application.ParemetersApplication;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 /**
  * 
@@ -30,6 +31,7 @@ public class ZonesImporter {
   public final static String NOM_ATT_NAME_ZONE = "TYPEZONE";
   public final static String NOM_ATT_TEXT_ZONE = "TEXT";
   public final static String NOM_VALIDITY_DATE_DEB = "DATE_DEB";
+  public final static String NOM_VALIDITY_DATE_FIN = "DATE_FIN";
 
   @SuppressWarnings("deprecation")
   public static IFeatureCollection<UrbaZone> importUrbaZone(
@@ -50,8 +52,7 @@ public class ZonesImporter {
       }
 
       o = feat.getAttribute(NOM_ATT_TEXT_ZONE);
-      
-           
+                 
 
       if (o != null) {
     	  
@@ -61,17 +62,32 @@ public class ZonesImporter {
 
       o = feat.getAttribute(NOM_VALIDITY_DATE_DEB);
 
-      SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+      SimpleDateFormat sdfdeb = new SimpleDateFormat(ParemetersApplication.DATE_FORMAT);
       
       
       if (o != null) {
     	  
         try {
-			z.setDateDeb(sdf.parse(o.toString()));
+			z.setDateDeb(sdfdeb.parse(o.toString()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+      }
+      
+      o = feat.getAttribute(NOM_VALIDITY_DATE_FIN);
+
+ 
+      
+      if (o != null) {
+          
+        try {
+            z.setDateFin(sdfdeb.parse(o.toString()));
+            
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
       }
       
 
