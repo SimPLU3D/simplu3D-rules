@@ -79,7 +79,7 @@ public class ExhaustiveChecker {
       SubParcel sP = sPList.get(sPIndex);
       evalCount++;
       int count = 0;
-      for (Rule rule : sP.getUrbaZone().get(0).getRules()) {
+      for (Rule rule : sP.getUrbaZone().getRules()) {
         for (IModelInstanceObject imiObject : lRelevantObjects) {
           boolean isOk = interpret(imiObject, lModelInterpreter.get(sPIndex),
               rule.constraint);
@@ -132,7 +132,7 @@ public class ExhaustiveChecker {
     int nbInt = sPList.size();
     for (int i = 0; i < nbInt; i++) {
       lFalseArray.add(new ArrayList<Integer>());
-      int sizeTemp = sPList.get(i).getUrbaZone().get(0).getRules().size();
+      int sizeTemp = sPList.get(i).getUrbaZone().getRules().size();
       for (int j = 0; j < sizeTemp; j++) {
         lFalseArray.get(i).add(0);
       }

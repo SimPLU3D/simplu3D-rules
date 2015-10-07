@@ -38,9 +38,11 @@ public class ZonesImporter {
     IFeatureCollection<UrbaZone> zones = new FT_FeatureCollection<UrbaZone>();
     for (IFeature feat : zoneColl) {
 
-      UrbaZone z = new UrbaZone(FromGeomToSurface.convertMSGeom(feat.getGeom())
-          .get(0));
+      UrbaZone z = new UrbaZone(FromGeomToSurface.convertMSGeom(feat.getGeom()));
 
+      
+      System.out.println("ZoneImporter : " + z.getGeom().getClass());
+      
       Object o = feat.getAttribute(NOM_ATT_NAME_ZONE);
 
       if (o != null) {
@@ -72,7 +74,6 @@ public class ZonesImporter {
 		}
       }
       
-      z.setGeom(feat.getGeom());
 
       zones.add(z);
 
