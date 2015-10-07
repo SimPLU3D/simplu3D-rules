@@ -86,7 +86,7 @@ public class SubParcelImporter {
           // On crée le lien zone sousParcelle
           UrbaZone z = zonesTemp.iterator().next();
           z.getSubParcels().add(sp);
-          sp.getUrbaZone().add(z);
+          sp.setZoneUrba(z);
 
         } else {
           if (zonesTemp.size() == 0) {
@@ -162,7 +162,7 @@ public class SubParcelImporter {
 
       // Lien zone => sousParcelle
       z.getSubParcels().add(sP);
-      sP.getUrbaZone().add(z);
+      sP.setZoneUrba(z);
       // affecteBorduresToSousParcelles(sP,p);
 
       sousParcelles.add(sP);

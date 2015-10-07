@@ -1,6 +1,5 @@
 package fr.ign.cogit.simplu3d.model.application;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.citygml4j.model.citygml.landuse.LandUse;
@@ -13,13 +12,14 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -37,14 +37,14 @@ public class SubParcel extends CG_LandUse {
 
   private double avgSlope;
   private double area = -1;
-  private List<UrbaZone> lUZ = new ArrayList<UrbaZone>();
+  private UrbaZone zU = null;
 
-  public List<UrbaZone> getUrbaZone() {
-    return lUZ;
+  public UrbaZone getUrbaZone() {
+    return zU;
   }
 
-  public void setlUZ(List<UrbaZone> lUZ) {
-    this.lUZ = lUZ;
+  public void setZoneUrba(UrbaZone zU) {
+    this.zU = zU;
   }
 
   public double builtRatio() {
@@ -120,21 +120,17 @@ public class SubParcel extends CG_LandUse {
     }
     return borduresLat;
   }
-  
-  
+
   public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
-	    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-	    for (SpecificCadastralBoundary b : this.sCBoundary) {
-	      if (b.getType() == SpecificCadastralBoundary.ROAD) {
-	        borduresLat.add(b);
-	      }
+    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+    for (SpecificCadastralBoundary b : this.sCBoundary) {
+      if (b.getType() == SpecificCadastralBoundary.ROAD) {
+        borduresLat.add(b);
+      }
 
-	    }
-	    return borduresLat;
-	  }
-
-
-
+    }
+    return borduresLat;
+  }
 
   public void setParcelle(CadastralParcel cP) {
     this.parcelle = cP;
@@ -146,7 +142,7 @@ public class SubParcel extends CG_LandUse {
 
   public IFeatureCollection<AbstractBuilding> getBuildingsParts() {
     // System.out.println("NB BP : " + buildingsParts.size());
-       return buildingsParts;
+    return buildingsParts;
   }
 
   public void setBuildingsParts(
@@ -189,8 +185,7 @@ public class SubParcel extends CG_LandUse {
 
   }
 
-  
-  public IGeometry getConsLine(){
+  public IGeometry getConsLine() {
     SubParcel.getLogger().error("Empty method getConsline()");
     return null;
   }
