@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.importer.applicationClasses;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
@@ -27,7 +29,7 @@ public class ZonesImporter {
 
   public final static String NOM_ATT_NAME_ZONE = "TYPEZONE";
   public final static String NOM_ATT_TEXT_ZONE = "TEXT";
-  public final static String NOM_VALIDITY_DATE = "DATE";
+  public final static String NOM_VALIDITY_DATE_DEB = "DATE_DEB";
 
   @SuppressWarnings("deprecation")
   public static IFeatureCollection<UrbaZone> importUrbaZone(
@@ -46,15 +48,28 @@ public class ZonesImporter {
       }
 
       o = feat.getAttribute(NOM_ATT_TEXT_ZONE);
+      
+           
 
       if (o != null) {
+    	  
+    	  
         z.setText(o.toString());
       }
 
-      o = feat.getAttribute(NOM_VALIDITY_DATE);
+      o = feat.getAttribute(NOM_VALIDITY_DATE_DEB);
 
+      SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+      
+      
       if (o != null) {
-        z.setDate(new Date(o.toString()));
+    	  
+        try {
+			z.setDateDeb(sdf.parse(o.toString()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
       }
       
       z.setGeom(feat.getGeom());

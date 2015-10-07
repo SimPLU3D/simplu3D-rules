@@ -33,7 +33,7 @@ public class UrbaZone extends CG_LandUse {
   private String name = "";
   private List<Rule> rules = new ArrayList<Rule>();
   private String text = "";
-  private Date date = null;
+  private Date dateDeb = null;
   
   
   
@@ -63,12 +63,12 @@ public class UrbaZone extends CG_LandUse {
   public void setName(String name) {
     this.name = name;
   }
-  public Date getDate() {
-    return date;
+  public Date getDateDeb() {
+    return dateDeb;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setDateDeb(Date date) {
+    this.dateDeb = date;
   }
 
 
