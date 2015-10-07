@@ -31,7 +31,7 @@ public class LoaderSHP {
 	/*
 	 * Nom des fichiers en entrée
 	 */
-	public static String NOM_FICHIER_ZONAGE = "zonage.shp";
+	public static String NOM_FICHIER_ZONAGE = "ZONE_URBA.shp";
 	public static String NOM_FICHIER_PARCELLE = "parcelle.shp";
 	public static String NOM_FICHIER_VOIRIE = "route.shp";
 	public static String NOM_FICHIER_BATIMENTS = "bati.shp";
