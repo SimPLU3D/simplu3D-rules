@@ -5,18 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -35,16 +34,13 @@ public class UrbaZone extends CG_LandUse {
   private List<Rule> rules = new ArrayList<Rule>();
   private String text = "";
   private Date dateDeb = null;
-  
-  
-  
- 
+  private Date dateFin = null;
 
   public UrbaZone(IGeometry geom) {
     super();
     this.setGeom(geom);
   }
-  
+
   public String getText() {
     return text;
   }
@@ -64,6 +60,7 @@ public class UrbaZone extends CG_LandUse {
   public void setName(String name) {
     this.name = name;
   }
+
   public Date getDateDeb() {
     return dateDeb;
   }
@@ -72,6 +69,13 @@ public class UrbaZone extends CG_LandUse {
     this.dateDeb = date;
   }
 
+  public Date getDateFin() {
+    return dateFin;
+  }
+
+  public void setDateFin(Date date) {
+    this.dateFin = date;
+  }
 
   public IFeatureCollection<SubParcel> getSubParcels() {
     return subParcels;
@@ -84,7 +88,5 @@ public class UrbaZone extends CG_LandUse {
   public String getName() {
     return name;
   }
-
-
 
 }
