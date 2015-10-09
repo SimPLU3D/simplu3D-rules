@@ -56,7 +56,7 @@ public class Environnement extends CG_CityModel {
 		this.cadastralParcels = parcelles;
 	}
 
-	private Environnement() {
+	protected Environnement() {
 
 	}
 

@@ -46,13 +46,21 @@ public class LoadFromCollection {
 	public final static boolean SURSAMPLED = true;
 
 	private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
-
+	
 	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
 			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
 			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, String ruleFolder,
 			AbstractDTM dtm) throws Exception {
 		Environnement env = Environnement.getInstance();
 
+		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, ruleFolder, dtm, env);
+	}
+	
+	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
+			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
+			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, String ruleFolder,
+			AbstractDTM dtm, Environnement env) throws Exception {
+		
 		// Etape 0 : doit on translater tous les objets ?
 
 		if (Environnement.TRANSLATE_TO_ZERO) {
@@ -169,5 +177,7 @@ public class LoadFromCollection {
 
 		return env;
 	}
+
+
 
 }
