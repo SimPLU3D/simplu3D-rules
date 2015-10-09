@@ -36,22 +36,6 @@ public class LoaderSimpluSHPTest {
     Assert.assertNotNull(plu);
     Assert.assertEquals(1, plu.getlUrbaZone().size());
 
-    // Test 2 : la zone UB16 a elles des règles
-    for (UrbaZone z : plu.getlUrbaZone()) {
-
-      if (z.getLibelle().equalsIgnoreCase("UB16")) {
-
-        Assert.assertNotNull(z.getRules());
-
-        Assert.assertFalse("Les règles OCL ne sont pas chargées", z.getRules()
-            .isEmpty());
-
-      } else {
-        Assert.fail("La zone UB16 n'existe pas");
-      }
-
-    }
-
     IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
     int count = 0;

@@ -12,7 +12,6 @@ import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.PLUImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
-import fr.ign.cogit.simplu3d.importer.applicationClasses.RulesImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.SubParcelImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.ZonesImporter;
 import fr.ign.cogit.simplu3d.model.application.Alignement;
@@ -22,7 +21,6 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
-import fr.ign.cogit.simplu3d.model.application.Rule;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 import fr.ign.cogit.simplu3d.util.AssignZ;
@@ -47,16 +45,11 @@ public class LoadFromCollection {
 
 	public final static boolean SURSAMPLED = true;
 
-	private final static Logger logger = Logger
-			.getLogger(LoadFromCollection.class.getCanonicalName());
+	private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
 
-	public static Environnement load(
-			IFeature featPLU,
-			IFeatureCollection<IFeature> zoneColl,
-			IFeatureCollection<IFeature> parcelleColl,
-			IFeatureCollection<IFeature> voirieColl,
-			IFeatureCollection<IFeature> batiColl,
-			IFeatureCollection<IFeature> prescriptions, String ruleFolder,
+	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
+			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
+			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, String ruleFolder,
 			AbstractDTM dtm) throws Exception {
 		Environnement env = Environnement.getInstance();
 
@@ -65,49 +58,41 @@ public class LoadFromCollection {
 		if (Environnement.TRANSLATE_TO_ZERO) {
 			Environnement.dpTranslate = zoneColl.envelope().center();
 			for (IFeature feat : zoneColl) {
-				feat.setGeom(feat.getGeom().translate(
-						-Environnement.dpTranslate.getX(),
+				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 			for (IFeature feat : parcelleColl) {
-				feat.setGeom(feat.getGeom().translate(
-						-Environnement.dpTranslate.getX(),
+				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 			for (IFeature feat : voirieColl) {
-				feat.setGeom(feat.getGeom().translate(
-						-Environnement.dpTranslate.getX(),
+				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 			for (IFeature feat : batiColl) {
-				feat.setGeom(feat.getGeom().translate(
-						-Environnement.dpTranslate.getX(),
+				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 			for (IFeature feat : prescriptions) {
-				feat.setGeom(feat.getGeom().translate(
-						-Environnement.dpTranslate.getX(),
+				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 		}
 
 		// Etape 1 : création de l'objet PLU
 		PLU plu;
-		if(featPLU == null){
-			 plu	= new PLU();
-		}else{
+		if (featPLU == null) {
+			plu = new PLU();
+		} else {
 			plu = PLUImporter.loadPLU(featPLU);
 		}
-	
-		
-		
+
 		env.setPlu(plu);
 
 		logger.info("PLU creation");
 
 		// Etape 2 : création des zones et assignation des règles aux zones
-		IFeatureCollection<UrbaZone> zones = ZonesImporter
-				.importUrbaZone(zoneColl);
+		IFeatureCollection<UrbaZone> zones = ZonesImporter.importUrbaZone(zoneColl);
 
 		logger.info("Zones loaded");
 
@@ -130,22 +115,19 @@ public class LoadFromCollection {
 		logger.info("Parcel borders created");
 
 		// Etape 5 : import des sous parcelles
-		IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(
-				parcelles, zones);
+		IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(parcelles, zones);
 		env.setSubParcels(sousParcelles);
 
 		logger.info("Sub parcels loaded");
 
 		// Etape 6 : création des unités foncirèes
-		IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter
-				.importBPU(parcelles);
+		IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter.importBPU(parcelles);
 		env.setBpU(collBPU);
 
 		logger.info("Basic property units created");
 
 		// Etape 7 : import des bâtiments
-		IFeatureCollection<Building> buildings = BuildingImporter
-				.importBuilding(batiColl, collBPU);
+		IFeatureCollection<Building> buildings = BuildingImporter.importBuilding(batiColl, collBPU);
 		env.getBuildings().addAll(buildings);
 
 		logger.info("Buildings imported");
@@ -164,8 +146,7 @@ public class LoadFromCollection {
 		logger.info("Links with roads created");
 
 		// Etape 10 : on importe les alignements
-		IFeatureCollection<Alignement> alignementColl = AlignementImporter
-				.importRecul(prescriptions, parcelles);
+		IFeatureCollection<Alignement> alignementColl = AlignementImporter.importRecul(prescriptions, parcelles);
 		env.setAlignements(alignementColl);
 
 		logger.info("Alignment loaded");

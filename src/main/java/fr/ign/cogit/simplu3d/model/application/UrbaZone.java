@@ -31,7 +31,7 @@ public class UrbaZone extends CG_LandUse {
 
   private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
   
-  private List<Rule> rules = new ArrayList<Rule>();
+
   
   private String libelle = "";
   private String libelong = "";
@@ -62,15 +62,7 @@ public class UrbaZone extends CG_LandUse {
   }
 
   
-  // Pour les règles de la zone urba
-  public void setRules(List<Rule> rules) {
-    this.rules = rules;
-  }
-  
-  public List<Rule> getRules() {
-    return rules;
-  }
-  
+
   
   // Pour le libelle de la zone urba
   public void setLibelle(String libelle) {

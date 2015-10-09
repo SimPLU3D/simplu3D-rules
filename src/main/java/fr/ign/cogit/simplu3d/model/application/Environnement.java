@@ -1,26 +1,22 @@
 package fr.ign.cogit.simplu3d.model.application;
 
 import java.io.File;
-import java.net.URL;
 
-import tudresden.ocl20.pivot.model.IModel;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.simplu3d.importer.model.ImportModelInstanceEnvironnement;
-import fr.ign.cogit.simplu3d.importer.model.ModelProviderClass;
 import fr.ign.parameters.ParameterComponent;
 import fr.ign.parameters.Parameters;
 
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -32,174 +28,149 @@ import fr.ign.parameters.Parameters;
  *
  */
 public class Environnement extends CG_CityModel {
-  public String folder;
-  public PLU plu;
+	public String folder;
+	public PLU plu;
 
-  // On charge le modèle
-  private static IModel model = null;
-  
-  public static IModel getModel(){
-    if(model == null){
-      
-      ClassLoader load = ModelProviderClass.class.getClassLoader();
-      URL path = load.getResource("fr/ign/cogit/simplu3d/importer/model/ModelProviderClass.class");
-      model =  ImportModelInstanceEnvironnement
-          .getModel(path.getFile());
-      
-      
-      
-      /*
-      model =  ImportModelInstanceEnvironnement
-      .getModel("target/classes/fr/ign/cogit/simplu3d/importer/model/ModelProviderClass.class");*/
-    }
-    
-    return model;
-  }
+	private static Environnement env = null;
 
-  private static Environnement env = null;
+	public IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
+	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
+	public IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
+	public IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
+	public IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
+	public IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 
-  public IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
-  public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
-  public IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
-  public IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
-  public IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
-  public IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
+	public AbstractDTM terrain;
+	public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
 
-  public AbstractDTM terrain;
-  public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
+	public static IDirectPosition dpTranslate = null;
 
+	public static boolean VERBOSE = false;
+	public static boolean TRANSLATE_TO_ZERO = false;
 
-
-  public static IDirectPosition dpTranslate = null;
-
-  public static boolean VERBOSE = false;
-  public static boolean TRANSLATE_TO_ZERO = false;
-
-  public IFeatureCollection<CadastralParcel> getParcelles() {
-    return cadastralParcels;
-  }
-
-  public void setParcelles(IFeatureCollection<CadastralParcel> parcelles) {
-    this.cadastralParcels = parcelles;
-  }
-
-  private Environnement() {
-
-  }
-
-  public static Environnement getInstance() {
-    if (env == null) {
-      env = new Environnement();
-    }
-    return env;
-  }
-
-  public IFeatureCollection<CadastralParcel> getCadastralParcels() {
-    return cadastralParcels;
-  }
-
-  public void setCadastralParcels(IFeatureCollection<CadastralParcel> cadastralParcels) {
-    this.cadastralParcels = cadastralParcels;
-  }
-
-  public IFeatureCollection<SubParcel> getSubParcels() {
-    return subParcels;
-  }
-
-  public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
-    this.subParcels = subParcels;
-  }
-
-  public IFeatureCollection<AbstractBuilding> getBuildings() {
-    return buildings;
-  }
-
-  public void setBuildings(IFeatureCollection<AbstractBuilding> buildings) {
-    this.buildings = buildings;
-  }
-
-  public IFeatureCollection<UrbaZone> getUrbaZones() {
-    return urbaZones;
-  }
-
-  public void setUrbaZones(IFeatureCollection<UrbaZone> urbaZones) {
-    this.urbaZones = urbaZones;
-  }
-
-  public IFeatureCollection<Alignement> getAlignements() {
-    return alignements;
-  }
-
-  public void setAlignements(IFeatureCollection<Alignement> alignements) {
-    this.alignements = alignements;
-  }
-
-  public AbstractDTM getTerrain() {
-    return terrain;
-  }
-
-  public void setTerrain(AbstractDTM terrain) {
-    this.terrain = terrain;
-  }
-
-
-
-  public static IDirectPosition getDpTranslate() {
-    return dpTranslate;
-  }
-
-  public static void setDpTranslate(IDirectPosition dpTranslate) {
-    Environnement.dpTranslate = dpTranslate;
-  }
-
-  public static boolean isVERBOSE() {
-    return VERBOSE;
-  }
-
-  public static void setVERBOSE(boolean vERBOSE) {
-    VERBOSE = vERBOSE;
-  }
-
-  public static boolean isTRANSLATE_TO_ZERO() {
-    return TRANSLATE_TO_ZERO;
-  }
-
-  public static void setTRANSLATE_TO_ZERO(boolean tRANSLATE_TO_ZERO) {
-    TRANSLATE_TO_ZERO = tRANSLATE_TO_ZERO;
-  }
-
-  public IFeatureCollection<Road> getRoads() {
-    return roads;
-  }
-
-  public void setRoads(IFeatureCollection<Road> roads) {
-    this.roads = roads;
-  }
-
-  public IFeatureCollection<BasicPropertyUnit> getBpU() {
-    return bpU;
-  }
-
-  public void setBpU(IFeatureCollection<BasicPropertyUnit> bpU) {
-    this.bpU = bpU;
-  }
-
-  public PLU getPlu() {
-    return plu;
-  }
-
-  public void setPlu(PLU plu) {
-    this.plu = plu;
-  }
-  
-  public Parameters loadParameters(String path){
-	  try {
-		return ParameterComponent.unmarshall(new File(path));
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public IFeatureCollection<CadastralParcel> getParcelles() {
+		return cadastralParcels;
 	}
-	  return null;
-  }
+
+	public void setParcelles(IFeatureCollection<CadastralParcel> parcelles) {
+		this.cadastralParcels = parcelles;
+	}
+
+	private Environnement() {
+
+	}
+
+	public static Environnement getInstance() {
+		if (env == null) {
+			env = new Environnement();
+		}
+		return env;
+	}
+
+	public IFeatureCollection<CadastralParcel> getCadastralParcels() {
+		return cadastralParcels;
+	}
+
+	public void setCadastralParcels(IFeatureCollection<CadastralParcel> cadastralParcels) {
+		this.cadastralParcels = cadastralParcels;
+	}
+
+	public IFeatureCollection<SubParcel> getSubParcels() {
+		return subParcels;
+	}
+
+	public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
+		this.subParcels = subParcels;
+	}
+
+	public IFeatureCollection<AbstractBuilding> getBuildings() {
+		return buildings;
+	}
+
+	public void setBuildings(IFeatureCollection<AbstractBuilding> buildings) {
+		this.buildings = buildings;
+	}
+
+	public IFeatureCollection<UrbaZone> getUrbaZones() {
+		return urbaZones;
+	}
+
+	public void setUrbaZones(IFeatureCollection<UrbaZone> urbaZones) {
+		this.urbaZones = urbaZones;
+	}
+
+	public IFeatureCollection<Alignement> getAlignements() {
+		return alignements;
+	}
+
+	public void setAlignements(IFeatureCollection<Alignement> alignements) {
+		this.alignements = alignements;
+	}
+
+	public AbstractDTM getTerrain() {
+		return terrain;
+	}
+
+	public void setTerrain(AbstractDTM terrain) {
+		this.terrain = terrain;
+	}
+
+	public static IDirectPosition getDpTranslate() {
+		return dpTranslate;
+	}
+
+	public static void setDpTranslate(IDirectPosition dpTranslate) {
+		Environnement.dpTranslate = dpTranslate;
+	}
+
+	public static boolean isVERBOSE() {
+		return VERBOSE;
+	}
+
+	public static void setVERBOSE(boolean vERBOSE) {
+		VERBOSE = vERBOSE;
+	}
+
+	public static boolean isTRANSLATE_TO_ZERO() {
+		return TRANSLATE_TO_ZERO;
+	}
+
+	public static void setTRANSLATE_TO_ZERO(boolean tRANSLATE_TO_ZERO) {
+		TRANSLATE_TO_ZERO = tRANSLATE_TO_ZERO;
+	}
+
+	public IFeatureCollection<Road> getRoads() {
+		return roads;
+	}
+
+	public void setRoads(IFeatureCollection<Road> roads) {
+		this.roads = roads;
+	}
+
+	public IFeatureCollection<BasicPropertyUnit> getBpU() {
+		return bpU;
+	}
+
+	public void setBpU(IFeatureCollection<BasicPropertyUnit> bpU) {
+		this.bpU = bpU;
+	}
+
+	public PLU getPlu() {
+		return plu;
+	}
+
+	public void setPlu(PLU plu) {
+		this.plu = plu;
+	}
+
+	public Parameters loadParameters(String path) {
+		try {
+			return ParameterComponent.unmarshall(new File(path));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
