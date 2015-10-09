@@ -28,7 +28,7 @@ public class RulesImporter {
 
   public static void importer(String folder, UrbaZone z) {
     // on charge le fichier OCL du nom de la zone
-    File f = new File(folder + z.getName() + ".ocl");
+    File f = new File(folder + z.getLibelle() + ".ocl");
 
     // System.out.println("Trying to load : " + f.getAbsolutePath());
 

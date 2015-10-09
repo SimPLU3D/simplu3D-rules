@@ -111,18 +111,6 @@ public class LoadFromCollection {
 
 		logger.info("Zones loaded");
 
-		if (ruleFolder != null) {
-			for (UrbaZone z : zones) {
-				RulesImporter.importer(ruleFolder, z);
-				System.out.println("Zone " + z.getName());
-				for (Rule rule : z.getRules()) {
-					System.out.println("rule " + rule.constraint + " with "
-							+ rule.text);
-				}
-			}
-
-		}
-
 		// Etape 3 : assignement des zonages au PLU
 		plu.lUrbaZone.addAll(zones);
 		env.setUrbaZones(zones);

@@ -39,7 +39,7 @@ public class LoaderSimpluSHPTest {
     // Test 2 : la zone UB16 a elles des règles
     for (UrbaZone z : plu.getlUrbaZone()) {
 
-      if (z.getName().equalsIgnoreCase("UB16")) {
+      if (z.getLibelle().equalsIgnoreCase("UB16")) {
 
         Assert.assertNotNull(z.getRules());
 

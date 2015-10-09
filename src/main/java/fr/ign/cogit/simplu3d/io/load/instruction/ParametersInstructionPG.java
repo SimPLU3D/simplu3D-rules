@@ -7,9 +7,15 @@ public class ParametersInstructionPG {
   public final static String TABLE_ZONE_URBA = "zone_urba";
   
   public final static String ATT_ZONE_URBA_ID = "zu_id";
-  public final static String ATT_ZONE_URBA_NOM = "zu_nom";
-  public final static String ATT_ZONE_URBA_DATE_DEBUT = "zu_date_debut";
-  public final static String ATT_ZONE_URBA_DATE_FIN = "zu_date_fin";
+  public final static String ATT_ZONE_URBA_LIBELLE = "zu_libelle";
+  public final static String ATT_ZONE_URBA_LIBELONG = "zu_libelong";
+  public final static String ATT_ZONE_URBA_TYPEZONE = "zu_typezone";
+  public final static String ATT_ZONE_URBA_DESTDOMI = "zu_destdomi";
+  public final static String ATT_ZONE_URBA_NOMFIC = "zu_nomfic";
+  public final static String ATT_ZONE_URBA_URLFIC = "zu_urlfic";
+  public final static String ATT_ZONE_URBA_INSEE = "zu_insee";
+  public final static String ATT_ZONE_URBA_DATE_APPRO = "zu_date_appro";
+  public final static String ATT_ZONE_URBA_DATE_VALID = "zu_date_valid";
   public final static String ATT_ZONE_URBA_COMMENTAIRE = "zu_commentaire";
   public final static String ATT_ZONE_URBA_ID_PLU = "zu_id_plu";
   public final static String ATT_ZONE_URBA_GEOM = "the_geom";
@@ -33,10 +39,12 @@ public class ParametersInstructionPG {
   public final static String ATT_SUB_PARCEL_GEOM = "the_geom";
   
   
-  /// Paramètres PostGis pour la table Zone Urba
+  /// Paramètres PostGis pour la table Parcelle cadastrale
   public final static String TABLE_CADASTRAL_PARCEL = "cadastral_parcel";
   
   public final static String ATT_CAD_PARCEL_ID = "cadpar_id";
+  public final static String ATT_CAD_PARCEL_NUM = "cadpar_num";
+  public final static String ATT_CAD_PARCEL_SURF = "cadpar_surf";
   public final static String ATT_CAD_PARCEL_ID_BPU = "cadpar_id_bpu";
   public final static String ATT_CAD_PARCEL_GEOM = "the_geom";
   
@@ -98,9 +106,17 @@ public class ParametersInstructionPG {
   public final static String ATT_ROAD_ID = "road_id";
   public final static String ATT_ROAD_NOM = "road_nom";
   public final static String ATT_ROAD_TYPE = "road_type";
+  public final static String ATT_ROAD_LARGEUR = "road_largeur";
   public final static String ATT_ROAD_AXE = "road_axe";
   public final static String ATT_ROAD_SURFACE = "road_surf";
-  public final static String ATT_ROAD_GEOM = "the_geom";
+  public final static String ATT_ROAD_GEOM_SURF = "road_surf";
+  
+  
+  /// Paramètres PostGis pour la table Axe
+  public final static String TABLE_AXE = "axe";
+  
+  public final static String ATT_AXE_ID = "axe_id";
+  public final static String ATT_AXE_GEOM = "axe_geom";
   
   
   /// Paramètres PostGis pour la table Public Space

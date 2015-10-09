@@ -72,7 +72,7 @@ public class LoaderSHPExec {
 
 		// Test 2 : la zone UB16 a elles des règles
 		for (UrbaZone z : plu.getlUrbaZone()) {
-			if (z.getName().equalsIgnoreCase("UB16")) {
+			if (z.getLibelle().equalsIgnoreCase("UB16")) {
 				System.out.println("Nombre de règles dans UB16 : "
 						+ z.getRules().size());
 			}

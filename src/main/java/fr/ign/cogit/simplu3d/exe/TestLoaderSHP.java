@@ -55,14 +55,6 @@ public class TestLoaderSHP {
     System.out.println("Nombre de zones dans le PLU : "
         + plu.getlUrbaZone().size());
 
-    // Test 2 : la zone UB16 a elles des règles
-    for (UrbaZone z : plu.getlUrbaZone()) {
-      if (z.getName().equalsIgnoreCase("UB16")) {
-        System.out.println("Nombre de règles dans UB16 : "
-            + z.getRules().size());
-      }
-
-    }
 
     IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
     IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
