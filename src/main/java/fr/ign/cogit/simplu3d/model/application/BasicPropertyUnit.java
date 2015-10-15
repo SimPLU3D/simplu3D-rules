@@ -8,17 +8,19 @@ import com.vividsolutions.jts.geom.Geometry;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -30,99 +32,92 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  **/
 public class BasicPropertyUnit extends DefaultFeature {
 
+	public List<Building> buildings = new ArrayList<Building>();
+	public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
 
+	public BasicPropertyUnit() {
 
+	}
 
+	public List<Building> getBuildings() {
+		return buildings;
+	}
 
-  public List<Building> buildings = new ArrayList<Building>();
-  public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
+	public void setBuildings(List<Building> buildings) {
+		this.buildings = buildings;
+	}
 
-  public BasicPropertyUnit() {
+	public List<CadastralParcel> getCadastralParcel() {
+		return cadastralParcel;
+	}
 
-  }
+	public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
+		this.cadastralParcel = cadastralParcel;
+	}
 
-  public List<Building> getBuildings() {
-    return buildings;
-  }
+	IMultiSurface<IOrientableSurface> geom = null;
 
-  public void setBuildings(List<Building> buildings) {
-    this.buildings = buildings;
-  }
+	public IMultiSurface<IOrientableSurface> generateGeom() {
 
-  public List<CadastralParcel> getCadastralParcel() {
-    return cadastralParcel;
-  }
+		if (geom == null) {
+			geom = new GM_MultiSurface<IOrientableSurface>();
+			for (CadastralParcel cP : this.getCadastralParcel()) {
+				IGeometry geomP = cP.getGeom();
 
-  public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
-    this.cadastralParcel = cadastralParcel;
-  }
+				if (geomP != null) {
 
-  IMultiSurface<IOrientableSurface> geom = null;
+					List<IOrientableSurface> lG = FromGeomToSurface.convertGeom(geomP);
+					if (lG != null) {
+						geom.addAll(lG);
+					}
+				}
 
-  public IMultiSurface<IOrientableSurface> generateGeom() {
+			}
+		}
 
-    if (geom == null) {
-      geom = new GM_MultiSurface<IOrientableSurface>();
-      for (CadastralParcel cP : this.getCadastralParcel()) {
-        geom.addAll(FromGeomToSurface.convertGeom(cP.getGeom()));
-      }
-    }
+		return geom;
+	}
 
-    return geom;
-  }
-  
-  
-  
-  private IPolygon pol2D = null;
-  
-  public IPolygon getpol2D(){
-    
-    
-    
-    
-    
-    
-    return pol2D;
-  }
-  
-  
-  
-  public void setpol2D(IPolygon pol){
-    pol2D = pol;
-  }
-  
+	private IPolygon pol2D = null;
 
-  Geometry geomjts = null;
+	public IPolygon getpol2D() {
 
-  public Geometry getGeomJTS() {
+		return pol2D;
+	}
 
-    if (geomjts == null) {
-      try {
-        geomjts =   JtsGeOxygene.makeJtsGeom(geom);
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
+	public void setpol2D(IPolygon pol) {
+		pol2D = pol;
+	}
 
-    return geomjts;
-  }
+	Geometry geomjts = null;
 
-  public String toString() {
+	public Geometry getGeomJTS() {
 
-    return "" + id;
+		if (geomjts == null) {
+			try {
+				geomjts = JtsGeOxygene.makeJtsGeom(geom);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-  }
-  
-  
-  private double area = -1;
-  
-  public double getArea(){
-	  if(area == -1){
-		  area = this.getpol2D().area();
-	  }
-	  return area;
-  }
-  
+		return geomjts;
+	}
+
+	public String toString() {
+
+		return "" + id;
+
+	}
+
+	private double area = -1;
+
+	public double getArea() {
+		if (area == -1) {
+			area = this.getpol2D().area();
+		}
+		return area;
+	}
 
 }
