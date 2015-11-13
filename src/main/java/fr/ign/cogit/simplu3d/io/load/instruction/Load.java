@@ -1,226 +1,795 @@
 package fr.ign.cogit.simplu3d.io.load.instruction;
 
-import java.text.DateFormat;
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 import fr.ign.cogit.simplu3d.io.load.application.ParemetersApplication;
-import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.UrbaZone;
-import fr.ign.cogit.simplu3d.model.application.Road;
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.application.Environnement;
+import fr.ign.cogit.simplu3d.model.application.PLU;
+import fr.ign.cogit.simplu3d.model.application.Road;
+import fr.ign.cogit.simplu3d.model.application.RoofSurface;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaZone;
+import fr.ign.cogit.simplu3d.util.ExtractIdMaxPG;
 
 public class Load {
-  
-  
-  public static void main(String[] args) throws Exception{
-      
+
+  public static void main(String[] args) throws Exception {
+
     PostgisManager.SRID = "2154";
-    
+
     String host = "localhost";
-    String user =  "postgres";
+    String user = "postgres";
     String pw = "postgres";
-    String database = "test_simplu3d";
-    String folder =  "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
+    // String database = "test_simplu3d";
+    String database = "test";
+    String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
     String port = "5432";
+
+    // At present, the program is parametrized to work with a named database
+    // "test_simplu3d". Furthermore, the SQl script to build tables in pgAdmin
+    // (Creation_BDD.sql) is available at the address :
+    // /simplu3d-rules/src/main/resources/fr/ign/cogit/simplu3d/sql
+
+    Environnement env = LoaderSHP.load(new File(folder));
+    //Environnement env = LoaderPostGISTest.load(folder);
     
-    loadZoneUrba(host, port, user, pw, database, folder);
-    loadRoad(host, port, user, pw, database, folder);
-    loadAxis(host, port, user, pw, database, folder);
-    //loadParcel(host, port, user, pw, database, folder);
+    PLU featCPlu = loadPlu(host, port, user, pw, database, env);
     
+    loadBasicPropertyUnit(host, port, user, pw, database, env);
+    loadZoneUrba(host, port, user, pw, database, env, featCPlu);
+    loadParcel(host, port, user, pw, database, env); 
+    loadSubParcel(host, port, user, pw, database, env); 
+    loadRoad(host, port, user, pw, database, env); 
+    loadAxis(host, port, user, pw, database, env); 
+    loadBuilding(host, port, user, pw, database, env); 
+    loadBuildingsParts(host, port, user, pw, database, env); 
+    loadSpecificCBoundary(host, port, user, pw, database, env); 
+    loadRoof(host, port, user, pw, database, env); 
+    loadWall(host, port, user, pw, database, env); 
+    loadRoofing(host, port, user, pw, database, env); 
+    loadGutter(host, port, user, pw, database, env); 
+    loadGable(host, port, user, pw, database, env);
+
+    System.out.println("\n----- Loading completed (hopefully) -----");
+
   }
+
   
-  // Chargement des informations sur les zones urba dans PostGis
-  public static boolean loadZoneUrba(String host, String port, String user, String pw, String database,  String folder) throws Exception{
+  //  TODO : Work in progress in this part 
+  public static boolean
+   loadAll(String host, String port, String user, String pw, String database,
+    String folder) throws Exception {
     
-    // Chargement de l'environnement
-    Environnement env = LoaderSHP.load(folder);
+    Environnement env = LoaderSHP.loadNoDTM(new File(folder));
     
-    // Chargement des données de la Zone Urba
-    IFeatureCollection<UrbaZone> featCUrbzone = env.getUrbaZones();
+    PLU featCPlu = loadPlu(host, port, user, pw, database, env);
     
-    // Boucle sur le contenu de la Zone Urba
-    for(UrbaZone u : featCUrbzone){
-      
-        // Ajout du libelle de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE, u.getLibelle(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut libelle : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE));
-        
-        // Ajout du libelle long de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG, u.getLibelong(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut libelong : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG));
-        
-        // Ajout du type de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE, u.getTypeZone(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut type zone : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE));
-        
-        // Ajout de la vocation (destdomi) de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI, u.getDestdomi(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut vocation (destdomi) : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI));
-        
-        // Ajout du nom du fichier relatif à la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC, u.getNomFic(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut nom fichier : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC));
-        
-        // Ajout de l'url du fichier relatif à la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_URLFIC, u.getUrlFic(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut URL fichier : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_URLFIC));
-        
-        // Ajout du code INSEE de la commune de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_INSEE, u.getInsee(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut code INSEE : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_INSEE));
-        
-        // Pour le format de la date
-        SimpleDateFormat sdf = new SimpleDateFormat(ParemetersApplication.DATE_FORMAT);
- 
-        // Ajout de la date de départ de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO , sdf.format(u.getDateDeb()), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut date départ : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO));
-        
-        // Ajout de la date de fin de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID ,  sdf.format(u.getDateFin()), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut date fin : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID));
-        
-        // Ajout du commentaire de la Zone Urba
-        AttributeManager.addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_COMMENTAIRE , u.getText(), "String");
-        System.out.println(u.getGeom().getClass());
-        System.out.println("Zone urba, attribut commentaire : " + u.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_COMMENTAIRE));
+     //loadBasicPropertyUnit(host, port, user, pw, database, env); 
+    //loadZoneUrba(host, port, user, pw, database, env, featCPlu);
+    loadParcel(host, port, user, pw, database, env); 
+    loadSubParcel(host,  port, user, pw, database, env); 
+    //loadRoad(host, port, user, pw, database,
+    //env);  loadAxis(host, port, user, pw, database, env); 
+    //loadBuilding(host, port, user, pw, database, env); 
+    //loadBuildingsParts(host, port, user, pw, database, env); 
+    loadSpecificCBoundary(host, port, user, pw, database, env); 
+    //loadRoof(host, port, user, pw, database, env);  
+    //loadWall(host, port,    user, pw, database, env);  loadRoofing(host, port, user, pw, database,
+    //env);  loadGutter(host, port, user, pw, database, env); 
+    //loadGable(host, port, user, pw, database, env);
+    
+    System.out.println("\n----- Loading completed (hopefully) -----");
+    
+    return true ;
+    
+    }
+   
+
+  // Chargement des PLU
+  public static PLU loadPlu(String host, String port, String user, String pw,
+      String database, Environnement env) throws Exception {
+
+    //IFeature featCDoc = env.getPlu();
+
+    PLU featCPlu = env.getPlu();
+
+    IFeature featTemp = new DefaultFeature();
+    IFeatureCollection<IFeature> featCDocUrba = new FT_FeatureCollection<IFeature>();
+
+    int idPLUIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_DOC_URBA,
+        ParametersInstructionPG.ATT_DOC_URBA_ID);
+
+    SimpleDateFormat sdfdu1 = new SimpleDateFormat(
+        ParemetersApplication.DATE_FORMAT_DU1);
+    SimpleDateFormat sdfdu2 = new SimpleDateFormat(
+        ParemetersApplication.DATE_FORMAT_DU2);
+
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_ID, (++idPLUIni), "Integer");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_ID_URBA, featCPlu.getIdUrba(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_TYPE_DOC, featCPlu.getTypeDoc(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_DATE_APPRO,
+        sdfdu1.format(featCPlu.getDateAppro()), "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_DATE_FIN,
+        sdfdu1.format(featCPlu.getDateFin()), "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_INTERCO, featCPlu.getInterCo(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_SIREN, featCPlu.getSiren(),
+        "String");
+    AttributeManager
+        .addAttribute(featTemp, ParametersInstructionPG.ATT_DOC_URBA_ETAT,
+            featCPlu.getEtat(), "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_NOM_REG, featCPlu.getNomReg(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_URL_REG, featCPlu.getUrlReg(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_NOM_PLAN, featCPlu.getNomPlan(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_URL_PLAN, featCPlu.getUrlPlan(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_SITE, featCPlu.getSiteWeb(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_TYPE_REF, featCPlu.getTypeRef(),
+        "String");
+    AttributeManager.addAttribute(featTemp,
+        ParametersInstructionPG.ATT_DOC_URBA_DATE_REF,
+        sdfdu2.format(featCPlu.getDateRef()), "String");
+
+    featCDocUrba.add(featTemp);
+
+    PostgisManager.insertInNonGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_DOC_URBA, featCDocUrba);
+
+    return featCPlu;
+  }
+
+  // Chargement des Basic Property Unit
+  public static boolean loadBasicPropertyUnit(String host, String port,
+      String user, String pw, String database, Environnement env)
+      throws Exception {
+
+    IFeatureCollection<BasicPropertyUnit> featCBPU = env.getBpU();
+
+    int idBPUIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BASIC_PROPERTY_UNIT,
+        ParametersInstructionPG.ATT_BPU_ID);
+
+    for (BasicPropertyUnit bpu : featCBPU) {
+
+      AttributeManager.addAttribute(bpu, ParametersInstructionPG.ATT_BPU_ID,
+          (++idBPUIni), "Integer");
 
     }
-    
-    // for(int i = 0 ; i < featCUrbzone.size();i ++){
-    // AttributeManager.addAttribute(featCUrbzone.get(i), "Test", 3283, "Integer");
-    // }
-    
-    //PostgisManager.saveGeometricTable(host, port, database, user, pw, "testzoneurba", env.getUrbaZones(), true);
-    
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ZONE_URBA_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw, ParametersInstructionPG.TABLE_ZONE_URBA , env.getUrbaZones());
-    
-    
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_BPU_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BASIC_PROPERTY_UNIT, env.getBpU());
+
     return true;
   }
-  
-  
-  // Chargement des informations sur les routes dans PostGis
-  public static boolean loadRoad(String host, String port, String user, String pw, String database,  String folder) throws Exception{
-    
-    // Chargement de l'environnement
-    Environnement env = LoaderSHP.load(folder);
-    
-    // Chargement des données des routes
-    IFeatureCollection<Road> featCRoad = env.getRoads();
-    
-    // Création d'une feature pour la géomtérie des axes
-    IFeatureCollection<IFeature> featCRoadAxis = new FT_FeatureCollection <IFeature>();
-    
-    // Boucle sur le contenu des routes
-    for(Road r : featCRoad){
-      
-      // Ajout du nom de la route
-      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_NOM, r.getName(), "String");
-      System.out.println(r.getGeom().getClass());
-      System.out.println("Road, attribut nom : " + r.getAttribute(ParametersInstructionPG.ATT_ROAD_NOM));
-      
-      // Ajout du type de la route
-      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_TYPE, r.getUsage(), "String");
-      System.out.println(r.getGeom().getClass());
-      System.out.println("Road, attribut usage : " + r.getAttribute(ParametersInstructionPG.ATT_ROAD_TYPE));
-      
-      // Ajout de la largeur de la route
-      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_LARGEUR, r.getWidth(), "Double");
-      System.out.println(r.getGeom().getClass());
-      System.out.println("Road, attribut largeur : " + r.getAttribute(ParametersInstructionPG.ATT_ROAD_LARGEUR));
-      
+
+  // Chargement des informations sur les zones urba dans PostGis
+  public static boolean loadZoneUrba(String host, String port, String user,
+      String pw, String database, Environnement env, PLU featCPlu)
+      throws Exception {
+
+    IFeatureCollection<UrbaZone> featCUrbzone = env.getUrbaZones();
+
+    int idZUIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_ZONE_URBA,
+        ParametersInstructionPG.ATT_ZONE_URBA_ID);
+
+    for (UrbaZone u : featCUrbzone) {
+
+      SimpleDateFormat sdf = new SimpleDateFormat(
+          ParemetersApplication.DATE_FORMAT_ZU);
+
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU, featCPlu.getIdUrba(),
+          "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_ID, (++idZUIni), "Integer");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE, u.getLibelle(),
+          "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG, u.getLibelong(),
+          "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE, u.getTypeZone(),
+          "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI, u.getDestdomi(),
+          "String");
+      AttributeManager
+          .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC,
+              u.getNomFic(), "String");
+      AttributeManager
+          .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_URLFIC,
+              u.getUrlFic(), "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_INSEE, u.getInsee(), "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO,
+          sdf.format(u.getDateDeb()), "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID,
+          sdf.format(u.getDateFin()), "String");
+      AttributeManager.addAttribute(u,
+          ParametersInstructionPG.ATT_ZONE_URBA_COMMENTAIRE, u.getText(),
+          "String");
+
     }
-    
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROAD_GEOM_SURF;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw, ParametersInstructionPG.TABLE_ROAD , env.getRoads());
-    
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ZONE_URBA_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_ZONE_URBA, env.getUrbaZones());
+
     return true;
   }
-  
-  
-  // Chargement de l'axe des routes
-  public static boolean loadAxis(String host, String port, String user, String pw, String database,  String folder) throws Exception{
-    
-    // Chargement de l'environnement
-    Environnement env = LoaderSHP.load(folder);
-    
-    // Chargement des données des routes
+
+  // Chargement des parcelles cadastrales
+  public static boolean loadParcel(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<CadastralParcel> featCCadPar = env.getCadastralParcels();
+
+    int idPCIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_CADASTRAL_PARCEL,
+        ParametersInstructionPG.ATT_CAD_PARCEL_ID);
+
+    for (CadastralParcel cp : featCCadPar) {
+
+      AttributeManager.addAttribute(cp,
+          ParametersInstructionPG.ATT_CAD_PARCEL_ID, (++idPCIni), "Integer");
+
+        for (BasicPropertyUnit bpu : env.getBpU()) {
+
+          if (bpu.getCadastralParcel().contains(cp)) {
+
+            AttributeManager.addAttribute(cp,
+                ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU,
+                bpu.getAttribute(ParametersInstructionPG.ATT_BPU_ID), "Integer");
+
+          }
+
+       }
+
+      AttributeManager.addAttribute(cp,
+          ParametersInstructionPG.ATT_CAD_PARCEL_NUM, cp.getId(), "Integer");
+      AttributeManager.addAttribute(cp,
+          ParametersInstructionPG.ATT_CAD_PARCEL_SURF, cp.getArea(), "Double");
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_CAD_PARCEL_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_CADASTRAL_PARCEL,
+        env.getCadastralParcels());
+
+    return true;
+  }
+
+  // Chargement des sous-parcelles cadastrales
+  public static boolean loadSubParcel(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<SubParcel> featCSubParcel = env.getSubParcels();
+
+    int idSPCIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_SUB_PARCEL,
+        ParametersInstructionPG.ATT_SUB_PARCEL_ID);
+
+    for (SubParcel sp : featCSubParcel) {
+
+      AttributeManager.addAttribute(sp,
+          ParametersInstructionPG.ATT_SUB_PARCEL_ID, (++idSPCIni), "Integer");
+
+      for (UrbaZone ub : env.getUrbaZones()) {
+
+        if (ub.getSubParcels().contains(sp)) {
+
+          AttributeManager.addAttribute(sp,
+              ParametersInstructionPG.ATT_SUB_PARCEL_ID_ZU,
+              ub.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID),
+              "Integer");
+
+        }
+
+      }
+
+      for (CadastralParcel cp : env.getCadastralParcels()) {
+
+        if (cp.getSubParcel().contains(sp)) {
+
+          AttributeManager.addAttribute(sp,
+              ParametersInstructionPG.ATT_SUB_PARCEL_ID_CADPAR,
+              cp.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_ID),
+              "Integer");
+
+        }
+
+      }
+
+      AttributeManager.addAttribute(sp,
+          ParametersInstructionPG.ATT_SUB_PARCEL_AVG_SLOPE, sp.getAvgSlope(),
+          "Double");
+      AttributeManager.addAttribute(sp,
+          ParametersInstructionPG.ATT_SUB_PARCEL_SURF, sp.getArea(), "Double");
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_SUB_PARCEL_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_SUB_PARCEL, env.getSubParcels());
+
+    return true;
+  }
+
+  // Chargement des informations sur les routes dans PostGis
+  public static boolean loadRoad(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
     IFeatureCollection<Road> featCRoad = env.getRoads();
-    
-    // Création d'une feature pour la géométrie des axes
-    IFeatureCollection<IFeature> featCRoadAxis = new FT_FeatureCollection <IFeature>();
-    
-    // Boucle sur le contenu des routes
-    for(Road ra : featCRoad){
-    
-      // Pour extraire la géométrie de l'axe
+
+    int idRoIni = ExtractIdMaxPG
+        .idMaxTable(host, port, database, user, pw,
+            ParametersInstructionPG.TABLE_ROAD,
+            ParametersInstructionPG.ATT_ROAD_ID);
+
+    for (Road r : featCRoad) {
+
+      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_ID,
+          (++idRoIni), "Integer");
+      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_NOM,
+          r.getName(), "String");
+      AttributeManager.addAttribute(r, ParametersInstructionPG.ATT_ROAD_TYPE,
+          r.getUsage(), "String");
+      AttributeManager.addAttribute(r,
+          ParametersInstructionPG.ATT_ROAD_LARGEUR, r.getWidth(), "Double");
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROAD_GEOM_SURF;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_ROAD, env.getRoads());
+
+    return true;
+  }
+
+  // Chargement de l'axe des routes
+  public static boolean loadAxis(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<Road> featCRoad = env.getRoads();
+    IFeatureCollection<IFeature> featCRoadAxis = new FT_FeatureCollection<IFeature>();
+
+    int idRoAIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_AXE, ParametersInstructionPG.ATT_AXE_ID);
+
+    for (Road ra : featCRoad) {
+
       IGeometry geomAxe = ((IGeometry) ra.getAxis().clone());
       IFeature featAxis = new DefaultFeature(geomAxe);
-      System.out.println(featAxis.getGeom());
-      System.out.println(featCRoadAxis.getFlagGeom());
-      
-     // AttributeManager.addAttribute(featAxis, "axe_geom", geomAxe ,"Integer");
+
+      AttributeManager.addAttribute(featAxis,
+          ParametersInstructionPG.ATT_AXE_ID, (++idRoAIni), "Integer");
+
+      AttributeManager.addAttribute(featAxis,
+          ParametersInstructionPG.ATT_AXE_ID_ROAD,
+          ra.getAttribute(ParametersInstructionPG.ATT_ROAD_ID), "Integer");
+
       featCRoadAxis.add(featAxis.cloneGeom());
-      System.out.println(featCRoadAxis.getFlagGeom());
-    
+
     }
-    
+
     PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_AXE_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw, ParametersInstructionPG.TABLE_AXE , featCRoadAxis);
-    
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_AXE, featCRoadAxis);
+
     return true;
   }
-  
-  
-  //Chargement des parcelles cadastrales
-  public static boolean loadParcel(String host, String port, String user, String pw, String database,  String folder) throws Exception{
-   
-    // Chargement de l'environnement
-    Environnement env = LoaderSHP.load(folder);
-   
-    // Chargement des données des parcelles
-    IFeatureCollection<CadastralParcel> featCCadPar = env.getCadastralParcels();
-   
-    // Boucle sur le contenu des parcelles
-    for(CadastralParcel cp : featCCadPar){
-      
-      // Ajout du numéro de parcelle
-      AttributeManager.addAttribute(cp, ParametersInstructionPG.ATT_CAD_PARCEL_NUM, cp.getId(), "Integer");
-      System.out.println(cp.getGeom().getClass());
-      System.out.println("Parcelle, attribut ID : " + cp.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_NUM));
-      
-      // Ajout de la surface de la parcelle
-      AttributeManager.addAttribute(cp, ParametersInstructionPG.ATT_CAD_PARCEL_SURF, cp.getArea() , "Double");
-      System.out.println(cp.getGeom().getClass());
-      System.out.println("Parcelle, attribut surface : " + cp.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_SURF));
-   
+
+  // Chargement des Specific Cadastral Boundary
+  public static boolean loadSpecificCBoundary(String host, String port,
+      String user, String pw, String database, Environnement env)
+      throws Exception {
+
+    IFeatureCollection<SubParcel> featCSubParcel = env.getSubParcels();
+    IFeatureCollection<IFeature> featCSpecificCBoundary = new FT_FeatureCollection<>();
+
+    int idSCBIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_SPECIFIC_CBOUNDARY,
+        ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID);
+
+    for (SubParcel sb : featCSubParcel) {
+
+      for (SpecificCadastralBoundary spc : sb.getParcel()
+          .getSpecificCadastralBoundary()) {
+
+        featCSpecificCBoundary.add(spc);
+
+        IFeature featAdj = spc.getFeatAdj();
+
+        if (featAdj instanceof Road) {
+
+          Road roadAdj = (Road) featAdj;
+
+          AttributeManager.addAttribute(spc,
+              ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_ADJ,
+              roadAdj.getAttribute(ParametersInstructionPG.ATT_ROAD_ID),
+              "Integer");
+          AttributeManager.addAttribute(spc,
+              ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TABLE_REF,
+              ParametersInstructionPG.TABLE_ROAD, "String");
+
+        } else if (featAdj instanceof CadastralParcel) {
+
+          CadastralParcel parceC = (CadastralParcel) featAdj;
+
+          AttributeManager.addAttribute(
+              spc,
+              ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_ADJ,
+              parceC.getSubParcel().get(0)
+                  .getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID),
+              "Integer");
+          AttributeManager.addAttribute(spc,
+              ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TABLE_REF,
+              ParametersInstructionPG.TABLE_SUB_PARCEL, "String");
+
+        } else {
+
+          if (featAdj != null) {
+
+            System.out.println("Not managed class : " + featAdj.getClass());
+
+          }
+
+        }
+
+        AttributeManager.addAttribute(spc,
+            ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID, (++idSCBIni),
+            "Integer");
+        AttributeManager.addAttribute(spc,
+            ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TYPE, spc.getType(),
+            "String");
+        AttributeManager.addAttribute(spc,
+            ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_SIDE, spc.getSide(),
+            "String");
+
+      }
+
     }
-   
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_CAD_PARCEL_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw, ParametersInstructionPG.TABLE_CADASTRAL_PARCEL , env.getCadastralParcels());
-   
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_SPECIFIC_CBOUNDARY,
+        featCSpecificCBoundary, true);
+
     return true;
   }
-  
-  
+
+  // Chargement des batiments
+  public static boolean loadBuilding(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+
+    int idBIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING,
+        ParametersInstructionPG.ATT_BUILDING_ID);
+
+    for (AbstractBuilding ab : featCAbstractBuilding) {
+
+      AttributeManager.addAttribute(ab,
+          ParametersInstructionPG.ATT_BUILDING_ID, (++idBIni), "Integer");
+
+    }
+
+    PostgisManager.insertInNonGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING, env.getBuildings());
+
+    return true;
+  }
+
+  // Chargement des Morceaux de batiments
+  public static boolean loadBuildingsParts(String host, String port,
+      String user, String pw, String database, Environnement env)
+      throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<SubParcel> featCSubParcel = env.getSubParcels();
+    IFeatureCollection<IFeature> featCBuildingPart = new FT_FeatureCollection<>();
+
+    int idBPIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING_PART,
+        ParametersInstructionPG.ATT_BUILDING_PART_ID);
+
+    for (AbstractBuilding abp : featCAbstractBuilding) {
+
+      IFeature featTemp = new DefaultFeature(abp.getFootprint());
+
+      AttributeManager.addAttribute(featTemp,
+          ParametersInstructionPG.ATT_BUILDING_PART_ID, (++idBPIni), "Integer");
+      AttributeManager.addAttribute(featTemp,
+          ParametersInstructionPG.ATT_BUILDING_PART_ID_BUILD,
+          abp.getAttribute(ParametersInstructionPG.ATT_BUILDING_ID), "Integer");
+
+      AttributeManager.addAttribute(abp,
+          ParametersInstructionPG.ATT_BUILDING_PART_ID,
+          featTemp.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID),
+          "Integer");
+
+      for (SubParcel sp : featCSubParcel) {
+
+        if (sp.getBuildingsParts().contains(abp)) {
+
+          AttributeManager.addAttribute(featTemp,
+              ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR,
+              sp.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID),
+              "Integer");
+
+        }
+
+      }
+
+      featCBuildingPart.add(featTemp);
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_BUILDING_PART_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING_PART, featCBuildingPart);
+
+    return true;
+  }
+
+  // Chargement des toits
+  public static boolean loadRoof(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<IFeature> featCRoof = new FT_FeatureCollection<>();
+
+    int idRoIni = ExtractIdMaxPG
+        .idMaxTable(host, port, database, user, pw,
+            ParametersInstructionPG.TABLE_ROOF,
+            ParametersInstructionPG.ATT_ROOF_ID);
+
+    for (AbstractBuilding abr : featCAbstractBuilding) {
+
+      AttributeManager.addAttribute(abr.getToit(),
+          ParametersInstructionPG.ATT_ROOF_ID, (++idRoIni), "Integer");
+      AttributeManager.addAttribute(abr.getToit(),
+          ParametersInstructionPG.ATT_ROOF_ANGLE_MAX, abr.getToit()
+              .getAngleMax(), "Double");
+      AttributeManager.addAttribute(abr.getToit(),
+          ParametersInstructionPG.ATT_ROOF_ANGLE_MIN, abr.getToit()
+              .getAngleMin(), "Double");
+
+      if (abr.getToit() instanceof RoofSurface) {
+
+        AttributeManager.addAttribute(abr.getToit(),
+            ParametersInstructionPG.ATT_ROOF_BUILDPART,
+            abr.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID),
+            "Integer");
+
+      }
+
+      featCRoof.add(abr.getToit());
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROOF_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_ROOF, featCRoof);
+
+    return true;
+  }
+
+  // Chargement de l'arrête haute du toit
+  public static boolean loadRoofing(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<IFeature> featCRoofing = new FT_FeatureCollection<>();
+
+    int idRoofingIni = ExtractIdMaxPG.idMaxTable(host, port, database, user,
+        pw, ParametersInstructionPG.TABLE_ROOFING,
+        ParametersInstructionPG.ATT_ROOFING_ID);
+
+    for (AbstractBuilding abrf : featCAbstractBuilding) {
+
+      IFeature featTempRoofing = new DefaultFeature(abrf.getToit().getRoofing());
+
+      if (abrf.getToit().getRoofing().coord().isEmpty()) {
+
+        System.out
+            .println("- Watch out, the Roofing attribute is empty in the case currently being processed -");
+
+      } else {
+
+        AttributeManager
+            .addAttribute(featTempRoofing,
+                ParametersInstructionPG.ATT_ROOFING_ID, (++idRoofingIni),
+                "Integer");
+
+        AttributeManager.addAttribute(featTempRoofing,
+            ParametersInstructionPG.ATT_ROOFING_ROOF, abrf.getToit()
+                .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
+
+        featCRoofing.add(featTempRoofing);
+
+      }
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROOFING_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_ROOFING, featCRoofing);
+
+    return true;
+  }
+
+  // Chargement des gouttières
+  public static boolean loadGutter(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<IFeature> featCGutter = new FT_FeatureCollection<>();
+
+    int idGutterIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_GUTTER,
+        ParametersInstructionPG.ATT_GUTTER_ID);
+
+    for (AbstractBuilding abg : featCAbstractBuilding) {
+
+      IFeature featTempGutter = new DefaultFeature(abg.getToit().getGutter());
+
+      if (abg.getToit().getGutter().coord().isEmpty()) {
+
+        System.out
+            .println("- Watch out, the Gutter attribute is empty in the case currently being processed -");
+
+      } else {
+
+        AttributeManager.addAttribute(featTempGutter,
+            ParametersInstructionPG.ATT_GUTTER_ID, (++idGutterIni), "Integer");
+
+        AttributeManager.addAttribute(featTempGutter,
+            ParametersInstructionPG.ATT_GUTTER_ROOF, abg.getToit()
+                .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
+
+        featCGutter.add(featTempGutter);
+
+      }
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GUTTER_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_GUTTER, featCGutter);
+
+    return true;
+  }
+
+  // Chargement des pignons
+  public static boolean loadGable(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<IFeature> featCGable = new FT_FeatureCollection<>();
+
+    int idGableIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_GABLE,
+        ParametersInstructionPG.ATT_GABLE_ID);
+
+    for (AbstractBuilding abga : featCAbstractBuilding) {
+
+      IFeature featTempGable = new DefaultFeature(abga.getToit().getGable());
+
+      if (abga.getToit().getGable().coord().isEmpty()) {
+
+        System.out
+            .println("- Watch out, the Gable attribute is empty in the case currently being processed -");
+
+      } else {
+
+        AttributeManager.addAttribute(featTempGable,
+            ParametersInstructionPG.ATT_GABLE_ID, (++idGableIni), "Integer");
+
+        AttributeManager.addAttribute(featTempGable,
+            ParametersInstructionPG.ATT_GABLE_ROOF, abga.getToit()
+                .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
+
+        featCGable.add(featTempGable);
+
+      }
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GABLE_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_GABLE, featCGable);
+
+    return true;
+  }
+
+  // Chargement des murs
+  public static boolean loadWall(String host, String port, String user,
+      String pw, String database, Environnement env) throws Exception {
+
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+    IFeatureCollection<IFeature> featCWall = new FT_FeatureCollection<>();
+
+    int idWIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_WALL_SURFACE,
+        ParametersInstructionPG.ATT_WALL_SURFACE_ID);
+
+    for (AbstractBuilding ab : featCAbstractBuilding) {
+
+      for (SpecificWallSurface sws : ab.getFacades()) {
+
+        featCWall.add(sws);
+
+        AttributeManager.addAttribute(sws,
+            ParametersInstructionPG.ATT_WALL_SURFACE_ID, (++idWIni), "Integer");
+
+        if (ab.getFacades().contains(sws)) {
+
+          AttributeManager.addAttribute(sws,
+              ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP,
+              ab.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID),
+              "Integer");
+
+        }
+
+      }
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_WALL_SURFACE_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_WALL_SURFACE, featCWall);
+
+    return true;
+
+  }
+
 }

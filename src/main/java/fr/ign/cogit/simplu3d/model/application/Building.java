@@ -19,7 +19,8 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  **/
 public class Building extends AbstractBuilding {
 
-  protected Building(){
+  public Building(){
+    super();
   }
   public Building(IGeometry geom) {
     super(geom);

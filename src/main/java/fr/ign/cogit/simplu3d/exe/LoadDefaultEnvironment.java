@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.exe;
 
+import java.io.File;
+
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 /**
@@ -27,7 +29,7 @@ public class LoadDefaultEnvironment {
       String folder = LoadDefaultEnvironment.class.getClassLoader().getResource("fr/ign/cogit/simplu3d/data/").getPath();
 
       try {
-			ENV_SINGLETON = LoaderSHP.load(folder, LoadDefaultEnvironment.class.getResourceAsStream("/fr/ign/cogit/simplu3d/data/"
+			ENV_SINGLETON = LoaderSHP.load(new File(folder), LoadDefaultEnvironment.class.getResourceAsStream("/fr/ign/cogit/simplu3d/data/"
 			        + LoaderSHP.NOM_FICHIER_TERRAIN));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

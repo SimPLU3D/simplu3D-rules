@@ -45,6 +45,11 @@ public class RoofImporter {
     t.setLod2MultiSurface(mS);
     t.setGeom(mS);
 
+
+   t.setGutter(affectZEmprise(emprise,
+       FromPolygonToLineString.convertListPolToLineStrings((IMultiSurface<IOrientableSurface>) mS.clone()), 0.5));
+    
+    
     //
     ClassifyRoof cR = new ClassifyRoof(t, epsilonAngle, epsilonDist);
 
@@ -58,13 +63,10 @@ public class RoofImporter {
     iMS2.addAll(cR.getFaitage(epsilonAngle));
 
     t.setRoofing(iMS2);
-
-   
-
+  
 
 
-    t.setGutter(affectZEmprise(emprise,
-        FromPolygonToLineString.convertListPolToLineStrings(mS)));
+
     
     IMultiCurve<IOrientableCurve> ext = new GM_MultiCurve<IOrientableCurve>();
     ext.addAll(t.getGutter());
@@ -80,7 +82,9 @@ public class RoofImporter {
     IMultiCurve<IOrientableCurve> pignons = new GM_MultiCurve<IOrientableCurve>();
     pignons.addAll(lPignons);
     t.setGable(pignons);
-
+    
+    t.setGutter(new GM_MultiCurve<>(cR.getExteriorLineStrings()));
+   
     // IFeatureCollection<IFeature> fC = DetectPignon.detectPignon(poly
     // /*lLSExt*/, lLS , epsilonDist,epsilonAngle)
 
@@ -89,7 +93,7 @@ public class RoofImporter {
   }
 
   public static IMultiCurve<IOrientableCurve> affectZEmprise(IPolygon poly,
-      List<ILineString> iMC) {
+      List<ILineString> iMC, double threshold) {
 
     int dpPoly = poly.coord().size();
     IMultiCurve<IOrientableCurve> mC = new GM_MultiCurve<IOrientableCurve>();
@@ -103,8 +107,8 @@ public class RoofImporter {
 
         IDirectPositionList dplTemp = c.coord();
 
-        if (dplTemp.get(0).equals2D(dp1, 0.5)
-            && dplTemp.get(1).equals2D(dp2, 0.5)) {
+        if (dplTemp.get(0).equals2D(dp1, threshold)
+            && dplTemp.get(1).equals2D(dp2, threshold)) {
 
           IDirectPositionList dpTempTemp = new DirectPositionList();
           dpTempTemp.add((IDirectPosition) dplTemp.get(0).clone());
@@ -114,8 +118,8 @@ public class RoofImporter {
           continue bouclea;
         }
 
-        if (dplTemp.get(0).equals2D(dp2, 0.5)
-            && dplTemp.get(1).equals2D(dp1, 0.5)) {
+        if (dplTemp.get(0).equals2D(dp2, threshold)
+            && dplTemp.get(1).equals2D(dp1,threshold)) {
 
           IDirectPositionList dpTempTemp = new DirectPositionList();
           dpTempTemp.add((IDirectPosition) dplTemp.get(0).clone());

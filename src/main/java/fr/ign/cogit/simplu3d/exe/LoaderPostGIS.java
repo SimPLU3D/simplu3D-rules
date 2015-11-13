@@ -18,7 +18,6 @@ import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
-import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 /**
  * 

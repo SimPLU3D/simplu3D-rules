@@ -9,3 +9,12 @@ release.properties
 *.settings
 /log4j.log
 /log/
+/src/main/resources/fr/ign/cogit/simplu3d/data/MNT_RENNES_2011.asc
+/src/main/resources/fr/ign/cogit/simplu3d/data/MNT_RENNES_2011.asc.aux.xml
+/src/main/resources/fr/ign/cogit/simplu3d/data/MNT_RENNES_2011.prj
+/src/main/resources/fr/ign/cogit/simplu3d/data/parcelles_UB2_rennes_test.qpj
+/src/main/resources/fr/ign/cogit/simplu3d/data/parcelles_UB2_rennes_test.shp
+/src/main/resources/fr/ign/cogit/simplu3d/data/parcelles_UB2_rennes_test.shx
+/src/main/resources/fr/ign/cogit/simplu3d/data/parcelles_UB2_rennes_test.dbf
+/src/main/resources/fr/ign/cogit/simplu3d/data/parcelles_UB2_rennes_test.prj
+/src/main/resources/fr/ign/cogit/simplu3d/data/out

@@ -28,7 +28,6 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
@@ -66,6 +65,7 @@ public class CadastralParcelLoader {
 	public static int WIDTH_DEP = 3;
 
 	public static String ATT_ID_PARC = "ID_Parcell";
+	//public static String ATT_ID_PARC = "NUMERO";
 
 	private static Logger logger = Logger
 			.getLogger(CadastralParcelLoader.class);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
@@ -62,6 +63,8 @@ public class EmpriseGenerator {
     gr.setListeFaces(cT.getListeFaces());
     gr.setListeNoeuds(cT.getListeNoeuds());
 
+    
+    //on récupère les différents groupes
     List<Groupe> lG = gr.decomposeConnexes();
 
     for (Groupe g : lG) {
@@ -99,7 +102,15 @@ public class EmpriseGenerator {
 
       }
 
-      lPol.add(new GM_Polygon(lS));
+      
+      ILineString lSClone = (ILineString) lS.clone();
+      
+      for(IDirectPosition dp: lSClone.coord() ){
+          dp.setZ(Double.NaN);
+      }
+      
+      
+      lPol.add(new GM_Polygon(lSClone));
 
     }
 

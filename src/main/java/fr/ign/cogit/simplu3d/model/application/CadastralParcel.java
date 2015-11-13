@@ -2,7 +2,6 @@ package fr.ign.cogit.simplu3d.model.application;
 
 import org.citygml4j.model.citygml.landuse.LandUse;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;

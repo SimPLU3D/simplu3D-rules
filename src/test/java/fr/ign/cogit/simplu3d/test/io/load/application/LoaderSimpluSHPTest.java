@@ -17,7 +17,6 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 /**
  * 

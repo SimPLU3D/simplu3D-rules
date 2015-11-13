@@ -331,7 +331,7 @@
 		<dependency>
 			<groupId>fr.ign.cogit</groupId>
 			<artifactId>geoxygene-sig3d</artifactId>
-			<version>1.7-SNAPSHOT</version>
+			<version>1.8-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.twitter4j</groupId>

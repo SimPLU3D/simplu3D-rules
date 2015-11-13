@@ -99,30 +99,28 @@ public class AssignLinkToBordure {
       return spC;
 
     }
-
-    while (itP.hasNext()) {
-      CadastralParcel sousParcelle = itP.next();
-
-      if (sousParcelle == sousParcelleIni) {
-        continue;
-      }
-
-      IFeatureCollection<SpecificCadastralBoundary> lB = sousParcelle
-          .getSpecificCadastralBoundary();
-
-      for (SpecificCadastralBoundary b2 : lB) {
-
-        IGeometry geom = b.getGeom().intersection(b2.getGeom());
-
-        if (geom.dimension() == 2) {
-          return sousParcelle;
-        }
-
-      }
-
+    
+    sP.remove(sousParcelleIni);
+    
+    
+    CadastralParcel cSP = null;
+    double score = Double.NEGATIVE_INFINITY;
+    
+    for(CadastralParcel cP : sP){
+      
+          double aire = cP.getGeom().intersection(b.getGeom().buffer(0.5)).area();
+      
+          if(aire > score){
+            score = aire;
+            cSP = cP;
+          }
+      
     }
-
-    return null;
+    
+    
+    
+    
+    return cSP;
 
   }
 

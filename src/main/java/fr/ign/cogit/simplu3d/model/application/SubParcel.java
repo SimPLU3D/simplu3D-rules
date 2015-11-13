@@ -59,7 +59,7 @@ public class SubParcel extends CG_LandUse {
     return 0;
   }
 
-  public SubParcel(IOrientableSurface iMS) {
+  public SubParcel(IGeometry iMS) {
     super();
     this.setGeom(iMS);
     this.setClazz(CLASSE);

@@ -2,7 +2,6 @@ package fr.ign.cogit.simplu3d.importer.applicationClasses;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -110,7 +109,7 @@ public class ZonesImporter {
       // Pour la date d'approbation de la zone urba (date de début)
       o = feat.getAttribute(NOM_VALIDITY_DATE_APPRO);
 
-      SimpleDateFormat sdfdeb = new SimpleDateFormat(ParemetersApplication.DATE_FORMAT);
+      SimpleDateFormat sdfdeb = new SimpleDateFormat(ParemetersApplication.DATE_FORMAT_ZU);
       if (o != null) {
         try {
 			z.setDateDeb(sdfdeb.parse(o.toString()));
