@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/IGNF/simplu3D-rules.svg?branch=master)](https://travis-ci.org/IGNF/simplu3D-rules)
+
 Simplu3D-rules
 ============
 
@@ -30,7 +32,7 @@ A demonstration class is present in simplu package : TestOCL class in package te
 
 Contact for feedbacks
 ---------------------
-[Mickaël Brasebin](http://recherche.ign.fr/labos/cogit/cv.php?nom=Brasebin) & [Julien Perret](http://recherche.ign.fr/labos/cogit/cv.php?prenom=Julien&nom=Perret)
+[MickaÃ«l Brasebin](http://recherche.ign.fr/labos/cogit/cv.php?nom=Brasebin) & [Julien Perret](http://recherche.ign.fr/labos/cogit/cv.php?prenom=Julien&nom=Perret)
 [Cogit Laboratory](http://recherche.ign.fr/labos/cogit/accueilCOGIT.php)
 
 
@@ -38,6 +40,6 @@ Acknowledgments
 ---------------------
 
 + This research is supported by the French National Mapping Agency ([IGN](http://www.ign.fr))
-+ It is partially funded by the FUI TerraMagna project and by Île-de-France
-Région in the context of [e-PLU projet](www.e-PLU.fr)
++ It is partially funded by the FUI TerraMagna project and by ÃŽle-de-France
+RÃ©gion in the context of [e-PLU projet](www.e-PLU.fr)
 
