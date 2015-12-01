@@ -304,6 +304,14 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>iscpif-ign-snapshots</id>
+			<name>ISCPIF snapshots repository for IGN</name>
+			<url>http://maven.iscpif.fr/ign-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>iscpif-ign-releases</id>
 			<name>ISCPIF Release repository for IGN</name>
 			<url>http://maven.iscpif.fr/ign-releases/</url>
@@ -417,20 +425,15 @@
 		</dependency>
 	</dependencies>
 	<distributionManagement>
-		<repository>
-			<id>cogit-releases</id>
-			<name>Nexus Releases Repository</name>
-			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
-		</repository>
+	        <repository>
+			<id>iscpif-ign-releases</id>
+			<name>ISCPIF Release repository for IGN</name>
+			<url>http://maven.iscpif.fr/ign-releases/</url>
+		</repository> 
 		<snapshotRepository>
-			<id>cogit-snapshots</id>
-			<name>Nexus Snapshots Repository</name>
-			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
+			<id>iscpif-ign-snapshots</id>
+			<name>ISCPIF Snapshot repository for IGN</name>
+			<url>http://maven.iscpif.fr/ign-snapshots/</url>
 		</snapshotRepository>
-		<!-- <repository> <id>iscpif-ign-releases</id> <name>ISCPIF Release repository 
-			for IGN</name> <url>http://maven.iscpif.fr/ign-releases/</url> </repository> 
-			<snapshotRepository> <id>iscpif-ign-snapshots</id> <name>ISCPIF Snapshot 
-			repository for IGN</name> <url>http://maven.iscpif.fr/ign-snapshots/</url> 
-			</snapshotRepository> -->
 	</distributionManagement>
 </project>
