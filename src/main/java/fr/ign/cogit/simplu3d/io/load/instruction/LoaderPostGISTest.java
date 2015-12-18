@@ -6,30 +6,23 @@ import java.io.InputStream;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
 import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.io.load.application.DTMPostGISNoJava3D;
-import fr.ign.cogit.simplu3d.io.load.application.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
-import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
-// The objective here is to "short-circuit" the load of the data in the
-// environment by replacing shapefile data by data contained in a PostGIS
-// database
+// The objective here is to create collection from data contained in a PostGIS
+// database to be able to feed the environment
 
 public class LoaderPostGISTest {
 
   // Information about the PostGIS database
-  public static String host = "localhost";
-  public static String user = "postgres";
-  public static String pw = "postgres";
-  public static String database = "test";
-  public static String port = "5432";
+  public static String host = Load.host;
+  public static String user = Load.user;
+  public static String pw = Load.pw;
+  public static String database = Load.database;
+  public static String port = Load.port;
 
   // List of the names of tables in PostGIS
   public final static String NOM_TABLE_AXE = ParametersInstructionPG.TABLE_AXE;
@@ -77,9 +70,6 @@ public class LoaderPostGISTest {
     if (!pluColl.isEmpty()) {
       featPLU = pluColl.get(0);
     }
-    System.out.println("Contenu pluColl : " + pluColl.get(0));
-    System.out.println("Contenu featPLU : "
-        + featPLU.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_URL_PLAN));
 
     // Then, we get back the information contained in the other layers necessary
     // for the creation of the environment : Zonage, Parcelles, Voirie...
@@ -93,7 +83,7 @@ public class LoaderPostGISTest {
     IFeatureCollection<IFeature> voirieColl = PostgisManager
         .loadGeometricTable(host, port, database, user, pw, NOM_TABLE_ROAD);
 
-    // The table containing buildings has no geometry...
+    // TODO : The table containing buildings has no geometry...
     IFeatureCollection<IFeature> batiColl = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_BUILDING);
 
@@ -101,39 +91,13 @@ public class LoaderPostGISTest {
         .loadGeometricTable(host, port, database, user, pw,
             NOM_TABLE_SPECIFIC_CBOUNDARY);
 
-    // TODO : Partie ajoutée en exemple par Mickael Brasebin
-    PLU plu = null;
-    env.setPlu(plu);
-    IFeatureCollection<UrbaZone> featZone = ImporterPostGIS
-        .importZoneUrba(zoneColl);
-    env.setUrbaZones(featZone);
-    env.setSubParcels(new FT_FeatureCollection<SubParcel>());
-
-    for (UrbaZone currentZone : featZone) {
-
-      int idZone = currentZone.getId();
-
-      IFeatureCollection<IFeature> parcellesZone = PostgisManager
-          .loadGeometricTable(host, port, database, user, pw,
-              NOM_TABLE_CADASTRAL_PARCEL);
-      IFeatureCollection<SubParcel> subP = ImporterPostGIS
-          .importSubParcel(parcellesZone);
-
-      currentZone.setSubParcels(subP);
-      
-      // TODO : Why to use "getSubParcels" here?
-      env.getSubParcels().addAll(subP);
-
-    }
-
     // PostGis does not manage correctly the DTM files
     // Thus we use a raster file rather than a DTM contained in PostGIS
     DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
         ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
 
-    return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
-        batiColl, prescriptions, folder, dtm);
+    return LoadFromCollectionPostGIS.load(folder, featPLU, zoneColl,
+        parcelleColl, voirieColl, batiColl, prescriptions, folder, dtm);
 
   }
-
 }

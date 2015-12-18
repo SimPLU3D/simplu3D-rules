@@ -32,6 +32,8 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 public class CadastralParcel extends CG_LandUse {
 
 	public final String CLASSE = "Parcelle";
+	private int idBPU = 0;
+	private int num = 0;
 
 	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
 	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
@@ -45,6 +47,22 @@ public class CadastralParcel extends CG_LandUse {
 	public void setbPU(BasicPropertyUnit bPU) {
 		this.bPU = bPU;
 	}
+	
+    public void setIdBPU(int idBPU) {
+	    this.idBPU = idBPU;
+	}
+
+	public int getIdBPU() {
+	    return idBPU;
+	}
+	
+	public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getNum() {
+        return num;
+    }
 
 	public double area = Double.NaN;
 

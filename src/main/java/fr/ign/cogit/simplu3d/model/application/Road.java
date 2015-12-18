@@ -2,14 +2,18 @@ package fr.ign.cogit.simplu3d.model.application;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -23,7 +27,10 @@ public class Road extends CG_Road {
 
   private IMultiCurve<ILineString> axis;
   public String name;
+  public String type;
+  public int idRoad;
   private double width;
+  private Road axe;
 
   public Road() {
     super();
@@ -33,6 +40,12 @@ public class Road extends CG_Road {
     super(tO);
 
     // TODO Auto-generated constructor stub
+  }
+
+  public Road(IMultiSurface<IOrientableSurface> surfVoie) {
+
+    this.setLod2MultiSurface(surfVoie);
+    this.setGeom(surfVoie);
   }
 
   public IMultiCurve<ILineString> getAxis() {
@@ -57,6 +70,30 @@ public class Road extends CG_Road {
 
   public void setWidth(double width) {
     this.width = width;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public int getIdRoad() {
+    return idRoad;
+  }
+
+  public void setIdRoad(int idRoad) {
+    this.idRoad = idRoad;
+  }
+
+  public void setAxe(Road axe) {
+    this.axe = axe;
+  }
+
+  public Road getAxe() {
+    return axe;
   }
 
 }

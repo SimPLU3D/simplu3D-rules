@@ -15,13 +15,14 @@ import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -38,7 +39,6 @@ public class BuildingImporter {
    */
   public final static double RATIO_MIN = 0.8;
 
-  
   /**
    * @ TODO : buildingparts non gérés
    * @param featBati
@@ -80,10 +80,9 @@ public class BuildingImporter {
       }
 
       Iterator<IFeature> itSP = featTemp.select(poly).iterator();
-      
 
-
-     // double aireEmprise = poly.area();
+      // en commentaire avant
+      double aireEmprise = poly.area();
 
       boolean isAttached = false;
 
@@ -91,21 +90,24 @@ public class BuildingImporter {
 
         IFeature sp = itSP.next();
 
-  //      double area = (poly.intersection(sp.getGeom())).area();
+        // en commentaire avant
+        double area = (poly.intersection(sp.getGeom())).area();
 
-   //     if (area / aireEmprise > RATIO_MIN) {
+        // en commentaire avant
+        if (area / aireEmprise > RATIO_MIN) {
 
           int index = featTemp.getElements().indexOf(sp);
-          
-          
-          collBPU.get(index).getBuildings().add(b);
-          collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0).getBuildingsParts().add(b);
-          
-          isAttached = true;
-      //    System.out.println("Desactiver le hack de la classe BuildingImporter");
-       //   break;
 
-   //     }
+          collBPU.get(index).getBuildings().add(b);
+          collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0)
+              .getBuildingsParts().add(b);
+
+          isAttached = true;
+          // System.out.println("Desactiver le hack de la classe BuildingImporter");
+          // break;
+
+          // en commentaire avant
+        }
 
       }
 

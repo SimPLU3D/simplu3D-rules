@@ -40,7 +40,7 @@ public class LoadExpRennes {
     String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
     String port = "5432";
 
-    // Rerouting towards the new files of Rennes
+    // Rerouting towards the new files of Rennes 
 
     LoaderSHP.NOM_FICHIER_ZONAGE = "[Insert File Name].shp";
     LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2_rennes_test.shp";

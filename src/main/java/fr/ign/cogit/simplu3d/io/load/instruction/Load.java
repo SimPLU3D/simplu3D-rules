@@ -27,83 +27,84 @@ import fr.ign.cogit.simplu3d.util.ExtractIdMaxPG;
 
 public class Load {
 
+  public static String host = "localhost";
+  public static String user = "postgres";
+  public static String pw = "postgres";
+  // public static String database = "test_simplu3d";
+  // public static String database = "strasbourg_simplu";
+  public static String database = "test";
+  public static String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
+  public static String port = "5432";
+
   public static void main(String[] args) throws Exception {
 
     PostgisManager.SRID = "2154";
 
-    String host = "localhost";
-    String user = "postgres";
-    String pw = "postgres";
-    // String database = "test_simplu3d";
-    String database = "test";
-    String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
-    String port = "5432";
+    /*
+     * At present, the program is parameterized to work with a named database
+     * "test_simplu3d". Furthermore, the SQl script to build tables in pgAdmin
+     * (Creation_BDD.sql) is available at the address :
+     * "/simplu3d-rules/src/main/resources/fr/ign/cogit/simplu3d/sql"
+     */
 
-    // At present, the program is parametrized to work with a named database
-    // "test_simplu3d". Furthermore, the SQl script to build tables in pgAdmin
-    // (Creation_BDD.sql) is available at the address :
-    // /simplu3d-rules/src/main/resources/fr/ign/cogit/simplu3d/sql
+    // Environnement env = LoaderSHP.load(new File(folder));
+    Environnement env = LoaderPostGISTest.load(folder);
 
-    Environnement env = LoaderSHP.load(new File(folder));
-    //Environnement env = LoaderPostGISTest.load(folder);
-    
-    PLU featCPlu = loadPlu(host, port, user, pw, database, env);
-    
-    loadBasicPropertyUnit(host, port, user, pw, database, env);
-    loadZoneUrba(host, port, user, pw, database, env, featCPlu);
-    loadParcel(host, port, user, pw, database, env); 
-    loadSubParcel(host, port, user, pw, database, env); 
-    loadRoad(host, port, user, pw, database, env); 
-    loadAxis(host, port, user, pw, database, env); 
-    loadBuilding(host, port, user, pw, database, env); 
-    loadBuildingsParts(host, port, user, pw, database, env); 
-    loadSpecificCBoundary(host, port, user, pw, database, env); 
-    loadRoof(host, port, user, pw, database, env); 
-    loadWall(host, port, user, pw, database, env); 
-    loadRoofing(host, port, user, pw, database, env); 
-    loadGutter(host, port, user, pw, database, env); 
-    loadGable(host, port, user, pw, database, env);
+    // PLU featCPlu = loadPlu(host, port, user, pw, database, env);
+
+    // loadBasicPropertyUnit(host, port, user, pw, database, env);
+    // loadZoneUrba(host, port, user, pw, database, env, featCPlu);
+    // loadParcel(host, port, user, pw, database, env);
+    // loadSubParcel(host, port, user, pw, database, env);
+    // loadRoad(host, port, user, pw, database, env);
+    // loadAxis(host, port, user, pw, database, env);
+    // loadBuilding(host, port, user, pw, database, env);
+    // loadBuildingsParts(host, port, user, pw, database, env);
+    // loadSpecificCBoundary(host, port, user, pw, database, env);
+    // loadRoof(host, port, user, pw, database, env);
+    // loadWall(host, port, user, pw, database, env);
+    // loadRoofing(host, port, user, pw, database, env);
+    // loadGutter(host, port, user, pw, database, env);
+    // loadGable(host, port, user, pw, database, env);
 
     System.out.println("\n----- Loading completed (hopefully) -----");
 
   }
 
-  
-  //  TODO : Work in progress in this part 
-  public static boolean
-   loadAll(String host, String port, String user, String pw, String database,
-    String folder) throws Exception {
-    
+  // TODO : Work in progress in this part
+  public static boolean loadAll(String host, String port, String user,
+      String pw, String database, String folder) throws Exception {
+
     Environnement env = LoaderSHP.loadNoDTM(new File(folder));
-    
+
     PLU featCPlu = loadPlu(host, port, user, pw, database, env);
-    
-     //loadBasicPropertyUnit(host, port, user, pw, database, env); 
-    //loadZoneUrba(host, port, user, pw, database, env, featCPlu);
-    loadParcel(host, port, user, pw, database, env); 
-    loadSubParcel(host,  port, user, pw, database, env); 
-    //loadRoad(host, port, user, pw, database,
-    //env);  loadAxis(host, port, user, pw, database, env); 
-    //loadBuilding(host, port, user, pw, database, env); 
-    //loadBuildingsParts(host, port, user, pw, database, env); 
-    loadSpecificCBoundary(host, port, user, pw, database, env); 
-    //loadRoof(host, port, user, pw, database, env);  
-    //loadWall(host, port,    user, pw, database, env);  loadRoofing(host, port, user, pw, database,
-    //env);  loadGutter(host, port, user, pw, database, env); 
-    //loadGable(host, port, user, pw, database, env);
-    
+
+    // loadBasicPropertyUnit(host, port, user, pw, database, env);
+    // loadZoneUrba(host, port, user, pw, database, env, featCPlu);
+    loadParcel(host, port, user, pw, database, env);
+    loadSubParcel(host, port, user, pw, database, env);
+    // loadRoad(host, port, user, pw, database, env);
+    // loadAxis(host, port, user, pw, database, env);
+    // loadBuilding(host, port, user, pw, database, env);
+    // loadBuildingsParts(host, port, user, pw, database, env);
+    loadSpecificCBoundary(host, port, user, pw, database, env);
+    // loadRoof(host, port, user, pw, database, env);
+    // loadWall(host, port, user, pw, database, env);
+    // loadRoofing(host, port,user, pw, database, env);
+    // loadGutter(host, port, user, pw, database, env);
+    // loadGable(host, port, user, pw, database, env);
+
     System.out.println("\n----- Loading completed (hopefully) -----");
-    
-    return true ;
-    
-    }
-   
+
+    return true;
+
+  }
 
   // Chargement des PLU
   public static PLU loadPlu(String host, String port, String user, String pw,
       String database, Environnement env) throws Exception {
 
-    //IFeature featCDoc = env.getPlu();
+    // IFeature featCDoc = env.getPlu();
 
     PLU featCPlu = env.getPlu();
 
@@ -272,17 +273,17 @@ public class Load {
       AttributeManager.addAttribute(cp,
           ParametersInstructionPG.ATT_CAD_PARCEL_ID, (++idPCIni), "Integer");
 
-        for (BasicPropertyUnit bpu : env.getBpU()) {
+      for (BasicPropertyUnit bpu : env.getBpU()) {
 
-          if (bpu.getCadastralParcel().contains(cp)) {
+        if (bpu.getCadastralParcel().contains(cp)) {
 
-            AttributeManager.addAttribute(cp,
-                ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU,
-                bpu.getAttribute(ParametersInstructionPG.ATT_BPU_ID), "Integer");
+          AttributeManager.addAttribute(cp,
+              ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU,
+              bpu.getAttribute(ParametersInstructionPG.ATT_BPU_ID), "Integer");
+          break;
+        }
 
-          }
-
-       }
+      }
 
       AttributeManager.addAttribute(cp,
           ParametersInstructionPG.ATT_CAD_PARCEL_NUM, cp.getId(), "Integer");
@@ -485,6 +486,10 @@ public class Load {
         AttributeManager.addAttribute(spc,
             ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_SIDE, spc.getSide(),
             "String");
+        AttributeManager.addAttribute(spc,
+            ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_SUB_PAR,
+            sb.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID),
+            "Integer");
 
       }
 
@@ -602,7 +607,7 @@ public class Load {
       if (abr.getToit() instanceof RoofSurface) {
 
         AttributeManager.addAttribute(abr.getToit(),
-            ParametersInstructionPG.ATT_ROOF_BUILDPART,
+            ParametersInstructionPG.ATT_ROOF_ID_BUILDPART,
             abr.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID),
             "Integer");
 
@@ -648,7 +653,7 @@ public class Load {
                 "Integer");
 
         AttributeManager.addAttribute(featTempRoofing,
-            ParametersInstructionPG.ATT_ROOFING_ROOF, abrf.getToit()
+            ParametersInstructionPG.ATT_ROOFING_ID_ROOF, abrf.getToit()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCRoofing.add(featTempRoofing);
@@ -691,7 +696,7 @@ public class Load {
             ParametersInstructionPG.ATT_GUTTER_ID, (++idGutterIni), "Integer");
 
         AttributeManager.addAttribute(featTempGutter,
-            ParametersInstructionPG.ATT_GUTTER_ROOF, abg.getToit()
+            ParametersInstructionPG.ATT_GUTTER_ID_ROOF, abg.getToit()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCGutter.add(featTempGutter);
@@ -734,7 +739,7 @@ public class Load {
             ParametersInstructionPG.ATT_GABLE_ID, (++idGableIni), "Integer");
 
         AttributeManager.addAttribute(featTempGable,
-            ParametersInstructionPG.ATT_GABLE_ROOF, abga.getToit()
+            ParametersInstructionPG.ATT_GABLE_ID_ROOF, abga.getToit()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCGable.add(featTempGable);
@@ -764,14 +769,14 @@ public class Load {
 
     for (AbstractBuilding ab : featCAbstractBuilding) {
 
-      for (SpecificWallSurface sws : ab.getFacades()) {
+      for (SpecificWallSurface sws : ab.getFacade()) {
 
         featCWall.add(sws);
 
         AttributeManager.addAttribute(sws,
             ParametersInstructionPG.ATT_WALL_SURFACE_ID, (++idWIni), "Integer");
 
-        if (ab.getFacades().contains(sws)) {
+        if (ab.getFacade().contains(sws)) {
 
           AttributeManager.addAttribute(sws,
               ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP,

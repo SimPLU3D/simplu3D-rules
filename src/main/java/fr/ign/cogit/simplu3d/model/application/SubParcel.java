@@ -10,6 +10,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 
@@ -35,6 +36,8 @@ public class SubParcel extends CG_LandUse {
 
   private CadastralParcel parcelle;
 
+  private int idZU = 0;
+  private int idCp = 0;
   private double avgSlope;
   private double area = -1;
   private UrbaZone zU = null;
@@ -45,6 +48,22 @@ public class SubParcel extends CG_LandUse {
 
   public void setZoneUrba(UrbaZone zU) {
     this.zU = zU;
+  }
+
+  public void setIdZoneUrba(int idZU) {
+    this.idZU = idZU;
+  }
+
+  public int getIdZoneUrba() {
+    return idZU;
+  }
+
+  public void setIdCadPar(int idCp) {
+    this.idCp = idCp;
+  }
+
+  public int getIdCadPar() {
+    return idCp;
   }
 
   public double builtRatio() {
@@ -65,10 +84,18 @@ public class SubParcel extends CG_LandUse {
     this.setClazz(CLASSE);
   }
 
+  public void setArea(Double area) {
+    this.area = area;
+  }
+  
   public double getAvgSlope() {
     return avgSlope;
   }
 
+  public void setAvgSlope(Double avgSlope) {
+    this.avgSlope = avgSlope;
+  }
+  
   public double getArea() {
 
     if (area == -1) {
@@ -94,7 +121,7 @@ public class SubParcel extends CG_LandUse {
 
   public SubParcel(LandUse landUse) {
     super(landUse);
-
+    
     this.setClazz(CLASSE);
 
   }

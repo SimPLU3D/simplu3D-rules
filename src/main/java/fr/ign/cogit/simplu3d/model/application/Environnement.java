@@ -25,152 +25,153 @@ import fr.ign.parameters.Parameters;
  * @author Brasebin Mickaël
  * 
  * @version 1.0
- *
+ * 
  */
 public class Environnement extends CG_CityModel {
-	public String folder;
-	public PLU plu;
+  public String folder;
+  public PLU plu;
 
-	private static Environnement env = null;
+  private static Environnement env = null;
 
-	public IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
-	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
-	public IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
-	public IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
-	public IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
-	public IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
+  public IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
+  public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
+  public IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
+  public IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
+  public IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
+  public IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 
-	public AbstractDTM terrain;
-	public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
+  public AbstractDTM terrain;
+  public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
 
-	public static IDirectPosition dpTranslate = null;
+  public static IDirectPosition dpTranslate = null;
 
-	public static boolean VERBOSE = false;
-	public static boolean TRANSLATE_TO_ZERO = false;
+  public static boolean VERBOSE = false;
+  public static boolean TRANSLATE_TO_ZERO = false;
 
-	public IFeatureCollection<CadastralParcel> getParcelles() {
-		return cadastralParcels;
-	}
+  public IFeatureCollection<CadastralParcel> getParcelles() {
+    return cadastralParcels;
+  }
 
-	public void setParcelles(IFeatureCollection<CadastralParcel> parcelles) {
-		this.cadastralParcels = parcelles;
-	}
+  public void setParcelles(IFeatureCollection<CadastralParcel> parcelles) {
+    this.cadastralParcels = parcelles;
+  }
 
-	protected Environnement() {
+  protected Environnement() {
 
-	}
+  }
 
-	public static Environnement getInstance() {
-		if (env == null) {
-			env = new Environnement();
-		}
-		return env;
-	}
+  public static Environnement getInstance() {
+    if (env == null) {
+      env = new Environnement();
+    }
+    return env;
+  }
 
-	public IFeatureCollection<CadastralParcel> getCadastralParcels() {
-		return cadastralParcels;
-	}
+  public IFeatureCollection<CadastralParcel> getCadastralParcels() {
+    return cadastralParcels;
+  }
 
-	public void setCadastralParcels(IFeatureCollection<CadastralParcel> cadastralParcels) {
-		this.cadastralParcels = cadastralParcels;
-	}
+  public void setCadastralParcels(
+      IFeatureCollection<CadastralParcel> cadastralParcels) {
+    this.cadastralParcels = cadastralParcels;
+  }
 
-	public IFeatureCollection<SubParcel> getSubParcels() {
-		return subParcels;
-	}
+  public IFeatureCollection<SubParcel> getSubParcels() {
+    return subParcels;
+  }
 
-	public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
-		this.subParcels = subParcels;
-	}
+  public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
+    this.subParcels = subParcels;
+  }
 
-	public IFeatureCollection<AbstractBuilding> getBuildings() {
-		return buildings;
-	}
+  public IFeatureCollection<AbstractBuilding> getBuildings() {
+    return buildings;
+  }
 
-	public void setBuildings(IFeatureCollection<AbstractBuilding> buildings) {
-		this.buildings = buildings;
-	}
+  public void setBuildings(IFeatureCollection<AbstractBuilding> buildings) {
+    this.buildings = buildings;
+  }
 
-	public IFeatureCollection<UrbaZone> getUrbaZones() {
-		return urbaZones;
-	}
+  public IFeatureCollection<UrbaZone> getUrbaZones() {
+    return urbaZones;
+  }
 
-	public void setUrbaZones(IFeatureCollection<UrbaZone> urbaZones) {
-		this.urbaZones = urbaZones;
-	}
+  public void setUrbaZones(IFeatureCollection<UrbaZone> urbaZones) {
+    this.urbaZones = urbaZones;
+  }
 
-	public IFeatureCollection<Alignement> getAlignements() {
-		return alignements;
-	}
+  public IFeatureCollection<Alignement> getAlignements() {
+    return alignements;
+  }
 
-	public void setAlignements(IFeatureCollection<Alignement> alignements) {
-		this.alignements = alignements;
-	}
+  public void setAlignements(IFeatureCollection<Alignement> alignements) {
+    this.alignements = alignements;
+  }
 
-	public AbstractDTM getTerrain() {
-		return terrain;
-	}
+  public AbstractDTM getTerrain() {
+    return terrain;
+  }
 
-	public void setTerrain(AbstractDTM terrain) {
-		this.terrain = terrain;
-	}
+  public void setTerrain(AbstractDTM terrain) {
+    this.terrain = terrain;
+  }
 
-	public static IDirectPosition getDpTranslate() {
-		return dpTranslate;
-	}
+  public static IDirectPosition getDpTranslate() {
+    return dpTranslate;
+  }
 
-	public static void setDpTranslate(IDirectPosition dpTranslate) {
-		Environnement.dpTranslate = dpTranslate;
-	}
+  public static void setDpTranslate(IDirectPosition dpTranslate) {
+    Environnement.dpTranslate = dpTranslate;
+  }
 
-	public static boolean isVERBOSE() {
-		return VERBOSE;
-	}
+  public static boolean isVERBOSE() {
+    return VERBOSE;
+  }
 
-	public static void setVERBOSE(boolean vERBOSE) {
-		VERBOSE = vERBOSE;
-	}
+  public static void setVERBOSE(boolean vERBOSE) {
+    VERBOSE = vERBOSE;
+  }
 
-	public static boolean isTRANSLATE_TO_ZERO() {
-		return TRANSLATE_TO_ZERO;
-	}
+  public static boolean isTRANSLATE_TO_ZERO() {
+    return TRANSLATE_TO_ZERO;
+  }
 
-	public static void setTRANSLATE_TO_ZERO(boolean tRANSLATE_TO_ZERO) {
-		TRANSLATE_TO_ZERO = tRANSLATE_TO_ZERO;
-	}
+  public static void setTRANSLATE_TO_ZERO(boolean tRANSLATE_TO_ZERO) {
+    TRANSLATE_TO_ZERO = tRANSLATE_TO_ZERO;
+  }
 
-	public IFeatureCollection<Road> getRoads() {
-		return roads;
-	}
+  public IFeatureCollection<Road> getRoads() {
+    return roads;
+  }
 
-	public void setRoads(IFeatureCollection<Road> roads) {
-		this.roads = roads;
-	}
+  public void setRoads(IFeatureCollection<Road> roads) {
+    this.roads = roads;
+  }
 
-	public IFeatureCollection<BasicPropertyUnit> getBpU() {
-		return bpU;
-	}
+  public IFeatureCollection<BasicPropertyUnit> getBpU() {
+    return bpU;
+  }
 
-	public void setBpU(IFeatureCollection<BasicPropertyUnit> bpU) {
-		this.bpU = bpU;
-	}
+  public void setBpU(IFeatureCollection<BasicPropertyUnit> bpU) {
+    this.bpU = bpU;
+  }
 
-	public PLU getPlu() {
-		return plu;
-	}
+  public PLU getPlu() {
+    return plu;
+  }
 
-	public void setPlu(PLU plu) {
-		this.plu = plu;
-	}
+  public void setPlu(PLU plu) {
+    this.plu = plu;
+  }
 
-	public Parameters loadParameters(String path) {
-		try {
-			return ParameterComponent.unmarshall(new File(path));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+  public Parameters loadParameters(String path) {
+    try {
+      return ParameterComponent.unmarshall(new File(path));
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
 
 }
