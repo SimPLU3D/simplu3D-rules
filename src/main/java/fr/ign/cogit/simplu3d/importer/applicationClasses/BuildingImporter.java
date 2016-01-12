@@ -37,7 +37,7 @@ public class BuildingImporter {
   /**
    * Aire minimale pour considérée un polygone comme attaché à une parcelle
    */
-  public final static double RATIO_MIN = 0.8;
+  public static double RATIO_MIN = 0.8;
 
   /**
    * @ TODO : buildingparts non gérés

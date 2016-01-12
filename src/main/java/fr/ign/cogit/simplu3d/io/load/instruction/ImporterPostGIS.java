@@ -283,6 +283,12 @@ public class ImporterPostGIS {
         urbaZoneOut.setDateFin(dateFin);
 
       }
+      
+      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU);
+
+      if (attZU != null) {
+        urbaZoneOut.setIdPLU(attZU.toString());
+      }
 
       featZoneOut.add(urbaZoneOut);
 

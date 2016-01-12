@@ -31,121 +31,131 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
  * 
  */
 public class AssignZ {
-	// IF no DTM is used a default Z can be set
-	public static double DEFAULT_Z = 70;
+  // IF no DTM is used a default Z can be set
+  public static double DEFAULT_Z = 70;
 
-	public static void toParcelle(
-			IFeatureCollection<CadastralParcel> parcelles, AbstractDTM dtm,
-			boolean sursampled) throws Exception {
+  public static void toParcelle(IFeatureCollection<CadastralParcel> parcelles,
+      AbstractDTM dtm, boolean sursampled) throws Exception {
 
-		boolean isZSet = (dtm != null);
+    boolean isZSet = (dtm != null);
 
-		for (CadastralParcel p : parcelles) {
+    for (CadastralParcel p : parcelles) {
 
-			if (isZSet) {
-				IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
-				p.setGeom(geom);
+      if (isZSet) {
+        IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
+        p.setGeom(geom);
 
-			} else {
+      } else {
 
-				p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(),
-						DEFAULT_Z, DEFAULT_Z));
+        p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(), DEFAULT_Z,
+            DEFAULT_Z));
 
-			}
+      }
 
-			for (SpecificCadastralBoundary b : p.getSpecificCadastralBoundary()) {
+      for (SpecificCadastralBoundary b : p.getSpecificCadastralBoundary()) {
 
-				if (isZSet) {
-					IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true,
-							sursampled);
-					b.setGeom(geomB);
+        //if (b.getGeom().isEmpty()) {
+          //System.out.println("point 1------> Geom vide");
+        //} else {
+          //System.out.println("ok");
+        //}
 
-				} else {
+        if (isZSet) {
+          IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);
+          
+          if(geomB.isEmpty()){
+            geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);
+          }
+          
+          b.setGeom(geomB);
 
-					b.setGeom(Extrusion2DObject.convertFromGeometry(
-							b.getGeom(), DEFAULT_Z, DEFAULT_Z));
+        } else {
+          b.setGeom(Extrusion2DObject.convertFromGeometry(b.getGeom(),
+              DEFAULT_Z, DEFAULT_Z));
 
-				}
+        }
+        
+        //if (b.getGeom().isEmpty()) {
+          //System.out.println("point 2------> Geom vide");
+        //} else {
+          //System.out.println("okay");
+        //}
 
-			}
+      }
 
-		}
+    }
 
-	}
+  }
 
-	public static void toSousParcelle(IFeatureCollection<SubParcel> parcelles,
-			AbstractDTM dtm, boolean sursampled) throws Exception {
+  public static void toSousParcelle(IFeatureCollection<SubParcel> parcelles,
+      AbstractDTM dtm, boolean sursampled) throws Exception {
 
-		boolean isZSet = (dtm != null);
+    boolean isZSet = (dtm != null);
 
-		for (SubParcel p : parcelles) {
+    for (SubParcel p : parcelles) {
 
-			if (isZSet) {
-				IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
-				p.setGeom(geom);
-			} else {
-				p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(),
-						DEFAULT_Z, DEFAULT_Z));
+      if (isZSet) {
+        IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
+        p.setGeom(geom);
+      } else {
+        p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(), DEFAULT_Z,
+            DEFAULT_Z));
 
-			}
+      }
 
-		}
+    }
 
-	}
+  }
 
-	public static void toVoirie(IFeatureCollection<Road> voiries,
-			AbstractDTM dtm, boolean sursampled) throws Exception {
+  public static void toVoirie(IFeatureCollection<Road> voiries,
+      AbstractDTM dtm, boolean sursampled) throws Exception {
 
-		boolean isZSet = (dtm != null);
+    boolean isZSet = (dtm != null);
 
-		for (Road z : voiries) {
+    for (Road z : voiries) {
 
-			if (isZSet) {
+      if (isZSet) {
 
-				IGeometry geom = dtm.mapGeom(z.getGeom(), 0, true, sursampled);
-				z.setGeom(geom);
-			} else {
-				z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(),
-						DEFAULT_Z, DEFAULT_Z));
+        IGeometry geom = dtm.mapGeom(z.getGeom(), 0, true, sursampled);
+        z.setGeom(geom);
+      } else {
+        z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(), DEFAULT_Z,
+            DEFAULT_Z));
 
-			}
+      }
 
-		}
+    }
 
-	}
+  }
 
-	public static void toZone(IFeatureCollection<UrbaZone> zones,
-			AbstractDTM dtm, boolean sursampled) throws Exception {
+  public static void toZone(IFeatureCollection<UrbaZone> zones,
+      AbstractDTM dtm, boolean sursampled) throws Exception {
 
-		
+    for (UrbaZone z : zones) {
 
+      z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(), DEFAULT_Z,
+          DEFAULT_Z));
 
-		for (UrbaZone z : zones) {
+    }
 
-			z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(),
-					DEFAULT_Z, DEFAULT_Z));
+  }
 
+  public static void toAlignement(
+      IFeatureCollection<Alignement> alignementColl, AbstractDTM dtm,
+      boolean sursampled) throws Exception {
 
-		}
+    boolean isZSet = (dtm != null);
 
-	}
+    for (Alignement a : alignementColl) {
+      if (isZSet) {
 
-	public static void toAlignement(
-			IFeatureCollection<Alignement> alignementColl, AbstractDTM dtm,
-			boolean sursampled) throws Exception {
+        IGeometry geom = dtm.mapGeom(a.getGeom(), 0, true, sursampled);
+        a.setGeom(geom);
+      } else {
+        a.setGeom(Extrusion2DObject.convertFromGeometry(a.getGeom(), DEFAULT_Z,
+            DEFAULT_Z));
+      }
+    }
 
-		boolean isZSet = (dtm != null);
-		
-		for (Alignement a : alignementColl) {
-			if (isZSet) {
-
-			IGeometry geom = dtm.mapGeom(a.getGeom(), 0, true, sursampled);
-			a.setGeom(geom);
-			}else{
-				a.setGeom(Extrusion2DObject.convertFromGeometry(a.getGeom(),
-						DEFAULT_Z, DEFAULT_Z));
-			}
-		}
-
-	}
+  }
 }

@@ -87,7 +87,7 @@ public class SubParcel extends CG_LandUse {
   public void setArea(Double area) {
     this.area = area;
   }
-  
+
   public double getAvgSlope() {
     return avgSlope;
   }
@@ -95,7 +95,7 @@ public class SubParcel extends CG_LandUse {
   public void setAvgSlope(Double avgSlope) {
     this.avgSlope = avgSlope;
   }
-  
+
   public double getArea() {
 
     if (area == -1) {
@@ -109,8 +109,17 @@ public class SubParcel extends CG_LandUse {
   // FT_FeatureCollection<Voirie>();
   public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
+  public void setSpecificCadBoundary(
+      IFeatureCollection<SpecificCadastralBoundary> sCBoundary) {
+    this.sCBoundary = sCBoundary;
+  }
+
   public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
     return sCBoundary.getElements();
+  }
+
+  public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryColl() {
+    return sCBoundary;
   }
 
   public SubParcel() {
@@ -121,7 +130,7 @@ public class SubParcel extends CG_LandUse {
 
   public SubParcel(LandUse landUse) {
     super(landUse);
-    
+
     this.setClazz(CLASSE);
 
   }

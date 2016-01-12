@@ -37,8 +37,8 @@ public class LoaderSHP {
   //public static String NOM_FICHIER_PARCELLE = "parcelles_UB2_rennes_test.shp";
   public static String NOM_FICHIER_VOIRIE = "route.shp";
   public static String NOM_FICHIER_BATIMENTS = "bati.shp";
-  public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
-  //public static String NOM_FICHIER_TERRAIN = "MNT_RENNES_2011.asc";
+  //public static String NOM_FICHIER_TERRAIN = "MNT_BD3D.asc";
+  public static String NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
   public static String NOM_FICHIER_PRESC_LINEAIRE = "PRESCRIPTION_LIN.shp";
   public static String NOM_FICHIER_PLU = "DOC_URBA.shp";
 

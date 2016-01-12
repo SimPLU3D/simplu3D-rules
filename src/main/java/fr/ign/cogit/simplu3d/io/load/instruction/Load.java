@@ -39,6 +39,8 @@ public class Load {
   public static void main(String[] args) throws Exception {
 
     PostgisManager.SRID = "2154";
+    int searchIdBPU = 8;
+    int searchIdZU = 1;
 
     /*
      * At present, the program is parameterized to work with a named database
@@ -48,7 +50,9 @@ public class Load {
      */
 
     // Environnement env = LoaderSHP.load(new File(folder));
-    Environnement env = LoaderPostGISTest.load(folder);
+    // Environnement env = LoaderPostGISTest.load(folder);
+    // Environnement env = LoaderBPU.load(folder, searchIdBPU);
+    Environnement env = LoaderUrbaZone.load(folder, searchIdZU);
 
     // PLU featCPlu = loadPlu(host, port, user, pw, database, env);
 
@@ -71,28 +75,27 @@ public class Load {
 
   }
 
-  // TODO : Work in progress in this part
   public static boolean loadAll(String host, String port, String user,
       String pw, String database, String folder) throws Exception {
 
-    Environnement env = LoaderSHP.loadNoDTM(new File(folder));
+    Environnement env = LoaderSHP.load(new File(folder));
 
     PLU featCPlu = loadPlu(host, port, user, pw, database, env);
 
-    // loadBasicPropertyUnit(host, port, user, pw, database, env);
-    // loadZoneUrba(host, port, user, pw, database, env, featCPlu);
+    loadBasicPropertyUnit(host, port, user, pw, database, env);
+    loadZoneUrba(host, port, user, pw, database, env, featCPlu);
     loadParcel(host, port, user, pw, database, env);
     loadSubParcel(host, port, user, pw, database, env);
-    // loadRoad(host, port, user, pw, database, env);
-    // loadAxis(host, port, user, pw, database, env);
-    // loadBuilding(host, port, user, pw, database, env);
-    // loadBuildingsParts(host, port, user, pw, database, env);
+    loadRoad(host, port, user, pw, database, env);
+    loadAxis(host, port, user, pw, database, env);
+    loadBuilding(host, port, user, pw, database, env);
+    loadBuildingsParts(host, port, user, pw, database, env);
+    loadRoof(host, port, user, pw, database, env);
+    loadWall(host, port, user, pw, database, env);
+    loadRoofing(host, port, user, pw, database, env);
+    loadGutter(host, port, user, pw, database, env);
+    loadGable(host, port, user, pw, database, env);
     loadSpecificCBoundary(host, port, user, pw, database, env);
-    // loadRoof(host, port, user, pw, database, env);
-    // loadWall(host, port, user, pw, database, env);
-    // loadRoofing(host, port,user, pw, database, env);
-    // loadGutter(host, port, user, pw, database, env);
-    // loadGable(host, port, user, pw, database, env);
 
     System.out.println("\n----- Loading completed (hopefully) -----");
 
@@ -211,43 +214,43 @@ public class Load {
 
     for (UrbaZone u : featCUrbzone) {
 
-      SimpleDateFormat sdf = new SimpleDateFormat(
-          ParemetersApplication.DATE_FORMAT_ZU);
+      // SimpleDateFormat sdf = new SimpleDateFormat(
+      // ParemetersApplication.DATE_FORMAT_ZU);
 
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU, featCPlu.getIdUrba(),
-          "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU, featCPlu.getIdUrba(),
+      // "String");
       AttributeManager.addAttribute(u,
           ParametersInstructionPG.ATT_ZONE_URBA_ID, (++idZUIni), "Integer");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE, u.getLibelle(),
-          "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG, u.getLibelong(),
-          "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE, u.getTypeZone(),
-          "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI, u.getDestdomi(),
-          "String");
-      AttributeManager
-          .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC,
-              u.getNomFic(), "String");
-      AttributeManager
-          .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_URLFIC,
-              u.getUrlFic(), "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_INSEE, u.getInsee(), "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO,
-          sdf.format(u.getDateDeb()), "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID,
-          sdf.format(u.getDateFin()), "String");
-      AttributeManager.addAttribute(u,
-          ParametersInstructionPG.ATT_ZONE_URBA_COMMENTAIRE, u.getText(),
-          "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE, u.getLibelle(),
+      // "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG, u.getLibelong(),
+      // "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE, u.getTypeZone(),
+      // "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI, u.getDestdomi(),
+      // "String");
+      // AttributeManager
+      // .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC,
+      // u.getNomFic(), "String");
+      // AttributeManager
+      // .addAttribute(u, ParametersInstructionPG.ATT_ZONE_URBA_URLFIC,
+      // u.getUrlFic(), "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_INSEE, u.getInsee(), "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO,
+      // sdf.format(u.getDateDeb()), "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID,
+      // sdf.format(u.getDateFin()), "String");
+      // AttributeManager.addAttribute(u,
+      // ParametersInstructionPG.ATT_ZONE_URBA_COMMENTAIRE, u.getText(),
+      // "String");
 
     }
 
@@ -662,11 +665,19 @@ public class Load {
 
     }
 
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROOFING_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
-        ParametersInstructionPG.TABLE_ROOFING, featCRoofing);
+    if (!featCRoofing.isEmpty()) {
 
-    return true;
+      PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_ROOFING_GEOM;
+      PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+          ParametersInstructionPG.TABLE_ROOFING, featCRoofing);
+
+      return true;
+
+    } else {
+
+      return true;
+
+    }
   }
 
   // Chargement des gouttières
@@ -705,11 +716,19 @@ public class Load {
 
     }
 
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GUTTER_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
-        ParametersInstructionPG.TABLE_GUTTER, featCGutter);
+    if (!featCGutter.isEmpty()) {
 
-    return true;
+      PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GUTTER_GEOM;
+      PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+          ParametersInstructionPG.TABLE_GUTTER, featCGutter);
+
+      return true;
+
+    } else {
+
+      return true;
+
+    }
   }
 
   // Chargement des pignons
@@ -748,11 +767,19 @@ public class Load {
 
     }
 
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GABLE_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
-        ParametersInstructionPG.TABLE_GABLE, featCGable);
+    if (!featCGable.isEmpty()) {
 
-    return true;
+      PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_GABLE_GEOM;
+      PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+          ParametersInstructionPG.TABLE_GABLE, featCGable);
+
+      return true;
+
+    } else {
+
+      return true;
+
+    }
   }
 
   // Chargement des murs

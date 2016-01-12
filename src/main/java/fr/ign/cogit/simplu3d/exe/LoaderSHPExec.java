@@ -14,8 +14,10 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.ZonesImporter;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
@@ -52,9 +54,26 @@ public class LoaderSHPExec {
     RoadImporter.ATT_TYPE = "NATURE";
 
     CadastralParcelLoader.WIDTH_DEP = 30;
+    
+    // Rerouting towards the new files
+    LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
+    LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
+    LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
+    LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
+    LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
+    LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
 
-    String folder = "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
+    LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
+    CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
+    CadastralParcelLoader.TYPE_ANNOTATION = 2;
+
+    ZonesImporter.NOM_ATT_TYPE_ZONE = "TYPE";
+
+    BuildingImporter.RATIO_MIN = 0.5;
+
+    // String folder = "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
+    String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";    
     String folderOut = folder + "out/";
 
     File fOut = new File(folderOut);

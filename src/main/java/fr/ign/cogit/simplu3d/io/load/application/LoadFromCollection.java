@@ -21,6 +21,7 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 import fr.ign.cogit.simplu3d.util.AssignZ;
@@ -43,141 +44,158 @@ import fr.ign.cogit.simplu3d.util.AssignZ;
  **/
 public class LoadFromCollection {
 
-	public final static boolean SURSAMPLED = true;
+  public final static boolean SURSAMPLED = true;
 
-	private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
-	
-	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
-			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
-			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, String ruleFolder,
-			AbstractDTM dtm) throws Exception {
-		Environnement env = Environnement.getInstance();
+  private final static Logger logger = Logger
+      .getLogger(LoadFromCollection.class.getCanonicalName());
 
-		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, ruleFolder, dtm, env);
-	}
-	
-	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
-			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
-			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, String ruleFolder,
-			AbstractDTM dtm, Environnement env) throws Exception {
-		
-		// Etape 0 : doit on translater tous les objets ?
+  public static Environnement load(IFeature featPLU,
+      IFeatureCollection<IFeature> zoneColl,
+      IFeatureCollection<IFeature> parcelleColl,
+      IFeatureCollection<IFeature> voirieColl,
+      IFeatureCollection<IFeature> batiColl,
+      IFeatureCollection<IFeature> prescriptions, String ruleFolder,
+      AbstractDTM dtm) throws Exception {
+    Environnement env = Environnement.getInstance();
 
-		if (Environnement.TRANSLATE_TO_ZERO) {
-			Environnement.dpTranslate = zoneColl.envelope().center();
-			for (IFeature feat : zoneColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
-						-Environnement.dpTranslate.getY(), 0));
-			}
-			for (IFeature feat : parcelleColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
-						-Environnement.dpTranslate.getY(), 0));
-			}
-			for (IFeature feat : voirieColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
-						-Environnement.dpTranslate.getY(), 0));
-			}
-			for (IFeature feat : batiColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
-						-Environnement.dpTranslate.getY(), 0));
-			}
-			for (IFeature feat : prescriptions) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
-						-Environnement.dpTranslate.getY(), 0));
-			}
-		}
+    return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
+        batiColl, prescriptions, ruleFolder, dtm, env);
+  }
 
-		// Etape 1 : création de l'objet PLU
-		PLU plu;
-		if (featPLU == null) {
-			plu = new PLU();
-		} else {
-			plu = PLUImporter.loadPLU(featPLU);
-		}
+  public static Environnement load(IFeature featPLU,
+      IFeatureCollection<IFeature> zoneColl,
+      IFeatureCollection<IFeature> parcelleColl,
+      IFeatureCollection<IFeature> voirieColl,
+      IFeatureCollection<IFeature> batiColl,
+      IFeatureCollection<IFeature> prescriptions, String ruleFolder,
+      AbstractDTM dtm, Environnement env) throws Exception {
 
-		env.setPlu(plu);
+    // Etape 0 : doit on translater tous les objets ?
 
-		logger.info("PLU creation");
+    if (Environnement.TRANSLATE_TO_ZERO) {
+      Environnement.dpTranslate = zoneColl.envelope().center();
+      for (IFeature feat : zoneColl) {
+        feat.setGeom(feat.getGeom().translate(
+            -Environnement.dpTranslate.getX(),
+            -Environnement.dpTranslate.getY(), 0));
+      }
+      for (IFeature feat : parcelleColl) {
+        feat.setGeom(feat.getGeom().translate(
+            -Environnement.dpTranslate.getX(),
+            -Environnement.dpTranslate.getY(), 0));
+      }
+      for (IFeature feat : voirieColl) {
+        feat.setGeom(feat.getGeom().translate(
+            -Environnement.dpTranslate.getX(),
+            -Environnement.dpTranslate.getY(), 0));
+      }
+      for (IFeature feat : batiColl) {
+        feat.setGeom(feat.getGeom().translate(
+            -Environnement.dpTranslate.getX(),
+            -Environnement.dpTranslate.getY(), 0));
+      }
+      for (IFeature feat : prescriptions) {
+        feat.setGeom(feat.getGeom().translate(
+            -Environnement.dpTranslate.getX(),
+            -Environnement.dpTranslate.getY(), 0));
+      }
+    }
 
-		// Etape 2 : création des zones et assignation des règles aux zones
-		IFeatureCollection<UrbaZone> zones = ZonesImporter.importUrbaZone(zoneColl);
+    // Etape 1 : création de l'objet PLU
+    PLU plu;
+    if (featPLU == null) {
+      plu = new PLU();
+    } else {
+      plu = PLUImporter.loadPLU(featPLU);
+    }
 
-		logger.info("Zones loaded");
+    env.setPlu(plu);
 
-		// Etape 3 : assignement des zonages au PLU
-		plu.lUrbaZone.addAll(zones);
-		env.setUrbaZones(zones);
+    logger.info("PLU creation");
 
-		logger.info("Zones assigned");
+    // Etape 2 : création des zones et assignation des règles aux zones
+    IFeatureCollection<UrbaZone> zones = ZonesImporter.importUrbaZone(zoneColl);
 
-		// Etape 4 : chargement des parcelles et créations des bordures
-		IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
-				.assignBordureToParcelleWithOrientation(parcelleColl);
+    logger.info("Zones loaded");
 
-		if (parcelles == null) {
-			throw new Exception("Bad topology in Parcel List");
-		}
+    // Etape 3 : assignement des zonages au PLU
+    plu.lUrbaZone.addAll(zones);
+    env.setUrbaZones(zones);
 
-		env.setCadastralParcels(parcelles);
+    logger.info("Zones assigned");
 
-		logger.info("Parcel borders created");
+    // Etape 4 : chargement des parcelles et créations des bordures
+    IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
+        .assignBordureToParcelleWithOrientation(parcelleColl);
 
-		// Etape 5 : import des sous parcelles
-		IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(parcelles, zones);
-		env.setSubParcels(sousParcelles);
+    if (parcelles == null) {
+      throw new Exception("Bad topology in Parcel List");
+    }
 
-		logger.info("Sub parcels loaded");
+    env.setCadastralParcels(parcelles);
 
-		// Etape 6 : création des unités foncirèes
-		IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter.importBPU(parcelles);
-		env.setBpU(collBPU);
+    logger.info("Parcel borders created");
 
-		logger.info("Basic property units created");
+    // Etape 5 : import des sous parcelles
+    IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(
+        parcelles, zones);
+    env.setSubParcels(sousParcelles);
 
-		// Etape 7 : import des bâtiments
-		IFeatureCollection<Building> buildings = BuildingImporter.importBuilding(batiColl, collBPU);
-		env.getBuildings().addAll(buildings);
+    logger.info("Sub parcels loaded");
 
-		logger.info("Buildings imported");
+    // Etape 6 : création des unités foncirèes
+    IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter
+        .importBPU(parcelles);
+    env.setBpU(collBPU);
 
-		// Etape 8 : chargement des voiries
+    logger.info("Basic property units created");
 
-		IFeatureCollection<Road> roads = RoadImporter.importRoad(voirieColl);
-		env.setRoads(roads);
+    // Etape 7 : import des bâtiments
+    IFeatureCollection<Building> buildings = BuildingImporter.importBuilding(
+        batiColl, collBPU);
+    env.getBuildings().addAll(buildings);
 
-		logger.info("Roads loaded");
+    logger.info("Buildings imported");
 
-		// Etape 9 : on affecte les liens entres une bordure et ses objets
-		// adjacents
-		AssignLinkToBordure.process(parcelles, roads);
+    // Etape 8 : chargement des voiries
 
-		logger.info("Links with roads created");
+    IFeatureCollection<Road> roads = RoadImporter.importRoad(voirieColl);
+    env.setRoads(roads);
 
-		// Etape 10 : on importe les alignements
-		IFeatureCollection<Alignement> alignementColl = AlignementImporter.importRecul(prescriptions, parcelles);
-		env.setAlignements(alignementColl);
+    logger.info("Roads loaded");
 
-		logger.info("Alignment loaded");
+    // Etape 9 : on affecte les liens entres une bordure et ses objets
+    // adjacents
+    AssignLinkToBordure.process(parcelles, roads);
 
-		// Etape 11 : on affecte des z à tout ce bon monde // - parcelles,
-		// sous-parcelles route sans z, zonage, les bordures etc...
-		env.setTerrain(dtm);
-		try {
-			AssignZ.toParcelle(env.getParcelles(), dtm, SURSAMPLED);
+    logger.info("Links with roads created");
 
-			AssignZ.toSousParcelle(env.getSubParcels(), dtm, SURSAMPLED);
-			AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
-			AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);
-			AssignZ.toZone(env.getUrbaZones(), dtm, false);
-		} catch (Exception e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    // Etape 10 : on importe les alignements
+    IFeatureCollection<Alignement> alignementColl = AlignementImporter
+        .importRecul(prescriptions, parcelles);
+    env.setAlignements(alignementColl);
 
-		logger.info("3D created");
+    logger.info("Alignment loaded");
 
-		return env;
-	}
+    // Etape 11 : on affecte des z à tout ce bon monde // - parcelles,
+    // sous-parcelles route sans z, zonage, les bordures etc...
+    env.setTerrain(dtm);
+    try {
+      System.out.println("---------- debut parcelle ----------");
+      AssignZ.toParcelle(env.getParcelles(), dtm, SURSAMPLED);
+      System.out.println("---------- fin parcelle ----------");
 
+      AssignZ.toSousParcelle(env.getSubParcels(), dtm, SURSAMPLED);
+      AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
+      AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);
+      AssignZ.toZone(env.getUrbaZones(), dtm, false);
+    } catch (Exception e) { // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
+    logger.info("3D created");
+
+    return env;
+  }
 
 }

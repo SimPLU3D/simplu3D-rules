@@ -57,10 +57,10 @@ public class ExtractIdMaxPG {
       int x = idMax + 1;
       System.out.println("\n----- Table '" + nameTable
           + "' found. The present maximal identifier in the column ID ("
-          + nameColId + ") is : " + idMax + ". -----");
+          + nameColId + ") is : " + idMax + " -----");
       System.out
           .println("----- The first integrated identifier will have for value : "
-              + x + ". -----\n");
+              + x + " -----\n");
 
       // Fermeture de la connection
       s.close();

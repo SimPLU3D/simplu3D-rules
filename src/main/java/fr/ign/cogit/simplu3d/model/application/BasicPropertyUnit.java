@@ -32,92 +32,92 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  **/
 public class BasicPropertyUnit extends DefaultFeature {
 
-	public List<Building> buildings = new ArrayList<Building>();
-	public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
+  public List<Building> buildings = new ArrayList<Building>();
+  public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
 
-	public BasicPropertyUnit() {
+  public BasicPropertyUnit() {
 
-	}
+  }
 
-	public List<Building> getBuildings() {
-		return buildings;
-	}
+  public List<Building> getBuildings() {
+    return buildings;
+  }
 
-	public void setBuildings(List<Building> buildings) {
-		this.buildings = buildings;
-	}
+  public void setBuildings(List<Building> buildings) {
+    this.buildings = buildings;
+  }
 
-	public List<CadastralParcel> getCadastralParcel() {
-		return cadastralParcel;
-	}
+  public List<CadastralParcel> getCadastralParcel() {
+    return cadastralParcel;
+  }
 
-	public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
-		this.cadastralParcel = cadastralParcel;
-	}
+  public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
+    this.cadastralParcel = cadastralParcel;
+  }
 
-	IMultiSurface<IOrientableSurface> geom = null;
+  IMultiSurface<IOrientableSurface> geom = null;
 
-	public IMultiSurface<IOrientableSurface> generateGeom() {
+  public IMultiSurface<IOrientableSurface> generateGeom() {
 
-		if (geom == null) {
-			geom = new GM_MultiSurface<IOrientableSurface>();
-			for (CadastralParcel cP : this.getCadastralParcel()) {
-				IGeometry geomP = cP.getGeom();
+    if (geom == null) {
+      geom = new GM_MultiSurface<IOrientableSurface>();
+      for (CadastralParcel cP : this.getCadastralParcel()) {
+        IGeometry geomP = cP.getGeom();
 
-				if (geomP != null) {
+        if (geomP != null) {
 
-					List<IOrientableSurface> lG = FromGeomToSurface.convertGeom(geomP);
-					if (lG != null) {
-						geom.addAll(lG);
-					}
-				}
+          List<IOrientableSurface> lG = FromGeomToSurface.convertGeom(geomP);
+          if (lG != null) {
+            geom.addAll(lG);
+          }
+        }
 
-			}
-		}
+      }
+    }
 
-		return geom;
-	}
+    return geom;
+  }
 
-	private IPolygon pol2D = null;
+  private IPolygon pol2D = null;
 
-	public IPolygon getpol2D() {
+  public IPolygon getpol2D() {
 
-		return pol2D;
-	}
+    return pol2D;
+  }
 
-	public void setpol2D(IPolygon pol) {
-		pol2D = pol;
-	}
+  public void setpol2D(IPolygon pol) {
+    pol2D = pol;
+  }
 
-	Geometry geomjts = null;
+  Geometry geomjts = null;
 
-	public Geometry getGeomJTS() {
+  public Geometry getGeomJTS() {
 
-		if (geomjts == null) {
-			try {
-				geomjts = JtsGeOxygene.makeJtsGeom(geom);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    if (geomjts == null) {
+      try {
+        geomjts = JtsGeOxygene.makeJtsGeom(geom);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
 
-		return geomjts;
-	}
+    return geomjts;
+  }
 
-	public String toString() {
+  public String toString() {
 
-		return "" + id;
+    return "" + id;
 
-	}
+  }
 
-	private double area = -1;
+  private double area = -1;
 
-	public double getArea() {
-		if (area == -1) {
-			area = this.getpol2D().area();
-		}
-		return area;
-	}
+  public double getArea() {
+    if (area == -1) {
+      area = this.getpol2D().area();
+    }
+    return area;
+  }
 
 }
