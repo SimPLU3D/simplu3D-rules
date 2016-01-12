@@ -61,7 +61,7 @@ create table cadastral_parcel(
     cadpar_surf numeric,
     cadpar_id_bpu int
 );
-    -- Ajout de la geometrie de la table Sub_Parcelle :
+    -- Ajout de la geometrie de la table Cadastral Parcel :
     ALTER TABLE "cadastral_parcel" ADD COLUMN "the_geom" geometry(MultiPolygonZ,2154);
 
 
@@ -121,6 +121,7 @@ create table specific_cboundary(
     scb_id int primary key,
     scb_type int,
     scb_side int,
+    scb_id_subpar int,
     scb_id_adj int,
     scb_table_ref text
 );

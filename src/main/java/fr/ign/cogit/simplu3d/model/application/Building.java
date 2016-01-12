@@ -1,13 +1,14 @@
 package fr.ign.cogit.simplu3d.model.application;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -19,9 +20,20 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  **/
 public class Building extends AbstractBuilding {
 
-  public Building(){
+  private int idBuilding = 0;
+
+  public void setIdBuilding(int idBuilding) {
+    this.idBuilding = idBuilding;
+  }
+
+  public int getIdBuilding() {
+    return idBuilding;
+  }
+
+  public Building() {
     super();
   }
+
   public Building(IGeometry geom) {
     super(geom);
   }

@@ -8,13 +8,14 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_RoofSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.indicator.RoofAngle;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -30,6 +31,8 @@ public class RoofSurface extends CG_RoofSurface {
   public IMultiCurve<IOrientableCurve> gable;
   public IMultiCurve<IOrientableCurve> roofing;
   public IMultiCurve<IOrientableCurve> interiorEdge;
+  public int idBuildPart;
+  public int idRoof;
 
   public IMultiCurve<IOrientableCurve> getInteriorEdge() {
     return interiorEdge;
@@ -81,8 +84,7 @@ public class RoofSurface extends CG_RoofSurface {
     this.material = mat;
   }
 
-  public void setGutter(
-      IMultiCurve<? extends IOrientableCurve> ligneGoutierre) {
+  public void setGutter(IMultiCurve<? extends IOrientableCurve> ligneGoutierre) {
     this.gutter = new GM_MultiCurve<IOrientableCurve>();
     this.gutter.addAll(ligneGoutierre);
 
@@ -95,27 +97,24 @@ public class RoofSurface extends CG_RoofSurface {
     tCopy.setGeom((IGeometry) this.getGeom().clone());
     tCopy.setLod2MultiSurface((IMultiSurface<IOrientableSurface>) this
         .getGeom().clone());
-    tCopy.setGutter((IMultiCurve<IOrientableCurve>) this.getGutter()
-        .clone());
+    tCopy.setGutter((IMultiCurve<IOrientableCurve>) this.getGutter().clone());
     tCopy.setRoofing((IMultiCurve<IOrientableCurve>) this.getRoofing().clone());
 
     return tCopy;
 
   }
 
-
   private double angleMin = Double.NaN;
-//  private double angleMax = Double.NaN;
-  
-  
-  
+  private double angleMax = Double.NaN;
+
+  // private double angleMax = Double.NaN;
+
   public double getAngleMin() {
-    
-    
-    if(Double.isNaN(angleMin)){
+
+    if (Double.isNaN(angleMin)) {
       angleMin = RoofAngle.angleMin(this);
     }
-    
+
     return angleMin;
   }
 
@@ -125,17 +124,32 @@ public class RoofSurface extends CG_RoofSurface {
 
   public double getAngleMax() {
 
-    
     return RoofAngle.angleMax(this);
   }
 
-//  public void setAngleMax(double angleMax) {
-//    this.angleMax = angleMax;
-//  }
+  // TODO : de base en commentaire pourquoi???
+  public void setAngleMax(double angleMax) {
+    this.angleMax = angleMax;
+  }
 
   public IMultiCurve<IOrientableCurve> getGable() {
     return gable;
   }
-  
+
+  public int getIdBuildPart() {
+    return idBuildPart;
+  }
+
+  public void setIdBuildPart(int idBuildPart) {
+    this.idBuildPart = idBuildPart;
+  }
+
+  public int getIdRoof() {
+    return idRoof;
+  }
+
+  public void setIdRoof(int idRoof) {
+    this.idRoof = idRoof;
+  }
 
 }

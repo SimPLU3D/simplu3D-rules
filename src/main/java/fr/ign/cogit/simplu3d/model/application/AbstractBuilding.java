@@ -21,13 +21,14 @@ import fr.ign.cogit.simplu3d.importer.applicationClasses.EmpriseGenerator;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoofImporter;
 import fr.ign.cogit.simplu3d.indicator.HauteurCalculation;
 import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -37,11 +38,17 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
  * 
  * @version 1.0
  **/
+
 public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
   public List<BuildingPart> buildingPart = new ArrayList<BuildingPart>();
   private RoofSurface roofSurface = null;
+  private Building building;
+  private SpecificWallSurface wall;
+  private RoofSurface roof;
   private List<SpecificWallSurface> wallSurface;
+  private int idBuilding;
+  private int idSubPar;
 
   public boolean isNew = false;
 
@@ -55,7 +62,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
   protected AbstractBuilding() {
     super();
   }
-
 
   public AbstractBuilding(IGeometry geom) {
     this.setGeom(geom);
@@ -96,14 +102,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
     this.setToit(t);
   }
 
-  public List<SpecificWallSurface> getFacades() {
-    return wallSurface;
-  }
-
-  public void setFacades(List<SpecificWallSurface> facades) {
-    this.wallSurface = facades;
-  }
-
   public List<SubParcel> getSousParcelles() {
     return sousParcelles;
   }
@@ -118,6 +116,46 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
   public void setbPU(BasicPropertyUnit bPU) {
     this.bPU = bPU;
+  }
+
+  public Building getBuilding() {
+    return building;
+  }
+
+  public void setBuilding(Building building) {
+    this.building = building;
+  }
+
+  public SpecificWallSurface getWall() {
+    return wall;
+  }
+
+  public void setWall(SpecificWallSurface wall) {
+    this.wall = wall;
+  }
+
+  public RoofSurface getRoof() {
+    return roof;
+  }
+
+  public void setRoof(RoofSurface roof) {
+    this.roof = roof;
+  }
+
+  public int getIdBuilding() {
+    return idBuilding;
+  }
+
+  public void getIdBuilding(int idBuilding) {
+    this.idBuilding = idBuilding;
+  }
+
+  public int getIdSubPar() {
+    return idSubPar;
+  }
+
+  public void setIdSubPar(int idSubPar) {
+    this.idSubPar = idSubPar;
   }
 
   public List<BuildingPart> getBuildingPart() {
@@ -244,8 +282,8 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
     dpl = this.getToit().getGeom().coord();
     zMin = box.getLLDP().getZ();
     for (IDirectPosition dp : dpl) {
-      if (geom.distance(new GM_Point(dp)) * slope + hIni < shift
-          + dp.getZ() - zMin) {
+      if (geom.distance(new GM_Point(dp)) * slope + hIni < shift + dp.getZ()
+          - zMin) {
         return false;
       }
     }
