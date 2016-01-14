@@ -14,6 +14,7 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
@@ -70,7 +71,7 @@ public class LoaderSHPExec {
 
     ZonesImporter.NOM_ATT_TYPE_ZONE = "TYPE";
 
-    BuildingImporter.RATIO_MIN = 0.5;
+    AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
 
     // String folder = "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
     String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";    
