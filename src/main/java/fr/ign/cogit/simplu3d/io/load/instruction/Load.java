@@ -10,10 +10,12 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 import fr.ign.cogit.simplu3d.io.load.application.ParemetersApplication;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.application.BuildingPart;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.PLU;
@@ -530,7 +532,68 @@ public class Load {
     return true;
   }
 
+/*
   // Chargement des Morceaux de batiments
+  public static boolean loadBuildingsParts(String host, String port,
+      String user, String pw, String database, Environnement env)
+      throws Exception {
+
+    IFeatureCollection<SubParcel> featSubParcel = env.getSubParcels();
+    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
+        .getBuildings();
+
+    IFeatureCollection<IFeature> featCBuildPart = new FT_FeatureCollection<>();
+
+    int idBPIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING_PART,
+        ParametersInstructionPG.ATT_BUILDING_PART_ID);
+
+    for (SubParcel currentSP : featSubParcel) {
+
+      IFeatureCollection<AbstractBuilding> abstractBP = currentSP
+          .getBuildingsParts();
+
+      for (AbstractBuilding currentABP : abstractBP) {
+
+        IFeature featTemp = new DefaultFeature(currentABP.getFootprint());
+        System.out.println("Class : " + featTemp.getGeom().getClass());
+
+        AttributeManager.addAttribute(featTemp,
+            ParametersInstructionPG.ATT_BUILDING_PART_ID, (++idBPIni),
+            "Integer");
+
+        AttributeManager.addAttribute(featTemp,
+            ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR,
+            currentSP.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID),
+            "Integer");
+
+        // TODO : Ajouter ID Building
+        for (AbstractBuilding currentB : featCAbstractBuilding) {
+
+          // System.out.println("Build " + currentB.getBuildingPart().get(0));
+
+          // if (currentB.getGeom().intersects(currentABP.getGeom())) {
+
+          // System.out.println("plip : " + currentB.getId());
+
+          // }
+
+        }
+
+        featCBuildPart.add(featTemp);
+
+      }
+
+    }
+
+    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_BUILDING_PART_GEOM;
+    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
+        ParametersInstructionPG.TABLE_BUILDING_PART, featCBuildPart, true);
+
+    return true;
+  }
+*/
+  
   public static boolean loadBuildingsParts(String host, String port,
       String user, String pw, String database, Environnement env)
       throws Exception {
@@ -546,6 +609,7 @@ public class Load {
 
     for (AbstractBuilding abp : featCAbstractBuilding) {
 
+      // TODO : boucle sur BP pour affecter geom BP
       IFeature featTemp = new DefaultFeature(abp.getFootprint());
 
       AttributeManager.addAttribute(featTemp,
@@ -582,6 +646,8 @@ public class Load {
 
     return true;
   }
+  
+
 
   // Chargement des toits
   public static boolean loadRoof(String host, String port, String user,

@@ -28,7 +28,7 @@ public class LoaderPostGISTest {
   public final static String NOM_TABLE_SPECIFIC_CBOUNDARY = ParametersInstructionPG.TABLE_SPECIFIC_CBOUNDARY;
   public final static String NOM_TABLE_ZONE_URBA = ParametersInstructionPG.TABLE_ZONE_URBA;
 
-  public final static String NOM_MNT = "MNT_BD3D.asc";
+  public static String NOM_MNT = "MNT_BD3D.asc";
 
   public Environnement getEnvironnement(String folder) throws Exception {
     return LoaderPostGISTest.load(folder);

@@ -82,8 +82,10 @@ public class RoofImporter {
     IMultiCurve<IOrientableCurve> pignons = new GM_MultiCurve<IOrientableCurve>();
     pignons.addAll(lPignons);
     t.setGable(pignons);
-    
-    t.setGutter(new GM_MultiCurve<>(cR.getExteriorLineStrings()));
+    if(cR.getExteriorLineStrings()!=null && ! cR.getExteriorLineStrings().isEmpty()){
+      t.setGutter(new GM_MultiCurve<>(cR.getExteriorLineStrings()));
+    }
+ 
    
     // IFeatureCollection<IFeature> fC = DetectPignon.detectPignon(poly
     // /*lLSExt*/, lLS , epsilonDist,epsilonAngle)

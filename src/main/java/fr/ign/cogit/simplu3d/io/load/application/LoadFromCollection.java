@@ -6,6 +6,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.AlignementImporter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.BasicPropertyUnitImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
@@ -181,10 +182,7 @@ public class LoadFromCollection {
     // sous-parcelles route sans z, zonage, les bordures etc...
     env.setTerrain(dtm);
     try {
-      System.out.println("---------- debut parcelle ----------");
       AssignZ.toParcelle(env.getParcelles(), dtm, SURSAMPLED);
-      System.out.println("---------- fin parcelle ----------");
-
       AssignZ.toSousParcelle(env.getSubParcels(), dtm, SURSAMPLED);
       AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
       AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);

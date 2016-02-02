@@ -114,9 +114,14 @@ public class EmpriseGenerator {
 
     }
 
+    if(lPol.isEmpty()){
+      return null;
+    }
+    
     if (lPol.size() == 1) {
       return lPol.get(0);
     }
+
 
     IGeometry geom = lPol.get(0).buffer(1);
 

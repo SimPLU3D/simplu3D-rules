@@ -326,7 +326,7 @@ public class AutomaticAssignment {
 
                 } else {
 
-                  currentBuildingPart.setRoof(currentRoof);
+                  currentBuildingPart.setToit(currentRoof);
 
                   System.out.println("\t\t" + "La partie de batiment n°"
                       + idCurrentBP + " est rattachée au toit n°"

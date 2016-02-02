@@ -666,20 +666,18 @@ public class ImporterPostGIS {
       attBuildPart = feat
           .getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_BUILD);
 
-      String objStr = attBuildPart.toString();
-      int objInt = Integer.parseInt(objStr);
-
       if (attBuildPart != null) {
+        String objStr = attBuildPart.toString();
+        int objInt = Integer.parseInt(objStr);
         bp.setIdBuilding(objInt);
       }
 
       attBuildPart = feat
           .getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR);
 
-      objStr = attBuildPart.toString();
-      objInt = Integer.parseInt(objStr);
-
       if (attBuildPart != null) {
+        String objStr = attBuildPart.toString();
+        int objInt = Integer.parseInt(objStr);
         bp.setIdSubPar(objInt);
       }
 

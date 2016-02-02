@@ -90,16 +90,16 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
     // Etape 2 : on créé l'emprise du bâtiment
     footprint = EmpriseGenerator.convert(surfaceRoof);
 
-    if (footprint == null) {
-      System.out.println("Emprise nulle");
+    if (footprint != null) {
+      // Création toit
+      RoofSurface t = RoofImporter.create(surfaceRoof,
+          (IPolygon) footprint.clone());
+
+      // Affectation
+      this.setToit(t);
     }
 
-    // Création toit
-    RoofSurface t = RoofImporter.create(surfaceRoof,
-        (IPolygon) footprint.clone());
 
-    // Affectation
-    this.setToit(t);
   }
 
   public List<SubParcel> getSousParcelles() {

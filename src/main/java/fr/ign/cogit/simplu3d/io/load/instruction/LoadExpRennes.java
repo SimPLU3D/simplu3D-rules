@@ -1,15 +1,11 @@
 package fr.ign.cogit.simplu3d.io.load.instruction;
 
-import java.io.File;
-
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
-import fr.ign.cogit.simplu3d.importer.applicationClasses.BuildingImporter;
+import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.ZonesImporter;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
-import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 
 public class LoadExpRennes {
 
@@ -30,7 +26,8 @@ public class LoadExpRennes {
     LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
     LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
     LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
-    LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+    // LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+    LoaderSHP.NOM_FICHIER_BATIMENTS = "out/Bati_UB2_3D_V2.shp";
 
     LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
@@ -42,10 +39,10 @@ public class LoadExpRennes {
     CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
     CadastralParcelLoader.TYPE_ANNOTATION = 1;
 
-
     ZonesImporter.NOM_ATT_TYPE_ZONE = "TYPE";
 
-    BuildingImporter.RATIO_MIN = 0.5;
+    AssignBuildingPartToSubParcel.RATIO_MIN = 0.8;
+    AssignBuildingPartToSubParcel.ASSIGN_METHOD = 0;
 
     Load.loadAll(host, port, user, pw, database, folder);
 

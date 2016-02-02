@@ -13,6 +13,7 @@ drop table if exists roofing ;
 drop table if exists gutter ;
 drop table if exists gable ;
 drop table if exists wall_surface ;
+drop table if exists version ;
 
 
 -- Creation de la table Zone Urba :
@@ -182,3 +183,10 @@ create table wall_surface(
 );
     -- Ajout de la geometrie de la table Wall Surface :
     ALTER TABLE "wall_surface" ADD COLUMN "the_geom" geometry(MultiPolygonZ,2154);
+    
+-- Creation de la table Version :
+create table version(
+    vers_id int primary key,
+    vers_id_build_del int,
+    vers_id_vers_build int
+);

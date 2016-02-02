@@ -81,6 +81,7 @@ public class ParametersInstructionPG {
   public final static String ATT_BUILDING_PART_ID = "buildp_id";
   public final static String ATT_BUILDING_PART_ID_BUILD = "buildp_id_build";
   public final static String ATT_BUILDING_PART_ID_SUBPAR = "buildp_id_subpar";
+  public final static String ATT_BUILDING_PART_ID_VERSION = "buildp_id_version";
   public final static String ATT_BUILDING_PART_GEOM = "buildp_footprint";
 
   // Paramètres PostGis pour la table Building
@@ -150,5 +151,12 @@ public class ParametersInstructionPG {
   public final static String ATT_PUBLIC_SPACE_ID = "pubs_id";
   public final static String ATT_PUBLIC_SPACE_NOM = "pubs_nom";
   public final static String ATT_PUBLIC_SPACE_GEOM = "the_geom";
+  
+  // Paramètres PostGis pour la table Version
+  public final static String TABLE_VERSION = "version";
+
+  public final static String ATT_VERSION_ID = "vers_id";
+  public final static String ATT_VERSION_ID_VERSION_BUILD = "vers_id_vers_build";
+  public final static String ATT_VERSION_ID_BUILD_DEL = "vers_id_build_del";
 
 }
