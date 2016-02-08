@@ -64,6 +64,7 @@ public class CadastralParcelLoader {
   public static int WIDTH_DEP = 3;
 
   public static String ATT_ID_PARC = "ID_Parcell";
+  public static String ATT_HAS_TO_BE_SIMULATED = "simul";
   // public static String ATT_ID_PARC = "NUMERO";
 
   private static Logger logger = Logger.getLogger(CadastralParcelLoader.class);
@@ -101,6 +102,10 @@ public class CadastralParcelLoader {
 
     parcelCollection.initSpatialIndex(Tiling.class, false);
 
+    
+    /*
+     * Boucle pour le rapport d'attributs et pour indiquer les objets voisins en fonction des limites séparatives
+     */
     for (int i = 0; i < nbElem; i++) {
 
       Face f = cT.getPopFaces().get(i);
@@ -109,20 +114,40 @@ public class CadastralParcelLoader {
       Collection<IFeature> coll = parcelCollection.select(
           PointInPolygon.get(f.getGeometrie()), 0);
 
-      if (coll.isEmpty() || coll.size() > 1) {
-        logger.error("Several parcels for a single face of CarteTopo");
+      if (coll.isEmpty() ) {
+        logger.warn("Error in topology some faces were created with no corersponding parcels");
 
-        return null;
-        // System.exit(0);
+       continue;
+      }
+      
+      
+      if(coll.size() > 1){
+    	   logger.error("Error in topology some faces were created with serveral corresponding parcels");
+
+    	   
+    	 /*  for(IFeature feat:coll){
+    		   System.out.println("-------------" + feat.getAttribute("IDPAR"));
+    	   }*/
+    	   
+    	continue;
       }
 
       Iterator<IFeature> it = coll.iterator();
       IFeature feat = it.next();
 
       int idParc = Integer.parseInt(feat.getAttribute(ATT_ID_PARC).toString());
+      
+      Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
+      
+      if(o != null){
+    	   parc.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
+    	   
+      }
+      
+      
       // System.out.println(idParc);
       parc.setId(idParc);
-
+   
       List<Arc> lArc = f.arcs();
       int nbArcs = lArc.size();
 

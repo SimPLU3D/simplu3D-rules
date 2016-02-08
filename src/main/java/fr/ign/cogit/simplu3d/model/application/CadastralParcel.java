@@ -34,6 +34,21 @@ public class CadastralParcel extends CG_LandUse {
 	public final String CLASSE = "Parcelle";
 	private int idBPU = 0;
 	private int num = 0;
+	
+	
+	  
+
+	  
+	  private boolean hasToBeSimulated = false; 
+	  
+	  public boolean hasToBeSimulated(){
+		  return hasToBeSimulated;
+	  }
+
+	  public void setHasToBeSimulated(boolean bool){
+		   hasToBeSimulated = bool;
+	  }
+
 
 	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
 	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
