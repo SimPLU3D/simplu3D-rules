@@ -12,7 +12,7 @@
 		<url>https://github.com/IGNF/simplu3d-rules</url>
 	</scm>
 
-	<description>Implémentation d'un module de gestion des règles d'urbanisme </description>
+	<description>Implémentation d'un module de gestion des règles d'urbanisme</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
