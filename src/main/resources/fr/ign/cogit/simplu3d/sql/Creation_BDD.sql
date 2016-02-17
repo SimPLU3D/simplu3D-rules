@@ -14,6 +14,8 @@ drop table if exists gutter ;
 drop table if exists gable ;
 drop table if exists wall_surface ;
 drop table if exists version ;
+drop table if exists utilisateur ;
+drop table if exists user_version ;
 
 
 -- Creation de la table Zone Urba :
@@ -70,7 +72,8 @@ create table cadastral_parcel(
 create table building_part(
     buildp_id int primary key,
     buildp_id_build int,
-    buildp_id_subpar int
+    buildp_id_subpar int,
+    buildp_id_version int
 );
     -- Ajout de la geometrie  de la table Building Part :
     ALTER TABLE "building_part" ADD COLUMN "buildp_footprint" geometry(Polygon,2154);
@@ -190,3 +193,47 @@ create table version(
     vers_id_build_del int,
     vers_id_vers_build int
 );
+
+-- Creation de la table User :
+create table utilisateur(
+    user_id int primary key,
+    user_login text,
+    user_pw text
+);
+
+-- Creation de la table User Version :
+create table user_version(
+    usv_id int primary key,
+    usv_id_user int,
+    usv_id_version int,
+    usv_nom_version text
+);
+
+
+// Création de la table rules
+drop table if exists rules ;
+
+create table rules(
+    rul_id serial,
+    rul_nom_zone text,
+    rul_bande_incons numeric,
+    rul_emp_sol numeric,
+    rul_emp_surf_mini numeric,
+    rul_emp_larg_mini numeric,
+    rul_emp_sol_alt numeric,
+    rul_bande_1 numeric,
+    rul_alignement numeric,
+    rul_recul_lat_mini numeric,
+    rul_recul_lat numeric,
+    rul_prospect_voirie1_slope numeric,
+    rul_prospect_voirie1_hini numeric,
+    rul_larg_max_prospect1 numeric,
+    rul_prospect_voirie2_slope numeric,
+    rul_prospect_voirie2_hini numeric,
+    rul_hauteur_maxi_facade numeric,
+    rul_bande_2 numeric,
+    rul_slope_prospect_lat_slope numeric,
+    rul_slope_prospect_lat_hini numeric,
+    rul_hauteur_max numeric
+);
+

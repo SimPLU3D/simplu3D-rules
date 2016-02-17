@@ -11,13 +11,14 @@ import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -82,8 +83,6 @@ public class HauteurCalculation {
     if (type_pb == PointBasType.PLUS_HAUT_TERRAIN) {
       zBas = calculateZBasPHT(b);
     }
-
-    // System.out.println(zBas);
 
     return zBas;
   }
@@ -163,24 +162,28 @@ public class HauteurCalculation {
   }
 
   private static double calculateZBasEP(AbstractBuilding b) {
-    BasicPropertyUnit spList = b.getbPU();
+    BasicPropertyUnit bpuList = b.getbPU();
 
     double zMin = Double.POSITIVE_INFINITY;
 
-    for (CadastralParcel sp : spList.cadastralParcel) {
+    for (CadastralParcel cp : bpuList.getCadastralParcel()) {
 
-      IFeatureCollection<SpecificCadastralBoundary> bordures = sp.getSpecificCadastralBoundary();
+      for (SubParcel sp : cp.getSubParcel()) {
+        IFeatureCollection<SpecificCadastralBoundary> bordures = sp
+            .getSpecificCadastralBoundaryColl();
 
-      for (SpecificCadastralBoundary bord : bordures) {
-        if (bord.getType() == SpecificCadastralBoundary.ROAD
-            || bord.getType() == SpecificCadastralBoundary.PUB) {
+        for (SpecificCadastralBoundary bord : bordures) {
 
-          Box3D box = new Box3D(bord.getGeom());
+          if (bord.getType() == SpecificCadastralBoundary.ROAD
+              || bord.getType() == SpecificCadastralBoundary.PUB) {
 
-          zMin = Math.min(zMin, box.getLLDP().getZ());
+            Box3D box = new Box3D(bord.getGeom());
+
+            zMin = Math.min(zMin, box.getLLDP().getZ());
+
+          }
 
         }
-
       }
     }
 

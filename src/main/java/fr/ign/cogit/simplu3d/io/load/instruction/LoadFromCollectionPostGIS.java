@@ -19,7 +19,7 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class LoadFromCollectionPostGIS {
 
-  public static Environnement load(String folder,
+  public static Environnement load(String folder, Integer idVersion,
       IFeatureCollection<IFeature> PLUColl,
       IFeatureCollection<IFeature> zoneColl,
       IFeatureCollection<IFeature> parcelleColl,
@@ -31,11 +31,11 @@ public class LoadFromCollectionPostGIS {
     Environnement env = Environnement.getInstance();
     env.folder = folder;
 
-    return LoadFromCollectionPostGIS.load(folder, PLUColl, zoneColl,
+    return LoadFromCollectionPostGIS.load(folder, idVersion, PLUColl, zoneColl,
         parcelleColl, voirieColl, batiColl, prescriptions, dtm, env);
   }
 
-  public static Environnement load(String folder,
+  public static Environnement load(String folder, Integer idVersion,
       IFeatureCollection<IFeature> PLUColl,
       IFeatureCollection<IFeature> zoneColl,
       IFeatureCollection<IFeature> parcelleColl,
@@ -69,9 +69,14 @@ public class LoadFromCollectionPostGIS {
             NOM_TABLE_SUB_PARCEL);
     IFeatureCollection<IFeature> bPULoad = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_BASIC_PROPERTY_UNIT);
+    
+    // TODO : ajouter condition sur l'id version via whereclause
+    String whereClause = LoaderVersion.createWhereClauseVersion(host, port, database, user, pw, idVersion);
     IFeatureCollection<IFeature> buildingPartLoad = PostgisManager
-        .loadGeometricTable(host, port, database, user, pw,
-            NOM_TABLE_BUILDING_PART);
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            NOM_TABLE_BUILDING_PART, whereClause);
+    
+    
     IFeatureCollection<IFeature> scbLoad = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_SPECIFIC_CBOUNDARY);
     IFeatureCollection<IFeature> axisLoad = PostgisManager.loadGeometricTable(

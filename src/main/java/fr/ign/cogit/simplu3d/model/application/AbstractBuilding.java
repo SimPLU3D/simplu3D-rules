@@ -49,6 +49,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
   private List<SpecificWallSurface> wallSurface;
   private int idBuilding;
   private int idSubPar;
+  private int idVersion;
 
   public boolean isNew = false;
 
@@ -156,6 +157,14 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
   public void setIdSubPar(int idSubPar) {
     this.idSubPar = idSubPar;
+  }
+  
+  public int getIdVersion() {
+    return idVersion;
+  }
+
+  public void setIdVersion(int idVersion) {
+    this.idVersion = idVersion;
   }
 
   public List<BuildingPart> getBuildingPart() {

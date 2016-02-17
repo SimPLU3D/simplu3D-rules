@@ -5,10 +5,6 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 public class UnrespectedRule {
 	String message; IFeature feat1; IFeature feat2;
 
-
-
-
-
 	public UnrespectedRule(String message, IFeature feat1, IFeature feat2) {
 		super();
 		this.message = message;
@@ -16,32 +12,18 @@ public class UnrespectedRule {
 		this.feat2 = feat2;
 	}
 
-
-
-
-
 	public String getMessage() {
 		return message;
 	}
-
-
-
-
 
 	public IFeature getFeat1() {
 		return feat1;
 	}
 
-
-
-
-
 	public IFeature getFeat2() {
 		return feat2;
 	}
-	
-	
-	
+
 	public String toString(){
 		String str = this.getMessage() + " ";
 		str += feat1;

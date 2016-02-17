@@ -110,8 +110,8 @@ public class SubParcel extends CG_LandUse {
   public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
   public void setSpecificCadBoundary(
-      IFeatureCollection<SpecificCadastralBoundary> sCBoundary) {
-    this.sCBoundary = sCBoundary;
+      IFeatureCollection<SpecificCadastralBoundary> spCBoundary) {
+    this.sCBoundary = spCBoundary;
   }
 
   public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {

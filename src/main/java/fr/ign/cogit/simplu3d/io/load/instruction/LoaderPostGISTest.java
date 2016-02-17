@@ -30,15 +30,15 @@ public class LoaderPostGISTest {
 
   public static String NOM_MNT = "MNT_BD3D.asc";
 
-  public Environnement getEnvironnement(String folder) throws Exception {
-    return LoaderPostGISTest.load(folder);
+  public Environnement getEnvironnement(String folder, Integer idVersion) throws Exception {
+    return LoaderPostGISTest.load(folder, idVersion);
   }
 
-  public static Environnement load(String folder) throws Exception {
-    return load(folder, new FileInputStream(folder + File.separator + NOM_MNT));
+  public static Environnement load(String folder, Integer idVersion) throws Exception {
+    return load(folder, idVersion, new FileInputStream(folder + File.separator + NOM_MNT));
   }
 
-  public static Environnement load(String folder, InputStream dtmStream)
+  public static Environnement load(String folder, Integer idVersion, InputStream dtmStream)
       throws Exception {
 
     Environnement env = Environnement.getInstance();
@@ -72,7 +72,7 @@ public class LoaderPostGISTest {
     DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
         ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
 
-    return LoadFromCollectionPostGIS.load(folder, pluColl, zoneColl,
+    return LoadFromCollectionPostGIS.load(folder, idVersion, pluColl, zoneColl,
         parcelleColl, voirieColl, batiColl, prescriptions, dtm);
 
   }

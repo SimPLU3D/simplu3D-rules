@@ -29,6 +29,13 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class ImporterPostGIS {
 
+  /**
+   * Permet de charger au sein d'un objet PLU les données contenues dans une
+   * IFeatureCollection provenant de l'import de données depuis une base de
+   * données
+   * @param featPLU
+   * @return
+   */
   public static PLU importPLU(IFeatureCollection<IFeature> featPLU) {
 
     PLU pluOut = new PLU();
@@ -176,6 +183,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<UrbaZone> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featZone
+   * @return
+   */
   public static IFeatureCollection<UrbaZone> importZoneUrba(
       IFeatureCollection<IFeature> featZone) {
 
@@ -283,7 +297,7 @@ public class ImporterPostGIS {
         urbaZoneOut.setDateFin(dateFin);
 
       }
-      
+
       attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU);
 
       if (attZU != null) {
@@ -298,6 +312,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<SubParcel> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featSubParcel
+   * @return
+   */
   public static IFeatureCollection<SubParcel> importSubParcel(
       IFeatureCollection<IFeature> featSubParcel) {
 
@@ -363,6 +384,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<Road> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featRoad
+   * @return
+   */
   public static IFeatureCollection<Road> importRoad(
       IFeatureCollection<IFeature> featRoad) {
 
@@ -423,6 +451,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<Road> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featAxis
+   * @return
+   */
   public static IFeatureCollection<Road> importAxis(
       IFeatureCollection<IFeature> featAxis) {
 
@@ -477,6 +512,14 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une
+   * IFeatureCollection<SpecificCadastralBoundary> les données contenues dans
+   * une IFeatureCollection provenant de l'import de données depuis une base de
+   * données
+   * @param featSCB
+   * @return
+   */
   public static IFeatureCollection<SpecificCadastralBoundary> importSpecificCadBound(
       IFeatureCollection<IFeature> featSCB) {
 
@@ -559,6 +602,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<CadastralParcel> les
+   * données contenues dans une IFeatureCollection provenant de l'import de
+   * données depuis une base de données
+   * @param featParcel
+   * @return
+   */
   public static IFeatureCollection<CadastralParcel> importCadParcel(
       IFeatureCollection<IFeature> featParcel) {
 
@@ -616,6 +666,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<BasicPropertyUnit> les
+   * données contenues dans une IFeatureCollection provenant de l'import de
+   * données depuis une base de données
+   * @param featBPU
+   * @return
+   */
   public static IFeatureCollection<BasicPropertyUnit> importBasicPropUnit(
       IFeatureCollection<IFeature> featBPU) {
 
@@ -644,6 +701,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<BuildingPart> les
+   * données contenues dans une IFeatureCollection provenant de l'import de
+   * données depuis une base de données
+   * @param featBuildingPart
+   * @return
+   */
   public static IFeatureCollection<BuildingPart> importBuildPart(
       IFeatureCollection<IFeature> featBuildingPart) {
 
@@ -689,6 +753,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<Building> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featBuilding
+   * @return
+   */
   public static IFeatureCollection<Building> importBuilding(
       IFeatureCollection<IFeature> featBuilding) {
 
@@ -719,6 +790,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<SpecificWallSurface> les
+   * données contenues dans une IFeatureCollection provenant de l'import de
+   * données depuis une base de données
+   * @param featWall
+   * @return
+   */
   public static IFeatureCollection<SpecificWallSurface> importWall(
       IFeatureCollection<IFeature> featWall) {
 
@@ -772,6 +850,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featRoof
+   * @return
+   */
   public static IFeatureCollection<RoofSurface> importRoof(
       IFeatureCollection<IFeature> featRoof) {
 
@@ -848,6 +933,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featRoof
+   * @return
+   */
   public static IFeatureCollection<RoofSurface> importRoofing(
       IFeatureCollection<IFeature> featRoofing) {
 
@@ -907,6 +999,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featRoof
+   * @return
+   */
   public static IFeatureCollection<RoofSurface> importGable(
       IFeatureCollection<IFeature> featGable) {
 
@@ -964,6 +1063,13 @@ public class ImporterPostGIS {
 
   }
 
+  /**
+   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
+   * contenues dans une IFeatureCollection provenant de l'import de données
+   * depuis une base de données
+   * @param featRoof
+   * @return
+   */
   public static IFeatureCollection<RoofSurface> importGutter(
       IFeatureCollection<IFeature> featGutter) {
 

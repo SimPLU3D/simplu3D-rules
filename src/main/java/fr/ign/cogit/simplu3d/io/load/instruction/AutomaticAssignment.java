@@ -19,6 +19,45 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class AutomaticAssignment {
 
+  /**
+   * Permet de créer les variables de l'environnement à partir de
+   * IFeatureCollection contenant les données extraites d'une base de données
+   * 
+   * @param env L'environnement dans lequel on charge les informations
+   * @param dtm Le MNT de la zone
+   * @param pluImport La IFeatureCollection des documents d'urbanisme importées
+   *          depuis la base de données
+   * @param zuImport La IFeatureCollection des zones urbaines importées depuis
+   *          la base de données
+   * @param subParImport La IFeatureCollection des sous-parcelles importées
+   *          depuis la base de données
+   * @param scbImport La IFeatureCollection des Specific Cadastral Boundary
+   *          importées depuis la base de données
+   * @param roadImport La IFeatureCollection des routes importées depuis la base
+   *          de données
+   * @param axisImport La IFeatureCollection des axes des routes importés depuis
+   *          la base de données
+   * @param cadParImport La IFeatureCollection des parcelles cadastrales
+   *          importées depuis la base de données
+   * @param bpuImport La IFeatureCollection des Basic Property Unit importées
+   *          depuis la base de données
+   * @param bpImport La IFeatureCollection des parties de batiments importées
+   *          depuis la base de données
+   * @param buildImport La IFeatureCollection des batiments importés depuis la
+   *          base de données
+   * @param wallImport La IFeatureCollection des murs importés depuis la base de
+   *          données
+   * @param roofImport La IFeatureCollection des toits importés depuis la base
+   *          de données
+   * @param roofingImport La IFeatureCollection des pignons importés depuis la
+   *          base de données
+   * @param gutterImport La IFeatureCollection des gouttières importées depuis
+   *          la base de données
+   * @param gableImport La IFeatureCollection des faitages importés depuis la
+   *          base de données
+   * @return
+   */
+
   public static Environnement assignment(Environnement env, AbstractDTM dtm,
       PLU pluImport, IFeatureCollection<UrbaZone> zuImport,
       IFeatureCollection<SubParcel> subParImport,
@@ -101,6 +140,7 @@ public class AutomaticAssignment {
                   + idCadPar);
 
               currentSubP.setParcelle(currentCadParcel);
+              currentCadParcel.getSubParcel().add(currentSubP);
               cadParcelsSubPar.add(currentCadParcel);
 
               for (BasicPropertyUnit currentBPU : bpuImport) {
@@ -123,6 +163,7 @@ public class AutomaticAssignment {
                       + currentBPU.getId());
 
                   currentCadParcel.setbPU(currentBPU);
+                  currentBPU.getCadastralParcel().add(currentCadParcel);
                   bPUCadPar.add(currentBPU);
 
                 }
@@ -303,6 +344,12 @@ public class AutomaticAssignment {
                 } else {
 
                   currentBuildingPart.setWall(currentWall);
+                  currentBuildingPart.getFacade().add(currentWall);
+
+                  // On set la BPU dans lequel se trouve la BP
+                  CadastralParcel cadParTemp = currentSubP.getParcel();
+                  BasicPropertyUnit bputemp = cadParTemp.getbPU();
+                  currentBuildingPart.setbPU(bputemp);
 
                   System.out.println("\t\t" + "La partie de batiment n°"
                       + idCurrentBP + " est rattachée au mur n°"
@@ -433,7 +480,7 @@ public class AutomaticAssignment {
     env.getRoads().addAll(roadSCB);
     env.getBuildings().addAll(buildPartSubPar);
 
-    System.out.println("\n" + "----- End of Automatic Assignment -----");
+    System.out.println("\n" + "----- End of Automatic Assignment -----" + "\n");
 
     return env;
 
