@@ -15,7 +15,6 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.Cut3DGeomFrom2D;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.sig3d.equation.PlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
@@ -43,204 +42,196 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
  **/
 public class AssignBuildingPartToSubParcel {
 
-  /**
-   * Aire minimale pour considérée un polygone comme attaché à une parcelle
-   */
-  public static double RATIO_MIN = 0.8;
+	/**
+	 * Aire minimale pour considérée un polygone comme attaché à une parcelle
+	 */
+	public static double RATIO_MIN = 0.8;
 
-  public static int ASSIGN_METHOD = 0;
+	public static int ASSIGN_METHOD = 0;
 
-  public static void assign(IFeatureCollection<Building> buildings,
-      IFeatureCollection<BasicPropertyUnit> collBPU) {
+	public static void assign(IFeatureCollection<Building> buildings, IFeatureCollection<BasicPropertyUnit> collBPU) {
 
-    for (Building b : buildings) {
+		for (Building b : buildings) {
 
-      // Etape3 : on associe le bâtiment à la sous parcelles
-      IFeatureCollection<IFeature> featTemp = new FT_FeatureCollection<IFeature>();
+			// Etape3 : on associe le bâtiment à la sous parcelles
+			IFeatureCollection<IFeature> featTemp = new FT_FeatureCollection<IFeature>();
 
-      for (BasicPropertyUnit bPU : collBPU) {
+			for (BasicPropertyUnit bPU : collBPU) {
 
-        IMultiSurface<IOrientableSurface> iMSTemp = new GM_MultiSurface<IOrientableSurface>();
+				IMultiSurface<IOrientableSurface> iMSTemp = new GM_MultiSurface<IOrientableSurface>();
 
-        for (CadastralParcel cP : bPU.getCadastralParcel()) {
-          iMSTemp.addAll(FromGeomToSurface.convertGeom(cP.getGeom()));
+				for (CadastralParcel cP : bPU.getCadastralParcel()) {
+					iMSTemp.addAll(FromGeomToSurface.convertGeom(cP.getGeom()));
 
-        }
-        featTemp.add(new DefaultFeature(iMSTemp));
-      }
+				}
+				featTemp.add(new DefaultFeature(iMSTemp));
+			}
 
-      if (!featTemp.hasSpatialIndex()) {
+			if (!featTemp.hasSpatialIndex()) {
 
-        featTemp.initSpatialIndex(Tiling.class, false);
+				featTemp.initSpatialIndex(Tiling.class, false);
 
-      }
+			}
 
-      if (ASSIGN_METHOD == 0) {
+			if (ASSIGN_METHOD == 0) {
 
-        assignSimpleMethod(b, featTemp, collBPU);
+				assignSimpleMethod(b, featTemp, collBPU);
 
-      } else if (ASSIGN_METHOD == 1) {
+			} else if (ASSIGN_METHOD == 1) {
 
-        assignCompleteMethod(b, featTemp, collBPU);
+				assignCompleteMethod(b, featTemp, collBPU);
 
-      } else {
+			} else {
 
-        System.out.println("Erreur sur le numéro de méthode");
+				System.out.println("Erreur sur le numéro de méthode");
 
-      }
+			}
 
-    }
+		}
 
-  }
+	}
 
-  private static boolean assignSimpleMethod(Building b,
-      IFeatureCollection<IFeature> featTemp,
-      IFeatureCollection<BasicPropertyUnit> collBPU) {
+	private static boolean assignSimpleMethod(Building b, IFeatureCollection<IFeature> featTemp,
+			IFeatureCollection<BasicPropertyUnit> collBPU) {
 
-    // On récupère l'emprise du bâtiment
-    IPolygon polyBat = (IPolygon) b.getFootprint();
+		// On récupère l'emprise du bâtiment
+		IPolygon polyBat = (IPolygon) b.getFootprint();
 
-    // On trouve les BPU qui l'intersecte dans la liste temporaire
-    Iterator<IFeature> itSP = featTemp.select(polyBat).iterator();
+		// On trouve les BPU qui l'intersecte dans la liste temporaire
+		Iterator<IFeature> itSP = featTemp.select(polyBat).iterator();
 
-    boolean isAttached = false;
+		boolean isAttached = false;
 
-    // On peut avoir plusieurs objets qui intersectent la géométrie du
-    // bâtiment
-    while (itSP.hasNext()) {
-      IFeature sp = itSP.next();
+		// On peut avoir plusieurs objets qui intersectent la géométrie du
+		// bâtiment
+		while (itSP.hasNext()) {
+			IFeature sp = itSP.next();
 
-      double aireEmprise = polyBat.area();
-      IGeometry spGeom = sp.getGeom();
-      IGeometry interSpPolyBat = polyBat.intersection(spGeom.buffer(0.01));
-      
-      if(!polyBat.intersects(spGeom)){
-        System.out.println("Pas d'intersection");
-      }
-     
-      double area = interSpPolyBat.area();
+			double aireEmprise = polyBat.area();
+			IGeometry spGeom = sp.getGeom();
+			IGeometry interSpPolyBat = polyBat.intersection(spGeom.buffer(0.01));
 
-      // double area = (polyBat.intersection(sp.getGeom())).area();
+			if (!polyBat.intersects(spGeom)) {
+				System.out.println("Pas d'intersection");
+			}
 
-      if (area / aireEmprise > RATIO_MIN) {
+			double area = interSpPolyBat.area();
 
-        int index = featTemp.getElements().indexOf(sp);
+			// double area = (polyBat.intersection(sp.getGeom())).area();
 
-        collBPU.get(index).getBuildings().add(b);
-        collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0)
-            .getBuildingsParts().add(b);
+			if (area / aireEmprise > RATIO_MIN) {
 
-        isAttached = true;
+				int index = featTemp.getElements().indexOf(sp);
 
-      }
+				collBPU.get(index).getBuildings().add(b);
+				collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0).getBuildingsParts().add(b);
 
-    }
+				isAttached = true;
 
-    return isAttached;
+			}
 
-  }
+		}
 
-  private static boolean assignCompleteMethod(Building b,
-      IFeatureCollection<IFeature> featTemp,
-      IFeatureCollection<BasicPropertyUnit> collBPU) {
+		return isAttached;
 
-    // On récupère l'emprise du bâtiment
-    IPolygon polyBat = (IPolygon) b.getFootprint();
+	}
 
-    // On trouve les BPU qui l'intersecte dans la liste temporaire
-    Iterator<IFeature> itSP = featTemp.select(polyBat).iterator();
+	private static boolean assignCompleteMethod(Building b, IFeatureCollection<IFeature> featTemp,
+			IFeatureCollection<BasicPropertyUnit> collBPU) {
 
-    boolean isAttached = false;
+		// On récupère l'emprise du bâtiment
+		IPolygon polyBat = (IPolygon) b.getFootprint();
 
-    // On peut avoir plusieurs objets qui intersectent la géométrie du
-    // bâtiment
-    while (itSP.hasNext()) {
+		// On trouve les BPU qui l'intersecte dans la liste temporaire
+		Iterator<IFeature> itSP = featTemp.select(polyBat).iterator();
 
-      // On traite chaque BPU (en gros parcelle) qui intersecte le bâtiment
-      IFeature sp = itSP.next();
-      IGeometry geomSP = sp.getGeom();
-      List<IOrientableSurface> listSP = FromGeomToSurface.convertGeom(geomSP);
-      IPolygon polySP = null;
+		boolean isAttached = false;
 
-      for (IOrientableSurface iosSP : listSP) {
-        polySP = (IPolygon) iosSP;
-      }
+		// On peut avoir plusieurs objets qui intersectent la géométrie du
+		// bâtiment
+		while (itSP.hasNext()) {
 
-      int index = featTemp.getElements().indexOf(sp);
-      // Assignation bâtiment BDPU
-      collBPU.get(index).getBuildings().add(b);
+			// On traite chaque BPU (en gros parcelle) qui intersecte le
+			// bâtiment
+			IFeature sp = itSP.next();
+			IGeometry geomSP = sp.getGeom();
+			List<IOrientableSurface> listSP = FromGeomToSurface.convertGeom(geomSP);
+			IPolygon polySP = null;
 
-      // Quand on va assigner les sous parties, il va falloir découper le
-      // bâtiment
-      // System.out.println("\n \t" +
-      // "----- On est ici dans AssignBuildingpartToSubParcel -----");
-      // System.out.println("b : " + b.getGeom() + "\n" + "poly : " + polySP);
+			for (IOrientableSurface iosSP : listSP) {
+				polySP = (IPolygon) iosSP;
+			}
 
-      BuildingPart bP = null;
+			int index = featTemp.getElements().indexOf(sp);
+			// Assignation bâtiment BDPU
+			collBPU.get(index).getBuildings().add(b);
 
-      if (FromPolygonToTriangle.isConvertible(FromGeomToSurface.convertGeom(b
-          .getGeom()))) {
+			// Quand on va assigner les sous parties, il va falloir découper le
+			// bâtiment
+			// System.out.println("\n \t" +
+			// "----- On est ici dans AssignBuildingpartToSubParcel -----");
+			// System.out.println("b : " + b.getGeom() + "\n" + "poly : " +
+			// polySP);
 
-        List<IOrientableSurface> listCut = Cut3DGeomFrom2D
-            .cutFeatureFromPolygon(b, (IPolygon) polySP.clone());
-        bP = new BuildingPart(new GM_MultiSurface<>(listCut));
+			BuildingPart bP = null;
 
-        // System.out.println(listCut);
-      } else {
-        bP = cutForBDTopo(b, (IPolygon) polySP.clone());
-      }
+			if (FromPolygonToTriangle.isConvertible(FromGeomToSurface.convertGeom(b.getGeom()))) {
 
-      if (bP != null) {
-        // Puis on assigne
-        collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0)
-            .getBuildingsParts().add(bP);
-      }
+				List<IOrientableSurface> listCut = Cut3DGeomFrom2D.cutFeatureFromPolygon(b, (IPolygon) polySP.clone());
+				bP = new BuildingPart(new GM_MultiSurface<>(listCut));
 
-      // Il faut vérifier et recompter le nombre de partie par bâtiment
+				// System.out.println(listCut);
+			} else {
+				bP = cutForBDTopo(b, (IPolygon) polySP.clone());
+			}
 
-      isAttached = true;
+			if (bP != null) {
+				// Puis on assigne
+				collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0).getBuildingsParts().add(bP);
+			}
 
-    }
+			// Il faut vérifier et recompter le nombre de partie par bâtiment
 
-    return isAttached;
-  }
+			isAttached = true;
 
-  private static BuildingPart cutForBDTopo(IFeature feat, IPolygon polyCut) {
+		}
 
-    List<IOrientableSurface> lIOS = FromGeomToSurface.convertGeom(feat
-        .getGeom());
+		return isAttached;
+	}
 
-    IMultiSurface<IOrientableSurface> polVert = Util.detectVertical(lIOS, 0.2);
+	private static BuildingPart cutForBDTopo(IFeature feat, IPolygon polyCut) {
 
-    IMultiSurface<IOrientableSurface> polHorz = Util.detectNonVertical(lIOS,
-        0.2);
+		List<IOrientableSurface> lIOS = FromGeomToSurface.convertGeom(feat.getGeom());
 
-    List<IOrientableSurface> lOS = Cut3DGeomFrom2D.cutListSurfaceFromPolygon(
-        polVert.getList(), polyCut);
+		IMultiSurface<IOrientableSurface> polVert = Util.detectVertical(lIOS, 0.2);
 
-    for (IOrientableSurface os : polHorz) {
-      PlanEquation pEq = new PlanEquation(os);
+		IMultiSurface<IOrientableSurface> polHorz = Util.detectNonVertical(lIOS, 0.2);
 
-      if (pEq.getNormale().getZ() < 0) {
+		List<IOrientableSurface> lOS = Cut3DGeomFrom2D.cutListSurfaceFromPolygon(polVert.getList(), polyCut);
 
-        IGeometry inter = os.intersection((IGeometry) polyCut.clone());
+		for (IOrientableSurface os : polHorz) {
+			PlanEquation pEq = new PlanEquation(os);
 
-        if (inter.area() < 3) {
-          return null;
-        }
+			if (pEq.getNormale().getZ() < 0) {
 
-        Box3D b3D = new Box3D(os);
+				IGeometry inter = os.intersection((IGeometry) polyCut.clone());
 
-        // inter = Extrusion2DObject.convertFromGeometry(inter,
-        // b3D.getLLDP().getZ(), b3D.getLLDP().getZ());
+				if (inter.area() < 3) {
+					return null;
+				}
 
-        lOS.addAll(FromGeomToSurface.convertGeom(inter));
+				Box3D b3D = new Box3D(os);
 
-      }
+				// inter = Extrusion2DObject.convertFromGeometry(inter,
+				// b3D.getLLDP().getZ(), b3D.getLLDP().getZ());
 
-    }
+				lOS.addAll(FromGeomToSurface.convertGeom(inter));
 
-    return new BuildingPart(new GM_MultiSurface(lOS));
-  }
+			}
+
+		}
+
+		return new BuildingPart(new GM_MultiSurface(lOS));
+	}
 
 }

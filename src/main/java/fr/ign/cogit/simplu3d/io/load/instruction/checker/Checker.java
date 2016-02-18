@@ -1,6 +1,5 @@
 package fr.ign.cogit.simplu3d.io.load.instruction.checker;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -14,14 +13,12 @@ import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.sig3d.calculation.OrientedBoundingBox;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.io.load.instruction.Load;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
@@ -40,41 +37,7 @@ public class Checker {
   public static String file = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/"
       + "simplu3D-rules/src/main/resources/rules/rennes-ub2/regles_rennes.csv";
 
-  /**
-   * Permet de vérifier les règles d'urbanisme sur une ou plusieurs BPU
-   * @param args
-   * @throws IOException
-   */
-  public static void main(String[] args) throws IOException {
 
-    // Chargeur de règles (on a des règles : Rules associés à des zones
-    // identifiés par une chaine de caractère)
-    Map<String, Rules> map = Rules.loadRules(file);
-
-    // On peut vérifier ce qui a été importé dans la zone UB2
-    System.out.println(map.get("UB2").toString());
-    String nomZone = "UB2";
-
-    // On récupère l'environnement
-    Environnement env = null;
-    // Environnement env = LoaderPostGISTest.load(folder, idVersion);
-
-    // On choisit une BPU (soit à partir de l'environnement soit à partir
-    // d'une sélection dans l'interface)
-    IFeatureCollection<BasicPropertyUnit> bpuColl = env.getBpU();
-    BasicPropertyUnit bPU = bpuColl.get(0);
-
-    // On lance les vérification :
-    List<UnrespectedRule> lUNR = check(bPU, map.get(nomZone));
-
-    // On affiche les résultats (soit en ligne d ecommande soit dans
-    // l'interface)
-
-    for (UnrespectedRule un : lUNR) {
-      System.out.println(un);
-    }
-
-  }
 
   /**
    * Permets de vérifier les règles d'urbanisme sur une ou plusieurs BPU

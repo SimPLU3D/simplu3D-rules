@@ -19,29 +19,29 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class LoadFromCollectionPostGIS {
 
-  public static Environnement load(String folder, Integer idVersion,
+  public static Environnement load(Integer idVersion,
       IFeatureCollection<IFeature> PLUColl,
       IFeatureCollection<IFeature> zoneColl,
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, AbstractDTM dtm)
+      IFeatureCollection<IFeature> prescriptions)
       throws Exception {
 
     Environnement env = Environnement.getInstance();
-    env.folder = folder;
 
-    return LoadFromCollectionPostGIS.load(folder, idVersion, PLUColl, zoneColl,
-        parcelleColl, voirieColl, batiColl, prescriptions, dtm, env);
+
+    return LoadFromCollectionPostGIS.load(idVersion, PLUColl, zoneColl,
+        parcelleColl, voirieColl, batiColl, prescriptions,  env);
   }
 
-  public static Environnement load(String folder, Integer idVersion,
+  public static Environnement load(Integer idVersion,
       IFeatureCollection<IFeature> PLUColl,
       IFeatureCollection<IFeature> zoneColl,
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, AbstractDTM dtm,
+      IFeatureCollection<IFeature> prescriptions, 
       Environnement env) throws Exception {
 
     // Parameters of connection to the PostGIS database
@@ -122,7 +122,7 @@ public class LoadFromCollectionPostGIS {
     IFeatureCollection<RoofSurface> gutterImport = ImporterPostGIS
         .importGutter(gutterLoad);
 
-    return AutomaticAssignment.assignment(env, dtm, pluImport, zuImport,
+    return AutomaticAssignment.assignment(env, pluImport, zuImport,
         subParImport, scbImport, roadImport, axisImport, cadParImport,
         bpuImport, bpImport, buildImport, wallImport, roofImport,
         roofingImport, gutterImport, gableImport);

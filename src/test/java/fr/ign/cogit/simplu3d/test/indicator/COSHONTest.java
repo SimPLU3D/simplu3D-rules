@@ -2,14 +2,13 @@ package fr.ign.cogit.simplu3d.test.indicator;
 
 import java.io.FileNotFoundException;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
+import junit.framework.Assert;
 
 public class COSHONTest {
   

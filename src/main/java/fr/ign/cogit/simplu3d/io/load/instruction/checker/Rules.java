@@ -2,12 +2,9 @@ package fr.ign.cogit.simplu3d.io.load.instruction.checker;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;

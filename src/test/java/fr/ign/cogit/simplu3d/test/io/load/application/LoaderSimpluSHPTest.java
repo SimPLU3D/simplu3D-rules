@@ -2,8 +2,6 @@ package fr.ign.cogit.simplu3d.test.io.load.application;
 
 import java.io.FileNotFoundException;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
@@ -17,6 +15,7 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import junit.framework.Assert;
 
 /**
  * 

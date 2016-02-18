@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
-import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 
 public class LoaderUrbaZone {
@@ -29,10 +27,8 @@ public class LoaderUrbaZone {
     Environnement env = Environnement.getInstance();
     env.folder = folder;
 
-    DTMArea dtm = new DTMArea(dtmStream, "Terrain", true, 1,
-        ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
 
-    return LoadFromCollectionUrbaZone.load(env, dtm, searchIdZU);
+    return LoadFromCollectionUrbaZone.load(env,  searchIdZU);
 
   }
 

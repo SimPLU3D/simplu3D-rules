@@ -3,9 +3,7 @@ package fr.ign.cogit.simplu3d.io.load.instruction;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -22,7 +20,6 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.Map3D;
 import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.geoxygene.sig3d.util.ColorLocalRandom;
 import fr.ign.cogit.simplu3d.io.load.instruction.checker.Checker;
-import fr.ign.cogit.simplu3d.io.load.instruction.checker.Rules;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
@@ -33,8 +30,7 @@ import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 
 public class LauncherRennes {
 
-  public static String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/"
-      + "simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
+
 
   public static int idUtilisateur = -1;
 
@@ -44,7 +40,8 @@ public class LauncherRennes {
 
     // On corrige le nom de la base de données et du MNT pour la zone de Rennes
     Load.database = "test_simplu3d";
-    LoaderPostGISTest.NOM_MNT = "MNT_UB2_L93.asc";
+    Load.host = "172.16.0.87";
+
 
     // On construit la fenêtre principale
     MainWindow fenPrincipale = new MainWindow();
@@ -75,16 +72,16 @@ public class LauncherRennes {
   public static void afficheMap(int idVersion) throws Exception {
 
     // On supprime les couches
-    carte.removeLayer("Parcelles");
-    carte.removeLayer("Toit");
-    carte.removeLayer("Route");
+//  carte.removeLayer("Parcelles");
+  carte.removeLayer("Toit");
+//    carte.removeLayer("Route");
     carte.removeLayer("Murs");
     carte.removeLayer("Pignon");
     carte.removeLayer("Faitage");
     carte.removeLayer("Gouttière");
 
     // On charge l'environnement depuis la base de données
-    Environnement env = LoaderPostGISTest.load(folder, idVersion);
+    Environnement env = LoaderPostGISTest.load(null, idVersion);
 
     // On récupère les données qui nous intéressent dans l'environnement
     IFeatureCollection<AbstractBuilding> buildingColl = env.getBuildings();

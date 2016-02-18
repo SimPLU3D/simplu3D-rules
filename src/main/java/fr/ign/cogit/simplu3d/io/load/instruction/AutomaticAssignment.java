@@ -2,7 +2,6 @@ package fr.ign.cogit.simplu3d.io.load.instruction;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Building;
@@ -58,7 +57,7 @@ public class AutomaticAssignment {
    * @return
    */
 
-  public static Environnement assignment(Environnement env, AbstractDTM dtm,
+  public static Environnement assignment(Environnement env, 
       PLU pluImport, IFeatureCollection<UrbaZone> zuImport,
       IFeatureCollection<SubParcel> subParImport,
       IFeatureCollection<SpecificCadastralBoundary> scbImport,
@@ -79,7 +78,7 @@ public class AutomaticAssignment {
 
     // "Simple" variable is assigned to the environment
     env.setPlu(pluImport);
-    env.setTerrain(dtm);
+    env.setTerrain(null);
 
     // The other variables are assigned, but empty
     env.setUrbaZones(new FT_FeatureCollection<UrbaZone>());

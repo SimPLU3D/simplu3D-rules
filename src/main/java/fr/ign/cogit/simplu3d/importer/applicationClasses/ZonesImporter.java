@@ -39,7 +39,6 @@ public class ZonesImporter {
   public static String NOM_VALIDITY_DATE_VALID = "DATVALID";
   public static String NOM_ATT_TEXT = "TEXT";
 
-  @SuppressWarnings("deprecation")
   public static IFeatureCollection<UrbaZone> importUrbaZone(
       IFeatureCollection<IFeature> zoneColl) {
 
