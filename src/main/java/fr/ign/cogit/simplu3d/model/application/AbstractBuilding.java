@@ -49,7 +49,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
   private List<SpecificWallSurface> wallSurface;
   private int idBuilding;
   private int idSubPar;
-  private int idVersion;
+  private int idVersion =-1;
 
   public boolean isNew = false;
 
@@ -136,7 +136,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
   }
 
   public RoofSurface getRoof() {
-    return roof;
+    return roofSurface;
   }
 
   public void setRoof(RoofSurface roof) {
@@ -204,10 +204,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
   }
 
-  public RoofSurface getToit() {
 
-    return roofSurface;
-  }
 
   public void setToit(RoofSurface toit) {
     this.roofSurface = toit;
@@ -283,12 +280,13 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
     return null;
   }
 
+
   public boolean prospect(IGeometry geom, double slope, double hIni) {
     double zMin = 0;
     IDirectPositionList dpl = null;
     double shift = 0;
     Box3D box = new Box3D(this.getGeom());
-    dpl = this.getToit().getGeom().coord();
+    dpl = this.getRoof().getGeom().coord();
     zMin = box.getLLDP().getZ();
     for (IDirectPosition dp : dpl) {
       if (geom.distance(new GM_Point(dp)) * slope + hIni < shift + dp.getZ()

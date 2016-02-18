@@ -203,7 +203,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      RoofSurface t = b.getToit();
+      RoofSurface t = b.getRoof();
 
       t.setRepresentation(new ObjectCartoon(t, COLOR_TOIT));
       toitOut.add(t);
@@ -305,7 +305,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      IGeometry geom = b.getToit().getRoofing();
+      IGeometry geom = b.getRoof().getRoofing();
 
       if (geom == null || geom.isEmpty()) {
         continue;
@@ -334,7 +334,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      IMultiCurve<IOrientableCurve> geom = b.getToit().setGable();
+      IMultiCurve<IOrientableCurve> geom = b.getRoof().setGable();
 
       if (geom == null || geom.isEmpty()) {
         continue;
@@ -366,7 +366,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      IGeometry geom = b.getToit().getGutter();
+      IGeometry geom = b.getRoof().getGutter();
 
       if (geom == null || geom.isEmpty()) {
         continue;
@@ -411,7 +411,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      RoofSurface t = b.getToit();
+      RoofSurface t = b.getRoof();
 
       ClassifyRoof cR = new ClassifyRoof(t, 0.2, 1);
       List<List<Triangle>> llTri = cR.getTriangleGroup();

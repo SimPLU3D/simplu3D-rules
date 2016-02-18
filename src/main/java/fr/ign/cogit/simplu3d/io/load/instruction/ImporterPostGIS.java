@@ -744,6 +744,17 @@ public class ImporterPostGIS {
         int objInt = Integer.parseInt(objStr);
         bp.setIdSubPar(objInt);
       }
+      
+      
+      attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_VERSION);
+      
+      if (attBuildPart != null) {
+          String objStr = attBuildPart.toString();
+          int objInt = Integer.parseInt(objStr);
+          bp.setIdVersion(objInt);
+        }else{
+        	bp.setIdVersion(-1);
+        }
 
       featBuildingOut.add(bp);
 

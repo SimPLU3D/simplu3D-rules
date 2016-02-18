@@ -47,7 +47,7 @@ public class ShapeDeviation {
       }
 
       
-      double vBati = Calculation3D.volume(new GM_Solid(FromPolygonToTriangle.convertAndTriangle(bP.getToit()
+      double vBati = Calculation3D.volume(new GM_Solid(FromPolygonToTriangle.convertAndTriangle(bP.getRoof()
           .getLod2MultiSurface().getList())));
 
       value = vBati / volArea;

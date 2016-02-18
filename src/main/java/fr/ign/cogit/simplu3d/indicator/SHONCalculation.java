@@ -96,7 +96,7 @@ public class SHONCalculation {
 
     double aireBatie = 0;
 
-    RoofSurface t = bati.getToit();
+    RoofSurface t = bati.getRoof();
 
     if (t == null) {
 

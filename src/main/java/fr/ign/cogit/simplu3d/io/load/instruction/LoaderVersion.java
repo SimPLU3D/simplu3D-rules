@@ -147,7 +147,7 @@ public class LoaderVersion {
 										updateTableWall(host, port, database, user, pw, currentBP, sws);
 									}
 
-									RoofSurface currentToit = currentBP.getToit();
+									RoofSurface currentToit = currentBP.getRoof();
 									updateTableRoof(host, port, database, user, pw, currentBP, currentToit);
 
 									if (currentToit.getRoofing().isEmpty()) {

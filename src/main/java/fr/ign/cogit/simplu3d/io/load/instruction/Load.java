@@ -662,25 +662,25 @@ public class Load {
 
     for (AbstractBuilding abr : featCAbstractBuilding) {
 
-      AttributeManager.addAttribute(abr.getToit(),
+      AttributeManager.addAttribute(abr.getRoof(),
           ParametersInstructionPG.ATT_ROOF_ID, (++idRoIni), "Integer");
-      AttributeManager.addAttribute(abr.getToit(),
-          ParametersInstructionPG.ATT_ROOF_ANGLE_MAX, abr.getToit()
+      AttributeManager.addAttribute(abr.getRoof(),
+          ParametersInstructionPG.ATT_ROOF_ANGLE_MAX, abr.getRoof()
               .getAngleMax(), "Double");
-      AttributeManager.addAttribute(abr.getToit(),
-          ParametersInstructionPG.ATT_ROOF_ANGLE_MIN, abr.getToit()
+      AttributeManager.addAttribute(abr.getRoof(),
+          ParametersInstructionPG.ATT_ROOF_ANGLE_MIN, abr.getRoof()
               .getAngleMin(), "Double");
 
-      if (abr.getToit() instanceof RoofSurface) {
+      if (abr.getRoof() instanceof RoofSurface) {
 
-        AttributeManager.addAttribute(abr.getToit(),
+        AttributeManager.addAttribute(abr.getRoof(),
             ParametersInstructionPG.ATT_ROOF_ID_BUILDPART,
             abr.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID),
             "Integer");
 
       }
 
-      featCRoof.add(abr.getToit());
+      featCRoof.add(abr.getRoof());
 
     }
 
@@ -705,9 +705,9 @@ public class Load {
 
     for (AbstractBuilding abrf : featCAbstractBuilding) {
 
-      IFeature featTempRoofing = new DefaultFeature(abrf.getToit().getRoofing());
+      IFeature featTempRoofing = new DefaultFeature(abrf.getRoof().getRoofing());
 
-      if (abrf.getToit().getRoofing().coord().isEmpty()) {
+      if (abrf.getRoof().getRoofing().coord().isEmpty()) {
 
         System.out
             .println("- Watch out, the Roofing attribute is empty in the case currently being processed -");
@@ -720,7 +720,7 @@ public class Load {
                 "Integer");
 
         AttributeManager.addAttribute(featTempRoofing,
-            ParametersInstructionPG.ATT_ROOFING_ID_ROOF, abrf.getToit()
+            ParametersInstructionPG.ATT_ROOFING_ID_ROOF, abrf.getRoof()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCRoofing.add(featTempRoofing);
@@ -758,9 +758,9 @@ public class Load {
 
     for (AbstractBuilding abg : featCAbstractBuilding) {
 
-      IFeature featTempGutter = new DefaultFeature(abg.getToit().getGutter());
+      IFeature featTempGutter = new DefaultFeature(abg.getRoof().getGutter());
 
-      if (abg.getToit().getGutter().coord().isEmpty()) {
+      if (abg.getRoof().getGutter().coord().isEmpty()) {
 
         System.out
             .println("- Watch out, the Gutter attribute is empty in the case currently being processed -");
@@ -771,7 +771,7 @@ public class Load {
             ParametersInstructionPG.ATT_GUTTER_ID, (++idGutterIni), "Integer");
 
         AttributeManager.addAttribute(featTempGutter,
-            ParametersInstructionPG.ATT_GUTTER_ID_ROOF, abg.getToit()
+            ParametersInstructionPG.ATT_GUTTER_ID_ROOF, abg.getRoof()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCGutter.add(featTempGutter);
@@ -809,9 +809,9 @@ public class Load {
 
     for (AbstractBuilding abga : featCAbstractBuilding) {
 
-      IFeature featTempGable = new DefaultFeature(abga.getToit().getGable());
+      IFeature featTempGable = new DefaultFeature(abga.getRoof().getGable());
 
-      if (abga.getToit().getGable().coord().isEmpty()) {
+      if (abga.getRoof().getGable().coord().isEmpty()) {
 
         System.out
             .println("- Watch out, the Gable attribute is empty in the case currently being processed -");
@@ -822,7 +822,7 @@ public class Load {
             ParametersInstructionPG.ATT_GABLE_ID, (++idGableIni), "Integer");
 
         AttributeManager.addAttribute(featTempGable,
-            ParametersInstructionPG.ATT_GABLE_ID_ROOF, abga.getToit()
+            ParametersInstructionPG.ATT_GABLE_ID_ROOF, abga.getRoof()
                 .getAttribute(ParametersInstructionPG.ATT_ROOF_ID), "Integer");
 
         featCGable.add(featTempGable);

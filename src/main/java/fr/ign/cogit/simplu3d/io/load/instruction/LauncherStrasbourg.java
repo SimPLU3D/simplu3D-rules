@@ -67,7 +67,7 @@ public class LauncherStrasbourg {
     // On complète les IFC murs et toits en faisant une boucle sur les BP
     for (AbstractBuilding currentBP : buildingColl) {
       wallColl.add(currentBP.getWall());
-      roofColl.add(currentBP.getToit());
+      roofColl.add(currentBP.getRoof());
     }
 
     IFeatureCollection<IFeature> featGutter = new FT_FeatureCollection<IFeature>();

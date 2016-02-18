@@ -49,7 +49,7 @@ public class StoreyCalculation {
 
     } else {
 
-      Box3D b2 = new Box3D(batiment.getToit().getGeom());
+      Box3D b2 = new Box3D(batiment.getRoof().getGeom());
 
       zMax = b2.getLLDP().getZ();
 

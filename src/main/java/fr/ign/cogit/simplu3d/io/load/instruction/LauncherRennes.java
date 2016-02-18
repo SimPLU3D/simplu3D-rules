@@ -95,7 +95,19 @@ public class LauncherRennes {
     // On complète les IFC murs et toits en faisant une boucle sur les BP
     for (AbstractBuilding currentBP : buildingColl) {
       wallColl.add(currentBP.getWall());
-      roofColl.add(currentBP.getToit());
+      
+      RoofSurface featRoof = currentBP.getRoof();
+     // System.out.println(currentBP.getIdVersion() );
+      if(currentBP.getIdVersion() == -1){
+    	  
+    	  
+    	   featRoof.setRepresentation(new Object2d(featRoof, Color.red));
+      }else{
+    	  
+    	  featRoof.setRepresentation(new Object2d(featRoof, new Color( 	237,145,33)));
+      }
+      
+      roofColl.add(featRoof);
     }
 
     IFeatureCollection<IFeature> featGutter = new FT_FeatureCollection<IFeature>();
@@ -105,7 +117,7 @@ public class LauncherRennes {
     // On défini les représentations et on récupère les données sur les
     // goutières, les faitages et les pignons
     for (RoofSurface featRoof : roofColl) {
-      featRoof.setRepresentation(new Object2d(featRoof, Color.red));
+   
 
       if (featRoof.getGutter() != null && !featRoof.getGutter().isEmpty()) {
         featGutter.add(new DefaultFeature(featRoof.getGutter()));

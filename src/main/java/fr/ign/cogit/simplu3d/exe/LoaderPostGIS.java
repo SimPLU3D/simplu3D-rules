@@ -185,7 +185,7 @@ public class LoaderPostGIS {
 
     IFeatureCollection<IFeature> featFaitage = new FT_FeatureCollection<IFeature>();
     for (AbstractBuilding b : env.getBuildings()) {
-      featFaitage.add(new DefaultFeature(b.getToit().getRoofing()));
+      featFaitage.add(new DefaultFeature(b.getRoof().getRoofing()));
     }
 
     System.out.println("Faitage : " + featFaitage.size());

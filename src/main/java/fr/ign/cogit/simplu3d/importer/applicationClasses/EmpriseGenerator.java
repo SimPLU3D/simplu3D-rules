@@ -38,7 +38,7 @@ public class EmpriseGenerator {
 
   public static IPolygon convert(Building b) {
 
-    return convert(b.getToit());
+    return convert(b.getRoof());
 
   }
 
