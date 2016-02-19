@@ -300,6 +300,28 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>cogit-snapshots</id>
+			<name>Cogit Snapshots Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>cogit-releases</id>
+			<name>Cogit Releases Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<!---<repository>
 			<id>iscpif-ign-snapshots</id>
 			<name>ISCPIF snapshots repository for IGN</name>
 			<url>http://maven.iscpif.fr/ign-snapshots/</url>
@@ -314,7 +336,7 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
+		</repository> -->
 		<repository>
 			<id>osgeo-geotools</id>
 			<url>http://download.osgeo.org/webdav/geotools/</url>
@@ -421,7 +443,17 @@
 		</dependency>
 	</dependencies>
 	<distributionManagement>
-	        <repository>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Releases Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	     <!---   <repository>
 			<id>iscpif-ign-releases</id>
 			<name>ISCPIF Release repository for IGN</name>
 			<url>http://maven.iscpif.fr/ign-releases/</url>
@@ -430,6 +462,6 @@
 			<id>iscpif-ign-snapshots</id>
 			<name>ISCPIF Snapshot repository for IGN</name>
 			<url>http://maven.iscpif.fr/ign-snapshots/</url>
-		</snapshotRepository>
+		</snapshotRepository> -->
 	</distributionManagement>
 </project>
