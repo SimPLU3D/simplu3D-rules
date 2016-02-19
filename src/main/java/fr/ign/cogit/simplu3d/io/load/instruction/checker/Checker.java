@@ -45,7 +45,7 @@ public class Checker {
    * @param bpuColl La IFeatureCollection contenant les BPU
    * @throws Exception
    */
-  public static void checkSelection(
+  public static List<UnrespectedRule>  checkSelection(
       IFeatureCollection<BasicPropertyUnit> bpuColl) throws Exception {
 
     // On charge les règles depuis la base de données
@@ -56,6 +56,8 @@ public class Checker {
     System.out.println("\n" + "Résultat Import Règles : "
         + map.get("UB2").toString());
     String nomZone = "UB2";
+    
+    List<UnrespectedRule> lUNRTot = new ArrayList<>();
 
     // On check les règles pour chaque BPU
     for (BasicPropertyUnit currentBPU : bpuColl) {
@@ -69,12 +71,14 @@ public class Checker {
       for (UnrespectedRule un : lUNR) {
         System.out.println("\t" + un);
       }
+      
+      lUNRTot.addAll(lUNR);
 
     }
 
     System.out.println("\n" + " ----- Fin de la vérification des règles ----- "
         + "\n");
-
+    return lUNRTot;
   }
 
   /**

@@ -31,6 +31,17 @@
 			</roles>
 		</developer>
 		<developer>
+			<id>jperret</id>
+			<name>Julien Perret</name>
+			<email>julien.perret(at)ign.fr</email>
+			<organization>Laboratoire COGIT, IGN</organization>
+			<organizationUrl>http://recherche.ign.fr</organizationUrl>
+			<roles>
+				<role>Administrator</role>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
+		<developer>
 			<id>florianmasso</id>
 			<name>Florian Masson</name>
 			<email>florian.masson(at)ign.fr</email>
