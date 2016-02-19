@@ -4,4 +4,4 @@ env:
  - maven.wagon.http.ssl.insecure=true maven.wagon.http.ssl.allowall=true maven.wagon.http.ssl.ignore.validity.dates=true
 
 script: 
-- mvn install -DskipTests=true -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true
+- mvn -q clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
