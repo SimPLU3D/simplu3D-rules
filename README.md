@@ -38,10 +38,6 @@ It is also described more completely in the PhD of Mickael Brasebin (French docu
 
 [Brasebin, M. (2014) Les données géographiques 3D pour simuler l'impact de la réglementation urbaine sur la morphologie du bâti, Thèse de doctorat, spécialité Sciences et Technologies de l'Information Géographique, Université Paris-Est, apr 2014](http://recherche.ign.fr/labos/cogit/publiCOGITDetail.php?idpubli=5016)
 
-Packages execution
----------------------
-
-A demonstration class is present in simplu package : TestOCL class in package test.checker allows the checking of OCL file  (test/resources/ocl/ocl/simple_allConstraintsThese.ocl).
 
 Contact for feedbacks
 ---------------------
