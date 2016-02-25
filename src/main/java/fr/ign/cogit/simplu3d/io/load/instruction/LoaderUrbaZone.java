@@ -12,7 +12,7 @@ public class LoaderUrbaZone {
 
   public Environnement getEnvironnement(String folder, Integer searchIdZU)
       throws Exception {
-    return LoaderBPU.load(folder, searchIdZU);
+    return LoaderUrbaZone.load(folder, searchIdZU);
   }
 
   public static Environnement load(String folder, Integer searchIdZU)

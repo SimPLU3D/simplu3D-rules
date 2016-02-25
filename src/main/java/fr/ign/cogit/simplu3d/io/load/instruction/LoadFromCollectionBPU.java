@@ -21,324 +21,433 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class LoadFromCollectionBPU {
 
-	public static Environnement load(Environnement env, Integer searchIdBPU) throws Exception {
-
-		// Parameters PostGIS database
-		String host = Load.host;
-		String user = Load.user;
-		String pw = Load.pw;
-		String database = Load.database;
-		String port = Load.port;
-
-		// Parameters tables
-		String tableBPU = ParametersInstructionPG.TABLE_BASIC_PROPERTY_UNIT;
-		String attIdBPU = ParametersInstructionPG.ATT_BPU_ID;
-
-		String tableCadPar = ParametersInstructionPG.TABLE_CADASTRAL_PARCEL;
-		String attIdCadPar = ParametersInstructionPG.ATT_CAD_PARCEL_ID;
-		String attIdCadParBPU = ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU;
-
-		String tableSubPar = ParametersInstructionPG.TABLE_SUB_PARCEL;
-		String attIdSubPar = ParametersInstructionPG.ATT_SUB_PARCEL_ID;
-		String attIdSubParCadPar = ParametersInstructionPG.ATT_SUB_PARCEL_ID_CADPAR;
-
-		String tableSCB = ParametersInstructionPG.TABLE_SPECIFIC_CBOUNDARY;
-		String attIdSCBSubPar = ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_SUB_PAR;
-
-		String tableRoad = ParametersInstructionPG.TABLE_ROAD;
-		String attIdRoad = ParametersInstructionPG.ATT_ROAD_ID;
-
-		String tableAxis = ParametersInstructionPG.TABLE_AXE;
-		String attIdAxisRoad = ParametersInstructionPG.ATT_AXE_ID_ROAD;
-
-		String tableZU = ParametersInstructionPG.TABLE_ZONE_URBA;
-		String attIdZU = ParametersInstructionPG.ATT_ZONE_URBA_ID;
-
-		String tablePLU = ParametersInstructionPG.TABLE_DOC_URBA;
-		String attIdPLU = ParametersInstructionPG.ATT_DOC_URBA_ID_URBA;
-
-		String tableBP = ParametersInstructionPG.TABLE_BUILDING_PART;
-		String attIdBPSubPar = ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR;
-
-		String tableBuild = ParametersInstructionPG.TABLE_BUILDING;
-		String attIdBuild = ParametersInstructionPG.ATT_BUILDING_ID;
-
-		String tableWall = ParametersInstructionPG.TABLE_WALL_SURFACE;
-		String attIdWallBP = ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP;
-
-		String tableRoof = ParametersInstructionPG.TABLE_ROOF;
-		String attIdRoofBP = ParametersInstructionPG.ATT_ROOF_ID_BUILDPART;
-
-		String tableRoofing = ParametersInstructionPG.TABLE_ROOFING;
-		String attIdRoofingR = ParametersInstructionPG.ATT_ROOFING_ID_ROOF;
-
-		String tableGutter = ParametersInstructionPG.TABLE_GUTTER;
-		String attIdGutterR = ParametersInstructionPG.ATT_GUTTER_ID_ROOF;
-
-		String tableGable = ParametersInstructionPG.TABLE_GABLE;
-		String attIdGableR = ParametersInstructionPG.ATT_GABLE_ID_ROOF;
-
-		// Partie BPU
-		String clauseBPU = generatedWhereClauseInt(searchIdBPU, attIdBPU);
-		IFeatureCollection<IFeature> bpuLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableBPU, clauseBPU);
-		IFeatureCollection<BasicPropertyUnit> bpuImport = ImporterPostGIS.importBasicPropUnit(bpuLoad);
-
-		if (bpuImport.isEmpty()) {
-			System.out.println(
-					"\n" + "ERREUR : La valeur '" + searchIdBPU + "' n'existe pas dans la table " + tableBPU + ".");
-			return null;
-		}
-
-		// Partie Cadastral Parcel
-		String clauseCadPar = generatedWhereClauseInt(searchIdBPU, attIdCadParBPU);
-		IFeatureCollection<IFeature> cadParLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableCadPar, clauseCadPar);
-		IFeatureCollection<CadastralParcel> cadParImport = ImporterPostGIS.importCadParcel(cadParLoad);
-
-		// Partie Sub-Parcel
-		List<Integer> idCadParList = new ArrayList<Integer>();
-
-		for (CadastralParcel currentCP : cadParImport) {
-			int id = currentCP.getId();
-			if (!idCadParList.contains(id)) {
-				idCadParList.add(id);
-			}
-		}
-
-		String clauseSubPar = generatedWhereClauseList(idCadParList, attIdSubParCadPar);
-		IFeatureCollection<IFeature> subParLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableSubPar, clauseSubPar);
-
-		IFeatureCollection<SubParcel> subParImport = ImporterPostGIS.importSubParcel(subParLoad);
-
-		// Partie SCB (SPAdj + CPAdj + BPUAdj + RAdj)
-		List<Integer> idSubParList = new ArrayList<Integer>();
-
-		for (SubParcel currentSP : subParImport) {
-			int id = currentSP.getId();
-			if (!idSubParList.contains(id)) {
-				idSubParList.add(id);
-			}
-		}
-
-		String clauseSCB = generatedWhereClauseList(idSubParList, attIdSCBSubPar);
-		IFeatureCollection<IFeature> scbLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableSCB, clauseSCB);
-
-		IFeatureCollection<SpecificCadastralBoundary> scbImport = ImporterPostGIS.importSpecificCadBound(scbLoad);
-
-		// Partie SCB
-		List<Integer> idSubParAdjList = new ArrayList<Integer>();
-		List<Integer> idParCadAdjList = new ArrayList<Integer>();
-		List<Integer> idBPUAdjList = new ArrayList<Integer>();
-		List<Integer> idRoadAdjList = new ArrayList<Integer>();
-
-		for (SpecificCadastralBoundary currentSCB : scbImport) {
-
-			String tabRef = currentSCB.getTableRef();
-			int id = currentSCB.getIdAdj();
-
-			if (tabRef.equalsIgnoreCase("road")) {
-				if (!idRoadAdjList.contains(id)) {
-					idRoadAdjList.add(id);
-				}
-			} else if (tabRef.equalsIgnoreCase("sub_parcel")) {
-				if (!idSubParAdjList.contains(id)) {
-					idSubParAdjList.add(id);
-				}
-			} else {
-				System.out.println("Erreur, la table reference n'est pas reconnue");
-			}
-
-		}
-
-		String clauseRoadAdj = generatedWhereClauseList(idRoadAdjList, attIdRoad);
-		IFeatureCollection<IFeature> roadLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableRoad, clauseRoadAdj);
-		IFeatureCollection<Road> roadImport = ImporterPostGIS.importRoad(roadLoad);
-
-		String clauseSPAdj = generatedWhereClauseList(idSubParAdjList, attIdSubPar);
-		IFeatureCollection<IFeature> spAdjLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableSubPar, clauseSPAdj);
-		IFeatureCollection<SubParcel> spAdjImport = ImporterPostGIS.importSubParcel(spAdjLoad);
-		subParImport.addAll(spAdjImport);
-		idSubParList.addAll(idSubParAdjList);
-
-		for (SubParcel currentSPAdj : spAdjImport) {
-			int id = currentSPAdj.getIdCadPar();
-			if (!idParCadAdjList.contains(id)) {
-				idParCadAdjList.add(id);
-			}
-		}
-
-		String clauseCPAdj = generatedWhereClauseList(idParCadAdjList, attIdCadPar);
-		IFeatureCollection<IFeature> cadParAdjLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableCadPar, clauseCPAdj);
-		IFeatureCollection<CadastralParcel> cadParAdjImport = ImporterPostGIS.importCadParcel(cadParAdjLoad);
-		cadParImport.addAll(cadParAdjImport);
-
-		for (CadastralParcel currentCPAdj : cadParAdjImport) {
-			int id = currentCPAdj.getIdBPU();
-			if (!idBPUAdjList.contains(id)) {
-				idBPUAdjList.add(id);
-			}
-		}
-
-		String clauseBPUAdj = generatedWhereClauseList(idBPUAdjList, attIdBPU);
-		IFeatureCollection<IFeature> bpuAdjLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableBPU, clauseBPUAdj);
-		IFeatureCollection<BasicPropertyUnit> bpuAdjImport = ImporterPostGIS.importBasicPropUnit(bpuAdjLoad);
-		bpuImport.addAll(bpuAdjImport);
-
-		// Partie sur les axes
-		String clauseAxis = generatedWhereClauseList(idRoadAdjList, attIdAxisRoad);
-		IFeatureCollection<IFeature> axisLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableAxis, clauseAxis);
-		IFeatureCollection<Road> axisImport = ImporterPostGIS.importAxis(axisLoad);
-
-		// Partie sur les ZU
-		List<Integer> idZUList = new ArrayList<Integer>();
-
-		for (SubParcel currentSP : subParImport) {
-			int id = currentSP.getIdZoneUrba();
-			if (!idZUList.contains(id)) {
-				idZUList.add(id);
-			}
-		}
-
-		String clauseZU = generatedWhereClauseList(idZUList, attIdZU);
-		IFeatureCollection<IFeature> zuLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableZU, clauseZU);
-		IFeatureCollection<UrbaZone> zuImport = ImporterPostGIS.importZoneUrba(zuLoad);
-
-		// Partie sur les PLU
-		List<String> idPLUList = new ArrayList<String>();
-
-		for (UrbaZone currentZU : zuImport) {
-			String id = currentZU.getIdPLU();
-			if (!idPLUList.contains(id)) {
-				idPLUList.add(id);
-			}
-		}
-
-		String clausePLU = generatedWhereClauseList(idPLUList, attIdPLU);
-		IFeatureCollection<IFeature> pluLoad = PostgisManager.loadNonGeometricTableWhereClause(host, port, database,
-				user, pw, tablePLU, clausePLU);
-		PLU pluImport = ImporterPostGIS.importPLU(pluLoad);
-
-		// Partie sur les building part
-		String clauseBP = generatedWhereClauseList(idSubParList, attIdBPSubPar);
-		IFeatureCollection<IFeature> bpLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableBP, clauseBP);
-		IFeatureCollection<BuildingPart> bpImport = ImporterPostGIS.importBuildPart(bpLoad);
-
-		// Partie sur les building
-		List<Integer> idBuildList = new ArrayList<Integer>();
-
-		for (BuildingPart currentBP : bpImport) {
-			int id = currentBP.getIdBuilding();
-			if (!idBuildList.contains(id)) {
-				idBuildList.add(id);
-			}
-		}
-
-		String clauseBuild = generatedWhereClauseList(idBuildList, attIdBuild);
-		IFeatureCollection<IFeature> buildLoad = PostgisManager.loadNonGeometricTableWhereClause(host, port, database,
-				user, pw, tableBuild, clauseBuild);
-		IFeatureCollection<Building> buildImport = ImporterPostGIS.importBuilding(buildLoad);
-
-		// Partie sur les murs
-		List<Integer> idBuildPartList = new ArrayList<Integer>();
-
-		for (BuildingPart currentBP : bpImport) {
-			int id = currentBP.getId();
-			if (!idBuildPartList.contains(id)) {
-				idBuildPartList.add(id);
-			}
-		}
-
-		String clauseWall = generatedWhereClauseList(idBuildPartList, attIdWallBP);
-		IFeatureCollection<IFeature> wallLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableWall, clauseWall);
-		IFeatureCollection<SpecificWallSurface> wallImport = ImporterPostGIS.importWall(wallLoad);
-
-		// Partie sur les toits
-		String clauseRoof = generatedWhereClauseList(idBuildPartList, attIdRoofBP);
-		IFeatureCollection<IFeature> roofLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database, user,
-				pw, tableRoof, clauseRoof);
-		IFeatureCollection<RoofSurface> roofImport = ImporterPostGIS.importRoof(roofLoad);
-
-		// Partie sur les roofing
-		List<Integer> idRoofList = new ArrayList<Integer>();
-
-		for (RoofSurface currentR : roofImport) {
-			int id = currentR.getId();
-			if (!idRoofList.contains(id)) {
-				idRoofList.add(id);
-			}
-		}
-
-		String clauseRoofing = generatedWhereClauseList(idRoofList, attIdRoofingR);
-		IFeatureCollection<IFeature> roofingLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableRoofing, clauseRoofing);
-		IFeatureCollection<RoofSurface> roofingImport = ImporterPostGIS.importRoofing(roofingLoad);
-
-		// Partie sur les gutter
-		String clauseGutter = generatedWhereClauseList(idRoofList, attIdGutterR);
-		IFeatureCollection<IFeature> gutterLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableGutter, clauseGutter);
-
-		IFeatureCollection<RoofSurface> gutterImport = ImporterPostGIS.importGutter(gutterLoad);
-
-		// Partie sur les gable
-		String clauseGable = generatedWhereClauseList(idRoofList, attIdGableR);
-		IFeatureCollection<IFeature> gableLoad = PostgisManager.loadGeometricTableWhereClause(host, port, database,
-				user, pw, tableGable, clauseGable);
-		IFeatureCollection<RoofSurface> gableImport = ImporterPostGIS.importGable(gableLoad);
-
-		System.out.println("\n" + "----- End of Load From Collection BPU -----");
-
-		return AutomaticAssignment.assignment(env, pluImport, zuImport, subParImport, scbImport, roadImport, axisImport,
-				cadParImport, bpuImport, bpImport, buildImport, wallImport, roofImport, roofingImport, gutterImport,
-				gableImport);
-
-	}
-
-	public static String generatedWhereClauseInt(Integer integ, String nomAtt) {
-
-		String clauseOut = "";
-		String idStr = integ.toString();
-		clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(idStr).concat("'");
-
-		return clauseOut;
-
-	}
-
-	public static String generatedWhereClauseString(String str, String nomAtt) {
-
-		String clauseOut = "";
-		clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(str).concat("'");
-
-		return clauseOut;
-
-	}
-
-	public static String generatedWhereClauseList(List<?> liste, String nomAtt) {
-
-		String clauseOut = "";
-
-		for (int i = 0; i < liste.size(); i++) {
-			String idStr = liste.get(i).toString();
-			if (i == 0) {
-				clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(idStr).concat("'");
-			} else {
-				clauseOut = clauseOut.concat(" OR ").concat(nomAtt).concat(" = '").concat(idStr).concat("'");
-			}
-		}
-
-		return clauseOut;
-
-	}
+  public static Environnement load(Environnement env, Integer IdVersion,
+      Integer searchIdBPU) throws Exception {
+
+    // Parameters PostGIS database
+    String host = Load.host;
+    String user = Load.user;
+    String pw = Load.pw;
+    String database = Load.database;
+    String port = Load.port;
+
+    // Parameters tables
+    String tableBPU = ParametersInstructionPG.TABLE_BASIC_PROPERTY_UNIT;
+    String attIdBPU = ParametersInstructionPG.ATT_BPU_ID;
+
+    String tableCadPar = ParametersInstructionPG.TABLE_CADASTRAL_PARCEL;
+    String attIdCadPar = ParametersInstructionPG.ATT_CAD_PARCEL_ID;
+    String attIdCadParBPU = ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU;
+
+    String tableSubPar = ParametersInstructionPG.TABLE_SUB_PARCEL;
+    String attIdSubPar = ParametersInstructionPG.ATT_SUB_PARCEL_ID;
+    String attIdSubParCadPar = ParametersInstructionPG.ATT_SUB_PARCEL_ID_CADPAR;
+
+    String tableSCB = ParametersInstructionPG.TABLE_SPECIFIC_CBOUNDARY;
+    String attIdSCBSubPar = ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_SUB_PAR;
+
+    String tableRoad = ParametersInstructionPG.TABLE_ROAD;
+    String attIdRoad = ParametersInstructionPG.ATT_ROAD_ID;
+
+    String tableAxis = ParametersInstructionPG.TABLE_AXE;
+    String attIdAxisRoad = ParametersInstructionPG.ATT_AXE_ID_ROAD;
+
+    String tableZU = ParametersInstructionPG.TABLE_ZONE_URBA;
+    String attIdZU = ParametersInstructionPG.ATT_ZONE_URBA_ID;
+
+    String tablePLU = ParametersInstructionPG.TABLE_DOC_URBA;
+    String attIdPLU = ParametersInstructionPG.ATT_DOC_URBA_ID_URBA;
+
+    String tableBP = ParametersInstructionPG.TABLE_BUILDING_PART;
+    String attIdBP = ParametersInstructionPG.ATT_BUILDING_PART_ID;
+    String attIdBPSubPar = ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR;
+    String attIdBPVersion = ParametersInstructionPG.ATT_BUILDING_PART_ID_VERSION;
+
+    String tableBuild = ParametersInstructionPG.TABLE_BUILDING;
+    String attIdBuild = ParametersInstructionPG.ATT_BUILDING_ID;
+
+    String tableWall = ParametersInstructionPG.TABLE_WALL_SURFACE;
+    String attIdWallBP = ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP;
+
+    String tableRoof = ParametersInstructionPG.TABLE_ROOF;
+    String attIdRoofBP = ParametersInstructionPG.ATT_ROOF_ID_BUILDPART;
+
+    String tableRoofing = ParametersInstructionPG.TABLE_ROOFING;
+    String attIdRoofingR = ParametersInstructionPG.ATT_ROOFING_ID_ROOF;
+
+    String tableGutter = ParametersInstructionPG.TABLE_GUTTER;
+    String attIdGutterR = ParametersInstructionPG.ATT_GUTTER_ID_ROOF;
+
+    String tableGable = ParametersInstructionPG.TABLE_GABLE;
+    String attIdGableR = ParametersInstructionPG.ATT_GABLE_ID_ROOF;
+
+    // Partie BPU
+    String clauseBPU = generatedWhereClauseInt(searchIdBPU, attIdBPU);
+    IFeatureCollection<IFeature> bpuLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableBPU, clauseBPU);
+    IFeatureCollection<BasicPropertyUnit> bpuImport = ImporterPostGIS
+        .importBasicPropUnit(bpuLoad);
+
+    if (bpuImport.isEmpty()) {
+      System.out.println("\n" + "ERREUR : La valeur '" + searchIdBPU
+          + "' n'existe pas dans la table " + tableBPU + ".");
+      return null;
+    }
+
+    // Partie Cadastral Parcel
+    String clauseCadPar = generatedWhereClauseInt(searchIdBPU, attIdCadParBPU);
+    IFeatureCollection<IFeature> cadParLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableCadPar, clauseCadPar);
+    IFeatureCollection<CadastralParcel> cadParImport = ImporterPostGIS
+        .importCadParcel(cadParLoad);
+
+    // Partie Sub-Parcel
+    List<Integer> idCadParList = new ArrayList<Integer>();
+
+    for (CadastralParcel currentCP : cadParImport) {
+      int id = currentCP.getId();
+      if (!idCadParList.contains(id)) {
+        idCadParList.add(id);
+      }
+    }
+
+    String clauseSubPar = generatedWhereClauseList(idCadParList,
+        attIdSubParCadPar);
+    IFeatureCollection<IFeature> subParLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableSubPar, clauseSubPar);
+
+    IFeatureCollection<SubParcel> subParImport = ImporterPostGIS
+        .importSubParcel(subParLoad);
+
+    // Partie SCB (SPAdj + CPAdj + BPUAdj + RAdj)
+    List<Integer> idSubParList = new ArrayList<Integer>();
+
+    for (SubParcel currentSP : subParImport) {
+      int id = currentSP.getId();
+      if (!idSubParList.contains(id)) {
+        idSubParList.add(id);
+      }
+    }
+
+    String clauseSCB = generatedWhereClauseList(idSubParList, attIdSCBSubPar);
+    IFeatureCollection<IFeature> scbLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableSCB, clauseSCB);
+
+    IFeatureCollection<SpecificCadastralBoundary> scbImport = ImporterPostGIS
+        .importSpecificCadBound(scbLoad);
+
+    // Partie SCB
+    List<Integer> idSubParAdjList = new ArrayList<Integer>();
+    List<Integer> idParCadAdjList = new ArrayList<Integer>();
+    List<Integer> idBPUAdjList = new ArrayList<Integer>();
+    List<Integer> idRoadAdjList = new ArrayList<Integer>();
+
+    for (SpecificCadastralBoundary currentSCB : scbImport) {
+
+      String tabRef = currentSCB.getTableRef();
+      int id = currentSCB.getIdAdj();
+
+      if (tabRef.equalsIgnoreCase("road")) {
+        if (!idRoadAdjList.contains(id)) {
+          idRoadAdjList.add(id);
+        }
+      } else if (tabRef.equalsIgnoreCase("sub_parcel")) {
+        if (!idSubParAdjList.contains(id)) {
+          idSubParAdjList.add(id);
+        }
+      } else {
+        System.out.println("Erreur, la table reference n'est pas reconnue");
+      }
+
+    }
+
+    String clauseRoadAdj = generatedWhereClauseList(idRoadAdjList, attIdRoad);
+    IFeatureCollection<IFeature> roadLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableRoad, clauseRoadAdj);
+    IFeatureCollection<Road> roadImport = ImporterPostGIS.importRoad(roadLoad);
+
+    String clauseSPAdj = generatedWhereClauseList(idSubParAdjList, attIdSubPar);
+    IFeatureCollection<IFeature> spAdjLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableSubPar, clauseSPAdj);
+    IFeatureCollection<SubParcel> spAdjImport = ImporterPostGIS
+        .importSubParcel(spAdjLoad);
+    subParImport.addAll(spAdjImport);
+    idSubParList.addAll(idSubParAdjList);
+
+    for (SubParcel currentSPAdj : spAdjImport) {
+      int id = currentSPAdj.getIdCadPar();
+      if (!idParCadAdjList.contains(id)) {
+        idParCadAdjList.add(id);
+      }
+    }
+
+    String clauseCPAdj = generatedWhereClauseList(idParCadAdjList, attIdCadPar);
+    IFeatureCollection<IFeature> cadParAdjLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableCadPar, clauseCPAdj);
+    IFeatureCollection<CadastralParcel> cadParAdjImport = ImporterPostGIS
+        .importCadParcel(cadParAdjLoad);
+    cadParImport.addAll(cadParAdjImport);
+
+    for (CadastralParcel currentCPAdj : cadParAdjImport) {
+      int id = currentCPAdj.getIdBPU();
+      if (!idBPUAdjList.contains(id)) {
+        idBPUAdjList.add(id);
+      }
+    }
+
+    String clauseBPUAdj = generatedWhereClauseList(idBPUAdjList, attIdBPU);
+    IFeatureCollection<IFeature> bpuAdjLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableBPU, clauseBPUAdj);
+    IFeatureCollection<BasicPropertyUnit> bpuAdjImport = ImporterPostGIS
+        .importBasicPropUnit(bpuAdjLoad);
+    bpuImport.addAll(bpuAdjImport);
+
+    // Partie sur les axes
+    String clauseAxis = generatedWhereClauseList(idRoadAdjList, attIdAxisRoad);
+    IFeatureCollection<IFeature> axisLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableAxis, clauseAxis);
+    IFeatureCollection<Road> axisImport = ImporterPostGIS.importAxis(axisLoad);
+
+    // Partie sur les ZU
+    List<Integer> idZUList = new ArrayList<Integer>();
+
+    for (SubParcel currentSP : subParImport) {
+      int id = currentSP.getIdZoneUrba();
+      if (!idZUList.contains(id)) {
+        idZUList.add(id);
+      }
+    }
+
+    String clauseZU = generatedWhereClauseList(idZUList, attIdZU);
+    IFeatureCollection<IFeature> zuLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw, tableZU,
+            clauseZU);
+    IFeatureCollection<UrbaZone> zuImport = ImporterPostGIS
+        .importZoneUrba(zuLoad);
+
+    // Partie sur les PLU
+    List<String> idPLUList = new ArrayList<String>();
+
+    for (UrbaZone currentZU : zuImport) {
+      String id = currentZU.getIdPLU();
+      if (!idPLUList.contains(id)) {
+        idPLUList.add(id);
+      }
+    }
+
+    String clausePLU = generatedWhereClauseList(idPLUList, attIdPLU);
+    IFeatureCollection<IFeature> pluLoad = PostgisManager
+        .loadNonGeometricTableWhereClause(host, port, database, user, pw,
+            tablePLU, clausePLU);
+    PLU pluImport = ImporterPostGIS.importPLU(pluLoad);
+
+    // Partie sur les building part
+    String clauseBP = generatedWhereClauseListBuilding(idSubParList,
+        attIdBPSubPar, IdVersion, attIdBPVersion, attIdBP, host, port,
+        database, user, pw);
+    IFeatureCollection<IFeature> bpLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw, tableBP,
+            clauseBP);
+    IFeatureCollection<BuildingPart> bpImport = ImporterPostGIS
+        .importBuildPart(bpLoad);
+
+    // Partie sur les building
+    List<Integer> idBuildList = new ArrayList<Integer>();
+
+    for (BuildingPart currentBP : bpImport) {
+      int id = currentBP.getIdBuilding();
+      if (!idBuildList.contains(id)) {
+        idBuildList.add(id);
+      }
+    }
+
+    String clauseBuild = generatedWhereClauseList(idBuildList, attIdBuild);
+    IFeatureCollection<IFeature> buildLoad = PostgisManager
+        .loadNonGeometricTableWhereClause(host, port, database, user, pw,
+            tableBuild, clauseBuild);
+    IFeatureCollection<Building> buildImport = ImporterPostGIS
+        .importBuilding(buildLoad);
+
+    // Partie sur les murs
+    List<Integer> idBuildPartList = new ArrayList<Integer>();
+
+    for (BuildingPart currentBP : bpImport) {
+      int id = currentBP.getId();
+      if (!idBuildPartList.contains(id)) {
+        idBuildPartList.add(id);
+      }
+    }
+
+    String clauseWall = generatedWhereClauseList(idBuildPartList, attIdWallBP);
+    IFeatureCollection<IFeature> wallLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableWall, clauseWall);
+    IFeatureCollection<SpecificWallSurface> wallImport = ImporterPostGIS
+        .importWall(wallLoad);
+
+    // Partie sur les toits
+    String clauseRoof = generatedWhereClauseList(idBuildPartList, attIdRoofBP);
+    IFeatureCollection<IFeature> roofLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableRoof, clauseRoof);
+    IFeatureCollection<RoofSurface> roofImport = ImporterPostGIS
+        .importRoof(roofLoad);
+
+    // Partie sur les roofing
+    List<Integer> idRoofList = new ArrayList<Integer>();
+
+    for (RoofSurface currentR : roofImport) {
+      int id = currentR.getId();
+      if (!idRoofList.contains(id)) {
+        idRoofList.add(id);
+      }
+    }
+
+    String clauseRoofing = generatedWhereClauseList(idRoofList, attIdRoofingR);
+    IFeatureCollection<IFeature> roofingLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableRoofing, clauseRoofing);
+    IFeatureCollection<RoofSurface> roofingImport = ImporterPostGIS
+        .importRoofing(roofingLoad);
+
+    // Partie sur les gutter
+    String clauseGutter = generatedWhereClauseList(idRoofList, attIdGutterR);
+    IFeatureCollection<IFeature> gutterLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableGutter, clauseGutter);
+
+    IFeatureCollection<RoofSurface> gutterImport = ImporterPostGIS
+        .importGutter(gutterLoad);
+
+    // Partie sur les gable
+    String clauseGable = generatedWhereClauseList(idRoofList, attIdGableR);
+    IFeatureCollection<IFeature> gableLoad = PostgisManager
+        .loadGeometricTableWhereClause(host, port, database, user, pw,
+            tableGable, clauseGable);
+    IFeatureCollection<RoofSurface> gableImport = ImporterPostGIS
+        .importGable(gableLoad);
+
+    System.out.println("\n" + "----- End of Load From Collection BPU -----");
+
+    return AutomaticAssignment.assignment(env, pluImport, zuImport,
+        subParImport, scbImport, roadImport, axisImport, cadParImport,
+        bpuImport, bpImport, buildImport, wallImport, roofImport,
+        roofingImport, gutterImport, gableImport);
+
+  }
+
+  public static String generatedWhereClauseInt(Integer integ, String nomAtt) {
+
+    String clauseOut = "";
+    String idStr = integ.toString();
+    clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(idStr)
+        .concat("'");
+
+    return clauseOut;
+
+  }
+
+  public static String generatedWhereClauseString(String str, String nomAtt) {
+
+    String clauseOut = "";
+    clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(str).concat("'");
+
+    return clauseOut;
+
+  }
+
+  public static String generatedWhereClauseList(List<?> liste, String nomAtt) {
+
+    String clauseOut = "";
+
+    for (int i = 0; i < liste.size(); i++) {
+      String idStr = liste.get(i).toString();
+      if (i == 0) {
+        clauseOut = clauseOut.concat(nomAtt).concat(" = '").concat(idStr)
+            .concat("'");
+      } else {
+        clauseOut = clauseOut.concat(" OR ").concat(nomAtt).concat(" = '")
+            .concat(idStr).concat("'");
+      }
+    }
+
+    return clauseOut;
+
+  }
+
+  public static String generatedWhereClauseListBuilding(List<?> liste,
+      String nomAttSP, Integer idVersion, String nomAttVer, String nomAttId,
+      String host, String port, String database, String user, String pw)
+      throws Exception {
+
+    List<Integer> listIdDeleted = LoaderVersion.searchForIdToDeleteInVersion(
+        host, port, database, user, pw, idVersion);
+
+    String clauseOut = "";
+    String whereClause = "";
+
+    for (int i = 0; i < liste.size(); i++) {
+      String idStr = liste.get(i).toString();
+      if (i == 0) {
+        if (idVersion == -1) {
+          clauseOut = clauseOut.concat(nomAttSP).concat(" = '").concat(idStr)
+              .concat("'").concat(" AND ").concat(nomAttVer)
+              .concat(" IS NULL ");
+        } else {
+
+          whereClause = nomAttVer + " = " + Integer.toString(idVersion)
+              + " OR ( " + nomAttVer + " IS NULL";
+
+          for (Integer valId : listIdDeleted) {
+
+            whereClause = whereClause + " AND " + nomAttId + " != "
+                + Integer.toString(valId);
+
+          }
+          whereClause = whereClause + " )";
+
+          clauseOut = clauseOut.concat(nomAttSP).concat(" = '").concat(idStr)
+              .concat("'").concat(" AND (").concat(whereClause).concat(")");
+        }
+
+      } else {
+
+        if (idVersion == -1) {
+          clauseOut = clauseOut.concat(" OR ").concat(nomAttSP).concat(" = '")
+              .concat(idStr).concat("'").concat(" AND ").concat(nomAttVer)
+              .concat(" IS NULL ");
+        } else {
+
+          whereClause = nomAttVer + " = " + Integer.toString(idVersion)
+              + " OR ( " + nomAttVer + " IS NULL";
+
+          for (Integer valId : listIdDeleted) {
+
+            whereClause = whereClause + " AND " + nomAttId + " != "
+                + Integer.toString(valId);
+
+          }
+
+          whereClause = whereClause + " )";
+
+          clauseOut = clauseOut.concat(" OR ").concat(nomAttSP).concat(" = '")
+              .concat(idStr).concat("'").concat(" AND (").concat(whereClause)
+              .concat(")");
+        }
+      }
+    }
+
+    return clauseOut;
+
+  }
 
 }
