@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.exe;
+package fr.ign.cogit.simplu3d.demo;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -35,7 +35,7 @@ import fr.ign.cogit.simplu3d.model.application.SubParcel;
  * 
  * @version 1.0
  **/
-public class LoaderPostGIS {
+public class TestLoaderPostGIS {
 
   public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
 
@@ -54,7 +54,6 @@ public class LoaderPostGIS {
 
     System.out.println("Nombre de zones dans le PLU : "
         + plu.getlUrbaZone().size());
-
 
 
     IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();

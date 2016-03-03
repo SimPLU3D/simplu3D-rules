@@ -8,7 +8,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.demo.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
