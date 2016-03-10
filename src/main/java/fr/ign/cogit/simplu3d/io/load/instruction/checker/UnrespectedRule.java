@@ -4,6 +4,22 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 
 public class UnrespectedRule {
 	String message; IFeature feat1; IFeature feat2;
+	
+	public UnrespectedRule(){
+		super();
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public void setFeat1(IFeature feat1) {
+		this.feat1 = feat1;
+	}
+
+	public void setFeat2(IFeature feat2) {
+		this.feat2 = feat2;
+	}
 
 	public UnrespectedRule(String message, IFeature feat1, IFeature feat2) {
 		super();
