@@ -210,7 +210,7 @@ create table user_version(
 );
 
 
-// Création de la table rules
+-- Création de la table rules
 drop table if exists rules ;
 
 create table rules(

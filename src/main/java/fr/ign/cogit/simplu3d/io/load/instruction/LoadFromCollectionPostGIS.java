@@ -25,14 +25,12 @@ public class LoadFromCollectionPostGIS {
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions)
-      throws Exception {
+      IFeatureCollection<IFeature> prescriptions) throws Exception {
 
     Environnement env = Environnement.getInstance();
 
-
     return LoadFromCollectionPostGIS.load(idVersion, PLUColl, zoneColl,
-        parcelleColl, voirieColl, batiColl, prescriptions,  env);
+        parcelleColl, voirieColl, batiColl, prescriptions, env);
   }
 
   public static Environnement load(Integer idVersion,
@@ -41,8 +39,8 @@ public class LoadFromCollectionPostGIS {
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, 
-      Environnement env) throws Exception {
+      IFeatureCollection<IFeature> prescriptions, Environnement env)
+      throws Exception {
 
     // Parameters of connection to the PostGIS database
     String host = Load.host;
@@ -69,14 +67,13 @@ public class LoadFromCollectionPostGIS {
             NOM_TABLE_SUB_PARCEL);
     IFeatureCollection<IFeature> bPULoad = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_BASIC_PROPERTY_UNIT);
-    
-    // TODO : ajouter condition sur l'id version via whereclause
-    String whereClause = LoaderVersion.createWhereClauseVersion(host, port, database, user, pw, idVersion);
+
+    String whereClause = LoaderVersion.createWhereClauseVersion(host, port,
+        database, user, pw, idVersion);
     IFeatureCollection<IFeature> buildingPartLoad = PostgisManager
         .loadGeometricTableWhereClause(host, port, database, user, pw,
             NOM_TABLE_BUILDING_PART, whereClause);
-    
-    
+
     IFeatureCollection<IFeature> scbLoad = PostgisManager.loadGeometricTable(
         host, port, database, user, pw, NOM_TABLE_SPECIFIC_CBOUNDARY);
     IFeatureCollection<IFeature> axisLoad = PostgisManager.loadGeometricTable(

@@ -9,6 +9,11 @@ import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
 
 public class LoadExpRennes {
 
+  /**
+   * Permet le chargement des données de RM dans la base de données
+   * @param args
+   * @throws Exception
+   */
   public static void main(String[] args) throws Exception {
 
     PostgisManager.SRID = "2154";
