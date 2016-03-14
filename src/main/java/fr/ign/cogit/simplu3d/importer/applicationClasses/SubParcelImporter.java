@@ -88,12 +88,7 @@ public class SubParcelImporter {
           z.getSubParcels().add(sp);
           sp.setZoneUrba(z);
 
-        } else {
-          if (zonesTemp.size() == 0) {
-            System.out.println("Zero zone");
-          }
         }
-
         // affecteBorduresToSousParcelles(sp,p);
 
         // Les mêmes bordures

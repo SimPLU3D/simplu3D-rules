@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.exe;
+package fr.ign.cogit.simplu3d.demo;
 
 import java.io.File;
 

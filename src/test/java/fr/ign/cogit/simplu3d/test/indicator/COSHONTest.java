@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import fr.ign.cogit.simplu3d.exe.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.demo.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
