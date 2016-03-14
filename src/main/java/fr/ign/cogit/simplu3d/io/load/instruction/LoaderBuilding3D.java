@@ -46,7 +46,7 @@ public class LoaderBuilding3D {
     // Etape n°3 : On boucle sur les batiments pour créer la 3D
     for (IFeature currentBat : batiColl) {
 
-      // on plaque les batiments sur le MNT
+      // On plaque les batiments sur le MNT
       IGeometry geom = dtm.mapGeom(currentBat.getGeom(), 0, true, sursampled);
       // currentBat.setGeom(geom);
 
@@ -76,12 +76,19 @@ public class LoaderBuilding3D {
     // Etape n°4 : on exporte au format shp
     ShapefileWriter.write(batiColl, folderOut + nomShpOut);
 
+    // Etape n°5 : (facultative) on crée un fichier PRJ en Lambert93
     lancerCreationSCR();
 
     System.out.println("End");
 
   }
 
+  /**
+   * Permet le chargement d'un MNT
+   * @param folder le chemin d'accès au MNT
+   * @return un MNT au format DTMArea
+   * @throws Exception
+   */
   public static DTMArea loadDTM(String folder) throws Exception {
 
     return loadDTM(new File(folder), new FileInputStream(folder
@@ -89,6 +96,13 @@ public class LoaderBuilding3D {
 
   }
 
+  /**
+   * Permet le chargement d'un MNT
+   * @param folder le chemin d'accès au MNT
+   * @param dtmStream
+   * @return un MNT au format DTMArea
+   * @throws Exception
+   */
   public static DTMArea loadDTM(File folder, InputStream dtmStream)
       throws Exception {
 
@@ -99,6 +113,10 @@ public class LoaderBuilding3D {
 
   }
 
+  /**
+   * Construit un fichier PRJ
+   * @throws FileNotFoundException
+   */
   static void lancerCreationSCR() throws FileNotFoundException {
 
     // Création du fichier PRJ (si un fichier existe déjà, il est supprimé)
@@ -112,6 +130,11 @@ public class LoaderBuilding3D {
     outputPRJ.close();
   }
 
+  /**
+   * Permet de compléter le PRj avec les informations du Lambert93
+   * @param output
+   * @throws FileNotFoundException
+   */
   static void completPRJ(PrintWriter output) throws FileNotFoundException {
 
     // Paramètres du lambert 93

@@ -1,9 +1,5 @@
 package fr.ign.cogit.simplu3d.io.load.instruction;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 import fr.ign.cogit.simplu3d.model.application.Environnement;
 
 public class LoaderBPU {

@@ -57,8 +57,8 @@ public class AutomaticAssignment {
    * @return
    */
 
-  public static Environnement assignment(Environnement env, 
-      PLU pluImport, IFeatureCollection<UrbaZone> zuImport,
+  public static Environnement assignment(Environnement env, PLU pluImport,
+      IFeatureCollection<UrbaZone> zuImport,
       IFeatureCollection<SubParcel> subParImport,
       IFeatureCollection<SpecificCadastralBoundary> scbImport,
       IFeatureCollection<Road> roadImport, IFeatureCollection<Road> axisImport,

@@ -154,7 +154,7 @@ public class LoadFromCollectionBPU {
 
     // -------------------------------------------------------------------------
     // Partie 2 : Chargement des BPU adjacente à la BPu ciblée et des objets qui
-    // leurs sont associés (leusr parcelles, leurs sous-parcelles...)
+    // leurs sont associés (leurs parcelles, leurs sous-parcelles...)
     // -------------------------------------------------------------------------
 
     List<Integer> idSubParAdjList = new ArrayList<Integer>();
@@ -418,7 +418,7 @@ public class LoadFromCollectionBPU {
   }
 
   /**
-   * Génère une clause SQl à partir d'un Integer et du nom d'un attribut
+   * Génère une clause SQL à partir d'un Integer et du nom d'un attribut
    * @param integ la valeur de l'attribut à chercher
    * @param nomAtt la nom de l'attribut à chercher
    * @return une clause au format String

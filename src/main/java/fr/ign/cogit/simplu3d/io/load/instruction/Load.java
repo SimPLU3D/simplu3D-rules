@@ -530,68 +530,6 @@ public class Load {
     return true;
   }
 
-/*
-  // Chargement des Morceaux de batiments
-  public static boolean loadBuildingsParts(String host, String port,
-      String user, String pw, String database, Environnement env)
-      throws Exception {
-
-    IFeatureCollection<SubParcel> featSubParcel = env.getSubParcels();
-    IFeatureCollection<AbstractBuilding> featCAbstractBuilding = env
-        .getBuildings();
-
-    IFeatureCollection<IFeature> featCBuildPart = new FT_FeatureCollection<>();
-
-    int idBPIni = ExtractIdMaxPG.idMaxTable(host, port, database, user, pw,
-        ParametersInstructionPG.TABLE_BUILDING_PART,
-        ParametersInstructionPG.ATT_BUILDING_PART_ID);
-
-    for (SubParcel currentSP : featSubParcel) {
-
-      IFeatureCollection<AbstractBuilding> abstractBP = currentSP
-          .getBuildingsParts();
-
-      for (AbstractBuilding currentABP : abstractBP) {
-
-        IFeature featTemp = new DefaultFeature(currentABP.getFootprint());
-        System.out.println("Class : " + featTemp.getGeom().getClass());
-
-        AttributeManager.addAttribute(featTemp,
-            ParametersInstructionPG.ATT_BUILDING_PART_ID, (++idBPIni),
-            "Integer");
-
-        AttributeManager.addAttribute(featTemp,
-            ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR,
-            currentSP.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID),
-            "Integer");
-
-        // TODO : Ajouter ID Building
-        for (AbstractBuilding currentB : featCAbstractBuilding) {
-
-          // System.out.println("Build " + currentB.getBuildingPart().get(0));
-
-          // if (currentB.getGeom().intersects(currentABP.getGeom())) {
-
-          // System.out.println("plip : " + currentB.getId());
-
-          // }
-
-        }
-
-        featCBuildPart.add(featTemp);
-
-      }
-
-    }
-
-    PostgisManager.NAME_COLUMN_GEOM = ParametersInstructionPG.ATT_BUILDING_PART_GEOM;
-    PostgisManager.insertInGeometricTable(host, port, database, user, pw,
-        ParametersInstructionPG.TABLE_BUILDING_PART, featCBuildPart, true);
-
-    return true;
-  }
-*/
-  
   public static boolean loadBuildingsParts(String host, String port,
       String user, String pw, String database, Environnement env)
       throws Exception {
@@ -644,8 +582,6 @@ public class Load {
 
     return true;
   }
-  
-
 
   // Chargement des toits
   public static boolean loadRoof(String host, String port, String user,
