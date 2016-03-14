@@ -16,8 +16,8 @@ public class LoadExpRennes {
     String host = "localhost";
     String user = "postgres";
     String pw = "postgres";
-    String database = "test_simplu3d";
-    String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
+    String database = "simplu3d-rennes";
+    String folder = "/home/mickael/data/mbrasebin/donnees/dataRennes/";
     String port = "5432";
 
     // Rerouting towards the new files

@@ -28,15 +28,14 @@ import fr.ign.cogit.simplu3d.util.ExtractIdMaxPG;
 public class LoaderVersion {
 
 	// Parameters of connection to the database
-	public static String host = "172.16.0.87";
+	public static String host = "localhost";
 	public static String user = "postgres";
 	public static String pw = "postgres";
-	public static String database = "test_simplu3d";
+	public static String database = "simplu3d-rennes";
 	public static String port = "5432";
 
 	// Parameters for the recovery of the data of versionning
-	public static String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/"
-			+ "simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
+	public static String folder = "/home/mickael/data/mbrasebin/donnees/dataRennes/";
 	public static String NOM_FICHIER_BATI = "out/Bati_UB2_3D_V3.shp";
 	public static String NOM_ATT_VERSION = "version_id";
 	public static String NOM_FICHIER_POINT = "BATI_UB2_V3_POINT.shp";
