@@ -264,8 +264,7 @@ public class RepEnvironnement {
       Environnement env) {
     for (CadastralParcel p : env.getParcelles()) {
 
-      p.setRepresentation(new ObjectCartoon(p, Color.white, ColorLocalRandom
-          .getRandomColor(COLOR_PARCELLE, 10, 10, 10), 3, 0.0));
+      p.setRepresentation(new ObjectCartoon(p, Color.white, COLOR_PARCELLE, 3, 0.0));
 
     }
     return env.getParcelles();
@@ -283,8 +282,7 @@ public class RepEnvironnement {
 
     for (SubParcel sp : env.getSubParcels()) {
 
-      sp.setRepresentation(new Object2d(sp, ColorLocalRandom.getRandomColor(
-          COLOR_SOUS_PARCELLE, radius, radius, radius)));
+      sp.setRepresentation(new Object2d(sp, COLOR_SOUS_PARCELLE));
 
     }
 
@@ -422,10 +420,8 @@ public class RepEnvironnement {
 
       for (List<Triangle> lTri : llTri) {
 
-        Color c = ColorLocalRandom.getRandomColor(Color.LIGHT_GRAY, 50, 50, 50);
-
         IFeature feat = new DefaultFeature(new GM_MultiSurface<Triangle>(lTri));
-        feat.setRepresentation(new Object2d(feat, c));
+        feat.setRepresentation(new Object2d(feat, Color.LIGHT_GRAY));
         pans.add(feat);
 
       }
@@ -484,8 +480,7 @@ public class RepEnvironnement {
         for (List<ITriangle> lT : lTT) {
 
           IFeature feat = new DefaultFeature(new GM_MultiSurface<Triangle>(lT));
-          feat.setRepresentation(new Object2d(feat, ColorLocalRandom
-              .getRandomColor(Color.white, 50, 50, 50)));
+          feat.setRepresentation(new Object2d(feat, Color.white));
           pans.add(feat);
 
         }

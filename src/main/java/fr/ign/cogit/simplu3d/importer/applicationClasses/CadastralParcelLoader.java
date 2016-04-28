@@ -60,7 +60,7 @@ public class CadastralParcelLoader {
   public static final int LATERAL_TEMP = 98;
 
   public static int TYPE_ANNOTATION = 1;
-
+  public static double MINIMUM_AREA_PARC = 2;
   public static int WIDTH_DEP = 3;
 
   public static String ATT_ID_PARC = "ID_Parcell";
@@ -102,11 +102,12 @@ public class CadastralParcelLoader {
 
     parcelCollection.initSpatialIndex(Tiling.class, false);
 
-    
     /*
      * Boucle pour le rapport d'attributs et pour indiquer les objets voisins en fonction des limites séparatives
      */
     for (int i = 0; i < nbElem; i++) {
+    	
+    
 
       Face f = cT.getPopFaces().get(i);
       CadastralParcel parc = cadastralParcels.get(i);
@@ -124,12 +125,12 @@ public class CadastralParcelLoader {
       if(coll.size() > 1){
     	   logger.error("Error in topology some faces were created with serveral corresponding parcels");
 
-    	   
-    	 /*  for(IFeature feat:coll){
-    		   System.out.println("-------------" + feat.getAttribute("IDPAR"));
-    	   }*/
-    	   
     	continue;
+      }
+      
+      if(parc.getGeom().area() < MINIMUM_AREA_PARC){
+  
+    	  continue;
       }
 
       Iterator<IFeature> it = coll.iterator();
@@ -992,7 +993,7 @@ public class CadastralParcelLoader {
         for (ILineString ls : lLLS) {
 
           if (ls.length() == 0) {
-            System.out.println("PROOOOOOOOOOOO");
+            System.out.println("");
           }
 
           // création d'un nouvel élément
