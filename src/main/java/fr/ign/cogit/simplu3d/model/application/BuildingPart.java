@@ -1,7 +1,3 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -18,53 +14,67 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+
+/**
+ * 
+ * CityGML - Une partie de bâtiment formant un AbstractBuilding
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class BuildingPart extends AbstractBuilding {
+	//TODO a supprimer, déjà porté par classe mère
+	private int idBuildind = 0;
+	private int idSubPar = 0;
 
-  private int idBuildind = 0;
-  private int idSubPar = 0;
+	/**
+	 * TODO renommer en subParcel
+	 */
+	public SubParcel sP;
+	
+	public BuildingPart(IGeometry geom) {
+		super(geom);
+	}
 
-  public BuildingPart(IGeometry geom) {
-    super(geom);
-  }
+	public BuildingPart() {
+		// TODO Auto-generated constructor stub
+	}
 
-  public BuildingPart() {
-    // TODO Auto-generated constructor stub
-  }
+	public SubParcel getsP() {
+		return sP;
+	}
 
-  public SubParcel sP;
+	public void setsP(SubParcel sP) {
+		this.sP = sP;
+	}
 
-  public SubParcel getsP() {
-    return sP;
-  }
+	public void setIdBuilding(int idBuildind) {
+		this.idBuildind = idBuildind;
+	}
 
-  public void setsP(SubParcel sP) {
-    this.sP = sP;
-  }
+	public int getIdBuilding() {
+		return idBuildind;
+	}
 
-  public void setIdBuilding(int idBuildind) {
-    this.idBuildind = idBuildind;
-  }
+	public void setIdSubPar(int idSubPar) {
+		this.idSubPar = idSubPar;
+	}
 
-  public int getIdBuilding() {
-    return idBuildind;
-  }
+	public int getIdSubPar() {
+		return idSubPar;
+	}
 
-  public void setIdSubPar(int idSubPar) {
-    this.idSubPar = idSubPar;
-  }
+	@Override
+	public AbstractBuilding clone() {
 
-  public int getIdSubPar() {
-    return idSubPar;
-  }
+		BuildingPart b = new BuildingPart((IGeometry) this.getGeom().clone());
+		b.isNew = this.isNew;
 
-  @Override
-  public AbstractBuilding clone() {
+		return b;
 
-    BuildingPart b = new BuildingPart((IGeometry) this.getGeom().clone());
-    b.isNew = this.isNew;
-
-    return b;
-
-  }
+	}
 
 }

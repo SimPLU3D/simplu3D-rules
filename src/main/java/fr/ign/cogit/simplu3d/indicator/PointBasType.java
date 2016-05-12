@@ -1,4 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -15,6 +14,13 @@ package fr.ign.cogit.simplu3d.indicator;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+/**
+ * 
+ * @author MBrasebin
+ *
+ */
 public class PointBasType {
 
   public static final int EMPRISE_PUBLIQUE = 0;

@@ -1,13 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
-import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -23,11 +13,21 @@ import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
  * @author Brasebin Mickaël
  * 
  * @version 1.0
+ **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
+import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+
+/**
+ * 
+ * @author MBrasebin
  *
- * Détecte les landmarks. Calculé à partir de Ganitseva 2010
- * 
- * 
- * 
  */
 public class Saliency {
 

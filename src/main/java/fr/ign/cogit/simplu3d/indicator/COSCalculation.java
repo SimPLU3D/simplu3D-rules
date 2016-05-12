@@ -1,10 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import java.util.List;
-
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -21,6 +14,21 @@ import fr.ign.cogit.simplu3d.model.application.SubParcel;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import java.util.List;
+
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.application.SubParcel;
+
+/**
+ * 
+ * Calcul du COS
+ * 
+ * @author MBrasebin
+ *
+ */
 public class COSCalculation {
 
   public static enum METHOD {

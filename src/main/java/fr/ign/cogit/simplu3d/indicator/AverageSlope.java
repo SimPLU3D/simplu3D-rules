@@ -1,10 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
-import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -21,6 +14,21 @@ import fr.ign.cogit.simplu3d.model.application.SubParcel;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
+import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
+import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
+import fr.ign.cogit.simplu3d.model.application.SubParcel;
+
+/**
+ * 
+ * Calcul de la pente moyenne sur une parcelle en fonction d'un DTM
+ * 
+ * @author MBrasebin
+ *
+ */
 public class AverageSlope {
 
   public static double averageSlope(SubParcel p, DTMArea dtm)
@@ -58,8 +66,8 @@ public class AverageSlope {
       return 0;
     }
 
-    return Math.PI / 2 - Math.atan(z / norme);
+		return Math.PI / 2 - Math.atan(z / norme);
 
-  }
+	}
 
 }

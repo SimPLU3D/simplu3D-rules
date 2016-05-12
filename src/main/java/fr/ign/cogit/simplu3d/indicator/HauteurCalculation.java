@@ -1,17 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import java.util.List;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -28,6 +14,27 @@ import fr.ign.cogit.simplu3d.model.application.SubParcel;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import java.util.List;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SubParcel;
+
+/**
+ * 
+ * Calcul de la hauteur d'un bâtiment
+ * 
+ * @author MBrasebin
+ *
+ */
 public class HauteurCalculation {
 
   public enum POINT_HAUT_TYPE {

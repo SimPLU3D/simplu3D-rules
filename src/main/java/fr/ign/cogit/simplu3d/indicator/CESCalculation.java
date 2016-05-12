@@ -1,7 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -18,6 +14,19 @@ import fr.ign.cogit.simplu3d.model.application.SubParcel;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.SubParcel;
+
+/**
+ * Calcul du Coefficient d'Emprise au Sol
+ * 
+ * @see http://blog.logic-immo.com/2010/01/questions-argent-droit/urbanisme-cos-ces-plu-pos-shon-shob-definitions-architecte/
+ * 
+ * @author MBrasebin
+ *
+ */
 public class CESCalculation {
 
   public static double assess(SubParcel p) {
@@ -34,3 +43,5 @@ public class CESCalculation {
     
   }
 }
+
+

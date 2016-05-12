@@ -1,13 +1,10 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -17,15 +14,22 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
+
+/**
+ * 
+ * CNIG PLU - Prescription ponctuelle
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class Prescription_PCT extends Prescription {
-  
 
-
-  public Prescription_PCT(int type, IPoint geom) {
-    super(type);
-    this.geom = geom;
-  }
-  
-   
+	public Prescription_PCT(int type, IPoint geom) {
+		super(type);
+		this.geom = geom;
+	}
 
 }

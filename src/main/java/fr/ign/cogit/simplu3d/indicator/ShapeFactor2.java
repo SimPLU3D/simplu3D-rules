@@ -1,8 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-
-
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -19,6 +14,15 @@ import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+
+/**
+ * 
+ * @author MBrasebin
+ *
+ */
 public class ShapeFactor2  {
 
   private double value;

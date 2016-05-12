@@ -1,11 +1,3 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -22,77 +14,92 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
+
+/**
+ * 
+ * CityGML - Une route avec un axe central
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class Road extends CG_Road {
 
-  private IMultiCurve<ILineString> axis;
-  public String name;
-  public String type;
-  public int idRoad;
-  private double width;
-  private Road axe;
+	private IMultiCurve<ILineString> axis;
+	public String name;
+	public String type;
+	public int idRoad;
+	private double width;
+	/**
+	 * TODO un axe de type Road? en plus de axis?
+	 */
+	private Road axe;
 
-  public Road() {
-    super();
-  }
+	public Road() {
+		super();
+	}
 
-  public Road(org.citygml4j.model.citygml.transportation.Road tO) {
-    super(tO);
+	public Road(org.citygml4j.model.citygml.transportation.Road tO) {
+		super(tO);
+	}
 
-    // TODO Auto-generated constructor stub
-  }
+	public Road(IMultiSurface<IOrientableSurface> surfVoie) {
+		this.setLod2MultiSurface(surfVoie);
+		this.setGeom(surfVoie);
+	}
 
-  public Road(IMultiSurface<IOrientableSurface> surfVoie) {
+	public IMultiCurve<ILineString> getAxis() {
+		return axis;
+	}
 
-    this.setLod2MultiSurface(surfVoie);
-    this.setGeom(surfVoie);
-  }
+	public void setAxe(IMultiCurve<ILineString> axis) {
+		this.axis = axis;
+	}
 
-  public IMultiCurve<ILineString> getAxis() {
-    return axis;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setAxe(IMultiCurve<ILineString> axis) {
-    this.axis = axis;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public double getWidth() {
+		return width;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setWidth(double width) {
+		this.width = width;
+	}
 
-  public double getWidth() {
-    return width;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setWidth(double width) {
-    this.width = width;
-  }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public int getIdRoad() {
+		return idRoad;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public void setIdRoad(int idRoad) {
+		this.idRoad = idRoad;
+	}
 
-  public int getIdRoad() {
-    return idRoad;
-  }
+	public void setAxe(Road axe) {
+		this.axe = axe;
+	}
 
-  public void setIdRoad(int idRoad) {
-    this.idRoad = idRoad;
-  }
-
-  public void setAxe(Road axe) {
-    this.axe = axe;
-  }
-
-  public Road getAxe() {
-    return axe;
-  }
+	public Road getAxe() {
+		return axe;
+	}
 
 }

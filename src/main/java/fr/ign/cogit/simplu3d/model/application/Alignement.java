@@ -1,15 +1,10 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import java.util.List;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.ICurve;
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -19,26 +14,34 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.ICurve;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import java.util.List;
+
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.ICurve;
+
+/**
+ * 
+ * Un Alignement est un type de prescription linéaire
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class Alignement extends Prescription_LIN {
 
+	public boolean isStrict;
 
-  public Alignement(int type, ICurve geom) {
-    super(type, geom);
-    // TODO Auto-generated constructor stub
-  }
+	public Alignement(int type, ICurve geom) {
+		super(type, geom);
+	}
 
-  public boolean isStrict;
-
-  public int getType() {
-    return type;
-  }
-
-  public void setType(int type) {
-    this.type = type;
-  }
-
-  public List<Alignement> opposite() {
-    return null;
-  }
+	/**
+	 * TODO supprimer ou implémenter
+	 * 
+	 * @return
+	 */
+	public List<Alignement> opposite() {
+		return null;
+	}
 
 }

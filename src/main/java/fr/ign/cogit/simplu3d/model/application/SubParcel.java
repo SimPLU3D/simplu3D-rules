@@ -1,17 +1,3 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import java.util.List;
-
-import org.citygml4j.model.citygml.landuse.LandUse;
-
-import com.vividsolutions.jts.geom.Geometry;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -28,216 +14,231 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import java.util.List;
+
+import org.citygml4j.model.citygml.landuse.LandUse;
+
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
+import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+
+/**
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class SubParcel extends CG_LandUse {
 
-  public final String CLASSE = "SousParcelle";
+	public final String CLASSE = "SousParcelle";
 
-  private CadastralParcel parcelle;
+	private CadastralParcel parcelle;
 
-  private int idZU = 0;
-  private int idCp = 0;
-  private double avgSlope;
-  private double area = -1;
-  private UrbaZone zU = null;
+	private int idZU = 0;
+	private int idCp = 0;
+	private double avgSlope;
+	private double area = -1;
+	private UrbaZone zU = null;
 
-  public UrbaZone getUrbaZone() {
-    return zU;
-  }
+	public UrbaZone getUrbaZone() {
+		return zU;
+	}
 
-  public void setZoneUrba(UrbaZone zU) {
-    this.zU = zU;
-  }
+	public void setZoneUrba(UrbaZone zU) {
+		this.zU = zU;
+	}
 
-  public void setIdZoneUrba(int idZU) {
-    this.idZU = idZU;
-  }
+	public void setIdZoneUrba(int idZU) {
+		this.idZU = idZU;
+	}
 
-  public int getIdZoneUrba() {
-    return idZU;
-  }
+	public int getIdZoneUrba() {
+		return idZU;
+	}
 
-  public void setIdCadPar(int idCp) {
-    this.idCp = idCp;
-  }
+	public void setIdCadPar(int idCp) {
+		this.idCp = idCp;
+	}
 
-  public int getIdCadPar() {
-    return idCp;
-  }
+	public int getIdCadPar() {
+		return idCp;
+	}
 
-  public double builtRatio() {
-    return 0;
-  }
+	public double builtRatio() {
+		return 0;
+	}
 
-  public double FARVolume() {
-    return 0;
-  }
+	public double FARVolume() {
+		return 0;
+	}
 
-  public double FARRatio() {
-    return 0;
-  }
+	public double FARRatio() {
+		return 0;
+	}
 
-  public SubParcel(IGeometry iMS) {
-    super();
-    this.setGeom(iMS);
-    this.setClazz(CLASSE);
-  }
+	public SubParcel(IGeometry iMS) {
+		super();
+		this.setGeom(iMS);
+		this.setClazz(CLASSE);
+	}
 
-  public void setArea(Double area) {
-    this.area = area;
-  }
+	public void setArea(Double area) {
+		this.area = area;
+	}
 
-  public double getAvgSlope() {
-    return avgSlope;
-  }
+	public double getAvgSlope() {
+		return avgSlope;
+	}
 
-  public void setAvgSlope(Double avgSlope) {
-    this.avgSlope = avgSlope;
-  }
+	public void setAvgSlope(Double avgSlope) {
+		this.avgSlope = avgSlope;
+	}
 
-  public double getArea() {
+	public double getArea() {
 
-    if (area == -1) {
-      area = this.getGeom().area();
-    }
-    return area;
-  }
+		if (area == -1) {
+			area = this.getGeom().area();
+		}
+		return area;
+	}
 
-  public IFeatureCollection<AbstractBuilding> buildingsParts = new FT_FeatureCollection<AbstractBuilding>();
-  // private IFeatureCollection<Voirie> voiries = new
-  // FT_FeatureCollection<Voirie>();
-  public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
+	public IFeatureCollection<AbstractBuilding> buildingsParts = new FT_FeatureCollection<AbstractBuilding>();
+	// private IFeatureCollection<Voirie> voiries = new
+	// FT_FeatureCollection<Voirie>();
+	public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
-  public void setSpecificCadBoundary(
-      IFeatureCollection<SpecificCadastralBoundary> spCBoundary) {
-    this.sCBoundary = spCBoundary;
-  }
+	public void setSpecificCadBoundary(IFeatureCollection<SpecificCadastralBoundary> spCBoundary) {
+		this.sCBoundary = spCBoundary;
+	}
 
-  public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
-    return sCBoundary.getElements();
-  }
+	public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
+		return sCBoundary.getElements();
+	}
 
-  public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryColl() {
-    return sCBoundary;
-  }
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryColl() {
+		return sCBoundary;
+	}
 
-  public SubParcel() {
-    super();
-    this.setClazz(CLASSE);
+	public SubParcel() {
+		super();
+		this.setClazz(CLASSE);
 
-  }
+	}
 
-  public SubParcel(LandUse landUse) {
-    super(landUse);
+	public SubParcel(LandUse landUse) {
+		super(landUse);
 
-    this.setClazz(CLASSE);
+		this.setClazz(CLASSE);
 
-  }
+	}
 
-  public IFeatureCollection<SpecificCadastralBoundary> getBorduresFond() {
-    IFeatureCollection<SpecificCadastralBoundary> borduresFond = new FT_FeatureCollection<SpecificCadastralBoundary>();
-    for (SpecificCadastralBoundary b : this.sCBoundary) {
-      if (b.getType() == SpecificCadastralBoundary.BOT) {
-        borduresFond.add(b);
-      }
+	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFond() {
+		IFeatureCollection<SpecificCadastralBoundary> borduresFond = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.sCBoundary) {
+			if (b.getType() == SpecificCadastralBoundary.BOT) {
+				borduresFond.add(b);
+			}
 
-    }
-    return borduresFond;
-  }
+		}
+		return borduresFond;
+	}
 
-  public IFeatureCollection<SpecificCadastralBoundary> getBorduresLat() {
-    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-    for (SpecificCadastralBoundary b : this.sCBoundary) {
-      if (b.getType() == SpecificCadastralBoundary.LAT) {
-        borduresLat.add(b);
-      }
+	public IFeatureCollection<SpecificCadastralBoundary> getBorduresLat() {
+		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.sCBoundary) {
+			if (b.getType() == SpecificCadastralBoundary.LAT) {
+				borduresLat.add(b);
+			}
 
-    }
-    return borduresLat;
-  }
+		}
+		return borduresLat;
+	}
 
-  public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
-    IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-    for (SpecificCadastralBoundary b : this.sCBoundary) {
-      if (b.getType() == SpecificCadastralBoundary.ROAD) {
-        borduresLat.add(b);
-      }
+	public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
+		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.sCBoundary) {
+			if (b.getType() == SpecificCadastralBoundary.ROAD) {
+				borduresLat.add(b);
+			}
 
-    }
-    return borduresLat;
-  }
+		}
+		return borduresLat;
+	}
 
-  public void setParcelle(CadastralParcel cP) {
-    this.parcelle = cP;
-  }
+	public void setParcelle(CadastralParcel cP) {
+		this.parcelle = cP;
+	}
 
-  public CadastralParcel getParcel() {
-    return parcelle;
-  }
+	public CadastralParcel getParcel() {
+		return parcelle;
+	}
 
-  public IFeatureCollection<AbstractBuilding> getBuildingsParts() {
-    // System.out.println("NB BP : " + buildingsParts.size());
-    return buildingsParts;
-  }
+	public IFeatureCollection<AbstractBuilding> getBuildingsParts() {
+		// System.out.println("NB BP : " + buildingsParts.size());
+		return buildingsParts;
+	}
 
-  public void setBuildingsParts(
-      IFeatureCollection<AbstractBuilding> buildingsParts) {
-    this.buildingsParts = buildingsParts;
-  }
+	public void setBuildingsParts(IFeatureCollection<AbstractBuilding> buildingsParts) {
+		this.buildingsParts = buildingsParts;
+	}
 
-  public double getces() {
+	public double getces() {
 
-    double area = this.getArea();
+		double area = this.getArea();
 
-    int bP = this.getBuildingsParts().size();
+		int bP = this.getBuildingsParts().size();
 
-    if (bP == 0) {
-      return 0;
-    }
+		if (bP == 0) {
+			return 0;
+		}
 
-    Geometry geom = null;
-    try {
-      geom = JtsGeOxygene.makeJtsGeom(this.getBuildingsParts().get(0)
-          .getFootprint());
+		Geometry geom = null;
+		try {
+			geom = JtsGeOxygene.makeJtsGeom(this.getBuildingsParts().get(0).getFootprint());
 
-      for (int i = 0; i < bP; i++) {
-        geom = geom.union(JtsGeOxygene.makeJtsGeom(this.getBuildingsParts()
-            .get(i).getFootprint()));
+			for (int i = 0; i < bP; i++) {
+				geom = geom.union(JtsGeOxygene.makeJtsGeom(this.getBuildingsParts().get(i).getFootprint()));
 
-      }
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    if (geom == null) {
-      return 0;
-    }
+		if (geom == null) {
+			return 0;
+		}
 
-    // System.out.println(areaB / area);
+		// System.out.println(areaB / area);
 
-    return geom.getArea() / area;
+		return geom.getArea() / area;
 
-  }
+	}
 
-  public IGeometry getConsLine() {
-    SubParcel.getLogger().error("Empty method getConsline()");
-    return null;
-  }
-  /*
-   * public IFeatureCollection<Voirie> getVoiries() { return voiries; }
-   * 
-   * public void setVoiries(IFeatureCollection<Voirie> voiries) { this.voiries =
-   * voiries; }
-   */
+	public IGeometry getConsLine() {
+		SubParcel.getLogger().error("Empty method getConsline()");
+		return null;
+	}
+	/*
+	 * public IFeatureCollection<Voirie> getVoiries() { return voiries; }
+	 * 
+	 * public void setVoiries(IFeatureCollection<Voirie> voiries) { this.voiries
+	 * = voiries; }
+	 */
 
-  /*
-   * public IFeatureCollection<Bordure> getBordures() { return bordures; }
-   * 
-   * 
-   * public void setBordures(IFeatureCollection<Bordure> bordures) {
-   * this.bordures = bordures; }
-   * 
-   * public void setParcelle(CadastralParcel parcelle) { this.parcelle =
-   * parcelle; }
-   */
+	/*
+	 * public IFeatureCollection<Bordure> getBordures() { return bordures; }
+	 * 
+	 * 
+	 * public void setBordures(IFeatureCollection<Bordure> bordures) {
+	 * this.bordures = bordures; }
+	 * 
+	 * public void setParcelle(CadastralParcel parcelle) { this.parcelle =
+	 * parcelle; }
+	 */
 }

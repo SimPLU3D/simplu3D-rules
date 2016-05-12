@@ -1,15 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
-import fr.ign.cogit.geoxygene.sig3d.calculation.OrientedBoundingBox;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-
-public class ShapeDeviation {
-
-  private double value;
-
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -25,45 +13,63 @@ public class ShapeDeviation {
  * @author Brasebin Mickaël
  * 
  * @version 1.0
+ **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
+import fr.ign.cogit.geoxygene.sig3d.calculation.OrientedBoundingBox;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
+import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Solid;
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+
+/**
+ * 
+ * @author MBrasebin
  *
-   * Rapport entre le volume d'un objet de le volume de sa boite orientée
-   * @param bP
-   */
-  public ShapeDeviation(AbstractBuilding bP) {
+ */
+public class ShapeDeviation {
 
-    value = 1;
+	private double value;
 
-    OrientedBoundingBox oBB = new OrientedBoundingBox(bP.getGeom());
+	/**
+	 * Rapport entre le volume d'un objet de le volume de sa boite orientée
+	 * 
+	 * @param bP
+	 */
+	public ShapeDeviation(AbstractBuilding bP) {
 
-    if (oBB.getPoly() != null) {
+		value = 1;
 
-      double zMin = oBB.getzMin();
-      double zMax = oBB.getzMax();
+		OrientedBoundingBox oBB = new OrientedBoundingBox(bP.getGeom());
 
-      double volArea = oBB.getPoly().area() * (zMax - zMin);
+		if (oBB.getPoly() != null) {
 
-      if (volArea == 0) {
-        return;
-      }
+			double zMin = oBB.getzMin();
+			double zMax = oBB.getzMax();
 
-      
-      double vBati = Calculation3D.volume(new GM_Solid(FromPolygonToTriangle.convertAndTriangle(bP.getRoof()
-          .getLod2MultiSurface().getList())));
+			double volArea = oBB.getPoly().area() * (zMax - zMin);
 
-      value = vBati / volArea;
+			if (volArea == 0) {
+				return;
+			}
 
-      if (value > 1) {
+			double vBati = Calculation3D.volume(new GM_Solid(
+					FromPolygonToTriangle.convertAndTriangle(bP.getRoof().getLod2MultiSurface().getList())));
 
-        System.out.println("Why ?" + value);
-      }
+			value = vBati / volArea;
 
-    }
+			if (value > 1) {
 
-  }
+				System.out.println("Why ?" + value);
+			}
 
-  public Double getValue() {
-    // TODO Auto-generated method stub
-    return value;
-  }
+		}
+
+	}
+
+	public Double getValue() {
+		// TODO Auto-generated method stub
+		return value;
+	}
 
 }

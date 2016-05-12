@@ -1,10 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-
-public class RoofCoeff {
-
-  private double value = 0;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -21,6 +14,19 @@ public class RoofCoeff {
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+
+/**
+ * 
+ * @author MBrasebin
+ *
+ */
+public class RoofCoeff {
+
+  private double value = 0;
+
   public RoofCoeff(AbstractBuilding b) {
 
     double h1 = HauteurCalculation.calculate(b,

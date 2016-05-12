@@ -1,14 +1,10 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -18,32 +14,38 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+
+/**
+ * 
+ * TODO décrire
+ * 
+ * @author Brasebin Mickaël
+ *
+ */
 public class PublicSpace extends DefaultFeature {
-  
-  
-  public String type;
-  
-  public IPolygon geom;
 
-  public String getType() {
-    return type;
-  }
+	public String type;
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public IPolygon geom;
 
-  public IPolygon getGeom() {
-    return geom;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setGeom(IPolygon geom) {
-    this.geom = geom;
-  }
-  
-  
-  
-  
-   
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public IPolygon getGeom() {
+		return geom;
+	}
+
+	public void setGeom(IPolygon geom) {
+		this.geom = geom;
+	}
 
 }

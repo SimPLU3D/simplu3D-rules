@@ -1,9 +1,3 @@
-package fr.ign.cogit.simplu3d.indicator;
-
-import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -20,30 +14,37 @@ import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.indicator;
+
+import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
+import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
+
+/**
+ * 
+ * Calcul de la surface de la facade
+ * 
+ * @author MBrasebin
+ *
+ */
 public class FacadeArea {
 
-  private double value = 0;
+	private double value = 0;
 
-  public FacadeArea(AbstractBuilding b) {
+	public FacadeArea(AbstractBuilding b) {
+		for (SpecificWallSurface f : b.getFacade()) {
+			FacadeArea fA = new FacadeArea(f);
+			value = value + fA.getValue();
+		}
+	}
 
-    for (SpecificWallSurface f : b.getFacade()) {
+	public FacadeArea(SpecificWallSurface f) {
+		value = Calculation3D.area(FromPolygonToTriangle.convertAndTriangle(f.getLod2MultiSurface().getList()));
+	}
 
-      FacadeArea fA = new FacadeArea(f);
-      value = value + fA.getValue();
-
-    }
-
-  }
-
-  public FacadeArea(SpecificWallSurface f) {
-
-    value = Calculation3D.area(FromPolygonToTriangle.convertAndTriangle(f
-        .getLod2MultiSurface().getList()));
-
-  }
-
-  public double getValue() {
-    return value;
-  }
+	public double getValue() {
+		return value;
+	}
 
 }

@@ -1,10 +1,3 @@
-package fr.ign.cogit.simplu3d.model.application;
-
-import java.util.Date;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -20,8 +13,20 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
  * @author Brasebin Mickaël
  * 
  * @version 1.0
+ **/
+package fr.ign.cogit.simplu3d.model.application;
+
+import java.util.Date;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+
+/**
  * 
+ * TODO : Fusionner PLU et UrbaDocument
  * 
+ * @author Brasebin Mickaël
+ *
  */
 public class PLU extends UrbaDocument {
 

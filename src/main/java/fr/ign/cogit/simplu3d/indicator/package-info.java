@@ -1,17 +1,4 @@
 /**
- * 
- *        This software is released under the licence CeCILL
- * 
- *        see LICENSE.TXT
- * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
- * 
- * 
- * 
- * @copyright IGN
- * 
- * @author Brasebin Mickaël
- * 
- * @version 1.0
- **/
+ * Regroupe les utilitaires de calcul d'indicateur sur les parcelles, les bâtiments, etc.
+ */
 package fr.ign.cogit.simplu3d.indicator;
