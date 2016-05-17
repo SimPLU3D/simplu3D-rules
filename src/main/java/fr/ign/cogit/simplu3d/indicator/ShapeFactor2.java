@@ -47,7 +47,7 @@ public class ShapeFactor2  {
 
 
   public Double getValue() {
-    // TODO Auto-generated method stub
+
     return value;
   }
 

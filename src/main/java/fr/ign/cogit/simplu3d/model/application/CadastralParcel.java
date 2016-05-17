@@ -39,8 +39,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 public class CadastralParcel extends CG_LandUse {
 
 	public final String CLASSE = "Parcelle";
-	//TODO doublon bPU.id ???
-	private int idBPU = 0;
 	private int num = 0;
 
 	/**
@@ -54,8 +52,7 @@ public class CadastralParcel extends CG_LandUse {
 	public BasicPropertyUnit bPU;
 
 	/**
-	 * TODO décrire
-	 * (cache)
+	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
 	 */
 	private IGeometry consLine = null;
 
@@ -68,13 +65,6 @@ public class CadastralParcel extends CG_LandUse {
 		this.bPU = bPU;
 	}
 
-	public void setIdBPU(int idBPU) {
-		this.idBPU = idBPU;
-	}
-
-	public int getIdBPU() {
-		return idBPU;
-	}
 
 	public void setNum(int num) {
 		this.num = num;
@@ -160,13 +150,7 @@ public class CadastralParcel extends CG_LandUse {
 		this.area = area;
 	}
 
-	/**
-	 * TODO supprimer ou corriger
-	 * @return
-	 */
-	public Building getBuilding() {
-		return null;
-	}
+	
 
 	public IGeometry getConsLine() {
 

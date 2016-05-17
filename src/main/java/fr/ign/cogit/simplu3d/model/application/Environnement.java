@@ -36,7 +36,7 @@ import fr.ign.parameters.Parameters;
  */
 public class Environnement extends CG_CityModel {
 	public String folder;
-	public PLU plu;
+	public UrbaDocument urbaDoc;
 
 	private static Environnement env = null;
 
@@ -162,19 +162,19 @@ public class Environnement extends CG_CityModel {
 		this.bpU = bpU;
 	}
 
-	public PLU getPlu() {
-		return plu;
+	public UrbaDocument getPlu() {
+		return urbaDoc;
 	}
 
-	public void setPlu(PLU plu) {
-		this.plu = plu;
+	public void setPlu(UrbaDocument plu) {
+		this.urbaDoc = plu;
 	}
 
 	public Parameters loadParameters(String path) {
 		try {
 			return ParameterComponent.unmarshall(new File(path));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return null;

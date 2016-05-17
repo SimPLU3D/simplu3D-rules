@@ -11,12 +11,12 @@ import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.BuildingPart;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class LoadFromCollectionBPU {
@@ -245,7 +245,7 @@ public class LoadFromCollectionBPU {
     // On récupère depuis les parcelles adjacentes chargées les identifiants des
     // BPU au sein d'une liste
     for (CadastralParcel currentCPAdj : cadParAdjImport) {
-      int id = currentCPAdj.getIdBPU();
+      int id = currentCPAdj.getId();
       if (!idBPUAdjList.contains(id)) {
         idBPUAdjList.add(id);
       }
@@ -308,7 +308,7 @@ public class LoadFromCollectionBPU {
     IFeatureCollection<IFeature> pluLoad = PostgisManager
         .loadNonGeometricTableWhereClause(host, port, database, user, pw,
             tablePLU, clausePLU);
-    PLU pluImport = ImporterPostGIS.importPLU(pluLoad);
+    UrbaDocument pluImport = ImporterPostGIS.importPLU(pluLoad);
 
     // On utilise la liste des identifiants de sous-parcelles pour produire la
     // clause servant à obtenir les parties de batiments et on lance le

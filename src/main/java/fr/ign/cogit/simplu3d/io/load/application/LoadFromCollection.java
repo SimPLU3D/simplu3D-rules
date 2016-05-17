@@ -19,9 +19,9 @@ import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 import fr.ign.cogit.simplu3d.util.AssignZ;
 
@@ -101,9 +101,9 @@ public class LoadFromCollection {
     }
 
     // Etape 1 : création de l'objet PLU
-    PLU plu;
+    UrbaDocument plu;
     if (featPLU == null) {
-      plu = new PLU();
+      plu = new UrbaDocument();
     } else {
       plu = PLUImporter.loadPLU(featPLU);
     }
@@ -118,7 +118,7 @@ public class LoadFromCollection {
     logger.info("Zones loaded");
 
     // Etape 3 : assignement des zonages au PLU
-    plu.lUrbaZone.addAll(zones);
+    plu.getlUrbaZone().addAll(zones);
     env.setUrbaZones(zones);
 
     logger.info("Zones assigned");
@@ -185,7 +185,7 @@ public class LoadFromCollection {
       AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
       AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);
       AssignZ.toZone(env.getUrbaZones(), dtm, false);
-    } catch (Exception e) { // TODO Auto-generated catch block
+    } catch (Exception e) {
       e.printStackTrace();
     }
 

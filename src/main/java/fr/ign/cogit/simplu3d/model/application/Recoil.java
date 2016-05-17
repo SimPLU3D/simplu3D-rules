@@ -21,7 +21,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.ICurve;
 
 /**
  * 
- * TODO décrire
+ * Recoil constraints object to be built at a distance (distance) of a reference object (objRef)
  * 
  * @author Brasebin Mickaël
  *

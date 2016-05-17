@@ -36,10 +36,7 @@ public class Road extends CG_Road {
 	public String type;
 	public int idRoad;
 	private double width;
-	/**
-	 * TODO un axe de type Road? en plus de axis?
-	 */
-	private Road axe;
+
 
 	public Road() {
 		super();
@@ -94,12 +91,6 @@ public class Road extends CG_Road {
 		this.idRoad = idRoad;
 	}
 
-	public void setAxe(Road axe) {
-		this.axe = axe;
-	}
 
-	public Road getAxe() {
-		return axe;
-	}
 
 }

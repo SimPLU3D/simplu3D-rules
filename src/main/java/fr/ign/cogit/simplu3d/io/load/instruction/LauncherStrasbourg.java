@@ -52,7 +52,7 @@ public class LauncherStrasbourg {
     Load.database = "strasbourg_simplu";
 
     // On charge l'environnement depuis la base de données
-    // TODO appeler le load version
+
     Environnement env = LoaderPostGISTest.load(folder, idVersion);
 
     // On récupère les données qui nous intéressent dans l'environnement
@@ -143,7 +143,7 @@ public class LauncherStrasbourg {
 
   private JComboBox<Version> generateCombobox() {
 
-    //TODO Générer les éléments à partir de la requête
+    // Générer les éléments à partir de la requête
     Vector<Version> lVersion = new Vector<>();
     lVersion.add(new Version(-1, "Données par défaut"));
     lVersion.add(new Version(40, "Version 40"));
@@ -176,7 +176,7 @@ public class LauncherStrasbourg {
         try {
           afficheMap(selectedLine.getID());
         } catch (Exception e1) {
-          // TODO Auto-generated catch block
+     
           e1.printStackTrace();
         }
 

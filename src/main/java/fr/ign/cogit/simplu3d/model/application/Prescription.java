@@ -28,8 +28,8 @@ import fr.ign.cogit.geoxygene.feature.FT_Feature;
 public class Prescription extends FT_Feature {
 	
 	/**
-	 * TODO description???
-	 */
+	 * Type of the prescription according to COVADIS standard
+	*/
 	public int type;
 	
 	public Prescription(int type) {

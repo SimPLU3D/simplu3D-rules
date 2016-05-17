@@ -18,26 +18,19 @@ package fr.ign.cogit.simplu3d.model.application;
 
 /**
  * 
- * TODO virer folderMat et créer un MaterialLoader qui utilise les ressources
+ * Classe décrivant la métériau qui s'applique sur les surfaces des bâtiments
  * 
  * @author Brasebin Mickaël
  *
  */
-public enum Materiau {
+public class Materiau {
 
-	BRIQUE("Brique", Materiau.folderMat + "texture.jpg", 5, 5), 
-	PIERRE("Mur", Materiau.folderMat + "mur.jpg", 5, 5), 
-	MUR_BLANC("Mur", Materiau.folderMat + "murs.jpg", 5, 5),
-	VEGETAL("Vegetal", Materiau.folderMat + "murs.jpg", 5, 5), 
-	TOLE("Toles", Materiau.folderMat + "toit.jpg", 5, 5);
-
-	private final static String folderMat = "E:/mbrasebin/Workspace/geoxygene/geoxygene-sig3d/src/main/resources/texture/";
 
 	public String nomMateriau;
 	public String textRep = null;
 	public double textH = Double.NaN, textL = Double.NaN;
 
-	Materiau(String nomMateriau, String textRep, double textH, double textL) {
+	public Materiau(String nomMateriau, String textRep, double textH, double textL) {
 
 		this.nomMateriau = nomMateriau;
 		this.textRep = textRep;

@@ -457,7 +457,8 @@ public class Checker {
   /**
    * On récupère les bâtiments en 2 bandes (avec priorité pour la première)
    * 
-   * - Alignement + r.getBand1 - Alignement + r.getBand1 + r.getBand2 TODO :
+   * - Alignement + r.getBand1 - Alignement + r.getBand1 + r.getBand2 
+   *  @TODO :
    * couper en 2 les bâtiments en fonction des zones dans lesquells ils sont
    * 
    * @param bPU une BPU

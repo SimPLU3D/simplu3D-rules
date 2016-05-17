@@ -16,6 +16,8 @@
  **/
 package fr.ign.cogit.simplu3d.model.application;
 
+import java.util.List;
+
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 
 /**
@@ -24,8 +26,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  *
  */
 public class Building extends AbstractBuilding {
-	//TODO à supprimer, déjà porté par classe mère
-	private int idBuilding = 0;
+
 	private int idVersion = 0;
 
 	public Building() {
@@ -37,11 +38,11 @@ public class Building extends AbstractBuilding {
 	}
 
 	public void setIdBuilding(int idBuilding) {
-		this.idBuilding = idBuilding;
+		this.id = id;
 	}
 
 	public int getIdBuilding() {
-		return idBuilding;
+		return id;
 	}
 
 	public void setIdVersion(int IdVersion) {
@@ -59,4 +60,6 @@ public class Building extends AbstractBuilding {
 		b.isNew = this.isNew;
 		return b;
 	}
+
+
 }

@@ -14,10 +14,10 @@ import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class TestLoaderPostGIS {
 
     Environnement env = lP.load(folder);
 
-    PLU plu = env.getPlu();
+    UrbaDocument plu = env.getPlu();
 
     System.out.println("Nombre de zones dans le PLU : "
         + plu.getlUrbaZone().size());

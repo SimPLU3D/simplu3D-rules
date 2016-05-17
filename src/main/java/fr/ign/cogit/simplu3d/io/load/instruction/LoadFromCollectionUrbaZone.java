@@ -11,12 +11,12 @@ import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.BuildingPart;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class LoadFromCollectionUrbaZone {
@@ -94,7 +94,7 @@ public class LoadFromCollectionUrbaZone {
 		String clausePLU = generatedWhereClauseString(idZUPLU, attIdPLU);
 		IFeatureCollection<IFeature> pluLoad = PostgisManager.loadNonGeometricTableWhereClause(host, port, database,
 				user, pw, tablePLU, clausePLU);
-		PLU pluImport = ImporterPostGIS.importPLU(pluLoad);
+		UrbaDocument pluImport = ImporterPostGIS.importPLU(pluLoad);
 
 		// Partie SP
 		String clauseSP = generatedWhereClauseInt(searchIdZU, attIdSubParZU);
@@ -121,7 +121,7 @@ public class LoadFromCollectionUrbaZone {
 		List<Integer> idBPUList = new ArrayList<Integer>();
 
 		for (CadastralParcel currentCP : cadParImport) {
-			int id = currentCP.getIdBPU();
+			int id = currentCP.getId();
 			if (!idBPUList.contains(id)) {
 				idBPUList.add(id);
 			}
@@ -219,7 +219,7 @@ public class LoadFromCollectionUrbaZone {
 			zuImport.addAll(zuAdjImport);
 
 			for (CadastralParcel currentCPAdj : cadParAdjImport) {
-				int id = currentCPAdj.getIdBPU();
+				int id = currentCPAdj.getId();
 				if (!idBPUAdjList.contains(id)) {
 					idBPUAdjList.add(id);
 				}

@@ -107,7 +107,7 @@ public class ZonesImporter {
         try {
           z.setDateDeb(sdfdeb.parse(o.toString()));
         } catch (ParseException e) {
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
       }
@@ -119,7 +119,7 @@ public class ZonesImporter {
           z.setDateFin(sdfdeb.parse(o.toString()));
 
         } catch (ParseException e) {
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
       }

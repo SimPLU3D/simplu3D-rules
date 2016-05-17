@@ -67,27 +67,12 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 		this.featAdj = featAdj;
 	}
 
-	/**
-	 * TODO supprimer ou corriger
-	 * @return
-	 */
-	public CadastralParcel getCadastralCadastralParcel() {
-		return null;
-	}
-
-	/**
-	 * TODO supprimer ou corriger
-	 * @return
-	 */
-	public SubParcel getSubParcel() {
-		return null;
-	}
 
 
 
 	@Override
 	public CityObject export() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

@@ -32,7 +32,6 @@ public class LoadDefaultEnvironment {
 			ENV_SINGLETON = LoaderSHP.load(new File(folder), LoadDefaultEnvironment.class.getResourceAsStream("/fr/ign/cogit/simplu3d/data/"
 			        + LoaderSHP.NOM_FICHIER_TERRAIN));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
  

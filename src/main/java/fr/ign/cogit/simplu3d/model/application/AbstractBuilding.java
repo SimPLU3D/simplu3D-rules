@@ -50,25 +50,18 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
  */
 public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	
-	/**
-	 * TODO rename to buildingParts
-	 */
-	public List<BuildingPart> buildingPart = new ArrayList<BuildingPart>();
+
+	public List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
-	// TODO supprimer??? vient en doublon avec idBuilding/idVersion, etc.
-	private Building building;
+
 	private SpecificWallSurface wall;
-	/**
-	 * TODO supprimer ou utiliser (devrait être un attribut "type" sur BuildingPart?)
-	 */
-	private RoofSurface roof;
+
 	private List<SpecificWallSurface> wallSurface;
 
 	public String destination;
 	public IOrientableSurface footprint;
 	
-	// TODO building.id ???
-	private int idBuilding;
+
 	private int idSubPar;
 	private int idVersion = -1;
 
@@ -78,10 +71,8 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.isNew = isNew;
 	}
 
-	/**
-	 * TODO rename subParcels
-	 */
-	private List<SubParcel> sousParcelles = new ArrayList<SubParcel>();
+
+	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
 	private BasicPropertyUnit bPU;
 
 	protected AbstractBuilding() {
@@ -125,11 +116,11 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	public List<SubParcel> getSousParcelles() {
-		return sousParcelles;
+		return subParcels;
 	}
 
 	public void setSousParcelles(List<SubParcel> sousParcelles) {
-		this.sousParcelles = sousParcelles;
+		this.subParcels = sousParcelles;
 	}
 
 	public BasicPropertyUnit getbPU() {
@@ -140,13 +131,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.bPU = bPU;
 	}
 
-	public Building getBuilding() {
-		return building;
-	}
 
-	public void setBuilding(Building building) {
-		this.building = building;
-	}
 
 	public SpecificWallSurface getWall() {
 		return wall;
@@ -161,16 +146,9 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	public void setRoof(RoofSurface roof) {
-		this.roof = roof;
+		this.roofSurface = roof;
 	}
 
-	public int getIdBuilding() {
-		return idBuilding;
-	}
-
-	public void getIdBuilding(int idBuilding) {
-		this.idBuilding = idBuilding;
-	}
 
 	public int getIdSubPar() {
 		return idSubPar;
@@ -189,7 +167,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	public List<BuildingPart> getBuildingPart() {
-		return buildingPart;
+		return buildingParts;
 	}
 
 
@@ -206,11 +184,11 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	public List<BuildingPart> consistsOfBuildingPart() {
-		return buildingPart;
+		return buildingParts;
 	}
 
 	public void setBuildingPart(List<BuildingPart> buildingPart) {
-		this.buildingPart = buildingPart;
+		this.buildingParts = buildingPart;
 	}
 
 	@Override
@@ -239,7 +217,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
 	@Override
 	public CityObject export() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -249,7 +227,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		return h;
 	}
 
-	// @TODO compléter la méthode
+
 	public abstract AbstractBuilding clone();
 
 	public double distance(AbstractBuilding b2) {
@@ -272,19 +250,8 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		return footprint;
 	}
 
-	/**
-	 * @TODO : à implémenter
-	 * @return
-	 */
-	public List<AbstractBuilding> getBuildingsParts() {
-		return null;
-	}
-
-	/**
-	 * @TODO : à implémenter
-	 * @return
-	 */
-	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2) {
+	//@TODO LATER
+	public  List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2){
 		return null;
 	}
 
@@ -293,7 +260,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	public List<AbstractBuilding> bandEpsilon(CadastralParcel cP, double distMin, double distMax) {
-		return null;
+		return bandEpsilon(cP.getGeom(), distMin, distMax);
 	}
 
 	/**

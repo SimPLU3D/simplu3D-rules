@@ -68,7 +68,6 @@ public class ParametersPostgis extends Parameters {
       try {
         return rs.getObject(key);
       } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }

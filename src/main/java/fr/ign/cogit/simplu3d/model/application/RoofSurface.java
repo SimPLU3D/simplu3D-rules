@@ -133,7 +133,7 @@ public class RoofSurface extends CG_RoofSurface {
 		return RoofAngle.angleMax(this);
 	}
 
-	// TODO : de base en commentaire pourquoi???
+
 	public void setAngleMax(double angleMax) {
 		this.angleMax = angleMax;
 	}

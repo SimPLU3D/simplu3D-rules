@@ -206,7 +206,7 @@ public class SubParcel extends CG_LandUse {
 
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 

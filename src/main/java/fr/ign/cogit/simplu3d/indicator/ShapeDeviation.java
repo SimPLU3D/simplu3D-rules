@@ -68,7 +68,7 @@ public class ShapeDeviation {
 	}
 
 	public Double getValue() {
-		// TODO Auto-generated method stub
+
 		return value;
 	}
 

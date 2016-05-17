@@ -21,7 +21,12 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
  * 
- * TODO décrire
+ * This theme refers to various objects that represent public zones. Some
+ * constraints are expressed in relation with public zones according to its type
+ * (i.e., public garden, channels, rail track zones). Public roads are a
+ * particular type of public space, it is represented by a surface and has a
+ * type according to administration typologies (i.e., channel, public garden,
+ * public place).
  * 
  * @author Brasebin Mickaël
  *

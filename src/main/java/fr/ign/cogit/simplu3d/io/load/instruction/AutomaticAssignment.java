@@ -8,481 +8,510 @@ import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.BuildingPart;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class AutomaticAssignment {
 
-  /**
-   * Permet de créer les variables de l'environnement à partir de
-   * IFeatureCollection contenant les données extraites d'une base de données
-   * 
-   * @param env L'environnement dans lequel on charge les informations
-   * @param dtm Le MNT de la zone
-   * @param pluImport La IFeatureCollection des documents d'urbanisme importées
-   *          depuis la base de données
-   * @param zuImport La IFeatureCollection des zones urbaines importées depuis
-   *          la base de données
-   * @param subParImport La IFeatureCollection des sous-parcelles importées
-   *          depuis la base de données
-   * @param scbImport La IFeatureCollection des Specific Cadastral Boundary
-   *          importées depuis la base de données
-   * @param roadImport La IFeatureCollection des routes importées depuis la base
-   *          de données
-   * @param axisImport La IFeatureCollection des axes des routes importés depuis
-   *          la base de données
-   * @param cadParImport La IFeatureCollection des parcelles cadastrales
-   *          importées depuis la base de données
-   * @param bpuImport La IFeatureCollection des Basic Property Unit importées
-   *          depuis la base de données
-   * @param bpImport La IFeatureCollection des parties de batiments importées
-   *          depuis la base de données
-   * @param buildImport La IFeatureCollection des batiments importés depuis la
-   *          base de données
-   * @param wallImport La IFeatureCollection des murs importés depuis la base de
-   *          données
-   * @param roofImport La IFeatureCollection des toits importés depuis la base
-   *          de données
-   * @param roofingImport La IFeatureCollection des pignons importés depuis la
-   *          base de données
-   * @param gutterImport La IFeatureCollection des gouttières importées depuis
-   *          la base de données
-   * @param gableImport La IFeatureCollection des faitages importés depuis la
-   *          base de données
-   * @return
-   */
-
-  public static Environnement assignment(Environnement env, PLU pluImport,
-      IFeatureCollection<UrbaZone> zuImport,
-      IFeatureCollection<SubParcel> subParImport,
-      IFeatureCollection<SpecificCadastralBoundary> scbImport,
-      IFeatureCollection<Road> roadImport, IFeatureCollection<Road> axisImport,
-      IFeatureCollection<CadastralParcel> cadParImport,
-      IFeatureCollection<BasicPropertyUnit> bpuImport,
-      IFeatureCollection<BuildingPart> bpImport,
-      IFeatureCollection<Building> buildImport,
-      IFeatureCollection<SpecificWallSurface> wallImport,
-      IFeatureCollection<RoofSurface> roofImport,
-      IFeatureCollection<RoofSurface> roofingImport,
-      IFeatureCollection<RoofSurface> gutterImport,
-      IFeatureCollection<RoofSurface> gableImport) {
-
-    // The name of both necessary tables for the processing of the SCB
-    String NOM_TABLE_ROAD = ParametersInstructionPG.TABLE_ROAD;
-    String NOM_TABLE_SUB_PARCEL = ParametersInstructionPG.TABLE_SUB_PARCEL;
-
-    // "Simple" variable is assigned to the environment
-    env.setPlu(pluImport);
-    env.setTerrain(null);
-
-    // The other variables are assigned, but empty
-    env.setUrbaZones(new FT_FeatureCollection<UrbaZone>());
-    env.setSubParcels(new FT_FeatureCollection<SubParcel>());
-    env.setCadastralParcels(new FT_FeatureCollection<CadastralParcel>());
-    env.setBpU(new FT_FeatureCollection<BasicPropertyUnit>());
-    env.setBuildings(new FT_FeatureCollection<AbstractBuilding>());
-    env.setRoads(new FT_FeatureCollection<Road>());
-
-    // Here some collections to store some object
-    IFeatureCollection<UrbaZone> urbaZonePLU = new FT_FeatureCollection<UrbaZone>();
-    IFeatureCollection<SubParcel> subParcelleZone = new FT_FeatureCollection<SubParcel>();
-    IFeatureCollection<CadastralParcel> cadParcelsSubPar = new FT_FeatureCollection<CadastralParcel>();
-    IFeatureCollection<BasicPropertyUnit> bPUCadPar = new FT_FeatureCollection<BasicPropertyUnit>();
-    IFeatureCollection<AbstractBuilding> buildPartSubPar = new FT_FeatureCollection<AbstractBuilding>();
-    IFeatureCollection<Road> roadSCB = new FT_FeatureCollection<Road>();
-
-    // We launch a series of loops to connect between them the various objects
-    // according to their attributes
-    for (UrbaZone currentZone : zuImport) {
-
-      int idZone = currentZone.getId();
-
-      for (SubParcel currentSubP : subParImport) {
-
-        int idCurrentSP = currentSubP.getId();
-        int idCadParInt = currentSubP.getIdCadPar();
-        int idZUTraitInt = currentSubP.getIdZoneUrba();
-
-        if (idZone != idZUTraitInt) {
-
-          // System.out.println(" -- ATTENTION : La sous-parcelle "
-          // + currentSubP.getId()
-          // + " n'appartient pas à la zone urba ayant pour id : "
-          // + idZUTraitInt + " --");
+	/**
+	 * Permet de créer les variables de l'environnement à partir de
+	 * IFeatureCollection contenant les données extraites d'une base de données
+	 * 
+	 * @param env
+	 *            L'environnement dans lequel on charge les informations
+	 * @param dtm
+	 *            Le MNT de la zone
+	 * @param pluImport
+	 *            La IFeatureCollection des documents d'urbanisme importées
+	 *            depuis la base de données
+	 * @param zuImport
+	 *            La IFeatureCollection des zones urbaines importées depuis la
+	 *            base de données
+	 * @param subParImport
+	 *            La IFeatureCollection des sous-parcelles importées depuis la
+	 *            base de données
+	 * @param scbImport
+	 *            La IFeatureCollection des Specific Cadastral Boundary
+	 *            importées depuis la base de données
+	 * @param roadImport
+	 *            La IFeatureCollection des routes importées depuis la base de
+	 *            données
+	 * @param axisImport
+	 *            La IFeatureCollection des axes des routes importés depuis la
+	 *            base de données
+	 * @param cadParImport
+	 *            La IFeatureCollection des parcelles cadastrales importées
+	 *            depuis la base de données
+	 * @param bpuImport
+	 *            La IFeatureCollection des Basic Property Unit importées depuis
+	 *            la base de données
+	 * @param bpImport
+	 *            La IFeatureCollection des parties de batiments importées
+	 *            depuis la base de données
+	 * @param buildImport
+	 *            La IFeatureCollection des batiments importés depuis la base de
+	 *            données
+	 * @param wallImport
+	 *            La IFeatureCollection des murs importés depuis la base de
+	 *            données
+	 * @param roofImport
+	 *            La IFeatureCollection des toits importés depuis la base de
+	 *            données
+	 * @param roofingImport
+	 *            La IFeatureCollection des pignons importés depuis la base de
+	 *            données
+	 * @param gutterImport
+	 *            La IFeatureCollection des gouttières importées depuis la base
+	 *            de données
+	 * @param gableImport
+	 *            La IFeatureCollection des faitages importés depuis la base de
+	 *            données
+	 * @return
+	 */
+
+	public static Environnement assignment(Environnement env, UrbaDocument pluImport,
+			IFeatureCollection<UrbaZone> zuImport, IFeatureCollection<SubParcel> subParImport,
+			IFeatureCollection<SpecificCadastralBoundary> scbImport, IFeatureCollection<Road> roadImport,
+			IFeatureCollection<Road> axisImport, IFeatureCollection<CadastralParcel> cadParImport,
+			IFeatureCollection<BasicPropertyUnit> bpuImport, IFeatureCollection<BuildingPart> bpImport,
+			IFeatureCollection<Building> buildImport, IFeatureCollection<SpecificWallSurface> wallImport,
+			IFeatureCollection<RoofSurface> roofImport, IFeatureCollection<RoofSurface> roofingImport,
+			IFeatureCollection<RoofSurface> gutterImport, IFeatureCollection<RoofSurface> gableImport) {
+
+		// The name of both necessary tables for the processing of the SCB
+		String NOM_TABLE_ROAD = ParametersInstructionPG.TABLE_ROAD;
+		String NOM_TABLE_SUB_PARCEL = ParametersInstructionPG.TABLE_SUB_PARCEL;
+
+		// "Simple" variable is assigned to the environment
+		env.setPlu(pluImport);
+		env.setTerrain(null);
+
+		// The other variables are assigned, but empty
+		env.setUrbaZones(new FT_FeatureCollection<UrbaZone>());
+		env.setSubParcels(new FT_FeatureCollection<SubParcel>());
+		env.setCadastralParcels(new FT_FeatureCollection<CadastralParcel>());
+		env.setBpU(new FT_FeatureCollection<BasicPropertyUnit>());
+		env.setBuildings(new FT_FeatureCollection<AbstractBuilding>());
+		env.setRoads(new FT_FeatureCollection<Road>());
+
+		// Here some collections to store some object
+		IFeatureCollection<UrbaZone> urbaZonePLU = new FT_FeatureCollection<UrbaZone>();
+		IFeatureCollection<SubParcel> subParcelleZone = new FT_FeatureCollection<SubParcel>();
+		IFeatureCollection<CadastralParcel> cadParcelsSubPar = new FT_FeatureCollection<CadastralParcel>();
+		IFeatureCollection<BasicPropertyUnit> bPUCadPar = new FT_FeatureCollection<BasicPropertyUnit>();
+		IFeatureCollection<AbstractBuilding> buildPartSubPar = new FT_FeatureCollection<AbstractBuilding>();
+		IFeatureCollection<Road> roadSCB = new FT_FeatureCollection<Road>();
+
+		// We launch a series of loops to connect between them the various
+		// objects
+		// according to their attributes
+		for (UrbaZone currentZone : zuImport) {
+
+			int idZone = currentZone.getId();
+
+			for (SubParcel currentSubP : subParImport) {
+
+				int idCurrentSP = currentSubP.getId();
+				int idCadParInt = currentSubP.getIdCadPar();
+				int idZUTraitInt = currentSubP.getIdZoneUrba();
 
-        } else {
+				if (idZone != idZUTraitInt) {
 
-          System.out.println("\n" + "La zone urba n°" + idZUTraitInt
-              + " contient la sous-parcelle n°" + currentSubP.getId());
+					// System.out.println(" -- ATTENTION : La sous-parcelle "
+					// + currentSubP.getId()
+					// + " n'appartient pas à la zone urba ayant pour id : "
+					// + idZUTraitInt + " --");
 
-          for (CadastralParcel currentCadParcel : cadParImport) {
+				} else {
 
-            int idCadPar = currentCadParcel.getId();
-            int idBPUTraitInt = currentCadParcel.getIdBPU();
+					System.out.println("\n" + "La zone urba n°" + idZUTraitInt + " contient la sous-parcelle n°"
+							+ currentSubP.getId());
 
-            if (idCadPar != idCadParInt) {
+					for (CadastralParcel currentCadParcel : cadParImport) {
 
-              // System.out.println(" -- ATTENTION : La parcelle cadastrale "
-              // + idCadPar
-              // + " n'appartient pas à la sous-parcelle ayant pour id : "
-              // + currentSubP.getId() + " --");
+						int idCadPar = currentCadParcel.getId();
+						int idBPUTraitInt = currentCadParcel.getId();
 
-            } else {
+						if (idCadPar != idCadParInt) {
 
-              System.out.println("\t" + "La sous-parcelle n°"
-                  + currentSubP.getId() + " appartient à la parcelle n°"
-                  + idCadPar);
+							// System.out.println(" -- ATTENTION : La parcelle
+							// cadastrale "
+							// + idCadPar
+							// + " n'appartient pas à la sous-parcelle ayant
+							// pour id : "
+							// + currentSubP.getId() + " --");
 
-              currentSubP.setParcelle(currentCadParcel);
-              currentCadParcel.getSubParcel().add(currentSubP);
-              cadParcelsSubPar.add(currentCadParcel);
+						} else {
 
-              for (BasicPropertyUnit currentBPU : bpuImport) {
+							System.out.println("\t" + "La sous-parcelle n°" + currentSubP.getId()
+									+ " appartient à la parcelle n°" + idCadPar);
 
-                int idBPU = currentBPU.getId();
+							currentSubP.setParcelle(currentCadParcel);
+							currentCadParcel.getSubParcel().add(currentSubP);
+							cadParcelsSubPar.add(currentCadParcel);
 
-                if (idBPU != idBPUTraitInt) {
+							for (BasicPropertyUnit currentBPU : bpuImport) {
 
-                  // System.out
-                  // .println(" -- ATTENTION : La Basic Property Unit "
-                  // + currentBPU.getId()
-                  // +
-                  // " n'appartient pas à la parcelle cadastrale ayant pour id : "
-                  // + currentCadParcel.getId() + " --");
+								int idBPU = currentBPU.getId();
 
-                } else {
+								if (idBPU != idBPUTraitInt) {
 
-                  System.out.println("\t\t" + "La parcelle cadastrale n°"
-                      + currentCadParcel.getId() + " appartient à la BPU n°"
-                      + currentBPU.getId());
+									// System.out
+									// .println(" -- ATTENTION : La Basic
+									// Property Unit "
+									// + currentBPU.getId()
+									// +
+									// " n'appartient pas à la parcelle
+									// cadastrale ayant pour id : "
+									// + currentCadParcel.getId() + " --");
 
-                  currentCadParcel.setbPU(currentBPU);
-                  currentBPU.getCadastralParcel().add(currentCadParcel);
-                  bPUCadPar.add(currentBPU);
+								} else {
 
-                }
+									System.out.println("\t\t" + "La parcelle cadastrale n°" + currentCadParcel.getId()
+											+ " appartient à la BPU n°" + currentBPU.getId());
 
-              }
+									currentCadParcel.setbPU(currentBPU);
+									currentBPU.getCadastralParcel().add(currentCadParcel);
+									bPUCadPar.add(currentBPU);
 
-            }
+								}
 
-          }
+							}
 
-          IFeatureCollection<SpecificCadastralBoundary> tempSCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
+						}
 
-          for (SpecificCadastralBoundary currentSCB : scbImport) {
+					}
 
-            int idSCB = currentSCB.getId();
-            int idRef = currentSCB.getIdAdj();
-            int idParent = currentSCB.getIdSubPar();
+					IFeatureCollection<SpecificCadastralBoundary> tempSCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
-            if (idParent != idCurrentSP) {
+					for (SpecificCadastralBoundary currentSCB : scbImport) {
 
-              // System.out.println("On ne traite pas la SCB ayant pour ID : "
-              // + idSCB + " car elle n'appartient pas à la sous parcelle "
-              // + idCurrentSP);
+						int idSCB = currentSCB.getId();
+						int idRef = currentSCB.getIdAdj();
+						int idParent = currentSCB.getIdSubPar();
 
-            } else {
+						if (idParent != idCurrentSP) {
 
-              tempSCB.add(currentSCB);
+							// System.out.println("On ne traite pas la SCB ayant
+							// pour ID : "
+							// + idSCB + " car elle n'appartient pas à la sous
+							// parcelle "
+							// + idCurrentSP);
 
-              String tabRef = currentSCB.getTableRef();
+						} else {
 
-              System.out.println("\t" + "La Sous-Parcelle n°" + idCurrentSP
-                  + " contient à la SCB n°" + idSCB);
+							tempSCB.add(currentSCB);
 
-              if (tabRef.equals(NOM_TABLE_ROAD)) {
+							String tabRef = currentSCB.getTableRef();
 
-                for (Road currentRoad : roadImport) {
+							System.out.println(
+									"\t" + "La Sous-Parcelle n°" + idCurrentSP + " contient à la SCB n°" + idSCB);
 
-                  int idRoad = currentRoad.getId();
+							if (tabRef.equals(NOM_TABLE_ROAD)) {
 
-                  if (idRef == idRoad) {
+								for (Road currentRoad : roadImport) {
 
-                    currentSCB.setFeatAdj(currentRoad);
+									int idRoad = currentRoad.getId();
 
-                    System.out.println("\t\t" + "La SCB n°" + idSCB
-                        + " fait référence à la route n°" + idRoad);
+									if (idRef == idRoad) {
 
-                    for (Road currentAxis : axisImport) {
+										currentSCB.setFeatAdj(currentRoad);
 
-                      int idRoadAxis = currentAxis.getIdRoad();
+										System.out.println("\t\t" + "La SCB n°" + idSCB
+												+ " fait référence à la route n°" + idRoad);
 
-                      if (idRoadAxis == idRoad) {
+										for (Road currentAxis : axisImport) {
 
-                        currentRoad.setAxe(currentAxis);
-                        roadSCB.add(currentRoad);
+											int idRoadAxis = currentAxis.getIdRoad();
 
-                        System.out.println("\t\t\t" + "La route n°" + idRoad
-                            + " correspond à l'axe n°" + idRoadAxis);
+											if (idRoadAxis == idRoad) {
+												
+												
+												
+												
+												currentRoad.setAxe(currentAxis.getAxis());
+												roadSCB.add(currentRoad);
 
-                      } else {
+												System.out.println("\t\t\t" + "La route n°" + idRoad
+														+ " correspond à l'axe n°" + idRoadAxis);
 
-                        // System.out.println("Attention : L'axe ayant pour ID : "
-                        // + idRoadAxis
-                        // + " ne correspond pas à la route ayant pour ID : "
-                        // + idRoad);
+											} else {
 
-                      }
+												// System.out.println("Attention
+												// : L'axe ayant pour ID : "
+												// + idRoadAxis
+												// + " ne correspond pas à la
+												// route ayant pour ID : "
+												// + idRoad);
 
-                    }
+											}
 
-                  } else {
+										}
 
-                    // System.out.println("Attention : La route ayant pour ID : "
-                    // + idRoad
-                    // + " n'est pas adjacente à la SCB ayant pour ID : "
-                    // + idSCB);
+									} else {
 
-                  }
+										// System.out.println("Attention : La
+										// route ayant pour ID : "
+										// + idRoad
+										// + " n'est pas adjacente à la SCB
+										// ayant pour ID : "
+										// + idSCB);
 
-                }
+									}
 
-              } else if (tabRef.equals(NOM_TABLE_SUB_PARCEL)) {
+								}
 
-                for (SubParcel currentSubParcel : subParImport) {
+							} else if (tabRef.equals(NOM_TABLE_SUB_PARCEL)) {
 
-                  int idSubPar = currentSubParcel.getId();
+								for (SubParcel currentSubParcel : subParImport) {
 
-                  if (idRef == idSubPar) {
+									int idSubPar = currentSubParcel.getId();
 
-                    currentSCB.setFeatAdj(currentSubParcel);
+									if (idRef == idSubPar) {
 
-                    System.out.println("\t\t" + "La SCB n°" + idSCB
-                        + " fait référence à la sous-parcelle n°" + idSubPar);
+										currentSCB.setFeatAdj(currentSubParcel);
 
-                  } else {
+										System.out.println("\t\t" + "La SCB n°" + idSCB
+												+ " fait référence à la sous-parcelle n°" + idSubPar);
 
-                    // System.out
-                    // .println("Attention : La sous-parcelle ayant pour ID : "
-                    // + idSubPar
-                    // + " n'est pas adjacente à la SCB ayant pour ID : "
-                    // + idSCB);
+									} else {
 
-                  }
+										// System.out
+										// .println("Attention : La
+										// sous-parcelle ayant pour ID : "
+										// + idSubPar
+										// + " n'est pas adjacente à la SCB
+										// ayant pour ID : "
+										// + idSCB);
 
-                }
+									}
 
-              } else {
+								}
 
-                System.out
-                    .println("Problème avec l'objet adjacent de la SCB ayant pour ID : "
-                        + idSCB);
+							} else {
 
-              }
+								System.out.println("Problème avec l'objet adjacent de la SCB ayant pour ID : " + idSCB);
 
-            }
+							}
 
-            currentSubP.setSpecificCadBoundary(tempSCB);
+						}
 
-          }
+						currentSubP.setSpecificCadBoundary(tempSCB);
 
-          IFeatureCollection<AbstractBuilding> tempAbsBuildParts = new FT_FeatureCollection<AbstractBuilding>();
+					}
 
-          for (AbstractBuilding currentBuildingPart : bpImport) {
+					IFeatureCollection<AbstractBuilding> tempAbsBuildParts = new FT_FeatureCollection<AbstractBuilding>();
 
-            int idCurrentBP = currentBuildingPart.getId();
-            int idBuilding = currentBuildingPart.getIdBuilding();
-            int idSubParcel = currentBuildingPart.getIdSubPar();
+					for (AbstractBuilding currentBuildingPart : bpImport) {
 
-            if (idSubParcel != idCurrentSP) {
+						int idCurrentBP = currentBuildingPart.getId();
+						int idBuilding = currentBuildingPart.getId();
+						int idSubParcel = currentBuildingPart.getIdSubPar();
 
-              // System.out.println("On ne traite pas la Building Part ayant pour ID : "
-              // + idCurrentBP +
-              // " car elle n'appartient pas à la sous parcelle "
-              // + idCurrentSP);
+						if (idSubParcel != idCurrentSP) {
 
-            } else {
+							// System.out.println("On ne traite pas la Building
+							// Part ayant pour ID : "
+							// + idCurrentBP +
+							// " car elle n'appartient pas à la sous parcelle "
+							// + idCurrentSP);
 
-              tempAbsBuildParts.add(currentBuildingPart);
+						} else {
 
-              System.out.println("\t" + "La sous-parcelle n°" + idCurrentSP
-                  + " contient la partie de batiment n°" + idCurrentBP);
+							tempAbsBuildParts.add(currentBuildingPart);
 
-              for (Building currentBuilding : buildImport) {
+							System.out.println("\t" + "La sous-parcelle n°" + idCurrentSP
+									+ " contient la partie de batiment n°" + idCurrentBP);
 
-                int idCurrentBuilding = currentBuilding.getId();
+							for (Building currentBuilding : buildImport) {
 
-                if (idBuilding != idCurrentBuilding) {
+								int idCurrentBuilding = currentBuilding.getId();
 
-                  // System.out.println("On ne traite pas le Building ayant pour ID : "
-                  // + idCurrentBuilding +
-                  // " car il ne contient pas la Building Part ayant pour ID : "
-                  // + idCurrentBP);
+								if (idBuilding != idCurrentBuilding) {
 
-                } else {
+									// System.out.println("On ne traite pas le
+									// Building ayant pour ID : "
+									// + idCurrentBuilding +
+									// " car il ne contient pas la Building Part
+									// ayant pour ID : "
+									// + idCurrentBP);
 
-                  currentBuildingPart.setBuilding(currentBuilding);
-                  buildPartSubPar.add(currentBuildingPart);
+								} else {
 
-                  System.out.println("\t\t" + "La partie de batiment n°"
-                      + idCurrentBP + " appartient au batiment n°"
-                      + idCurrentBuilding);
+									buildPartSubPar.add(currentBuildingPart);
 
-                }
+									System.out.println("\t\t" + "La partie de batiment n°" + idCurrentBP
+											+ " appartient au batiment n°" + idCurrentBuilding);
 
-              }
+								}
 
-              for (SpecificWallSurface currentWall : wallImport) {
+							}
 
-                int idCurrentWall = currentWall.getId();
-                int idBuilPartWall = currentWall.getIdBuildPart();
+							for (SpecificWallSurface currentWall : wallImport) {
 
-                if (idBuilPartWall != idCurrentBP) {
+								int idCurrentWall = currentWall.getId();
+								int idBuilPartWall = currentWall.getIdBuildPart();
 
-                  // System.out.println("On ne traite pas le mur ayant pour ID : "
-                  // + idCurrentWall +
-                  // " car il n'appartient pas à la Building Part ayant pour ID : "
-                  // + idCurrentBP);
+								if (idBuilPartWall != idCurrentBP) {
 
-                } else {
+									// System.out.println("On ne traite pas le
+									// mur ayant pour ID : "
+									// + idCurrentWall +
+									// " car il n'appartient pas à la Building
+									// Part ayant pour ID : "
+									// + idCurrentBP);
 
-                  currentBuildingPart.setWall(currentWall);
-                  currentBuildingPart.getFacade().add(currentWall);
+								} else {
 
-                  // On set la BPU dans lequel se trouve la BP
-                  CadastralParcel cadParTemp = currentSubP.getParcel();
-                  BasicPropertyUnit bputemp = cadParTemp.getbPU();
-                  currentBuildingPart.setbPU(bputemp);
+									currentBuildingPart.setWall(currentWall);
+									currentBuildingPart.getFacade().add(currentWall);
 
-                  System.out.println("\t\t" + "La partie de batiment n°"
-                      + idCurrentBP + " est rattachée au mur n°"
-                      + idCurrentWall);
+									// On set la BPU dans lequel se trouve la BP
+									CadastralParcel cadParTemp = currentSubP.getParcel();
+									BasicPropertyUnit bputemp = cadParTemp.getbPU();
+									currentBuildingPart.setbPU(bputemp);
 
-                }
+									System.out.println("\t\t" + "La partie de batiment n°" + idCurrentBP
+											+ " est rattachée au mur n°" + idCurrentWall);
 
-              }
+								}
 
-              for (RoofSurface currentRoof : roofImport) {
+							}
 
-                int idCurrentRoof = currentRoof.getId();
-                int idBuilPartRoof = currentRoof.getIdBuildPart();
+							for (RoofSurface currentRoof : roofImport) {
 
-                if (idBuilPartRoof != idCurrentBP) {
+								int idCurrentRoof = currentRoof.getId();
+								int idBuilPartRoof = currentRoof.getIdBuildPart();
 
-                  // System.out.println("On ne traite pas le toit ayant pour ID : "
-                  // + idCurrentRoof +
-                  // " car il n'appartient pas à la Building Part ayant pour ID : "
-                  // + idCurrentBP);
+								if (idBuilPartRoof != idCurrentBP) {
 
-                } else {
+									// System.out.println("On ne traite pas le
+									// toit ayant pour ID : "
+									// + idCurrentRoof +
+									// " car il n'appartient pas à la Building
+									// Part ayant pour ID : "
+									// + idCurrentBP);
 
-                  currentBuildingPart.setToit(currentRoof);
+								} else {
 
-                  System.out.println("\t\t" + "La partie de batiment n°"
-                      + idCurrentBP + " est rattachée au toit n°"
-                      + idCurrentRoof);
+									currentBuildingPart.setToit(currentRoof);
 
-                  for (RoofSurface currentRoofing : roofingImport) {
+									System.out.println("\t\t" + "La partie de batiment n°" + idCurrentBP
+											+ " est rattachée au toit n°" + idCurrentRoof);
 
-                    int idCurrentRoofing = currentRoofing.getId();
-                    int idRoofRoofing = currentRoofing.getIdRoof();
+									for (RoofSurface currentRoofing : roofingImport) {
 
-                    if (idRoofRoofing != idCurrentRoof) {
+										int idCurrentRoofing = currentRoofing.getId();
+										int idRoofRoofing = currentRoofing.getIdRoof();
 
-                      // System.out.println("On ne traite pas le roofing ayant pour ID : "
-                      // + idCurrentRoofing +
-                      // " car il n'appartient pas au toit ayant pour ID : "
-                      // + idCurrentRoof);
+										if (idRoofRoofing != idCurrentRoof) {
 
-                    } else {
+											// System.out.println("On ne traite
+											// pas le roofing ayant pour ID : "
+											// + idCurrentRoofing +
+											// " car il n'appartient pas au toit
+											// ayant pour ID : "
+											// + idCurrentRoof);
 
-                      currentRoof.setRoofing(currentRoofing.getRoofing());
+										} else {
 
-                      System.out.println("\t\t\t" + "Le toit n°"
-                          + idCurrentRoof + " est rattaché au roofing n°"
-                          + idCurrentRoofing);
+											currentRoof.setRoofing(currentRoofing.getRoofing());
 
-                    }
+											System.out.println("\t\t\t" + "Le toit n°" + idCurrentRoof
+													+ " est rattaché au roofing n°" + idCurrentRoofing);
 
-                  }
+										}
 
-                  for (RoofSurface currentGutter : gutterImport) {
+									}
 
-                    int idCurrentGutter = currentGutter.getId();
-                    int idRoofGutter = currentGutter.getIdRoof();
+									for (RoofSurface currentGutter : gutterImport) {
 
-                    if (idRoofGutter != idCurrentRoof) {
+										int idCurrentGutter = currentGutter.getId();
+										int idRoofGutter = currentGutter.getIdRoof();
 
-                      // System.out.println("On ne traite pas le gutter ayant pour ID : "
-                      // + idCurrentGutter +
-                      // " car il n'appartient pas au toit ayant pour ID : "
-                      // + idCurrentRoof);
+										if (idRoofGutter != idCurrentRoof) {
 
-                    } else {
+											// System.out.println("On ne traite
+											// pas le gutter ayant pour ID : "
+											// + idCurrentGutter +
+											// " car il n'appartient pas au toit
+											// ayant pour ID : "
+											// + idCurrentRoof);
 
-                      currentRoof.setGutter(currentGutter.getGutter());
+										} else {
 
-                      System.out.println("\t\t\t" + "Le toit n°"
-                          + idCurrentRoof + " est rattaché au gutter n°"
-                          + idCurrentGutter);
+											currentRoof.setGutter(currentGutter.getGutter());
 
-                    }
+											System.out.println("\t\t\t" + "Le toit n°" + idCurrentRoof
+													+ " est rattaché au gutter n°" + idCurrentGutter);
 
-                  }
+										}
 
-                  for (RoofSurface currentGable : gableImport) {
+									}
 
-                    int idCurrentGable = currentGable.getId();
-                    int idRoofGable = currentGable.getIdRoof();
+									for (RoofSurface currentGable : gableImport) {
 
-                    if (idRoofGable != idCurrentRoof) {
+										int idCurrentGable = currentGable.getId();
+										int idRoofGable = currentGable.getIdRoof();
 
-                      // System.out.println("On ne traite pas le gable ayant pour ID : "
-                      // + idCurrentGable +
-                      // " car il n'appartient pas au toit ayant pour ID : "
-                      // + idCurrentRoof);
+										if (idRoofGable != idCurrentRoof) {
 
-                    } else {
+											// System.out.println("On ne traite
+											// pas le gable ayant pour ID : "
+											// + idCurrentGable +
+											// " car il n'appartient pas au toit
+											// ayant pour ID : "
+											// + idCurrentRoof);
 
-                      currentRoof.setGable(currentGable.getGable());
+										} else {
 
-                      System.out.println("\t\t\t" + "Le toit n°"
-                          + idCurrentRoof + " est rattaché au gable n°"
-                          + idCurrentGable);
+											currentRoof.setGable(currentGable.getGable());
 
-                    }
+											System.out.println("\t\t\t" + "Le toit n°" + idCurrentRoof
+													+ " est rattaché au gable n°" + idCurrentGable);
 
-                  }
+										}
 
-                }
+									}
 
-              }
+								}
 
-            }
+							}
 
-            currentSubP.setBuildingsParts(tempAbsBuildParts);
+						}
 
-          }
+						currentSubP.setBuildingsParts(tempAbsBuildParts);
 
-          subParcelleZone.add(currentSubP);
+					}
 
-        }
+					subParcelleZone.add(currentSubP);
 
-      }
+				}
 
-      currentZone.setSubParcels(subParcelleZone);
-      urbaZonePLU.add(currentZone);
+			}
 
-    }
+			currentZone.setSubParcels(subParcelleZone);
+			urbaZonePLU.add(currentZone);
 
-    // We integrate objects, bound between them, into the environment
-    env.getUrbaZones().addAll(urbaZonePLU);
-    env.getCadastralParcels().addAll(cadParcelsSubPar);
-    env.getSubParcels().addAll(subParcelleZone);
-    env.getBpU().addAll(bPUCadPar);
-    env.getRoads().addAll(roadSCB);
-    env.getBuildings().addAll(buildPartSubPar);
+		}
 
-    System.out.println("\n" + "----- End of Automatic Assignment -----" + "\n");
+		// We integrate objects, bound between them, into the environment
+		env.getUrbaZones().addAll(urbaZonePLU);
+		env.getCadastralParcels().addAll(cadParcelsSubPar);
+		env.getSubParcels().addAll(subParcelleZone);
+		env.getBpU().addAll(bPUCadPar);
+		env.getRoads().addAll(roadSCB);
+		env.getBuildings().addAll(buildPartSubPar);
 
-    return env;
+		System.out.println("\n" + "----- End of Automatic Assignment -----" + "\n");
 
-  }
+		return env;
+
+	}
 
 }

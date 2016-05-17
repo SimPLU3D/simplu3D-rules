@@ -35,13 +35,6 @@ public class Alignement extends Prescription_LIN {
 		super(type, geom);
 	}
 
-	/**
-	 * TODO supprimer ou implémenter
-	 * 
-	 * @return
-	 */
-	public List<Alignement> opposite() {
-		return null;
-	}
+	
 
 }

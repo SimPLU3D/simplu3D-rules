@@ -19,12 +19,12 @@ import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.Building;
 import fr.ign.cogit.simplu3d.model.application.BuildingPart;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.application.PLU;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class ImporterPostGIS {
@@ -36,9 +36,9 @@ public class ImporterPostGIS {
    * @param featPLU
    * @return
    */
-  public static PLU importPLU(IFeatureCollection<IFeature> featPLU) {
+  public static UrbaDocument importPLU(IFeatureCollection<IFeature> featPLU) {
 
-    PLU pluOut = new PLU();
+	  UrbaDocument pluOut = new UrbaDocument();
 
     // Some date format we use here :
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 1995-12-25
@@ -71,7 +71,7 @@ public class ImporterPostGIS {
           dateAppro = sdf.parse(dateAp);
         } catch (ParseException e) {
           // System.out.println("... And you fail for dateAppro");
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
 
@@ -92,7 +92,7 @@ public class ImporterPostGIS {
           dateFin = sdf.parse(dateFi);
         } catch (ParseException e) {
           // System.out.println("... And you fail for dateFin");
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
 
@@ -167,7 +167,7 @@ public class ImporterPostGIS {
           dateRef = sdfYYYY.parse(dateRe);
         } catch (ParseException e) {
           // System.out.println("... And you fail for dateRef");
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
 
@@ -266,7 +266,7 @@ public class ImporterPostGIS {
           dateDebut = sdf.parse(dateDeb);
         } catch (ParseException e) {
           // System.out.println("... And you fail for dateDebut");
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
 
@@ -288,7 +288,7 @@ public class ImporterPostGIS {
           dateFin = sdf.parse(dateFi);
         } catch (ParseException e) {
           // System.out.println("... And you fail for dateFin");
-          // TODO Auto-generated catch block
+
           e.printStackTrace();
         }
 
@@ -637,7 +637,7 @@ public class ImporterPostGIS {
       objInt = Integer.parseInt(objStr);
 
       if (attCP != null) {
-        cp.setIdBPU(objInt);
+        cp.setId(objInt);
       }
 
       attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_NUM);

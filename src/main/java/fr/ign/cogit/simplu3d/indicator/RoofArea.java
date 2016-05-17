@@ -37,7 +37,7 @@ public class RoofArea {
   }
 
   public Double getValue() {
-    // TODO Auto-generated method stub
+
     return value;
   }
 

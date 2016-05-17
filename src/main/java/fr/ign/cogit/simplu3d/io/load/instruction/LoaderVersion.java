@@ -60,7 +60,7 @@ public class LoaderVersion {
     int idUtilisateur = 2;
 
     // Somes test
-    String gh = createWhereClauseVersion(host, port, database, user, pw,
+    createWhereClauseVersion(host, port, database, user, pw,
         idVersion);
     retrieveListIdVersionWithoutTableVersion(host, port, database, user, pw);
     retrieveListIdVersionWithTableVersion(host, port, database, user, pw,
@@ -140,7 +140,7 @@ public class LoaderVersion {
 
           for (AbstractBuilding currentBP : featCollBP) {
 
-            int idBuildCurrentBP = currentBP.getIdBuilding();
+            int idBuildCurrentBP = currentBP.getId();
 
             if (idBuildCurrentBP > idIniBuilding) {
 
@@ -302,7 +302,7 @@ public class LoaderVersion {
         // elle
         // appartient
         int idCadPar = currentCadPar.getId();
-        int idBPUCadPar = currentCadPar.getIdBPU();
+        int idBPUCadPar = currentCadPar.getId();
 
         // On initialise une IFC<SP>
         IFeatureCollection<SubParcel> collSP = new FT_FeatureCollection<SubParcel>();
@@ -456,7 +456,7 @@ public class LoaderVersion {
     currentBP.setId(idCurrent);
 
     // On récupère l'ID du batiment
-    int ibBuilding = currentBP.getIdBuilding();
+    int ibBuilding = currentBP.getId();
 
     // On récupère l'Id de la version
     int idversion = currentBP.getIdVersion();

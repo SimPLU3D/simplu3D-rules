@@ -26,29 +26,27 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  *
  */
 public class BuildingPart extends AbstractBuilding {
-	//TODO a supprimer, déjà porté par classe mère
+
 	private int idBuildind = 0;
 	private int idSubPar = 0;
 
-	/**
-	 * TODO renommer en subParcel
-	 */
-	public SubParcel sP;
+
+	public SubParcel subParcel;
 	
 	public BuildingPart(IGeometry geom) {
 		super(geom);
 	}
 
 	public BuildingPart() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public SubParcel getsP() {
-		return sP;
+		return subParcel;
 	}
 
 	public void setsP(SubParcel sP) {
-		this.sP = sP;
+		this.subParcel = sP;
 	}
 
 	public void setIdBuilding(int idBuildind) {

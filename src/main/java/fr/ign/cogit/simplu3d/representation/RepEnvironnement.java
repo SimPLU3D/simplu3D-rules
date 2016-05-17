@@ -274,11 +274,10 @@ public class RepEnvironnement {
    * ------------------------ Style Sous - Parcelle
    */
   private static final Color COLOR_SOUS_PARCELLE = new Color(162, 205, 90);
-  private static final int radius = 50;
+
 
   private static IFeatureCollection<? extends IFeature> generateSubParcelRepresentation(
       Environnement env) {
-    // TODO Auto-generated method stub
 
     for (SubParcel sp : env.getSubParcels()) {
 

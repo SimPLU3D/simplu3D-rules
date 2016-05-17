@@ -45,9 +45,8 @@ public class BasicPropertyUnit extends DefaultFeature {
 	public List<Building> buildings = new ArrayList<Building>();
 	/**
 	 * Les parcelles cadastrales
-	 * TODO renommer en cadastralParcels
 	 */
-	public List<CadastralParcel> cadastralParcel = new ArrayList<CadastralParcel>();
+	public List<CadastralParcel> cadastralParcels = new ArrayList<CadastralParcel>();
 
 	public BasicPropertyUnit() {
 
@@ -62,11 +61,11 @@ public class BasicPropertyUnit extends DefaultFeature {
 	}
 
 	public List<CadastralParcel> getCadastralParcel() {
-		return cadastralParcel;
+		return cadastralParcels;
 	}
 
 	public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
-		this.cadastralParcel = cadastralParcel;
+		this.cadastralParcels = cadastralParcel;
 	}
 
 	IMultiSurface<IOrientableSurface> geom = null;
@@ -111,7 +110,6 @@ public class BasicPropertyUnit extends DefaultFeature {
 			try {
 				geomjts = JtsGeOxygene.makeJtsGeom(geom);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

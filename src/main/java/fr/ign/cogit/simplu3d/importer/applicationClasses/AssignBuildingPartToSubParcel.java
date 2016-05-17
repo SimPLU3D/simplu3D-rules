@@ -220,7 +220,7 @@ public class AssignBuildingPartToSubParcel {
 					return null;
 				}
 
-				Box3D b3D = new Box3D(os);
+			//	Box3D b3D = new Box3D(os);
 
 				// inter = Extrusion2DObject.convertFromGeometry(inter,
 				// b3D.getLLDP().getZ(), b3D.getLLDP().getZ());

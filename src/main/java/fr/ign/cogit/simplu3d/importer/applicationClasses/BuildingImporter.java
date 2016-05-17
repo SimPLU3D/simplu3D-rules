@@ -58,7 +58,6 @@ public class BuildingImporter {
         try {
           setIdVersionAndIdBuilding(batiFeat, b);
         } catch (Exception e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
       }

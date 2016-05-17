@@ -209,7 +209,7 @@ public class LauncherRennes {
         try {
           Checker.checkSelection(bpuColl);
         } catch (Exception e1) {
-          // TODO Auto-generated catch block
+
           e1.printStackTrace();
         }
 
@@ -270,7 +270,7 @@ public class LauncherRennes {
         try {
           afficheMap(selectedLine.getID());
         } catch (Exception e1) {
-          // TODO Auto-generated catch block
+
           e1.printStackTrace();
         }
 
