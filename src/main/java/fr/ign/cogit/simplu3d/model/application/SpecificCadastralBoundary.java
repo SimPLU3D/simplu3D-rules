@@ -31,21 +31,72 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityObject;
  */
 public class SpecificCadastralBoundary extends CG_CityObject {
 
-	public final static int BOT = 0;
-	public final static int LAT = 1;
-	public final static int UNKNOWN = 2;
-	public final static int INTRA = 3;
-	public final static int ROAD = 4;
-	public final static int PUB = 5;
+	public enum SpecificCadastralBoundaryType{
+		BOT(0),
+		LAT(1),
+		UNKNOWN(99),
+		INTRA(3),
+		ROAD(4),
+		LATERAL_TEMP(98),
+		PUB(5);
+		
+		private int value;
+		
+		private SpecificCadastralBoundaryType(int type){
+			value = type;
+		}
+		public int getValueType(){
+			return value;
+		}
+		
+		public static SpecificCadastralBoundaryType getTypeFromInt(int type){
+			SpecificCadastralBoundaryType[] val = SpecificCadastralBoundaryType.values();
+			for(int i=0; i <val.length; i++){
+				if(val[i].getValueType() == type)
+				{
+					return val[i];
+				}
+			}
+			
+			return null;
+		}
+		
+	}
+	
+	public enum SpecificCadastralBoundarySide{
+		LEFT(0),
+		RIGHT(1),
+		UNKNOWN(99);
+		
+		private int value;
+		
+		private SpecificCadastralBoundarySide(int type){
+			value = type;
+		}
+		public int getValueType(){
+			return value;
+		}
+		
+		public static SpecificCadastralBoundarySide getTypeFromInt(int type){
+			SpecificCadastralBoundarySide[] val = SpecificCadastralBoundarySide.values();
+			for(int i=0; i <val.length; i++){
+				if(val[i].getValueType() == type)
+				{
+					return val[i];
+				}
+			}
+			
+			return null;
+		}
+	}
+	
+	private SpecificCadastralBoundaryType type;
+	private SpecificCadastralBoundarySide side;
+	
 
-	public final static int RIGHT_SIDE = 0;
-	public final static int LEFT_SIDE = 1;
-	public final static int UNKOWN_SIDE = 99;
 
 	public Alignement alignement = null;
 	public Recoil recoil = null;
-	public int type;
-	public int side = UNKOWN_SIDE;
 	public int id_subpar;
 	public int id_adj;
 	public String tabRef = "";
@@ -92,11 +143,11 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 		this.recoil = recoil;
 	}
 
-	public int getType() {
+	public SpecificCadastralBoundaryType getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(SpecificCadastralBoundaryType type) {
 		this.type = type;
 	}
 
@@ -127,7 +178,7 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	/**
 	 * @return the side
 	 */
-	public int getSide() {
+	public SpecificCadastralBoundarySide getSide() {
 		return side;
 	}
 
@@ -135,7 +186,7 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	 * @param side
 	 *            the side to set
 	 */
-	public void setSide(int side) {
+	public void setSide(SpecificCadastralBoundarySide side) {
 		this.side = side;
 	}
 

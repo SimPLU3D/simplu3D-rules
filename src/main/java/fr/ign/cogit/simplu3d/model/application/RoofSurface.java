@@ -39,7 +39,7 @@ public class RoofSurface extends CG_RoofSurface {
 	public IMultiCurve<IOrientableCurve> roofing;
 	public IMultiCurve<IOrientableCurve> interiorEdge;
 	public int idBuildPart;
-	public int idRoof;
+
 
 	public IMultiCurve<IOrientableCurve> getInteriorEdge() {
 		return interiorEdge;
@@ -113,7 +113,6 @@ public class RoofSurface extends CG_RoofSurface {
 	private double angleMin = Double.NaN;
 	private double angleMax = Double.NaN;
 
-	// private double angleMax = Double.NaN;
 
 	public double getAngleMin() {
 
@@ -130,9 +129,11 @@ public class RoofSurface extends CG_RoofSurface {
 
 	public double getAngleMax() {
 
-		return RoofAngle.angleMax(this);
+		if( angleMax == Double.NaN){
+			angleMax = RoofAngle.angleMax(this);
+		}
+		return angleMax;
 	}
-
 
 	public void setAngleMax(double angleMax) {
 		this.angleMax = angleMax;
@@ -150,12 +151,6 @@ public class RoofSurface extends CG_RoofSurface {
 		this.idBuildPart = idBuildPart;
 	}
 
-	public int getIdRoof() {
-		return idRoof;
-	}
 
-	public void setIdRoof(int idRoof) {
-		this.idRoof = idRoof;
-	}
 
 }

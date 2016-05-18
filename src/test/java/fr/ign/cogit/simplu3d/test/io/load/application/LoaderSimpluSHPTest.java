@@ -29,7 +29,7 @@ public class LoaderSimpluSHPTest {
 
 		Environnement env = LoadDefaultEnvironment.getENVDEF();
 
-		UrbaDocument plu = env.getPlu();
+		UrbaDocument plu = env.getUrbaDocument();
 
 		Assert.assertNotNull(plu);
 		Assert.assertEquals(1, plu.getlUrbaZone().size());
@@ -37,7 +37,7 @@ public class LoaderSimpluSHPTest {
 		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
 		int count = 0;
-		Assert.assertEquals("Toutes les parcelles sont chargées.", 19, env.getParcelles().size());
+		Assert.assertEquals("Toutes les parcelles sont chargées.", 19, env.getCadastralParcels().size());
 
 		Assert.assertNotNull(env.getBpU());
 

@@ -50,7 +50,7 @@ public class TestLoaderPostGIS {
 
     Environnement env = lP.load(folder);
 
-    UrbaDocument plu = env.getPlu();
+    UrbaDocument plu = env.getUrbaDocument();
 
     System.out.println("Nombre de zones dans le PLU : "
         + plu.getlUrbaZone().size());
@@ -61,7 +61,7 @@ public class TestLoaderPostGIS {
 
     int count = 0;
 
-    System.out.println("nb Parcelles : " + env.getParcelles().size());
+    System.out.println("nb Parcelles : " + env.getCadastralParcels().size());
 
     for (BasicPropertyUnit bPU : env.getBpU()) {
 
@@ -139,7 +139,7 @@ public class TestLoaderPostGIS {
 
     // Export des parcelles
 
-    ShapefileWriter.write(env.getParcelles(), folderOut + "parcelles.shp");
+    ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
     ShapefileWriter.write(bordures, folderOut + "bordures.shp");
     ShapefileWriter.write(bordures_translated, folderOut
         + "bordures_translated.shp");

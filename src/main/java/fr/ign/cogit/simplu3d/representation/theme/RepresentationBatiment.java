@@ -75,7 +75,7 @@ public class RepresentationBatiment extends Default3DRep {
     this.representFaitage = representFaitage;
     this.representGouttiere = representGouttiere;
     RoofSurface t = b.getRoof();
-    List<SpecificWallSurface> f = b.getFacade();
+    List<SpecificWallSurface> f = b.getWallSurfaces();
 
     // /1 on s'occupe du toit
     GeometryInfo geometryInfoToit = null;

@@ -55,13 +55,6 @@ public class Environnement extends CG_CityModel {
 	public static boolean VERBOSE = false;
 	public static boolean TRANSLATE_TO_ZERO = false;
 
-	public IFeatureCollection<CadastralParcel> getParcelles() {
-		return cadastralParcels;
-	}
-
-	public void setParcelles(IFeatureCollection<CadastralParcel> parcelles) {
-		this.cadastralParcels = parcelles;
-	}
 
 	protected Environnement() {
 
@@ -162,11 +155,11 @@ public class Environnement extends CG_CityModel {
 		this.bpU = bpU;
 	}
 
-	public UrbaDocument getPlu() {
+	public UrbaDocument getUrbaDocument() {
 		return urbaDoc;
 	}
 
-	public void setPlu(UrbaDocument plu) {
+	public void setUrbaDocument(UrbaDocument plu) {
 		this.urbaDoc = plu;
 	}
 

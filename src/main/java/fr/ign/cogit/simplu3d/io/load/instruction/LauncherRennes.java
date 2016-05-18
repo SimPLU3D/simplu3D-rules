@@ -94,7 +94,7 @@ public class LauncherRennes {
 
     // On complète les IFC murs et toits en faisant une boucle sur les BP
     for (AbstractBuilding currentBP : buildingColl) {
-      wallColl.add(currentBP.getWall());
+      wallColl.addAll(currentBP.getWallSurfaces());
       
       RoofSurface featRoof = currentBP.getRoof();
      // System.out.println(currentBP.getIdVersion() );

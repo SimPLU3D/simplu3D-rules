@@ -25,12 +25,33 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
  */
 public class SpecificWallSurface extends CG_WallSurface {
 
-	public final static String FOND = "FOND";
-	public final static String LATERAL = "LAT";
-	public final static String VOIE = "VOIE";
+	public enum SpecificWallSurfaceType {
+		BOT(0), LAT(1), UNKNOWN(99), ROAD(2);
 
-	//TODO enum
-	public String type;
+		private int value;
+
+		private SpecificWallSurfaceType(int type) {
+			value = type;
+		}
+
+		public int getValueType() {
+			return value;
+		}
+
+		public static SpecificWallSurfaceType getTypeFromInt(int type) {
+			SpecificWallSurfaceType[] val = SpecificWallSurfaceType.values();
+			for (int i = 0; i < val.length; i++) {
+				if (val[i].getValueType() == type) {
+					return val[i];
+				}
+			}
+
+			return null;
+		}
+
+	}
+
+	public SpecificWallSurfaceType type;
 	public int idBuildPart;
 	public Materiau material;
 	public boolean isWindowLess;
@@ -56,7 +77,7 @@ public class SpecificWallSurface extends CG_WallSurface {
 		super();
 	}
 
-	public SpecificWallSurface(String type, boolean isWindowLess) {
+	public SpecificWallSurface(SpecificWallSurfaceType type, boolean isWindowLess) {
 		super();
 		this.type = type;
 		this.isWindowLess = isWindowLess;
@@ -70,11 +91,11 @@ public class SpecificWallSurface extends CG_WallSurface {
 		this.isWindowLess = isWindowLess;
 	}
 
-	public String getType() {
+	public SpecificWallSurfaceType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(SpecificWallSurfaceType type) {
 		this.type = type;
 	}
 

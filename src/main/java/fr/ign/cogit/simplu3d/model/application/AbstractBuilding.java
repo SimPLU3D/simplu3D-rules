@@ -19,6 +19,7 @@ package fr.ign.cogit.simplu3d.model.application;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.citygml4j.model.citygml.CityGML;
 import org.citygml4j.model.citygml.core.CityObject;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
@@ -40,27 +41,28 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
 
 /**
  * 
- * Un bâtiment abstrait (AbstractBuilding) qui est soit un Building soit un BuildingPart
- * et qui est composé de BuildingParts.
+ * Un bâtiment abstrait (AbstractBuilding) qui est soit un Building soit un
+ * BuildingPart et qui est composé de BuildingParts.
  * 
- * @see CityGML http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams.pdf#page=11&zoom=150,1,706
+ * @see CityGML
+ *      http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams
+ *      .pdf#page=11&zoom=150,1,706
  * 
  * @author Brasebin Mickaël
  *
  */
 public abstract class AbstractBuilding extends CG_AbstractBuilding {
-	
 
 	public List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
 
-	private SpecificWallSurface wall;
-
-	private List<SpecificWallSurface> wallSurface;
+	private List<SpecificWallSurface> wallSurfaces;
 
 	public String destination;
 	public IOrientableSurface footprint;
-	
+
+	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	private BasicPropertyUnit bPU;
 
 	private int idSubPar;
 	private int idVersion = -1;
@@ -70,10 +72,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
-
-
-	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
-	private BasicPropertyUnit bPU;
 
 	protected AbstractBuilding() {
 		super();
@@ -110,17 +108,17 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 			RoofSurface t = RoofImporter.create(surfaceRoof, (IPolygon) footprint.clone());
 
 			// Affectation
-			this.setToit(t);
+			this.setRoofSurface(t);
 		}
 
 	}
 
-	public List<SubParcel> getSousParcelles() {
+	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 
-	public void setSousParcelles(List<SubParcel> sousParcelles) {
-		this.subParcels = sousParcelles;
+	public void setSousParcelles(List<SubParcel> subParcels) {
+		this.subParcels = subParcels;
 	}
 
 	public BasicPropertyUnit getbPU() {
@@ -131,16 +129,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.bPU = bPU;
 	}
 
-
-
-	public SpecificWallSurface getWall() {
-		return wall;
-	}
-
-	public void setWall(SpecificWallSurface wall) {
-		this.wall = wall;
-	}
-
 	public RoofSurface getRoof() {
 		return roofSurface;
 	}
@@ -148,7 +136,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	public void setRoof(RoofSurface roof) {
 		this.roofSurface = roof;
 	}
-
 
 	public int getIdSubPar() {
 		return idSubPar;
@@ -169,7 +156,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	public List<BuildingPart> getBuildingPart() {
 		return buildingParts;
 	}
-
 
 	public String getDestination() {
 		return destination;
@@ -201,46 +187,26 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
 	}
 
-	public void setToit(RoofSurface toit) {
+	public void setRoofSurface(RoofSurface toit) {
 		this.roofSurface = toit;
 	}
 
-	public List<SpecificWallSurface> getFacade() {
-		return wallSurface;
+	public List<SpecificWallSurface> getWallSurfaces() {
+		return wallSurfaces;
 	}
 
 	public void setFacade(List<? extends SpecificWallSurface> facades) {
-		this.wallSurface = new ArrayList<SpecificWallSurface>();
-		this.wallSurface.addAll(facades);
+		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
+		this.wallSurfaces.addAll(facades);
 
 	}
 
-	@Override
-	public CityObject export() {
-
-		return null;
-	}
-
-	public double height(int pB, int pH) {
-		double h = HauteurCalculation.calculate(this, pB, pH);
-		System.out.println("Hauteur calculée : " + h);
-		return h;
-	}
-
-
-	public abstract AbstractBuilding clone();
-
-	public double distance(AbstractBuilding b2) {
-		return this.footprint.distance(b2.getFootprint());
-	}
 
 	public RoofSurface getRoofSurface() {
 		return roofSurface;
 	}
 
-	public List<SpecificWallSurface> getWallSurface() {
-		return wallSurface;
-	}
+
 
 	public boolean isNew() {
 		return isNew;
@@ -250,8 +216,29 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		return footprint;
 	}
 
-	//@TODO LATER
-	public  List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2){
+	@Override
+	public CityObject export() {
+	//	@TODO : to complete
+		return null;
+	}
+	
+	
+	////Geometric operators @TODO : Should we move this ?
+	
+	public abstract AbstractBuilding clone();
+
+	public double distance(AbstractBuilding b2) {
+		return this.footprint.distance(b2.getFootprint());
+	}
+
+	public double height(int pB, int pH) {
+		double h = HauteurCalculation.calculate(this, pB, pH);
+		System.out.println("Hauteur calculée : " + h);
+		return h;
+	}
+
+	
+	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2) {
 		return null;
 	}
 
@@ -264,8 +251,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	}
 
 	/**
-	 * TODO externaliser dans indicator?
-	 * 
+	 *
 	 * @param geom
 	 * @param slope
 	 * @param hIni

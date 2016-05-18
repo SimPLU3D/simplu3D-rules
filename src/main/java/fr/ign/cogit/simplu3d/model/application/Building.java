@@ -16,8 +16,6 @@
  **/
 package fr.ign.cogit.simplu3d.model.application;
 
-import java.util.List;
-
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 
 /**
@@ -37,14 +35,6 @@ public class Building extends AbstractBuilding {
 		super(geom);
 	}
 
-	public void setIdBuilding(int idBuilding) {
-		this.id = id;
-	}
-
-	public int getIdBuilding() {
-		return id;
-	}
-
 	public void setIdVersion(int IdVersion) {
 		this.idVersion = IdVersion;
 	}
@@ -53,13 +43,11 @@ public class Building extends AbstractBuilding {
 		return idVersion;
 	}
 
-
 	@Override
 	public AbstractBuilding clone() {
 		Building b = new Building((IGeometry) this.getGeom().clone());
 		b.isNew = this.isNew;
 		return b;
 	}
-
 
 }

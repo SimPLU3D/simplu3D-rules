@@ -88,7 +88,7 @@ public class AutomaticAssignment {
 		String NOM_TABLE_SUB_PARCEL = ParametersInstructionPG.TABLE_SUB_PARCEL;
 
 		// "Simple" variable is assigned to the environment
-		env.setPlu(pluImport);
+		env.setUrbaDocument(pluImport);
 		env.setTerrain(null);
 
 		// The other variables are assigned, but empty
@@ -368,8 +368,8 @@ public class AutomaticAssignment {
 
 								} else {
 
-									currentBuildingPart.setWall(currentWall);
-									currentBuildingPart.getFacade().add(currentWall);
+									currentBuildingPart.getWallSurfaces().add(currentWall);
+									currentBuildingPart.getWallSurfaces().add(currentWall);
 
 									// On set la BPU dans lequel se trouve la BP
 									CadastralParcel cadParTemp = currentSubP.getParcel();
@@ -399,7 +399,7 @@ public class AutomaticAssignment {
 
 								} else {
 
-									currentBuildingPart.setToit(currentRoof);
+									currentBuildingPart.setRoofSurface(currentRoof);
 
 									System.out.println("\t\t" + "La partie de batiment n°" + idCurrentBP
 											+ " est rattachée au toit n°" + idCurrentRoof);
@@ -407,7 +407,7 @@ public class AutomaticAssignment {
 									for (RoofSurface currentRoofing : roofingImport) {
 
 										int idCurrentRoofing = currentRoofing.getId();
-										int idRoofRoofing = currentRoofing.getIdRoof();
+										int idRoofRoofing = currentRoofing.getId();
 
 										if (idRoofRoofing != idCurrentRoof) {
 
@@ -432,7 +432,7 @@ public class AutomaticAssignment {
 									for (RoofSurface currentGutter : gutterImport) {
 
 										int idCurrentGutter = currentGutter.getId();
-										int idRoofGutter = currentGutter.getIdRoof();
+										int idRoofGutter = currentGutter.getId();
 
 										if (idRoofGutter != idCurrentRoof) {
 
@@ -457,7 +457,7 @@ public class AutomaticAssignment {
 									for (RoofSurface currentGable : gableImport) {
 
 										int idCurrentGable = currentGable.getId();
-										int idRoofGable = currentGable.getIdRoof();
+										int idRoofGable = currentGable.getId();
 
 										if (idRoofGable != idCurrentRoof) {
 

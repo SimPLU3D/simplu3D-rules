@@ -33,7 +33,7 @@ public class FacadeArea {
 	private double value = 0;
 
 	public FacadeArea(AbstractBuilding b) {
-		for (SpecificWallSurface f : b.getFacade()) {
+		for (SpecificWallSurface f : b.getWallSurfaces()) {
 			FacadeArea fA = new FacadeArea(f);
 			value = value + fA.getValue();
 		}

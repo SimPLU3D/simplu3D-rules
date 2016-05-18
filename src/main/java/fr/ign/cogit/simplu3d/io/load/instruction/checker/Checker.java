@@ -21,6 +21,7 @@ import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 
@@ -216,7 +217,7 @@ public class Checker {
 
         for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
-          List<SpecificWallSurface> lSWS = bP.getFacade();
+          List<SpecificWallSurface> lSWS = bP.getWallSurfaces();
 
           // System.out.println("facades : " + lSWS);
 
@@ -513,7 +514,7 @@ public class Checker {
           // System.out.println("SCB : " + sc);
           // System.out.println("SCB type : " + sc.getType());
 
-          if (sc.getType() == SpecificCadastralBoundary.ROAD) {
+          if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
             lSC.add(sc);
           }
 
@@ -537,7 +538,7 @@ public class Checker {
 
         for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
 
-          if (sc.getType() == SpecificCadastralBoundary.ROAD) {
+          if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
             img.addAll(FromGeomToLineString.convert(sc.getGeom()));
           }
 
@@ -560,7 +561,7 @@ public class Checker {
 
         for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
 
-          if (sc.getType() == SpecificCadastralBoundary.LAT) {
+          if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
             img.addAll(FromGeomToLineString.convert(sc.getGeom()));
           }
 
@@ -589,7 +590,7 @@ public class Checker {
 
         for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
 
-          if (sc.getType() == SpecificCadastralBoundary.BOT) {
+          if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
             img.addAll(FromGeomToLineString.convert(sc.getGeom()));
           }
 

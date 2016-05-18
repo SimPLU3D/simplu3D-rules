@@ -26,6 +26,7 @@ import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 
 /**
@@ -131,7 +132,7 @@ public class HauteurCalculation {
 
   private static double calculateZBasPHT(AbstractBuilding b) {
 
-    List<SubParcel> spList = b.getSousParcelles();
+    List<SubParcel> spList = b.getSubParcels();
 
     double zMax = Double.NEGATIVE_INFINITY;
 
@@ -148,7 +149,7 @@ public class HauteurCalculation {
 
   private static double calculateZBasPBT(AbstractBuilding b) {
 
-    List<SubParcel> spList = b.getSousParcelles();
+    List<SubParcel> spList = b.getSubParcels();
 
     double zMin = Double.POSITIVE_INFINITY;
 
@@ -181,8 +182,8 @@ public class HauteurCalculation {
 
         for (SpecificCadastralBoundary bord : bordures) {
 
-          if (bord.getType() == SpecificCadastralBoundary.ROAD
-              || bord.getType() == SpecificCadastralBoundary.PUB) {
+          if (bord.getType() == SpecificCadastralBoundaryType.ROAD
+              || bord.getType() == SpecificCadastralBoundaryType.PUB) {
 
             Box3D box = new Box3D(bord.getGeom());
 

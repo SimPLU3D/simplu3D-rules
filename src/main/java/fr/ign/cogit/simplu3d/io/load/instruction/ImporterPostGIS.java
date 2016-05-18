@@ -22,6 +22,8 @@ import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaDocument;
@@ -29,1114 +31,1081 @@ import fr.ign.cogit.simplu3d.model.application.UrbaZone;
 
 public class ImporterPostGIS {
 
-  /**
-   * Permet de charger au sein d'un objet PLU les données contenues dans une
-   * IFeatureCollection provenant de l'import de données depuis une base de
-   * données
-   * @param featPLU
-   * @return
-   */
-  public static UrbaDocument importPLU(IFeatureCollection<IFeature> featPLU) {
+	/**
+	 * Permet de charger au sein d'un objet PLU les données contenues dans une
+	 * IFeatureCollection provenant de l'import de données depuis une base de
+	 * données
+	 * 
+	 * @param featPLU
+	 * @return
+	 */
+	public static UrbaDocument importPLU(IFeatureCollection<IFeature> featPLU) {
 
-	  UrbaDocument pluOut = new UrbaDocument();
+		UrbaDocument pluOut = new UrbaDocument();
 
-    // Some date format we use here :
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 1995-12-25
-    SimpleDateFormat sdfYYYY = new SimpleDateFormat("yyyy"); // 1995
+		// Some date format we use here :
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 1995-12-25
+		SimpleDateFormat sdfYYYY = new SimpleDateFormat("yyyy"); // 1995
 
-    for (IFeature feat : featPLU) {
+		for (IFeature feat : featPLU) {
 
-      Object attPLU = feat
-          .getAttribute(ParametersInstructionPG.ATT_DOC_URBA_ID_URBA);
+			Object attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_ID_URBA);
 
-      if (attPLU != null) {
-        pluOut.setIdUrba(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setIdUrba(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_TYPE_DOC);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_TYPE_DOC);
 
-      if (attPLU != null) {
-        pluOut.setTypeDoc(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setTypeDoc(attPLU.toString());
+			}
 
-      attPLU = feat
-          .getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_APPRO);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_APPRO);
 
-      if (attPLU != null) {
-        String dateAp = attPLU.toString();
-        java.util.Date dateAppro = new java.util.Date();
+			if (attPLU != null) {
+				String dateAp = attPLU.toString();
+				java.util.Date dateAppro = new java.util.Date();
 
-        try {
-          // System.out.println("You try...");
-          dateAppro = sdf.parse(dateAp);
-        } catch (ParseException e) {
-          // System.out.println("... And you fail for dateAppro");
+				try {
+					// System.out.println("You try...");
+					dateAppro = sdf.parse(dateAp);
+				} catch (ParseException e) {
+					// System.out.println("... And you fail for dateAppro");
 
-          e.printStackTrace();
-        }
+					e.printStackTrace();
+				}
 
-        // System.out.println("... And it's a succes for dateAppro");
+				// System.out.println("... And it's a succes for dateAppro");
 
-        pluOut.setDateAppro(dateAppro);
+				pluOut.setDateAppro(dateAppro);
 
-      }
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_FIN);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_FIN);
 
-      if (attPLU != null) {
-        String dateFi = attPLU.toString();
-        java.util.Date dateFin = new java.util.Date();
+			if (attPLU != null) {
+				String dateFi = attPLU.toString();
+				java.util.Date dateFin = new java.util.Date();
 
-        try {
-          // System.out.println("You try...");
-          dateFin = sdf.parse(dateFi);
-        } catch (ParseException e) {
-          // System.out.println("... And you fail for dateFin");
+				try {
+					// System.out.println("You try...");
+					dateFin = sdf.parse(dateFi);
+				} catch (ParseException e) {
+					// System.out.println("... And you fail for dateFin");
 
-          e.printStackTrace();
-        }
+					e.printStackTrace();
+				}
 
-        // System.out.println("... And it's a succes for dateFin");
+				// System.out.println("... And it's a succes for dateFin");
 
-        pluOut.setDateFin(dateFin);
+				pluOut.setDateFin(dateFin);
 
-      }
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_INTERCO);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_INTERCO);
 
-      if (attPLU != null) {
-        pluOut.setInterCo(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setInterCo(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_SIREN);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_SIREN);
 
-      if (attPLU != null) {
-        pluOut.setSiren(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setSiren(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_ETAT);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_ETAT);
 
-      if (attPLU != null) {
-        pluOut.setEtat(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setEtat(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_NOM_REG);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_NOM_REG);
 
-      if (attPLU != null) {
-        pluOut.setNomReg(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setNomReg(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_URL_REG);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_URL_REG);
 
-      if (attPLU != null) {
-        pluOut.setUrlReg(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setUrlReg(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_NOM_PLAN);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_NOM_PLAN);
 
-      if (attPLU != null) {
-        pluOut.setNomPlan(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setNomPlan(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_URL_PLAN);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_URL_PLAN);
 
-      if (attPLU != null) {
-        pluOut.setUrlPlan(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setUrlPlan(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_SITE);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_SITE);
 
-      if (attPLU != null) {
-        pluOut.setSiteWeb(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setSiteWeb(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_TYPE_REF);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_TYPE_REF);
 
-      if (attPLU != null) {
-        pluOut.setTypeRef(attPLU.toString());
-      }
+			if (attPLU != null) {
+				pluOut.setTypeRef(attPLU.toString());
+			}
 
-      attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_REF);
+			attPLU = feat.getAttribute(ParametersInstructionPG.ATT_DOC_URBA_DATE_REF);
 
-      if (attPLU != null) {
-        String dateRe = attPLU.toString();
-        java.util.Date dateRef = new java.util.Date();
+			if (attPLU != null) {
+				String dateRe = attPLU.toString();
+				java.util.Date dateRef = new java.util.Date();
 
-        try {
-          // System.out.println("You try...");
-          dateRef = sdfYYYY.parse(dateRe);
-        } catch (ParseException e) {
-          // System.out.println("... And you fail for dateRef");
+				try {
+					// System.out.println("You try...");
+					dateRef = sdfYYYY.parse(dateRe);
+				} catch (ParseException e) {
+					// System.out.println("... And you fail for dateRef");
 
-          e.printStackTrace();
-        }
+					e.printStackTrace();
+				}
 
-        // System.out.println("... And it's a succes for dateRef");
+				// System.out.println("... And it's a succes for dateRef");
 
-        pluOut.setDateRef(dateRef);
+				pluOut.setDateRef(dateRef);
 
-      }
+			}
 
-    }
+		}
 
-    return pluOut;
+		return pluOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<UrbaZone> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featZone
-   * @return
-   */
-  public static IFeatureCollection<UrbaZone> importZoneUrba(
-      IFeatureCollection<IFeature> featZone) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<UrbaZone> les données
+	 * contenues dans une IFeatureCollection provenant de l'import de données
+	 * depuis une base de données
+	 * 
+	 * @param featZone
+	 * @return
+	 */
+	public static IFeatureCollection<UrbaZone> importZoneUrba(IFeatureCollection<IFeature> featZone) {
 
-    IFeatureCollection<UrbaZone> featZoneOut = new FT_FeatureCollection<>();
+		IFeatureCollection<UrbaZone> featZoneOut = new FT_FeatureCollection<>();
 
-    // Some date format we use here :
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 1995-12-25
+		// Some date format we use here :
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 1995-12-25
 
-    for (IFeature feat : featZone) {
+		for (IFeature feat : featZone) {
 
-      UrbaZone urbaZoneOut = new UrbaZone(feat.getGeom());
+			UrbaZone urbaZoneOut = new UrbaZone(feat.getGeom());
 
-      Object attZU = feat
-          .getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID);
+			Object attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID);
 
-      String objStr = attZU.toString();
-      int objInt = Integer.parseInt(objStr);
+			String objStr = attZU.toString();
+			int objInt = Integer.parseInt(objStr);
 
-      if (attZU != null) {
-        urbaZoneOut.setId(objInt);
-      }
+			if (attZU != null) {
+				urbaZoneOut.setId(objInt);
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELLE);
 
-      if (attZU != null) {
-        urbaZoneOut.setLibelle(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setLibelle(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_LIBELONG);
 
-      if (attZU != null) {
-        urbaZoneOut.setLibelong(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setLibelong(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_TYPEZONE);
 
-      if (attZU != null) {
-        urbaZoneOut.setTypeZone(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setTypeZone(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DESTDOMI);
 
-      if (attZU != null) {
-        urbaZoneOut.setDestdomi(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setDestdomi(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_NOMFIC);
 
-      if (attZU != null) {
-        urbaZoneOut.setNomFic(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setNomFic(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_URLFIC);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_URLFIC);
 
-      if (attZU != null) {
-        urbaZoneOut.setUrlFic(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setUrlFic(attZU.toString());
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_INSEE);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_INSEE);
 
-      if (attZU != null) {
-        urbaZoneOut.setInsee(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setInsee(attZU.toString());
+			}
 
-      attZU = feat
-          .getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_APPRO);
 
-      if (attZU != null) {
-        String dateDeb = attZU.toString();
-        java.util.Date dateDebut = new java.util.Date();
+			if (attZU != null) {
+				String dateDeb = attZU.toString();
+				java.util.Date dateDebut = new java.util.Date();
 
-        try {
-          // System.out.println("You try...");
-          dateDebut = sdf.parse(dateDeb);
-        } catch (ParseException e) {
-          // System.out.println("... And you fail for dateDebut");
+				try {
+					// System.out.println("You try...");
+					dateDebut = sdf.parse(dateDeb);
+				} catch (ParseException e) {
+					// System.out.println("... And you fail for dateDebut");
 
-          e.printStackTrace();
-        }
+					e.printStackTrace();
+				}
 
-        // System.out.println("... And it's a succes for dateDebut");
+				// System.out.println("... And it's a succes for dateDebut");
 
-        urbaZoneOut.setDateDeb(dateDebut);
+				urbaZoneOut.setDateDeb(dateDebut);
 
-      }
+			}
 
-      attZU = feat
-          .getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_DATE_VALID);
 
-      if (attZU != null) {
-        String dateFi = attZU.toString();
-        java.util.Date dateFin = new java.util.Date();
+			if (attZU != null) {
+				String dateFi = attZU.toString();
+				java.util.Date dateFin = new java.util.Date();
 
-        try {
-          // System.out.println("You try...");
-          dateFin = sdf.parse(dateFi);
-        } catch (ParseException e) {
-          // System.out.println("... And you fail for dateFin");
+				try {
+					// System.out.println("You try...");
+					dateFin = sdf.parse(dateFi);
+				} catch (ParseException e) {
+					// System.out.println("... And you fail for dateFin");
 
-          e.printStackTrace();
-        }
+					e.printStackTrace();
+				}
 
-        // System.out.println("... And it's a succes for dateFin");
+				// System.out.println("... And it's a succes for dateFin");
 
-        urbaZoneOut.setDateFin(dateFin);
+				urbaZoneOut.setDateFin(dateFin);
 
-      }
+			}
 
-      attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU);
+			attZU = feat.getAttribute(ParametersInstructionPG.ATT_ZONE_URBA_ID_PLU);
 
-      if (attZU != null) {
-        urbaZoneOut.setIdPLU(attZU.toString());
-      }
+			if (attZU != null) {
+				urbaZoneOut.setIdPLU(attZU.toString());
+			}
 
-      featZoneOut.add(urbaZoneOut);
+			featZoneOut.add(urbaZoneOut);
 
-    }
+		}
 
-    return featZoneOut;
+		return featZoneOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<SubParcel> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featSubParcel
-   * @return
-   */
-  public static IFeatureCollection<SubParcel> importSubParcel(
-      IFeatureCollection<IFeature> featSubParcel) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<SubParcel> les données
+	 * contenues dans une IFeatureCollection provenant de l'import de données
+	 * depuis une base de données
+	 * 
+	 * @param featSubParcel
+	 * @return
+	 */
+	public static IFeatureCollection<SubParcel> importSubParcel(IFeatureCollection<IFeature> featSubParcel) {
 
-    IFeatureCollection<SubParcel> featSubParcelOut = new FT_FeatureCollection<>();
+		IFeatureCollection<SubParcel> featSubParcelOut = new FT_FeatureCollection<>();
 
-    for (IFeature feat : featSubParcel) {
+		for (IFeature feat : featSubParcel) {
 
-      SubParcel sp = new SubParcel(feat.getGeom());
+			SubParcel sp = new SubParcel(feat.getGeom());
 
-      Object attSP = feat
-          .getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID);
+			Object attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID);
 
-      String objStr = attSP.toString();
-      int objInt = Integer.parseInt(objStr);
+			String objStr = attSP.toString();
+			int objInt = Integer.parseInt(objStr);
 
-      if (attSP != null) {
-        sp.setId(objInt);
-      }
+			if (attSP != null) {
+				sp.setId(objInt);
+			}
 
-      attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID_ZU);
+			attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID_ZU);
 
-      objStr = attSP.toString();
-      objInt = Integer.parseInt(objStr);
+			objStr = attSP.toString();
+			objInt = Integer.parseInt(objStr);
 
-      if (attSP != null) {
-        sp.setIdZoneUrba(objInt);
-      }
+			if (attSP != null) {
+				sp.setIdZoneUrba(objInt);
+			}
 
-      attSP = feat
-          .getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID_CADPAR);
+			attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_ID_CADPAR);
 
-      objStr = attSP.toString();
-      objInt = Integer.parseInt(objStr);
+			objStr = attSP.toString();
+			objInt = Integer.parseInt(objStr);
 
-      if (attSP != null) {
-        sp.setIdCadPar(objInt);
-      }
+			if (attSP != null) {
+				sp.setIdCadPar(objInt);
+			}
 
-      attSP = feat
-          .getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_AVG_SLOPE);
+			attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_AVG_SLOPE);
 
-      objStr = attSP.toString();
-      Double objDbl = Double.parseDouble(objStr);
+			objStr = attSP.toString();
+			Double objDbl = Double.parseDouble(objStr);
 
-      if (attSP != null) {
-        sp.setAvgSlope(objDbl);
-      }
+			if (attSP != null) {
+				sp.setAvgSlope(objDbl);
+			}
 
-      attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_SURF);
+			attSP = feat.getAttribute(ParametersInstructionPG.ATT_SUB_PARCEL_SURF);
 
-      objStr = attSP.toString();
-      objDbl = Double.parseDouble(objStr);
+			objStr = attSP.toString();
+			objDbl = Double.parseDouble(objStr);
 
-      if (attSP != null) {
-        sp.setArea(objDbl);
-      }
+			if (attSP != null) {
+				sp.setArea(objDbl);
+			}
 
-      featSubParcelOut.add(sp);
+			featSubParcelOut.add(sp);
 
-    }
+		}
 
-    return featSubParcelOut;
+		return featSubParcelOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<Road> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featRoad
-   * @return
-   */
-  public static IFeatureCollection<Road> importRoad(
-      IFeatureCollection<IFeature> featRoad) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<Road> les données
+	 * contenues dans une IFeatureCollection provenant de l'import de données
+	 * depuis une base de données
+	 * 
+	 * @param featRoad
+	 * @return
+	 */
+	public static IFeatureCollection<Road> importRoad(IFeatureCollection<IFeature> featRoad) {
 
-    IFeatureCollection<Road> featRoadOut = new FT_FeatureCollection<>();
+		IFeatureCollection<Road> featRoadOut = new FT_FeatureCollection<>();
 
-    for (IFeature feat : featRoad) {
+		for (IFeature feat : featRoad) {
 
-      IMultiSurface<IOrientableSurface> ms = FromGeomToSurface
-          .convertMSGeom(feat.getGeom());
+			IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(feat.getGeom());
 
-      Road road = new Road(ms);
+			Road road = new Road(ms);
 
-      Object attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_ID);
+			Object attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_ID);
 
-      if (attRoad != null) {
-        String objStr = attRoad.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attRoad != null) {
+				String objStr = attRoad.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        road.setId(objInt);
+				road.setId(objInt);
 
-      }
+			}
 
-      attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_NOM);
+			attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_NOM);
 
-      if (attRoad != null) {
+			if (attRoad != null) {
 
-        String objStr = attRoad.toString();
+				String objStr = attRoad.toString();
 
-        road.setName(objStr);
+				road.setName(objStr);
 
-      }
+			}
 
-      attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_TYPE);
+			attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_TYPE);
 
-      if (attRoad != null) {
+			if (attRoad != null) {
 
-        String objStr = attRoad.toString();
+				String objStr = attRoad.toString();
 
-        road.setType(objStr);
+				road.setType(objStr);
 
-      }
+			}
 
-      attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_LARGEUR);
+			attRoad = feat.getAttribute(ParametersInstructionPG.ATT_ROAD_LARGEUR);
 
-      if (attRoad != null) {
+			if (attRoad != null) {
 
-        String objStr = attRoad.toString();
-        Double objDbl = Double.parseDouble(objStr);
+				String objStr = attRoad.toString();
+				Double objDbl = Double.parseDouble(objStr);
 
-        road.setWidth(objDbl);
-      }
+				road.setWidth(objDbl);
+			}
 
-      featRoadOut.add(road);
+			featRoadOut.add(road);
 
-    }
+		}
 
-    return featRoadOut;
+		return featRoadOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<Road> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featAxis
-   * @return
-   */
-  public static IFeatureCollection<Road> importAxis(
-      IFeatureCollection<IFeature> featAxis) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<Road> les données
+	 * contenues dans une IFeatureCollection provenant de l'import de données
+	 * depuis une base de données
+	 * 
+	 * @param featAxis
+	 * @return
+	 */
+	public static IFeatureCollection<Road> importAxis(IFeatureCollection<IFeature> featAxis) {
 
-    IFeatureCollection<Road> featAxisOut = new FT_FeatureCollection<>();
+		IFeatureCollection<Road> featAxisOut = new FT_FeatureCollection<>();
 
-    for (IFeature feat : featAxis) {
+		for (IFeature feat : featAxis) {
 
-      Road axis = new Road();
+			Road axis = new Road();
 
-      IGeometry geom = feat.getGeom();
-      IMultiCurve<ILineString> axe = null;
+			IGeometry geom = feat.getGeom();
+			IMultiCurve<ILineString> axe = null;
 
-      if (geom instanceof ILineString) {
+			if (geom instanceof ILineString) {
 
-        ILineString c = (ILineString) geom;
-        axe = new GM_MultiCurve<ILineString>();
-        axe.add(c);
+				ILineString c = (ILineString) geom;
+				axe = new GM_MultiCurve<ILineString>();
+				axe.add(c);
 
-      } else if (geom instanceof IMultiCurve<?>) {
+			} else if (geom instanceof IMultiCurve<?>) {
 
-        axe = (IMultiCurve<ILineString>) geom;
+				axe = (IMultiCurve<ILineString>) geom;
 
-      }
+			}
 
-      axis.setAxe(axe);
+			axis.setAxe(axe);
 
-      Object attAxis = feat.getAttribute(ParametersInstructionPG.ATT_AXE_ID);
+			Object attAxis = feat.getAttribute(ParametersInstructionPG.ATT_AXE_ID);
 
-      if (attAxis != null) {
-        String objStr = attAxis.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attAxis != null) {
+				String objStr = attAxis.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        axis.setId(objInt);
+				axis.setId(objInt);
 
-      }
+			}
 
-      attAxis = feat.getAttribute(ParametersInstructionPG.ATT_AXE_ID_ROAD);
+			attAxis = feat.getAttribute(ParametersInstructionPG.ATT_AXE_ID_ROAD);
 
-      if (attAxis != null) {
-        String objStr = attAxis.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attAxis != null) {
+				String objStr = attAxis.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        axis.setIdRoad(objInt);
+				axis.setIdRoad(objInt);
 
-      }
+			}
 
-      featAxisOut.add(axis);
+			featAxisOut.add(axis);
 
-    }
+		}
 
-    return featAxisOut;
+		return featAxisOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une
-   * IFeatureCollection<SpecificCadastralBoundary> les données contenues dans
-   * une IFeatureCollection provenant de l'import de données depuis une base de
-   * données
-   * @param featSCB
-   * @return
-   */
-  public static IFeatureCollection<SpecificCadastralBoundary> importSpecificCadBound(
-      IFeatureCollection<IFeature> featSCB) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection
+	 * <SpecificCadastralBoundary> les données contenues dans une
+	 * IFeatureCollection provenant de l'import de données depuis une base de
+	 * données
+	 * 
+	 * @param featSCB
+	 * @return
+	 */
+	public static IFeatureCollection<SpecificCadastralBoundary> importSpecificCadBound(
+			IFeatureCollection<IFeature> featSCB) {
 
-    IFeatureCollection<SpecificCadastralBoundary> featSCBOut = new FT_FeatureCollection<>();
+		IFeatureCollection<SpecificCadastralBoundary> featSCBOut = new FT_FeatureCollection<>();
 
-    for (IFeature feat : featSCB) {
-      SpecificCadastralBoundary scb = new SpecificCadastralBoundary(
-          feat.getGeom());
+		for (IFeature feat : featSCB) {
+			SpecificCadastralBoundary scb = new SpecificCadastralBoundary(feat.getGeom());
 
-      Object attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID);
+			Object attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        scb.setId(objInt);
+				scb.setId(objInt);
 
-      }
+			}
 
-      attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TYPE);
+			attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TYPE);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        scb.setType(objInt);
+				scb.setType(SpecificCadastralBoundaryType.getTypeFromInt(objInt));
 
-      }
+			}
 
-      attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_SIDE);
+			attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_SIDE);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        scb.setSide(objInt);
+				scb.setSide(SpecificCadastralBoundarySide.getTypeFromInt(objInt));
 
-      }
+			}
 
-      attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_SUB_PAR);
+			attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_SUB_PAR);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        scb.setIdSubPar(objInt);
+				scb.setIdSubPar(objInt);
 
-      }
+			}
 
-      attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_ADJ);
+			attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_ID_ADJ);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
-        int objInt = Integer.parseInt(objStr);
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
+				int objInt = Integer.parseInt(objStr);
 
-        scb.setIdAdj(objInt);
+				scb.setIdAdj(objInt);
 
-      }
+			}
 
-      attSCB = feat
-          .getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TABLE_REF);
+			attSCB = feat.getAttribute(ParametersInstructionPG.ATT_SPECIFIC_CBOUNDARY_TABLE_REF);
 
-      if (attSCB != null) {
-        String objStr = attSCB.toString();
+			if (attSCB != null) {
+				String objStr = attSCB.toString();
 
-        scb.setTableRef(objStr);
+				scb.setTableRef(objStr);
 
-      }
+			}
 
-      featSCBOut.add(scb);
+			featSCBOut.add(scb);
 
-    }
+		}
 
-    return featSCBOut;
+		return featSCBOut;
 
-  }
+	}
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<CadastralParcel> les
-   * données contenues dans une IFeatureCollection provenant de l'import de
-   * données depuis une base de données
-   * @param featParcel
-   * @return
-   */
-  public static IFeatureCollection<CadastralParcel> importCadParcel(
-      IFeatureCollection<IFeature> featParcel) {
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<CadastralParcel> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featParcel
+	 * @return
+	 */
+	public static IFeatureCollection<CadastralParcel> importCadParcel(IFeatureCollection<IFeature> featParcel) {
 
-    IFeatureCollection<CadastralParcel> featParcelOut = new FT_FeatureCollection<>();
+		IFeatureCollection<CadastralParcel> featParcelOut = new FT_FeatureCollection<>();
 
-    for (IFeature feat : featParcel) {
+		for (IFeature feat : featParcel) {
 
-      IMultiSurface<IOrientableSurface> ms = FromGeomToSurface
-          .convertMSGeom(feat.getGeom());
+			IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(feat.getGeom());
 
-      CadastralParcel cp = new CadastralParcel(ms);
+			CadastralParcel cp = new CadastralParcel(ms);
 
-      Object attCP = feat
-          .getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_ID);
+			Object attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_ID);
 
-      String objStr = attCP.toString();
-      int objInt = Integer.parseInt(objStr);
+			String objStr = attCP.toString();
+			int objInt = Integer.parseInt(objStr);
 
-      if (attCP != null) {
-        cp.setId(objInt);
-      }
+			if (attCP != null) {
+				cp.setId(objInt);
+			}
 
-      attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU);
+			attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_ID_BPU);
 
-      objStr = attCP.toString();
-      objInt = Integer.parseInt(objStr);
+			objStr = attCP.toString();
+			objInt = Integer.parseInt(objStr);
 
-      if (attCP != null) {
-        cp.setId(objInt);
-      }
+			if (attCP != null) {
+				cp.setId(objInt);
+			}
 
-      attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_NUM);
+			attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_NUM);
 
-      objStr = attCP.toString();
-      objInt = Integer.parseInt(objStr);
+			objStr = attCP.toString();
+			objInt = Integer.parseInt(objStr);
 
-      if (attCP != null) {
-        cp.setNum(objInt);
-      }
+			attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_SURF);
 
-      attCP = feat.getAttribute(ParametersInstructionPG.ATT_CAD_PARCEL_SURF);
+			objStr = attCP.toString();
+			Double objDbl = Double.parseDouble(objStr);
 
-      objStr = attCP.toString();
-      Double objDbl = Double.parseDouble(objStr);
+			if (attCP != null) {
+				cp.setArea(objDbl);
+			}
 
-      if (attCP != null) {
-        cp.setArea(objDbl);
-      }
+			featParcelOut.add(cp);
 
-      featParcelOut.add(cp);
+		}
 
-    }
+		return featParcelOut;
 
-    return featParcelOut;
+	}
 
-  }
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<BasicPropertyUnit> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featBPU
+	 * @return
+	 */
+	public static IFeatureCollection<BasicPropertyUnit> importBasicPropUnit(IFeatureCollection<IFeature> featBPU) {
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<BasicPropertyUnit> les
-   * données contenues dans une IFeatureCollection provenant de l'import de
-   * données depuis une base de données
-   * @param featBPU
-   * @return
-   */
-  public static IFeatureCollection<BasicPropertyUnit> importBasicPropUnit(
-      IFeatureCollection<IFeature> featBPU) {
+		IFeatureCollection<BasicPropertyUnit> featBPUOut = new FT_FeatureCollection<>();
 
-    IFeatureCollection<BasicPropertyUnit> featBPUOut = new FT_FeatureCollection<>();
+		for (IFeature feat : featBPU) {
 
-    for (IFeature feat : featBPU) {
+			BasicPropertyUnit bpu = new BasicPropertyUnit();
+			bpu.setGeom(feat.getGeom());
 
-      BasicPropertyUnit bpu = new BasicPropertyUnit();
-      bpu.setGeom(feat.getGeom());
+			Object attBPU = feat.getAttribute(ParametersInstructionPG.ATT_BPU_ID);
 
-      Object attBPU = feat.getAttribute(ParametersInstructionPG.ATT_BPU_ID);
+			if (attBPU != null) {
+				String objStr = attBPU.toString();
+				int objInt = Integer.parseInt(objStr);
 
-      if (attBPU != null) {
-        String objStr = attBPU.toString();
-        int objInt = Integer.parseInt(objStr);
+				bpu.setId(objInt);
 
-        bpu.setId(objInt);
+			}
 
-      }
+			featBPUOut.add(bpu);
 
-      featBPUOut.add(bpu);
+		}
 
-    }
+		return featBPUOut;
 
-    return featBPUOut;
+	}
 
-  }
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<BuildingPart> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featBuildingPart
+	 * @return
+	 */
+	public static IFeatureCollection<BuildingPart> importBuildPart(IFeatureCollection<IFeature> featBuildingPart) {
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<BuildingPart> les
-   * données contenues dans une IFeatureCollection provenant de l'import de
-   * données depuis une base de données
-   * @param featBuildingPart
-   * @return
-   */
-  public static IFeatureCollection<BuildingPart> importBuildPart(
-      IFeatureCollection<IFeature> featBuildingPart) {
+		IFeatureCollection<BuildingPart> featBuildingOut = new FT_FeatureCollection<>();
 
-    IFeatureCollection<BuildingPart> featBuildingOut = new FT_FeatureCollection<>();
+		for (IFeature feat : featBuildingPart) {
+			BuildingPart bp = new BuildingPart(feat.getGeom());
 
-    for (IFeature feat : featBuildingPart) {
-      BuildingPart bp = new BuildingPart(feat.getGeom());
+			Object attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID);
 
-      Object attBuildPart = feat
-          .getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID);
+			if (attBuildPart != null) {
+				String objStr = attBuildPart.toString();
+				int objInt = Integer.parseInt(objStr);
 
-      if (attBuildPart != null) {
-        String objStr = attBuildPart.toString();
-        int objInt = Integer.parseInt(objStr);
+				bp.setId(objInt);
 
-        bp.setId(objInt);
+			}
 
-      }
+			attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_BUILD);
 
-      attBuildPart = feat
-          .getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_BUILD);
+			if (attBuildPart != null) {
+				String objStr = attBuildPart.toString();
+				int objInt = Integer.parseInt(objStr);
+				bp.setIdBuilding(objInt);
+			}
 
-      if (attBuildPart != null) {
-        String objStr = attBuildPart.toString();
-        int objInt = Integer.parseInt(objStr);
-        bp.setIdBuilding(objInt);
-      }
+			attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR);
 
-      attBuildPart = feat
-          .getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_SUBPAR);
+			if (attBuildPart != null) {
+				String objStr = attBuildPart.toString();
+				int objInt = Integer.parseInt(objStr);
+				bp.setIdSubPar(objInt);
+			}
 
-      if (attBuildPart != null) {
-        String objStr = attBuildPart.toString();
-        int objInt = Integer.parseInt(objStr);
-        bp.setIdSubPar(objInt);
-      }
-      
-      
-      attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_VERSION);
-      
-      if (attBuildPart != null) {
-          String objStr = attBuildPart.toString();
-          int objInt = Integer.parseInt(objStr);
-          bp.setIdVersion(objInt);
-        }else{
-        	bp.setIdVersion(-1);
-        }
+			attBuildPart = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID_VERSION);
 
-      featBuildingOut.add(bp);
+			if (attBuildPart != null) {
+				String objStr = attBuildPart.toString();
+				int objInt = Integer.parseInt(objStr);
+				bp.setIdVersion(objInt);
+			} else {
+				bp.setIdVersion(-1);
+			}
 
-    }
+			featBuildingOut.add(bp);
 
-    return featBuildingOut;
+		}
 
-  }
+		return featBuildingOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<Building> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featBuilding
-   * @return
-   */
-  public static IFeatureCollection<Building> importBuilding(
-      IFeatureCollection<IFeature> featBuilding) {
+	}
 
-    IFeatureCollection<Building> featBuildingOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<Building> les données
+	 * contenues dans une IFeatureCollection provenant de l'import de données
+	 * depuis une base de données
+	 * 
+	 * @param featBuilding
+	 * @return
+	 */
+	public static IFeatureCollection<Building> importBuilding(IFeatureCollection<IFeature> featBuilding) {
 
-    for (IFeature feat : featBuilding) {
+		IFeatureCollection<Building> featBuildingOut = new FT_FeatureCollection<>();
 
-      Building build = new Building();
+		for (IFeature feat : featBuilding) {
 
-      Object attBuild = feat
-          .getAttribute(ParametersInstructionPG.ATT_BUILDING_ID);
+			Building build = new Building();
 
-      if (attBuild != null) {
+			Object attBuild = feat.getAttribute(ParametersInstructionPG.ATT_BUILDING_ID);
 
-        String objStr = attBuild.toString();
+			if (attBuild != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attBuild.toString();
 
-        build.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				build.setId(objInt);
 
-      featBuildingOut.add(build);
+			}
 
-    }
+			featBuildingOut.add(build);
 
-    return featBuildingOut;
+		}
 
-  }
+		return featBuildingOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<SpecificWallSurface> les
-   * données contenues dans une IFeatureCollection provenant de l'import de
-   * données depuis une base de données
-   * @param featWall
-   * @return
-   */
-  public static IFeatureCollection<SpecificWallSurface> importWall(
-      IFeatureCollection<IFeature> featWall) {
+	}
 
-    IFeatureCollection<SpecificWallSurface> featWallOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection
+	 * <SpecificWallSurface> les données contenues dans une IFeatureCollection
+	 * provenant de l'import de données depuis une base de données
+	 * 
+	 * @param featWall
+	 * @return
+	 */
+	public static IFeatureCollection<SpecificWallSurface> importWall(IFeatureCollection<IFeature> featWall) {
 
-    for (IFeature feat : featWall) {
+		IFeatureCollection<SpecificWallSurface> featWallOut = new FT_FeatureCollection<>();
 
-      IGeometry geom = feat.getGeom();
+		for (IFeature feat : featWall) {
 
-      IMultiSurface<IOrientableSurface> lOS = FromGeomToSurface
-          .convertMSGeom(geom);
+			IGeometry geom = feat.getGeom();
 
-      SpecificWallSurface sW = new SpecificWallSurface();
+			IMultiSurface<IOrientableSurface> lOS = FromGeomToSurface.convertMSGeom(geom);
 
-      IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
-      ims.addAll(lOS);
-      sW.setLod2MultiSurface(ims);
-      sW.setGeom(ims);
+			SpecificWallSurface sW = new SpecificWallSurface();
 
-      Object attWall = feat
-          .getAttribute(ParametersInstructionPG.ATT_WALL_SURFACE_ID);
+			IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
+			ims.addAll(lOS);
+			sW.setLod2MultiSurface(ims);
+			sW.setGeom(ims);
 
-      if (attWall != null) {
+			Object attWall = feat.getAttribute(ParametersInstructionPG.ATT_WALL_SURFACE_ID);
 
-        String objStr = attWall.toString();
+			if (attWall != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attWall.toString();
 
-        sW.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				sW.setId(objInt);
 
-      attWall = feat
-          .getAttribute(ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP);
+			}
 
-      if (attWall != null) {
+			attWall = feat.getAttribute(ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP);
 
-        String objStr = attWall.toString();
+			if (attWall != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attWall.toString();
 
-        sW.setIdBuildPart(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				sW.setIdBuildPart(objInt);
 
-      featWallOut.add(sW);
+			}
 
-    }
+			featWallOut.add(sW);
 
-    return featWallOut;
+		}
 
-  }
+		return featWallOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featRoof
-   * @return
-   */
-  public static IFeatureCollection<RoofSurface> importRoof(
-      IFeatureCollection<IFeature> featRoof) {
+	}
 
-    IFeatureCollection<RoofSurface> featRoofOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featRoof
+	 * @return
+	 */
+	public static IFeatureCollection<RoofSurface> importRoof(IFeatureCollection<IFeature> featRoof) {
 
-    for (IFeature feat : featRoof) {
+		IFeatureCollection<RoofSurface> featRoofOut = new FT_FeatureCollection<>();
 
-      IGeometry geom = feat.getGeom();
+		for (IFeature feat : featRoof) {
 
-      IMultiSurface<IOrientableSurface> lOS = FromGeomToSurface
-          .convertMSGeom(geom);
+			IGeometry geom = feat.getGeom();
 
-      RoofSurface rS = new RoofSurface();
+			IMultiSurface<IOrientableSurface> lOS = FromGeomToSurface.convertMSGeom(geom);
 
-      IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
-      ims.addAll(lOS);
-      rS.setLod2MultiSurface(ims);
-      rS.setGeom(ims);
+			RoofSurface rS = new RoofSurface();
 
-      Object attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ID);
+			IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
+			ims.addAll(lOS);
+			rS.setLod2MultiSurface(ims);
+			rS.setGeom(ims);
 
-      if (attRoof != null) {
+			Object attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ID);
 
-        String objStr = attRoof.toString();
+			if (attRoof != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attRoof.toString();
 
-        rS.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				rS.setId(objInt);
 
-      attRoof = feat
-          .getAttribute(ParametersInstructionPG.ATT_ROOF_ID_BUILDPART);
+			}
 
-      if (attRoof != null) {
+			attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ID_BUILDPART);
 
-        String objStr = attRoof.toString();
+			if (attRoof != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attRoof.toString();
 
-        rS.setIdBuildPart(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				rS.setIdBuildPart(objInt);
 
-      attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ANGLE_MIN);
+			}
 
-      if (attRoof != null) {
+			attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ANGLE_MIN);
 
-        String objStr = attRoof.toString();
+			if (attRoof != null) {
 
-        Double objDb = Double.parseDouble(objStr);
+				String objStr = attRoof.toString();
 
-        rS.setAngleMin(objDb);
+				Double objDb = Double.parseDouble(objStr);
 
-      }
+				rS.setAngleMin(objDb);
 
-      attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ANGLE_MAX);
+			}
 
-      if (attRoof != null) {
+			attRoof = feat.getAttribute(ParametersInstructionPG.ATT_ROOF_ANGLE_MAX);
 
-        String objStr = attRoof.toString();
+			if (attRoof != null) {
 
-        Double objDb = Double.parseDouble(objStr);
+				String objStr = attRoof.toString();
 
-        rS.setAngleMax(objDb);
+				Double objDb = Double.parseDouble(objStr);
 
-      }
+				rS.setAngleMax(objDb);
 
-      featRoofOut.add(rS);
+			}
 
-    }
+			featRoofOut.add(rS);
 
-    return featRoofOut;
+		}
 
-  }
+		return featRoofOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featRoof
-   * @return
-   */
-  public static IFeatureCollection<RoofSurface> importRoofing(
-      IFeatureCollection<IFeature> featRoofing) {
+	}
 
-    IFeatureCollection<RoofSurface> featRoofingOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featRoof
+	 * @return
+	 */
+	public static IFeatureCollection<RoofSurface> importRoofing(IFeatureCollection<IFeature> featRoofing) {
 
-    for (IFeature feat : featRoofing) {
+		IFeatureCollection<RoofSurface> featRoofingOut = new FT_FeatureCollection<>();
 
-      RoofSurface roofing = new RoofSurface();
-      IGeometry geom = feat.getGeom();
-      IMultiCurve<IOrientableCurve> roofi = null;
+		for (IFeature feat : featRoofing) {
 
-      if (geom instanceof IOrientableCurve) {
+			RoofSurface roofing = new RoofSurface();
+			IGeometry geom = feat.getGeom();
+			IMultiCurve<IOrientableCurve> roofi = null;
 
-        IOrientableCurve c = (IOrientableCurve) geom;
-        roofi = new GM_MultiCurve<IOrientableCurve>();
-        roofi.add(c);
+			if (geom instanceof IOrientableCurve) {
 
-      } else if (geom instanceof IMultiCurve<?>) {
+				IOrientableCurve c = (IOrientableCurve) geom;
+				roofi = new GM_MultiCurve<IOrientableCurve>();
+				roofi.add(c);
 
-        roofi = (IMultiCurve<IOrientableCurve>) geom;
+			} else if (geom instanceof IMultiCurve<?>) {
 
-      }
+				roofi = (IMultiCurve<IOrientableCurve>) geom;
 
-      roofing.setRoofing(roofi);
+			}
 
-      Object attRoofing = feat
-          .getAttribute(ParametersInstructionPG.ATT_ROOFING_ID);
+			roofing.setRoofing(roofi);
 
-      if (attRoofing != null) {
+			Object attRoofing = feat.getAttribute(ParametersInstructionPG.ATT_ROOFING_ID);
 
-        String objStr = attRoofing.toString();
+			if (attRoofing != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attRoofing.toString();
 
-        roofing.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				roofing.setId(objInt);
 
-      attRoofing = feat
-          .getAttribute(ParametersInstructionPG.ATT_ROOFING_ID_ROOF);
+			}
 
-      if (attRoofing != null) {
+			attRoofing = feat.getAttribute(ParametersInstructionPG.ATT_ROOFING_ID_ROOF);
 
-        String objStr = attRoofing.toString();
+			if (attRoofing != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attRoofing.toString();
 
-        roofing.setIdRoof(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				roofing.setId(objInt);
 
-      featRoofingOut.add(roofing);
+			}
 
-    }
+			featRoofingOut.add(roofing);
 
-    return featRoofingOut;
+		}
 
-  }
+		return featRoofingOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featRoof
-   * @return
-   */
-  public static IFeatureCollection<RoofSurface> importGable(
-      IFeatureCollection<IFeature> featGable) {
+	}
 
-    IFeatureCollection<RoofSurface> featGableOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featRoof
+	 * @return
+	 */
+	public static IFeatureCollection<RoofSurface> importGable(IFeatureCollection<IFeature> featGable) {
 
-    for (IFeature feat : featGable) {
+		IFeatureCollection<RoofSurface> featGableOut = new FT_FeatureCollection<>();
 
-      RoofSurface gable = new RoofSurface();
-      IGeometry geom = feat.getGeom();
-      IMultiCurve<IOrientableCurve> gab = null;
+		for (IFeature feat : featGable) {
 
-      if (geom instanceof IOrientableCurve) {
+			RoofSurface gable = new RoofSurface();
+			IGeometry geom = feat.getGeom();
+			IMultiCurve<IOrientableCurve> gab = null;
 
-        IOrientableCurve c = (IOrientableCurve) geom;
-        gab = new GM_MultiCurve<IOrientableCurve>();
-        gab.add(c);
+			if (geom instanceof IOrientableCurve) {
 
-      } else if (geom instanceof IMultiCurve<?>) {
+				IOrientableCurve c = (IOrientableCurve) geom;
+				gab = new GM_MultiCurve<IOrientableCurve>();
+				gab.add(c);
 
-        gab = (IMultiCurve<IOrientableCurve>) geom;
+			} else if (geom instanceof IMultiCurve<?>) {
 
-      }
+				gab = (IMultiCurve<IOrientableCurve>) geom;
 
-      gable.setGable(gab);
+			}
 
-      Object attGable = feat.getAttribute(ParametersInstructionPG.ATT_GABLE_ID);
+			gable.setGable(gab);
 
-      if (attGable != null) {
+			Object attGable = feat.getAttribute(ParametersInstructionPG.ATT_GABLE_ID);
 
-        String objStr = attGable.toString();
+			if (attGable != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attGable.toString();
 
-        gable.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				gable.setId(objInt);
 
-      attGable = feat.getAttribute(ParametersInstructionPG.ATT_GABLE_ID_ROOF);
+			}
 
-      if (attGable != null) {
+			attGable = feat.getAttribute(ParametersInstructionPG.ATT_GABLE_ID_ROOF);
 
-        String objStr = attGable.toString();
+			if (attGable != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attGable.toString();
 
-        gable.setIdRoof(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				gable.setId(objInt);
 
-      featGableOut.add(gable);
+			}
 
-    }
+			featGableOut.add(gable);
 
-    return featGableOut;
+		}
 
-  }
+		return featGableOut;
 
-  /**
-   * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les données
-   * contenues dans une IFeatureCollection provenant de l'import de données
-   * depuis une base de données
-   * @param featRoof
-   * @return
-   */
-  public static IFeatureCollection<RoofSurface> importGutter(
-      IFeatureCollection<IFeature> featGutter) {
+	}
 
-    IFeatureCollection<RoofSurface> featGutterOut = new FT_FeatureCollection<>();
+	/**
+	 * Permet de charger au sein d'une IFeatureCollection<RoofSurface> les
+	 * données contenues dans une IFeatureCollection provenant de l'import de
+	 * données depuis une base de données
+	 * 
+	 * @param featRoof
+	 * @return
+	 */
+	public static IFeatureCollection<RoofSurface> importGutter(IFeatureCollection<IFeature> featGutter) {
 
-    for (IFeature feat : featGutter) {
+		IFeatureCollection<RoofSurface> featGutterOut = new FT_FeatureCollection<>();
 
-      RoofSurface gutter = new RoofSurface();
-      IGeometry geom = feat.getGeom();
-      IMultiCurve<IOrientableCurve> gut = null;
+		for (IFeature feat : featGutter) {
 
-      if (geom instanceof IOrientableCurve) {
+			RoofSurface gutter = new RoofSurface();
+			IGeometry geom = feat.getGeom();
+			IMultiCurve<IOrientableCurve> gut = null;
 
-        IOrientableCurve c = (IOrientableCurve) geom;
-        gut = new GM_MultiCurve<IOrientableCurve>();
-        gut.add(c);
+			if (geom instanceof IOrientableCurve) {
 
-      } else if (geom instanceof IMultiCurve<?>) {
+				IOrientableCurve c = (IOrientableCurve) geom;
+				gut = new GM_MultiCurve<IOrientableCurve>();
+				gut.add(c);
 
-        gut = (IMultiCurve<IOrientableCurve>) geom;
+			} else if (geom instanceof IMultiCurve<?>) {
 
-      }
+				gut = (IMultiCurve<IOrientableCurve>) geom;
 
-      gutter.setGutter(gut);
+			}
 
-      Object attGutter = feat
-          .getAttribute(ParametersInstructionPG.ATT_GUTTER_ID);
+			gutter.setGutter(gut);
 
-      if (attGutter != null) {
+			Object attGutter = feat.getAttribute(ParametersInstructionPG.ATT_GUTTER_ID);
 
-        String objStr = attGutter.toString();
+			if (attGutter != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attGutter.toString();
 
-        gutter.setId(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				gutter.setId(objInt);
 
-      attGutter = feat.getAttribute(ParametersInstructionPG.ATT_GUTTER_ID_ROOF);
+			}
 
-      if (attGutter != null) {
+			attGutter = feat.getAttribute(ParametersInstructionPG.ATT_GUTTER_ID_ROOF);
 
-        String objStr = attGutter.toString();
+			if (attGutter != null) {
 
-        int objInt = Integer.parseInt(objStr);
+				String objStr = attGutter.toString();
 
-        gutter.setIdRoof(objInt);
+				int objInt = Integer.parseInt(objStr);
 
-      }
+				gutter.setId(objInt);
 
-      featGutterOut.add(gutter);
+			}
 
-    }
+			featGutterOut.add(gutter);
 
-    return featGutterOut;
+		}
 
-  }
+		return featGutterOut;
+
+	}
 
 }

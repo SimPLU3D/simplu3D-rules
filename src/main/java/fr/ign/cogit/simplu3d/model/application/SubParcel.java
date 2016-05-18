@@ -27,6 +27,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
@@ -140,7 +141,7 @@ public class SubParcel extends CG_LandUse {
 	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFond() {
 		IFeatureCollection<SpecificCadastralBoundary> borduresFond = new FT_FeatureCollection<SpecificCadastralBoundary>();
 		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundary.BOT) {
+			if (b.getType() == SpecificCadastralBoundaryType.BOT) {
 				borduresFond.add(b);
 			}
 
@@ -151,7 +152,7 @@ public class SubParcel extends CG_LandUse {
 	public IFeatureCollection<SpecificCadastralBoundary> getBorduresLat() {
 		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
 		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundary.LAT) {
+			if (b.getType() == SpecificCadastralBoundaryType.LAT) {
 				borduresLat.add(b);
 			}
 
@@ -162,7 +163,7 @@ public class SubParcel extends CG_LandUse {
 	public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
 		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
 		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundary.ROAD) {
+			if (b.getType() == SpecificCadastralBoundaryType.ROAD) {
 				borduresLat.add(b);
 			}
 

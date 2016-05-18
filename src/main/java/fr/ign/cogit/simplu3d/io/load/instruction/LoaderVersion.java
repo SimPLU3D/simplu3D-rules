@@ -146,7 +146,7 @@ public class LoaderVersion {
 
               for (Building currentBuilding : buildColl) {
 
-                int idCurrentBuilding = currentBuilding.getIdBuilding();
+                int idCurrentBuilding = currentBuilding.getId();
                 int idVersion = currentBuilding.getIdVersion();
 
                 if (idCurrentBuilding == idBuildCurrentBP) {
@@ -156,7 +156,7 @@ public class LoaderVersion {
                   updateTableBuildingPart(host, port, database, user, pw,
                       currentBP, idSP);
 
-                  List<SpecificWallSurface> listWall = currentBP.getFacade();
+                  List<SpecificWallSurface> listWall = currentBP.getWallSurfaces();
 
                   for (SpecificWallSurface sws : listWall) {
                     updateTableWall(host, port, database, user, pw, currentBP,
@@ -414,7 +414,7 @@ public class LoaderVersion {
     int idCurrent = idBIni + 1;
 
     // on attribut l'ID trouvé au building
-    building.setIdBuilding(idCurrent);
+    building.setId(idCurrent);
 
     // On prépare la requête pour mettre à jour la table version
     String sql_insert = "INSERT INTO " + ParametersInstructionPG.TABLE_BUILDING

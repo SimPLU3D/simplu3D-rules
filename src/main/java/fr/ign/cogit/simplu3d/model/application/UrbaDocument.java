@@ -27,7 +27,8 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
  * 
  * Un document d'urbanisme porteur d'une liste de zone d'urbanisme.
  * 
- * @see DOC_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/141002_Standard_CNIG_PLU_diffusion.pdf
+ * @see DOC_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
+ *      141002_Standard_CNIG_PLU_diffusion.pdf
  * 
  * @author Brasebin Mickaël
  *
@@ -41,11 +42,39 @@ public class UrbaDocument {
 	 * Date de fin de validité (DOC_URBA.DATEFIN)
 	 */
 	public Date endDate;
+
 	/**
 	 * Type de document d'urbanisme (DOC_URBA.TYPEDOC)
-	 * TODO ENUM PLU, POS, PSMV
+	 * 
 	 */
-	public String documentType;
+
+	public enum UrbaDocumentType {
+		PLU(0), POS(1), OTHER(99), PSMV(2);
+
+		private int value;
+
+		private UrbaDocumentType(int type) {
+			value = type;
+		}
+
+		public int getValueType() {
+			return value;
+		}
+
+		public static UrbaDocumentType getTypeFromInt(int type) {
+			UrbaDocumentType[] val = UrbaDocumentType.values();
+			for (int i = 0; i < val.length; i++) {
+				if (val[i].getValueType() == type) {
+					return val[i];
+				}
+			}
+
+			return null;
+		}
+
+	}
+
+	public UrbaDocumentType documentType;
 	/**
 	 * Liste des zones d'urbanismes
 	 */
@@ -55,7 +84,7 @@ public class UrbaDocument {
 		super();
 	}
 
-	public UrbaDocument(Date approvalDate, Date endDate, String documentType) {
+	public UrbaDocument(Date approvalDate, Date endDate, UrbaDocumentType documentType) {
 		super();
 		this.approvalDate = approvalDate;
 		this.endDate = endDate;
@@ -82,149 +111,149 @@ public class UrbaDocument {
 		this.endDate = endDate;
 	}
 
-	public String getDocumentType() {
+	public UrbaDocumentType getDocumentType() {
 		return documentType;
 	}
 
-	public void setDocumentType(String documentType) {
+	public void setDocumentType(UrbaDocumentType documentType) {
 		this.documentType = documentType;
 	}
 
-	  private IFeatureCollection<UrbaZone> urbaZone = new FT_FeatureCollection<UrbaZone>();
-	  
-	  private String idUrba = "";
-	  private String typeDoc = "";
-	  private Date dateAppro = null;
-	  private Date dateFin = null;
-	  private String interCo = "";
-	  private String siren = "";
-	  private String etat = "";
-	  private String nomReg = "";
-	  private String urlReg = "";
-	  private String nomPlan = "";
-	  private String urlPlan = "";
-	  private String siteWeb = "";
-	  private String typeRef = "";
-	  private Date dateRef = null;
+	private IFeatureCollection<UrbaZone> urbaZone = new FT_FeatureCollection<UrbaZone>();
 
-	  public void setIdUrba(String idUrba) {
-	    this.idUrba = idUrba;
-	  }
+	private String idUrba = "";
+	private String typeDoc = "";
+	private Date dateAppro = null;
+	private Date dateFin = null;
+	private String interCo = "";
+	private String siren = "";
+	private String etat = "";
+	private String nomReg = "";
+	private String urlReg = "";
+	private String nomPlan = "";
+	private String urlPlan = "";
+	private String siteWeb = "";
+	private String typeRef = "";
+	private Date dateRef = null;
 
-	  public String getIdUrba() {
-	    return idUrba;
-	  }
+	public void setIdUrba(String idUrba) {
+		this.idUrba = idUrba;
+	}
 
-	  public void setTypeDoc(String typeDoc) {
-	    this.typeDoc = typeDoc;
-	  }
+	public String getIdUrba() {
+		return idUrba;
+	}
 
-	  public String getTypeDoc() {
-	    return typeDoc;
-	  }
+	public void setTypeDoc(String typeDoc) {
+		this.typeDoc = typeDoc;
+	}
 
-	  public void setDateAppro(Date date) {
-	    this.dateAppro = date;
-	  }
+	public String getTypeDoc() {
+		return typeDoc;
+	}
 
-	  public Date getDateAppro() {
-	    return dateAppro;
-	  }
+	public void setDateAppro(Date date) {
+		this.dateAppro = date;
+	}
 
-	  public void setDateFin(Date date) {
-	    this.dateFin = date;
-	  }
+	public Date getDateAppro() {
+		return dateAppro;
+	}
 
-	  public Date getDateFin() {
-	    return dateFin;
-	  }
+	public void setDateFin(Date date) {
+		this.dateFin = date;
+	}
 
-	  public void setInterCo(String interCo) {
-	    this.interCo = interCo;
-	  }
+	public Date getDateFin() {
+		return dateFin;
+	}
 
-	  public String getInterCo() {
-	    return interCo;
-	  }
+	public void setInterCo(String interCo) {
+		this.interCo = interCo;
+	}
 
-	  public void setSiren(String siren) {
-	    this.siren = siren;
-	  }
+	public String getInterCo() {
+		return interCo;
+	}
 
-	  public String getSiren() {
-	    return siren;
-	  }
+	public void setSiren(String siren) {
+		this.siren = siren;
+	}
 
-	  public void setEtat(String etat) {
-	    this.etat = etat;
-	  }
+	public String getSiren() {
+		return siren;
+	}
 
-	  public String getEtat() {
-	    return etat;
-	  }
+	public void setEtat(String etat) {
+		this.etat = etat;
+	}
 
-	  public void setNomReg(String nomReg) {
-	    this.nomReg = nomReg;
-	  }
+	public String getEtat() {
+		return etat;
+	}
 
-	  public String getNomReg() {
-	    return nomReg;
-	  }
+	public void setNomReg(String nomReg) {
+		this.nomReg = nomReg;
+	}
 
-	  public void setUrlReg(String urlreg) {
-	    this.urlReg = urlreg;
-	  }
+	public String getNomReg() {
+		return nomReg;
+	}
 
-	  public String getUrlReg() {
-	    return urlReg;
-	  }
+	public void setUrlReg(String urlreg) {
+		this.urlReg = urlreg;
+	}
 
-	  public void setNomPlan(String nomPlan) {
-	    this.nomPlan = nomPlan;
-	  }
+	public String getUrlReg() {
+		return urlReg;
+	}
 
-	  public String getNomPlan() {
-	    return nomPlan;
-	  }
+	public void setNomPlan(String nomPlan) {
+		this.nomPlan = nomPlan;
+	}
 
-	  public void setUrlPlan(String urlPlan) {
-	    this.urlPlan = urlPlan;
-	  }
+	public String getNomPlan() {
+		return nomPlan;
+	}
 
-	  public String getUrlPlan() {
-	    return urlPlan;
-	  }
+	public void setUrlPlan(String urlPlan) {
+		this.urlPlan = urlPlan;
+	}
 
-	  public void setSiteWeb(String siteWeb) {
-	    this.siteWeb = siteWeb;
-	  }
+	public String getUrlPlan() {
+		return urlPlan;
+	}
 
-	  public String getSiteWeb() {
-	    return siteWeb;
-	  }
+	public void setSiteWeb(String siteWeb) {
+		this.siteWeb = siteWeb;
+	}
 
-	  public void setTypeRef(String typeRef) {
-	    this.typeRef = typeRef;
-	  }
+	public String getSiteWeb() {
+		return siteWeb;
+	}
 
-	  public String getTypeRef() {
-	    return typeRef;
-	  }
+	public void setTypeRef(String typeRef) {
+		this.typeRef = typeRef;
+	}
 
-	  public void setDateRef(Date dateRef) {
-	    this.dateRef = dateRef;
-	  }
+	public String getTypeRef() {
+		return typeRef;
+	}
 
-	  public Date getDateRef() {
-	    return dateRef;
-	  }
+	public void setDateRef(Date dateRef) {
+		this.dateRef = dateRef;
+	}
 
-	  // Pour les zones urba
-	  public void setZoneUrba(IFeatureCollection<UrbaZone> urbaZone) {
-	    this.urbaZone = urbaZone;
-	  }
+	public Date getDateRef() {
+		return dateRef;
+	}
 
-	  public IFeatureCollection<UrbaZone> getZoneUrba() {
-	    return urbaZone;
-	  }
+	// Pour les zones urba
+	public void setZoneUrba(IFeatureCollection<UrbaZone> urbaZone) {
+		this.urbaZone = urbaZone;
+	}
+
+	public IFeatureCollection<UrbaZone> getZoneUrba() {
+		return urbaZone;
+	}
 }

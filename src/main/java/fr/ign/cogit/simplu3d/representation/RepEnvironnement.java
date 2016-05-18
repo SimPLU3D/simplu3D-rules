@@ -31,6 +31,7 @@ import fr.ign.cogit.simplu3d.model.application.Environnement;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.RoofSurface;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.application.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.application.SubParcel;
 import fr.ign.cogit.simplu3d.model.application.UrbaZone;
@@ -148,7 +149,7 @@ public class RepEnvironnement {
   private static IFeatureCollection<SpecificCadastralBoundary> generateCadastralBoundaryRepresentation(
       Environnement env) {
 
-    IFeatureCollection<CadastralParcel> sPF = env.getParcelles();
+    IFeatureCollection<CadastralParcel> sPF = env.getCadastralParcels();
     IFeatureCollection<SpecificCadastralBoundary> featBordOut = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
     for (CadastralParcel sp : sPF) {
@@ -157,23 +158,23 @@ public class RepEnvironnement {
           .getSpecificCadastralBoundary();
 
       for (SpecificCadastralBoundary b : featBord) {
-        int type = b.getType();
+    	  SpecificCadastralBoundaryType type = b.getType();
 
         Color c = null;
 
         switch (type) {
-          case SpecificCadastralBoundary.INTRA:
+          case INTRA:
             c = BORDURE_FICTIVE;
             break;
-          case SpecificCadastralBoundary.BOT:
+          case BOT:
             c = BORDURE_FOND;
             break;
 
-          case SpecificCadastralBoundary.LAT:
+          case LAT:
             c = BORDURE_LATERAL;
             break;
 
-          case SpecificCadastralBoundary.ROAD:
+          case ROAD:
             c = BORDURE_VOIE;
             break;
 
@@ -226,7 +227,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      List<SpecificWallSurface> facades = b.getFacade();
+      List<SpecificWallSurface> facades = b.getWallSurfaces();
 
       for (SpecificWallSurface f : facades) {
         f.setRepresentation(new CartooMod2(f, COLOR_FACADE));
@@ -262,12 +263,12 @@ public class RepEnvironnement {
 
   private static IFeatureCollection<? extends IFeature> generateCadastraParcelRepresentation(
       Environnement env) {
-    for (CadastralParcel p : env.getParcelles()) {
+    for (CadastralParcel p : env.getCadastralParcels()) {
 
       p.setRepresentation(new ObjectCartoon(p, Color.white, COLOR_PARCELLE, 3, 0.0));
 
     }
-    return env.getParcelles();
+    return env.getCadastralParcels();
   }
 
   /*
@@ -440,7 +441,7 @@ public class RepEnvironnement {
 
     for (AbstractBuilding b : env.getBuildings()) {
 
-      List<SpecificWallSurface> f = b.getWallSurface();
+      List<SpecificWallSurface> f = b.getWallSurfaces();
 
       for (SpecificWallSurface sWS : f) {
 

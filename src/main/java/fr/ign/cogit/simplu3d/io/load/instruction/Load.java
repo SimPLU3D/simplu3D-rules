@@ -109,7 +109,7 @@ public class Load {
 
 		// IFeature featCDoc = env.getPlu();
 
-		UrbaDocument featCPlu = env.getPlu();
+		UrbaDocument featCPlu = env.getUrbaDocument();
 
 		IFeature featTemp = new DefaultFeature();
 		IFeatureCollection<IFeature> featCDocUrba = new FT_FeatureCollection<IFeature>();
@@ -703,13 +703,13 @@ public class Load {
 
 		for (AbstractBuilding ab : featCAbstractBuilding) {
 
-			for (SpecificWallSurface sws : ab.getFacade()) {
+			for (SpecificWallSurface sws : ab.getWallSurfaces()) {
 
 				featCWall.add(sws);
 
 				AttributeManager.addAttribute(sws, ParametersInstructionPG.ATT_WALL_SURFACE_ID, (++idWIni), "Integer");
 
-				if (ab.getFacade().contains(sws)) {
+				if (ab.getWallSurfaces().contains(sws)) {
 
 					AttributeManager.addAttribute(sws, ParametersInstructionPG.ATT_WALL_SURFACE_ID_BUILDP,
 							ab.getAttribute(ParametersInstructionPG.ATT_BUILDING_PART_ID), "Integer");

@@ -108,7 +108,7 @@ public class LoadFromCollection {
       plu = PLUImporter.loadPLU(featPLU);
     }
 
-    env.setPlu(plu);
+    env.setUrbaDocument(plu);
 
     logger.info("PLU creation");
 
@@ -180,7 +180,7 @@ public class LoadFromCollection {
     // sous-parcelles route sans z, zonage, les bordures etc...
     env.setTerrain(dtm);
     try {
-      AssignZ.toParcelle(env.getParcelles(), dtm, SURSAMPLED);
+      AssignZ.toParcelle(env.getCadastralParcels(), dtm, SURSAMPLED);
       AssignZ.toSousParcelle(env.getSubParcels(), dtm, SURSAMPLED);
       AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
       AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);

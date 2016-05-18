@@ -16,8 +16,6 @@
  **/
 package fr.ign.cogit.simplu3d.model.application;
 
-import org.citygml4j.model.citygml.landuse.LandUse;
-
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
@@ -28,10 +26,13 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
- * Une parcelle cadastrale (CadastralParcel) décomposée en sous parcelles (SubParcel)
+ * Une parcelle cadastrale (CadastralParcel) décomposée en sous parcelles
+ * (SubParcel)
  * 
  * @author Brasebin Mickaël
  *
@@ -39,7 +40,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 public class CadastralParcel extends CG_LandUse {
 
 	public final String CLASSE = "Parcelle";
-	private int num = 0;
 
 	/**
 	 * TODO déplacer au niveau applicatif?
@@ -52,26 +52,17 @@ public class CadastralParcel extends CG_LandUse {
 	public BasicPropertyUnit bPU;
 
 	/**
-	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
+	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être
+	 * construit
 	 */
 	private IGeometry consLine = null;
 
-	
 	public BasicPropertyUnit getbPU() {
 		return bPU;
 	}
 
 	public void setbPU(BasicPropertyUnit bPU) {
 		this.bPU = bPU;
-	}
-
-
-	public void setNum(int num) {
-		this.num = num;
-	}
-
-	public int getNum() {
-		return num;
 	}
 
 	public double area = Double.NaN;
@@ -90,7 +81,6 @@ public class CadastralParcel extends CG_LandUse {
 
 	}
 
-
 	public boolean hasToBeSimulated() {
 		return hasToBeSimulated;
 	}
@@ -98,7 +88,6 @@ public class CadastralParcel extends CG_LandUse {
 	public void setHasToBeSimulated(boolean bool) {
 		hasToBeSimulated = bool;
 	}
-
 
 	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
 		return specificCB;
@@ -108,12 +97,13 @@ public class CadastralParcel extends CG_LandUse {
 		this.specificCB = bordures;
 	}
 
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(int side) {
+	
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(SpecificCadastralBoundarySide  scbSide) {
 		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
 
 		for (SpecificCadastralBoundary sc : specificCB) {
 
-			if (sc.getSide() == side) {
+			if (sc.getSide() == scbSide) {
 				featC.add(sc);
 			}
 
@@ -121,12 +111,18 @@ public class CadastralParcel extends CG_LandUse {
 
 		return featC;
 	}
+	
 
-	public CadastralParcel(LandUse landUse) {
-		super(landUse);
 
-		this.setClazz(CLASSE);
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(SpecificCadastralBoundaryType type) {
+		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.specificCB) {
+			if (b.getType() == type) {
+				borduresLat.add(b);
+			}
 
+		}
+		return borduresLat;
 	}
 
 	public IFeatureCollection<SubParcel> getSubParcel() {
@@ -150,15 +146,14 @@ public class CadastralParcel extends CG_LandUse {
 		this.area = area;
 	}
 
-	
-
 	public IGeometry getConsLine() {
 
 		if (consLine == null) {
 
 			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
 
-			IFeatureCollection<SpecificCadastralBoundary> sCP = this.getBorduresFront();
+			IFeatureCollection<SpecificCadastralBoundary> sCP = this
+					.getSpecificCadastralBoundaryByType(SpecificCadastralBoundaryType.ROAD);
 
 			for (SpecificCadastralBoundary sCB : sCP) {
 
@@ -172,14 +167,4 @@ public class CadastralParcel extends CG_LandUse {
 
 	}
 
-	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFront() {
-		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.specificCB) {
-			if (b.getType() == SpecificCadastralBoundary.ROAD) {
-				borduresLat.add(b);
-			}
-
-		}
-		return borduresLat;
-	}
 }

@@ -66,7 +66,7 @@ public class LauncherStrasbourg {
 
     // On complète les IFC murs et toits en faisant une boucle sur les BP
     for (AbstractBuilding currentBP : buildingColl) {
-      wallColl.add(currentBP.getWall());
+      wallColl.addAll(currentBP.getWallSurfaces());
       roofColl.add(currentBP.getRoof());
     }
 

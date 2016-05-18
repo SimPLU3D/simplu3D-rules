@@ -11,6 +11,7 @@ import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Road;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -47,7 +48,7 @@ public class AssignLinkToBordure {
       for (SpecificCadastralBoundary b : bordures) {
 
         // 2 cas : c'est une bordure avec voirie
-        if (b.getType() == SpecificCadastralBoundary.ROAD) {
+        if (b.getType() == SpecificCadastralBoundaryType.ROAD) {
 
           b.setFeatAdj(retrieveVoirie(b, voiries));
           continue;

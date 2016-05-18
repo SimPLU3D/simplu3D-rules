@@ -32,6 +32,8 @@ import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.application.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.util.PointInPolygon;
 
 /**
@@ -56,1028 +58,837 @@ import fr.ign.cogit.simplu3d.util.PointInPolygon;
  */
 public class CadastralParcelLoader {
 
-  public static final int UNKNOWN = 99;
-  public static final int LATERAL_TEMP = 98;
+	public static int TYPE_ANNOTATION = 1;
+	public static double MINIMUM_AREA_PARC = 2;
+	public static int WIDTH_DEP = 3;
 
-  public static int TYPE_ANNOTATION = 1;
-  public static double MINIMUM_AREA_PARC = 2;
-  public static int WIDTH_DEP = 3;
+	public static String ATT_ID_PARC = "ID_Parcell";
+	public static String ATT_HAS_TO_BE_SIMULATED = "simul";
+	// public static String ATT_ID_PARC = "NUMERO";
 
-  public static String ATT_ID_PARC = "ID_Parcell";
-  public static String ATT_HAS_TO_BE_SIMULATED = "simul";
-  // public static String ATT_ID_PARC = "NUMERO";
+	private static Logger logger = Logger.getLogger(CadastralParcelLoader.class);
 
-  private static Logger logger = Logger.getLogger(CadastralParcelLoader.class);
+	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
+			IFeatureCollection<IFeature> parcelCollection) {
 
-  public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
-      IFeatureCollection<IFeature> parcelCollection) {
+		// System.out.println("NB Parcelles : " + parcelCollection.size());
 
-    // System.out.println("NB Parcelles : " + parcelCollection.size());
+		IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 
-    IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
+		// On créer une carte topo avec les parcelles
+		CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.2);
 
-    // On créer une carte topo avec les parcelles
-    CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.2);
+		// System.out.println("Je passe là !!!!");
 
-    // System.out.println("Je passe là !!!!");
+		for (Face f : cT.getPopFaces()) {
+			IFeatureCollection<CadastralParcel> cadastralParcelTemp;
 
-    for (Face f : cT.getPopFaces()) {
-      IFeatureCollection<CadastralParcel> cadastralParcelTemp;
+			if (TYPE_ANNOTATION == 1) {
+				cadastralParcelTemp = analyseFace(f, WIDTH_DEP);
+			} else {
 
-      if (TYPE_ANNOTATION == 1) {
-        cadastralParcelTemp = analyseFace(f, WIDTH_DEP);
-      } else {
+				cadastralParcelTemp = analyseFace2(f, WIDTH_DEP);
 
-        cadastralParcelTemp = analyseFace2(f, WIDTH_DEP);
+			}
 
-      }
+			if (cadastralParcelTemp != null) {
+				cadastralParcels.addAll(cadastralParcelTemp);
+			}
 
-      if (cadastralParcelTemp != null) {
-        cadastralParcels.addAll(cadastralParcelTemp);
-      }
+		}
 
-    }
+		int nbElem = cT.getPopFaces().size();
 
-    int nbElem = cT.getPopFaces().size();
+		parcelCollection.initSpatialIndex(Tiling.class, false);
 
-    parcelCollection.initSpatialIndex(Tiling.class, false);
+		/*
+		 * Boucle pour le rapport d'attributs et pour indiquer les objets
+		 * voisins en fonction des limites séparatives
+		 */
+		for (int i = 0; i < nbElem; i++) {
 
-    /*
-     * Boucle pour le rapport d'attributs et pour indiquer les objets voisins en fonction des limites séparatives
-     */
-    for (int i = 0; i < nbElem; i++) {
-    	
-    
+			Face f = cT.getPopFaces().get(i);
+			CadastralParcel parc = cadastralParcels.get(i);
 
-      Face f = cT.getPopFaces().get(i);
-      CadastralParcel parc = cadastralParcels.get(i);
+			Collection<IFeature> coll = parcelCollection.select(PointInPolygon.get(f.getGeometrie()), 0);
 
-      Collection<IFeature> coll = parcelCollection.select(
-          PointInPolygon.get(f.getGeometrie()), 0);
+			if (coll.isEmpty()) {
+				logger.warn("Error in topology some faces were created with no corersponding parcels");
 
-      if (coll.isEmpty() ) {
-        logger.warn("Error in topology some faces were created with no corersponding parcels");
+				continue;
+			}
 
-       continue;
-      }
-      
-      
-      if(coll.size() > 1){
-    	   logger.error("Error in topology some faces were created with serveral corresponding parcels");
+			if (coll.size() > 1) {
+				logger.error("Error in topology some faces were created with serveral corresponding parcels");
 
-    	continue;
-      }
-      
-      if(parc.getGeom().area() < MINIMUM_AREA_PARC){
-  
-    	  continue;
-      }
+				continue;
+			}
 
-      Iterator<IFeature> it = coll.iterator();
-      IFeature feat = it.next();
+			if (parc.getGeom().area() < MINIMUM_AREA_PARC) {
 
-      int idParc = Integer.parseInt(feat.getAttribute(ATT_ID_PARC).toString());
-      
-      Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
-      
-      if(o != null){
-    	   parc.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
-    	   
-      }
-      
-      
-      // System.out.println(idParc);
-      parc.setId(idParc);
-   
-      List<Arc> lArc = f.arcs();
-      int nbArcs = lArc.size();
+				continue;
+			}
 
-      for (int j = 0; j < nbArcs; j++) {
+			Iterator<IFeature> it = coll.iterator();
+			IFeature feat = it.next();
 
-        Arc a = lArc.get(j);
-        SpecificCadastralBoundary sCB = parc.getSpecificCadastralBoundary()
-            .get(j);
+			int idParc = Integer.parseInt(feat.getAttribute(ATT_ID_PARC).toString());
 
-        if (sCB.getType() == SpecificCadastralBoundary.ROAD) {
-          continue;
+			Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
 
-        }
+			if (o != null) {
+				parc.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
 
-        Face fCand = a.getFaceDroite();
+			}
 
-        if (fCand == f) {
-          fCand = a.getFaceGauche();
-        }
+			// System.out.println(idParc);
+			parc.setId(idParc);
 
-        int indexFCand = cT.getPopFaces().getElements().indexOf(fCand);
+			List<Arc> lArc = f.arcs();
+			int nbArcs = lArc.size();
 
-        if (indexFCand != -1) {
-          sCB.setFeatAdj(cadastralParcels.get(indexFCand));
-        }
+			for (int j = 0; j < nbArcs; j++) {
 
-      }
+				Arc a = lArc.get(j);
+				SpecificCadastralBoundary sCB = parc.getSpecificCadastralBoundary().get(j);
 
-    }
+				if (sCB.getType() == SpecificCadastralBoundaryType.ROAD) {
+					continue;
 
-    return cadastralParcels;
+				}
 
-  }
+				Face fCand = a.getFaceDroite();
 
-  private static IFeatureCollection<CadastralParcel> analyseFace2(Face f,
-      double thresholdIni) {
+				if (fCand == f) {
+					fCand = a.getFaceGauche();
+				}
 
-    // Les parcelles générés en sortie
+				int indexFCand = cT.getPopFaces().getElements().indexOf(fCand);
 
-    IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
+				if (indexFCand != -1) {
+					sCB.setFeatAdj(cadastralParcels.get(indexFCand));
+				}
 
-    // //////////////////////////////////////
-    // / Détermination des arcs donnant sur la voirie
-    // //////////////////////////////////////
+			}
 
-    // On parcourt les arcs (futures limites de parcelles)
-    List<Arc> arcsParcelles = f.arcs();
+		}
 
-    // Type voirie : elles n'ont qu'un voisin
-    for (Arc a : arcsParcelles) {
+		return cadastralParcels;
 
-      if (a.longueur() == 0) {
-        continue;
-      }
-      if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
-        a.setOrientation(SpecificCadastralBoundary.ROAD);
+	}
 
-      } else {
-        a.setOrientation(UNKNOWN);
+	private static IFeatureCollection<CadastralParcel> analyseFace2(Face f, double thresholdIni) {
 
-      }
+		// Les parcelles générés en sortie
 
-    }
+		IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
 
-    // //////////////////////////////////////
-    // / Détermination des arcs latéraux donnant sur la voirie
-    // //////////////////////////////////////
+		// //////////////////////////////////////
+		// / Détermination des arcs donnant sur la voirie
+		// //////////////////////////////////////
 
-    List<Arc> lArcLateral = new ArrayList<Arc>();
+		// On parcourt les arcs (futures limites de parcelles)
+		List<Arc> arcsParcelles = f.arcs();
 
-    // Type latéral, les noeuds débouchent sur une arete sans parcelle
-    for (Arc a : arcsParcelles) {
+		// Type voirie : elles n'ont qu'un voisin
+		for (Arc a : arcsParcelles) {
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
+			if (a.longueur() == 0) {
+				continue;
+			}
+			if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
+				a.setOrientation(SpecificCadastralBoundaryType.ROAD.getValueType());
 
-        List<Arc> lA = new ArrayList<Arc>();
+			} else {
+				a.setOrientation(SpecificCadastralBoundaryType.UNKNOWN.getValueType());
 
-        lA.addAll(a.getNoeudIni().getSortants());
-        lA.addAll(a.getNoeudFin().getSortants());
-        lA.addAll(a.getNoeudIni().getEntrants());
-        lA.addAll(a.getNoeudFin().getEntrants());
+			}
 
-        for (Arc aTemp : lA) {
+		}
 
-          if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-            continue;
-          }
+		// //////////////////////////////////////
+		// / Détermination des arcs latéraux donnant sur la voirie
+		// //////////////////////////////////////
 
-          aTemp.setOrientation(SpecificCadastralBoundary.LAT);
+		List<Arc> lArcLateral = new ArrayList<Arc>();
 
-          // On détermine le côté de la parcelle
-          determineSide(aTemp, a, f);
+		// Type latéral, les noeuds débouchent sur une arete sans parcelle
+		for (Arc a : arcsParcelles) {
 
-          lArcLateral.add(aTemp);
-        }
+			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
 
-      }
+				List<Arc> lA = new ArrayList<Arc>();
 
-    }
+				lA.addAll(a.getNoeudIni().getSortants());
+				lA.addAll(a.getNoeudFin().getSortants());
+				lA.addAll(a.getNoeudIni().getEntrants());
+				lA.addAll(a.getNoeudFin().getEntrants());
 
-    // On determine l'arrête la plus loin de la voirie, arrête de type fond
-    // Type latéral, les noeuds débouchent sur une arete sans parcelle
-    IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
-    for (Arc a : arcsParcelles) {
+				for (Arc aTemp : lA) {
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
+					if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+						continue;
+					}
 
-        iMS.add(a.getGeometrie());
+					aTemp.setOrientation(SpecificCadastralBoundaryType.LAT.getValueType());
 
-      }
+					// On détermine le côté de la parcelle
+					determineSide(aTemp, a, f);
 
-    }
+					lArcLateral.add(aTemp);
+				}
 
-    double distanceMax = -1;
+			}
 
-    Arc bestCandidate = null;
+		}
 
-    for (Arc a : arcsParcelles) {
+		// On determine l'arrête la plus loin de la voirie, arrête de type fond
+		// Type latéral, les noeuds débouchent sur une arete sans parcelle
+		IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
+		for (Arc a : arcsParcelles) {
 
-      if (a.getOrientation() != UNKNOWN) {
-        continue;
-      }
+			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
 
-      double distanceTemp = a.getGeom().distance(iMS);
+				iMS.add(a.getGeometrie());
 
-      if (distanceTemp > distanceMax) {
-        distanceMax = distanceTemp;
-        bestCandidate = a;
-      }
+			}
 
-    }
+		}
 
-    // On affecte Bot à ceux qui sont proches de bot
-    if (bestCandidate != null) {
-      bestCandidate.setOrientation(SpecificCadastralBoundary.BOT);
+		double distanceMax = -1;
 
-      annoteBotCandidate(bestCandidate, f);
+		Arc bestCandidate = null;
 
-    }
+		for (Arc a : arcsParcelles) {
 
-    // On instancie l'objet parcelle à partir de la carte totpo
-    IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f
-        .getGeom());
+			if (a.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+				continue;
+			}
 
-    CadastralParcel p = new CadastralParcel(ms);
-    parcelles.add(p);
+			double distanceTemp = a.getGeom().distance(iMS);
 
-    List<Arc> listArcLat = new ArrayList<Arc>();
+			if (distanceTemp > distanceMax) {
+				distanceMax = distanceTemp;
+				bestCandidate = a;
+			}
 
-    List<Arc> listArcTemp = new ArrayList<>();
+		}
 
-    for (Arc a : arcsParcelles) {
+		// On affecte Bot à ceux qui sont proches de bot
+		if (bestCandidate != null) {
+			bestCandidate.setOrientation(SpecificCadastralBoundaryType.BOT.getValueType());
 
-      if (a.getOrientation() == SpecificCadastralBoundary.LAT) {
-        listArcTemp.add(a);
+			annoteBotCandidate(bestCandidate, f);
 
-      }
+		}
 
-    }
+		// On instancie l'objet parcelle à partir de la carte totpo
+		IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f.getGeom());
 
-    // On classe les arcs
-    for (Arc a : listArcTemp) {
+		CadastralParcel p = new CadastralParcel(ms);
+		parcelles.add(p);
 
-      // System.out.println("Classement des arcs");
+		List<Arc> listArcLat = new ArrayList<Arc>();
 
-      // On ne garde que les arcs latéraux
+		List<Arc> listArcTemp = new ArrayList<>();
 
-      double currentSide = a.getPoids();
+		for (Arc a : arcsParcelles) {
 
-      // On a un arc latéral
-      listArcLat.add(a);
+			if (a.getOrientation() == SpecificCadastralBoundaryType.LAT.getValueType()) {
+				listArcTemp.add(a);
 
-      // On détermine le sommet initial : celui qui donne sur la voirie
-      IDirectPosition somInitial = null;
-      IDirectPosition somFinal = null;
+			}
 
-      for (Arc aTemp : a.getNoeudIni().arcs()) {
+		}
 
-        if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-          somInitial = a.getNoeudIni().getCoord();
-          somFinal = a.getNoeudFin().getCoord();
-          break;
-        }
+		// On classe les arcs
+		for (Arc a : listArcTemp) {
 
-      }
+			// System.out.println("Classement des arcs");
 
-      if (somInitial == null) {
-        somFinal = a.getNoeudIni().getCoord();
-        somInitial = a.getNoeudFin().getCoord();
-      }
+			// On ne garde que les arcs latéraux
 
-      while (true) {
-        List<Arc> arcsATraites = new ArrayList<Arc>();
-        arcsATraites.addAll(a.getNoeudIni().arcs());
-        arcsATraites.addAll(a.getNoeudFin().arcs());
+			double currentSide = a.getPoids();
 
-        IMultiCurve<IOrientableCurve> iMC = new GM_MultiCurve<IOrientableCurve>();
-        iMC.add(a.getGeometrie());
+			// On a un arc latéral
+			listArcLat.add(a);
 
-        // On élimine les arcs que l'on ne traitera pas
-        for (int i = 0; i < arcsATraites.size(); i++) {
+			// On détermine le sommet initial : celui qui donne sur la voirie
+			IDirectPosition somInitial = null;
+			IDirectPosition somFinal = null;
 
-          Arc aTemp = arcsATraites.get(i);
+			for (Arc aTemp : a.getNoeudIni().arcs()) {
 
-          // déjà typé, on ne le traite pas
-          if (aTemp.getOrientation() != UNKNOWN) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+				if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+					somInitial = a.getNoeudIni().getCoord();
+					somFinal = a.getNoeudFin().getCoord();
+					break;
+				}
 
-          // Pas un arc de la face en cours, on ne le traite pas
-          boolean isArc = f.getArcsDirects().contains(aTemp)
-              || f.getArcsIndirects().contains(aTemp);
+			}
 
-          if (!isArc) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+			if (somInitial == null) {
+				somFinal = a.getNoeudIni().getCoord();
+				somInitial = a.getNoeudFin().getCoord();
+			}
 
-          // Dans une des listes, on ne le traite pas
-          if (listArcLat.contains(aTemp)) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+			while (true) {
+				List<Arc> arcsATraites = new ArrayList<Arc>();
+				arcsATraites.addAll(a.getNoeudIni().arcs());
+				arcsATraites.addAll(a.getNoeudFin().arcs());
 
-        }
+				IMultiCurve<IOrientableCurve> iMC = new GM_MultiCurve<IOrientableCurve>();
+				iMC.add(a.getGeometrie());
 
-        if (arcsATraites.isEmpty()) {
-          break;
-        }
+				// On élimine les arcs que l'on ne traitera pas
+				for (int i = 0; i < arcsATraites.size(); i++) {
 
-        if (arcsATraites.size() > 1) {
-          System.out.println("> 1, il doit y avoir un bug");
-        }
+					Arc aTemp = arcsATraites.get(i);
 
-        // Nous n'avons qu'un candidat ... normalement
-        Arc aCandidat = arcsATraites.remove(0);
+					// déjà typé, on ne le traite pas
+					if (aTemp.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-        double largeur = 999;
-        /* double area =iMC.convexHull().area(); */
-        // if (area > 0.001) {
+					// Pas un arc de la face en cours, on ne le traite pas
+					boolean isArc = f.getArcsDirects().contains(aTemp) || f.getArcsIndirects().contains(aTemp);
 
-        if (aCandidat.getNoeudIni().getCoord().distance(somInitial) > aCandidat
-            .getNoeudFin().getCoord().distance(somInitial)) {
+					if (!isArc) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-          somFinal = aCandidat.getNoeudIni().getCoord();
+					// Dans une des listes, on ne le traite pas
+					if (listArcLat.contains(aTemp)) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-        } else {
-          somFinal = aCandidat.getNoeudFin().getCoord();
-        }
+				}
 
-        LineEquation lE = new LineEquation(somInitial, somFinal);
+				if (arcsATraites.isEmpty()) {
+					break;
+				}
 
-        /* double dist1 = */lE.distance(aCandidat.getNoeudIni().getCoord());
+				if (arcsATraites.size() > 1) {
+					System.out.println("> 1, il doit y avoir un bug");
+				}
 
-        /* double dist2 = */lE.distance(aCandidat.getNoeudFin().getCoord());
+				// Nous n'avons qu'un candidat ... normalement
+				Arc aCandidat = arcsATraites.remove(0);
 
-        largeur = Double.NEGATIVE_INFINITY;
+				double largeur = 999;
+				/* double area =iMC.convexHull().area(); */
+				// if (area > 0.001) {
 
-        iMC.add(aCandidat.getGeometrie());
+				if (aCandidat.getNoeudIni().getCoord().distance(somInitial) > aCandidat.getNoeudFin().getCoord()
+						.distance(somInitial)) {
 
-        for (IDirectPosition dp : iMC.coord()) {
+					somFinal = aCandidat.getNoeudIni().getCoord();
 
-          largeur = Math.max(largeur, lE.distance(dp));
+				} else {
+					somFinal = aCandidat.getNoeudFin().getCoord();
+				}
 
-        }
+				LineEquation lE = new LineEquation(somInitial, somFinal);
 
-        IDirectPositionList dpl = new DirectPositionList();
-        dpl.add(lE.valueAt(0));
-        dpl.add(lE.valueAt(1));
+				/* double dist1 = */lE.distance(aCandidat.getNoeudIni().getCoord());
 
-        // }
+				/* double dist2 = */lE.distance(aCandidat.getNoeudFin().getCoord());
 
-        a = aCandidat;
-        aCandidat.setPoids(currentSide);
+				largeur = Double.NEGATIVE_INFINITY;
 
-        listArcLat.add(aCandidat);
+				iMC.add(aCandidat.getGeometrie());
 
-      }// Fin while
+				for (IDirectPosition dp : iMC.coord()) {
 
-    }// Fin de boucle sur les arcs
+					largeur = Math.max(largeur, lE.distance(dp));
 
-    // Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
-    for (Arc a : arcsParcelles) {
-      SpecificCadastralBoundary cB = new SpecificCadastralBoundary(a.getGeom());
-      p.getSpecificCadastralBoundary().add(cB);
+				}
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
-        cB.setType(SpecificCadastralBoundary.ROAD);
-        continue;
-      }
+				IDirectPositionList dpl = new DirectPositionList();
+				dpl.add(lE.valueAt(0));
+				dpl.add(lE.valueAt(1));
 
-      if (listArcLat.contains(a)) {
-        cB.setType(SpecificCadastralBoundary.LAT);
-        cB.setSide((int) a.getPoids());
+				// }
 
-      } else {
+				a = aCandidat;
+				aCandidat.setPoids(currentSide);
 
-        cB.setType(SpecificCadastralBoundary.BOT);
+				listArcLat.add(aCandidat);
 
-      }
+			} // Fin while
 
-    }
+		} // Fin de boucle sur les arcs
 
-    return parcelles;
-  }
+		// Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
+		for (Arc a : arcsParcelles) {
+			SpecificCadastralBoundary cB = new SpecificCadastralBoundary(a.getGeom());
+			p.getSpecificCadastralBoundary().add(cB);
 
-  private static void annoteBotCandidate(Arc bestCandidate, Face f) {
+			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+				cB.setType(SpecificCadastralBoundaryType.ROAD);
+				continue;
+			}
 
-    List<Arc> arcsATraites = new ArrayList<>();
-    arcsATraites.add(bestCandidate);
+			if (listArcLat.contains(a)) {
+				cB.setType(SpecificCadastralBoundaryType.LAT);
+				cB.setSide(SpecificCadastralBoundarySide.getTypeFromInt((int) a.getPoids()));
 
-    while (!arcsATraites.isEmpty()) {
+			} else {
 
-      Arc a = arcsATraites.remove(0);
+				cB.setType(SpecificCadastralBoundaryType.BOT);
 
-      a.setOrientation(SpecificCadastralBoundary.BOT);
+			}
 
-      List<Arc> laTemp = new ArrayList<>();
-      laTemp.addAll(a.getNoeudFin().arcs());
-      laTemp.addAll(a.getNoeudIni().arcs());
+		}
 
-      Vecteur v = new Vecteur(a.getNoeudIni().getCoord(), a.getNoeudFin()
-          .getCoord());
-      v.normalise();
-      for (Arc aTemp : laTemp) {
+		return parcelles;
+	}
 
-        if (aTemp.getOrientation() != UNKNOWN) {
-          continue;
-        }
+	private static void annoteBotCandidate(Arc bestCandidate, Face f) {
 
-        if (aTemp.getFaceDroite() != f && aTemp.getFaceGauche() != f) {
-          continue;
-        }
-        Vecteur v2 = new Vecteur(aTemp.getNoeudIni().getCoord(), aTemp
-            .getNoeudFin().getCoord());
+		List<Arc> arcsATraites = new ArrayList<>();
+		arcsATraites.add(bestCandidate);
 
-        v2.normalise();
+		while (!arcsATraites.isEmpty()) {
 
-        if (Math.abs(v.prodScalaire(v2)) > 0.9) {
-          arcsATraites.add(aTemp);
-        }
+			Arc a = arcsATraites.remove(0);
 
-      }
+			a.setOrientation(SpecificCadastralBoundaryType.BOT.getValueType());
 
-    }
+			List<Arc> laTemp = new ArrayList<>();
+			laTemp.addAll(a.getNoeudFin().arcs());
+			laTemp.addAll(a.getNoeudIni().arcs());
 
-  }
+			Vecteur v = new Vecteur(a.getNoeudIni().getCoord(), a.getNoeudFin().getCoord());
+			v.normalise();
+			for (Arc aTemp : laTemp) {
 
-  private static IFeatureCollection<CadastralParcel> analyseFace(Face f,
-      double thresholdIni) {
+				if (aTemp.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+					continue;
+				}
 
-    // Les parcelles générés en sortie
+				if (aTemp.getFaceDroite() != f && aTemp.getFaceGauche() != f) {
+					continue;
+				}
+				Vecteur v2 = new Vecteur(aTemp.getNoeudIni().getCoord(), aTemp.getNoeudFin().getCoord());
 
-    IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
+				v2.normalise();
 
-    // //////////////////////////////////////
-    // / Détermination des arcs donnant sur la voirie
-    // //////////////////////////////////////
+				if (Math.abs(v.prodScalaire(v2)) > 0.9) {
+					arcsATraites.add(aTemp);
+				}
 
-    // On parcourt les arcs (futures limites de parcelles)
-    List<Arc> arcsParcelles = f.arcs();
+			}
 
-    // Type voirie : elles n'ont qu'un voisin
-    for (Arc a : arcsParcelles) {
+		}
 
-      if (a.longueur() == 0) {
-        continue;
-      }
-      if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
-        a.setOrientation(SpecificCadastralBoundary.ROAD);
+	}
 
-      } else {
-        a.setOrientation(UNKNOWN);
+	private static IFeatureCollection<CadastralParcel> analyseFace(Face f, double thresholdIni) {
 
-      }
+		// Les parcelles générés en sortie
 
-    }
+		IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
 
-    // //////////////////////////////////////
-    // / Détermination des arcs latéraux donnant sur la voirie
-    // //////////////////////////////////////
+		// //////////////////////////////////////
+		// / Détermination des arcs donnant sur la voirie
+		// //////////////////////////////////////
 
-    List<Arc> lArcLateral = new ArrayList<Arc>();
+		// On parcourt les arcs (futures limites de parcelles)
+		List<Arc> arcsParcelles = f.arcs();
 
-    // Type latéral, les noeuds débouchent sur une arete sans parcelle
-    for (Arc a : arcsParcelles) {
+		// Type voirie : elles n'ont qu'un voisin
+		for (Arc a : arcsParcelles) {
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
+			if (a.longueur() == 0) {
+				continue;
+			}
+			if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
+				a.setOrientation(SpecificCadastralBoundaryType.ROAD.getValueType());
 
-        List<Arc> lA = new ArrayList<Arc>();
+			} else {
+				a.setOrientation(SpecificCadastralBoundaryType.UNKNOWN.getValueType());
 
-        lA.addAll(a.getNoeudIni().getSortants());
-        lA.addAll(a.getNoeudFin().getSortants());
-        lA.addAll(a.getNoeudIni().getEntrants());
-        lA.addAll(a.getNoeudFin().getEntrants());
+			}
 
-        for (Arc aTemp : lA) {
+		}
 
-          if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-            continue;
-          }
+		// //////////////////////////////////////
+		// / Détermination des arcs latéraux donnant sur la voirie
+		// //////////////////////////////////////
 
-          aTemp.setOrientation(SpecificCadastralBoundary.LAT);
+		List<Arc> lArcLateral = new ArrayList<Arc>();
 
-          // On détermine le côté de la parcelle
-          determineSide(aTemp, a, f);
+		// Type latéral, les noeuds débouchent sur une arete sans parcelle
+		for (Arc a : arcsParcelles) {
 
-          lArcLateral.add(aTemp);
-        }
+			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
 
-      }
+				List<Arc> lA = new ArrayList<Arc>();
 
-    }
+				lA.addAll(a.getNoeudIni().getSortants());
+				lA.addAll(a.getNoeudFin().getSortants());
+				lA.addAll(a.getNoeudIni().getEntrants());
+				lA.addAll(a.getNoeudFin().getEntrants());
 
-    // On détermine le seuil de dépassement de la face en fonction de sa
-    // taille
-    double threshold = determineThreshol(f, thresholdIni);
+				for (Arc aTemp : lA) {
 
-    // On instancie l'objet parcelle à partir de la carte totpo
-    IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f
-        .getGeom());
+					if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+						continue;
+					}
 
-    CadastralParcel p = new CadastralParcel(ms);
-    parcelles.add(p);
+					aTemp.setOrientation(SpecificCadastralBoundaryType.LAT.getValueType());
 
-    List<Arc> listArcLat = new ArrayList<Arc>();
+					// On détermine le côté de la parcelle
+					determineSide(aTemp, a, f);
 
-    List<Arc> listArcTemp = new ArrayList<>();
+					lArcLateral.add(aTemp);
+				}
 
-    for (Arc a : arcsParcelles) {
+			}
 
-      if (a.getOrientation() == SpecificCadastralBoundary.LAT) {
-        listArcTemp.add(a);
+		}
 
-      }
+		// On détermine le seuil de dépassement de la face en fonction de sa
+		// taille
+		double threshold = determineThreshold(f, thresholdIni);
 
-    }
+		// On instancie l'objet parcelle à partir de la carte totpo
+		IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f.getGeom());
 
-    // On classe les arcs
-    for (Arc a : listArcTemp) {
+		CadastralParcel p = new CadastralParcel(ms);
+		parcelles.add(p);
 
-      // System.out.println("Classement des arcs");
+		List<Arc> listArcLat = new ArrayList<Arc>();
 
-      // On ne garde que les arcs latéraux
+		List<Arc> listArcTemp = new ArrayList<>();
 
-      double currentSide = a.getPoids();
+		for (Arc a : arcsParcelles) {
 
-      // On a un arc latéral
-      listArcLat.add(a);
+			if (a.getOrientation() == SpecificCadastralBoundaryType.LAT.getValueType()) {
+				listArcTemp.add(a);
 
-      // On détermine le sommet initial : celui qui donne sur la voirie
-      IDirectPosition somInitial = null;
-      IDirectPosition somFinal = null;
+			}
 
-      for (Arc aTemp : a.getNoeudIni().arcs()) {
+		}
 
-        if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-          somInitial = a.getNoeudIni().getCoord();
-          somFinal = a.getNoeudFin().getCoord();
-          break;
-        }
+		// On classe les arcs
+		for (Arc a : listArcTemp) {
 
-      }
+			// System.out.println("Classement des arcs");
 
-      if (somInitial == null) {
-        somFinal = a.getNoeudIni().getCoord();
-        somInitial = a.getNoeudFin().getCoord();
-      }
+			// On ne garde que les arcs latéraux
 
-      while (true) {
-        List<Arc> arcsATraites = new ArrayList<Arc>();
-        arcsATraites.addAll(a.getNoeudIni().arcs());
-        arcsATraites.addAll(a.getNoeudFin().arcs());
+			double currentSide = a.getPoids();
 
-        IMultiCurve<IOrientableCurve> iMC = new GM_MultiCurve<IOrientableCurve>();
-        iMC.add(a.getGeometrie());
+			// On a un arc latéral
+			listArcLat.add(a);
 
-        // On élimine les arcs que l'on ne traitera pas
-        for (int i = 0; i < arcsATraites.size(); i++) {
+			// On détermine le sommet initial : celui qui donne sur la voirie
+			IDirectPosition somInitial = null;
+			IDirectPosition somFinal = null;
 
-          Arc aTemp = arcsATraites.get(i);
+			for (Arc aTemp : a.getNoeudIni().arcs()) {
 
-          // déjà typé, on ne le traite pas
-          if (aTemp.getOrientation() != UNKNOWN) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+				if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+					somInitial = a.getNoeudIni().getCoord();
+					somFinal = a.getNoeudFin().getCoord();
+					break;
+				}
 
-          // Pas un arc de la face en cours, on ne le traite pas
-          boolean isArc = f.getArcsDirects().contains(aTemp)
-              || f.getArcsIndirects().contains(aTemp);
+			}
 
-          if (!isArc) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+			if (somInitial == null) {
+				somFinal = a.getNoeudIni().getCoord();
+				somInitial = a.getNoeudFin().getCoord();
+			}
 
-          // Dans une des listes, on ne le traite pas
-          if (listArcLat.contains(aTemp)) {
-            arcsATraites.remove(i);
-            i--;
-            continue;
-          }
+			while (true) {
+				List<Arc> arcsATraites = new ArrayList<Arc>();
+				arcsATraites.addAll(a.getNoeudIni().arcs());
+				arcsATraites.addAll(a.getNoeudFin().arcs());
 
-        }
+				IMultiCurve<IOrientableCurve> iMC = new GM_MultiCurve<IOrientableCurve>();
+				iMC.add(a.getGeometrie());
 
-        if (arcsATraites.isEmpty()) {
-          break;
-        }
+				// On élimine les arcs que l'on ne traitera pas
+				for (int i = 0; i < arcsATraites.size(); i++) {
 
-        if (arcsATraites.size() > 1) {
-          System.out.println("> 1, il doit y avoir un bug");
-        }
+					Arc aTemp = arcsATraites.get(i);
 
-        // Nous n'avons qu'un candidat ... normalement
-        Arc aCandidat = arcsATraites.remove(0);
+					// déjà typé, on ne le traite pas
+					if (aTemp.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-        double largeur = 999;
-        /* double area =iMC.convexHull().area(); */
-        // if (area > 0.001) {
+					// Pas un arc de la face en cours, on ne le traite pas
+					boolean isArc = f.getArcsDirects().contains(aTemp) || f.getArcsIndirects().contains(aTemp);
 
-        if (aCandidat.getNoeudIni().getCoord().distance(somInitial) > aCandidat
-            .getNoeudFin().getCoord().distance(somInitial)) {
+					if (!isArc) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-          somFinal = aCandidat.getNoeudIni().getCoord();
+					// Dans une des listes, on ne le traite pas
+					if (listArcLat.contains(aTemp)) {
+						arcsATraites.remove(i);
+						i--;
+						continue;
+					}
 
-        } else {
-          somFinal = aCandidat.getNoeudFin().getCoord();
-        }
+				}
 
-        LineEquation lE = new LineEquation(somInitial, somFinal);
+				if (arcsATraites.isEmpty()) {
+					break;
+				}
 
-        /* double dist1 = */lE.distance(aCandidat.getNoeudIni().getCoord());
+				if (arcsATraites.size() > 1) {
+					System.out.println("> 1, il doit y avoir un bug");
+				}
 
-        /* double dist2 = */lE.distance(aCandidat.getNoeudFin().getCoord());
+				// Nous n'avons qu'un candidat ... normalement
+				Arc aCandidat = arcsATraites.remove(0);
 
-        largeur = Double.NEGATIVE_INFINITY;
+				double largeur = 999;
+				/* double area =iMC.convexHull().area(); */
+				// if (area > 0.001) {
 
-        iMC.add(aCandidat.getGeometrie());
+				if (aCandidat.getNoeudIni().getCoord().distance(somInitial) > aCandidat.getNoeudFin().getCoord()
+						.distance(somInitial)) {
 
-        for (IDirectPosition dp : iMC.coord()) {
+					somFinal = aCandidat.getNoeudIni().getCoord();
 
-          largeur = Math.max(largeur, lE.distance(dp));
+				} else {
+					somFinal = aCandidat.getNoeudFin().getCoord();
+				}
 
-        }
+				LineEquation lE = new LineEquation(somInitial, somFinal);
 
-        IDirectPositionList dpl = new DirectPositionList();
-        dpl.add(lE.valueAt(0));
-        dpl.add(lE.valueAt(1));
+				/* double dist1 = */lE.distance(aCandidat.getNoeudIni().getCoord());
 
-        // }
+				/* double dist2 = */lE.distance(aCandidat.getNoeudFin().getCoord());
 
-        if (largeur < threshold) {
+				largeur = Double.NEGATIVE_INFINITY;
 
-          a = aCandidat;
-          aCandidat.setPoids(currentSide);
+				iMC.add(aCandidat.getGeometrie());
 
-          listArcLat.add(aCandidat);
-        } else {
+				for (IDirectPosition dp : iMC.coord()) {
 
-          break;
+					largeur = Math.max(largeur, lE.distance(dp));
 
-        }
+				}
 
-      }// Fin while
+				IDirectPositionList dpl = new DirectPositionList();
+				dpl.add(lE.valueAt(0));
+				dpl.add(lE.valueAt(1));
 
-    }// Fin de boucle sur les arcs
+				// }
 
-    // Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
-    for (Arc a : arcsParcelles) {
-      SpecificCadastralBoundary cB = new SpecificCadastralBoundary(a.getGeom());
-      p.getSpecificCadastralBoundary().add(cB);
+				if (largeur < threshold) {
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
-        cB.setType(SpecificCadastralBoundary.ROAD);
-        continue;
-      }
+					a = aCandidat;
+					aCandidat.setPoids(currentSide);
 
-      if (listArcLat.contains(a)) {
-        cB.setType(SpecificCadastralBoundary.LAT);
-        cB.setSide((int) a.getPoids());
+					listArcLat.add(aCandidat);
+				} else {
 
-      } else {
+					break;
 
-        cB.setType(SpecificCadastralBoundary.BOT);
+				}
 
-      }
+			} // Fin while
 
-    }
+		} // Fin de boucle sur les arcs
 
-    return parcelles;
-  }
+		// Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
+		for (Arc a : arcsParcelles) {
+			SpecificCadastralBoundary cB = new SpecificCadastralBoundary(a.getGeom());
+			p.getSpecificCadastralBoundary().add(cB);
 
-  private static void determineSide(Arc aTemp, Arc a, Face f) {
+			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+				cB.setType(SpecificCadastralBoundaryType.ROAD);
+				continue;
+			}
 
-    // C'est un arc direct
-    if (f.getArcsDirects().contains(aTemp)) {
+			if (listArcLat.contains(a)) {
+				cB.setType(SpecificCadastralBoundaryType.LAT);
+				cB.setSide(SpecificCadastralBoundarySide.getTypeFromInt((int) a.getPoids()));
 
-      if (aTemp.getNoeudFin().equals(a.getNoeudIni())
-          || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
+			} else {
 
-        aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE);
+				cB.setType(SpecificCadastralBoundaryType.BOT);
 
-      } else {
+			}
 
-        aTemp.setPoids(SpecificCadastralBoundary.RIGHT_SIDE);
-      }
+		}
 
-      return;
-    }
+		return parcelles;
+	}
 
-    if (f.getArcsIndirects().contains(aTemp)) {
+	private static void determineSide(Arc aTemp, Arc a, Face f) {
 
-      if (aTemp.getNoeudFin().equals(a.getNoeudIni())
-          || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
+		// C'est un arc direct
+		if (f.getArcsDirects().contains(aTemp)) {
 
-        aTemp.setPoids(SpecificCadastralBoundary.RIGHT_SIDE);
+			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
 
-      } else {
+				aTemp.setPoids(SpecificCadastralBoundarySide.LEFT.getValueType());
 
-        aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE);
-      }
+			} else {
 
-    }
+				aTemp.setPoids(SpecificCadastralBoundarySide.RIGHT.getValueType());
+			}
 
-    /*
-     * 
-     * if (aTemp.getNoeudFin().equals(a.getNoeudFin()) && aTemp.getFaceDroite()
-     * == f) {
-     * 
-     * 
-     * return; }
-     * 
-     * if (aTemp.getNoeudFin().equals(a.getNoeudFin()) &&aTemp.getFaceGauche()
-     * == f) {
-     * 
-     * aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE); return;
-     * 
-     * }
-     * 
-     * if (aTemp.getNoeudFin().equals(a.getNoeudIni()) &&aTemp.getFaceGauche()
-     * == f) { aTemp.setPoids(SpecificCadastralBoundary.RIGHT_SIDE); return; }
-     * 
-     * if (aTemp.getNoeudFin().equals(a.getNoeudIni()) && aTemp.getFaceDroite()
-     * == f) {
-     * 
-     * aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE); return; }
-     * 
-     * if (aTemp.getNoeudIni().equals(a.getNoeudFin()) && aTemp.getFaceDroite()
-     * == f) {
-     * 
-     * aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE);
-     * 
-     * return; }
-     * 
-     * if (aTemp.getNoeudIni().equals(a.getNoeudFin()) &&aTemp.getFaceGauche()
-     * ==f) { aTemp.setPoids(SpecificCadastralBoundary.RIGHT_SIDE); return;
-     * 
-     * }
-     * 
-     * if (aTemp.getNoeudIni().equals(a.getNoeudIni()) &&aTemp.getFaceGauche()
-     * ==f) {
-     * 
-     * aTemp.setPoids(SpecificCadastralBoundary.LEFT_SIDE); return; }
-     * 
-     * if (aTemp.getNoeudIni().equals(a.getNoeudIni()) && aTemp.getFaceDroite()
-     * == f) {
-     * 
-     * aTemp.setPoids(SpecificCadastralBoundary.RIGHT_SIDE); return; }
-     */
+			return;
+		}
 
-  }
+		if (f.getArcsIndirects().contains(aTemp)) {
 
-  private static double determineThreshol(Face f, double thresholdIni) {
-    IPolygon poly = SmallestSurroundingRectangleComputation.getSSR(f
-        .getGeometrie());
-    double l1 = poly.coord().get(0).distance2D(poly.coord().get(1));
-    double l2 = poly.coord().get(1).distance2D(poly.coord().get(2));
+			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
 
-    double largeur = Math.min(l1, l2);
+				aTemp.setPoids(SpecificCadastralBoundary.SpecificCadastralBoundarySide.RIGHT.getValueType());
 
-    // System.out.println(largeur);
+			} else {
 
-    if (largeur / 2.5 < thresholdIni) {
+				aTemp.setPoids(SpecificCadastralBoundary.SpecificCadastralBoundarySide.LEFT.getValueType());
+			}
 
-      // System.out.println("Modification de la largeur de dépassementj'y passe");
+		}
 
-      return largeur / 2.5;
-    }
+	}
 
-    return thresholdIni;
-  }
+	private static double determineThreshold(Face f, double thresholdIni) {
+		IPolygon poly = SmallestSurroundingRectangleComputation.getSSR(f.getGeometrie());
+		double l1 = poly.coord().get(0).distance2D(poly.coord().get(1));
+		double l2 = poly.coord().get(1).distance2D(poly.coord().get(2));
 
-  @Deprecated
-  public static IFeatureCollection<CadastralParcel> assignBordureToParcelle(
-      IFeatureCollection<IFeature> parcelCollection) {
+		double largeur = Math.min(l1, l2);
 
-    // System.out.println("NB Parcelles : " + parcelCollection.size());
+		// System.out.println(largeur);
 
-    // On créer une carte topo avec les parcelles
-    CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.1);
+		if (largeur / 2.5 < thresholdIni) {
 
-    // System.out.println("NB faces : " + cT.getPopFaces().size());
+			// System.out.println("Modification de la largeur de dépassementj'y
+			// passe");
 
-    // On parcourt les arcs (futures bordures)
-    IPopulation<Arc> arcsParcelles = cT.getPopArcs();
+			return largeur / 2.5;
+		}
 
-    // Type voirie : elles n'ont pas de voisins
-    for (Arc a : arcsParcelles) {
+		return thresholdIni;
+	}
 
-      if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
-        a.setOrientation(SpecificCadastralBoundary.ROAD);
+	public static CarteTopo newCarteTopo(String name, IFeatureCollection<? extends IFeature> collection,
+			double threshold) {
 
-      } else {
-        a.setOrientation(UNKNOWN);
-      }
+		try {
+			// Initialisation d'une nouvelle CarteTopo
+			CarteTopo carteTopo = new CarteTopo(name);
+			carteTopo.setBuildInfiniteFace(false);
+			// Récupération des arcs de la carteTopo
+			IPopulation<Arc> arcs = carteTopo.getPopArcs();
+			// Import des arcs de la collection dans la carteTopo
+			for (IFeature feature : collection) {
 
-    }
+				List<ILineString> lLLS = FromPolygonToLineString
+						.convertPolToLineStrings((IPolygon) FromGeomToSurface.convertGeom(feature.getGeom()).get(0));
 
-    // Type latéral, les noeuds débouchent sur une arrete sans parcelle
-    for (Arc a : arcsParcelles) {
+				for (ILineString ls : lLLS) {
 
-      if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
+					if (ls.length() == 0) {
+						System.out.println("");
+					}
 
-        List<Arc> lA = new ArrayList<Arc>();
+					// création d'un nouvel élément
+					Arc arc = arcs.nouvelElement();
+					// affectation de la géométrie de l'objet issu de la
+					// collection
+					// à l'arc de la carteTopo
+					arc.setGeometrie(ls);
+					// instanciation de la relation entre l'arc créé et l'objet
+					// issu de la collection
+					arc.addCorrespondant(feature);
 
-        lA.addAll(a.getNoeudIni().getSortants());
-        lA.addAll(a.getNoeudFin().getSortants());
-        lA.addAll(a.getNoeudIni().getEntrants());
-        lA.addAll(a.getNoeudFin().getEntrants());
+				}
 
-        for (Arc aTemp : lA) {
+			}
 
-          if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-            continue;
-          }
+			if (!test(carteTopo)) {
+				System.out.println("Error 1");
+			}
 
-          aTemp.setOrientation(SpecificCadastralBoundary.LAT);
+			carteTopo.creeNoeudsManquants(-1);
 
-        }
+			if (!test(carteTopo)) {
+				System.out.println("Error 2");
+			}
 
-      }
+			carteTopo.fusionNoeuds(threshold);
 
-    }
+			carteTopo.filtreArcsDoublons();
 
-    // On affecte les types voiries et fond
-    IPopulation<Face> facesParcelles = cT.getPopFaces();
+			// Création de la topologie Arcs Noeuds
 
-    boucleFace: for (Face f : facesParcelles) {
-      List<Arc> lA = new ArrayList<Arc>();
+			carteTopo.creeTopologieArcsNoeuds(threshold);
+			// La carteTopo est rendue planaire
 
-      lA.addAll(f.getArcsDirects());
-      lA.addAll(f.getArcsIndirects());
+			/*
+			 * if (!test(carteTopo)) { System.out.println("Error 3"); }
+			 */
 
-      for (Arc a : lA) {
+			carteTopo.rendPlanaire(threshold);
 
-        if (a.getOrientation() == SpecificCadastralBoundary.ROAD) {
-          continue boucleFace;
-        }
+			/*
+			 * if (!test(carteTopo)) { System.out.println("Error 4"); }
+			 * carteTopo.filtreArcsDoublons(); if (!test(carteTopo)) {
+			 * System.out.println("Error 5"); }
+			 */
 
-      }
+			// DEBUG2.addAll(carteTopo.getListeArcs());
 
-      bouclarc: for (Arc a : lA) {
+			carteTopo.creeTopologieArcsNoeuds(threshold);
 
-        List<Arc> lATemp = new ArrayList<Arc>();
+			/*
+			 * if (!test(carteTopo)) { System.out.println("Error 6"); }
+			 */
 
-        lATemp.addAll(a.getNoeudIni().getSortants());
-        lATemp.addAll(a.getNoeudFin().getSortants());
-        lATemp.addAll(a.getNoeudIni().getEntrants());
-        lATemp.addAll(a.getNoeudFin().getEntrants());
+			carteTopo.creeTopologieFaces();
 
-        for (Arc aTemp : lATemp) {
+			// carteTopo.filtreNoeudsSimples();
 
-          if (aTemp.getOrientation() == SpecificCadastralBoundary.ROAD) {
-            continue bouclarc;
-          }
+			// Création des faces de la carteTopo
+			// carteTopo.creeTopologieFaces();
 
-        }
+			/*
+			 * if (!test(carteTopo)) { System.out.println("Error 7"); }
+			 */
 
-        a.setOrientation(SpecificCadastralBoundary.BOT);
+			return carteTopo;
 
-      }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    }
+		return null;
+	}
 
-    // IFeatureCollection<Bordure> bordures = new
-    // FT_FeatureCollection<Bordure>();
-    // List<Arc> arcsTreated = new ArrayList<Arc>();
-    IFeatureCollection<CadastralParcel> parcelles = new FT_FeatureCollection<CadastralParcel>();
+	public static boolean test(CarteTopo ct) {
 
-    // Toutes les arretes sont supposées être affectées à un type
-    for (Face f : facesParcelles) {
+		for (Arc a : ct.getPopArcs()) {
+			if (a.getGeometrie().length() == 0) {
+				return false;
+			}
 
-      IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f
-          .getGeom());
-
-      // On a la parcelle
-      CadastralParcel p = new CadastralParcel(ms);
-      parcelles.add(p);
-
-      List<Arc> lArcs = new ArrayList<Arc>();
-      lArcs.addAll(f.getArcsDirects());
-      lArcs.addAll(f.getArcsIndirects());
-
-      for (Arc a : lArcs) {
-
-        SpecificCadastralBoundary b = new SpecificCadastralBoundary(a.getGeom());
-        b.setType(a.getOrientation());
-
-        p.getSpecificCadastralBoundary().add(b);
-
-      }
-
-    }
-
-    return parcelles;
-
-  }
-
-  public static CarteTopo newCarteTopo(String name,
-      IFeatureCollection<? extends IFeature> collection, double threshold) {
-
-    try {
-      // Initialisation d'une nouvelle CarteTopo
-      CarteTopo carteTopo = new CarteTopo(name);
-      carteTopo.setBuildInfiniteFace(false);
-      // Récupération des arcs de la carteTopo
-      IPopulation<Arc> arcs = carteTopo.getPopArcs();
-      // Import des arcs de la collection dans la carteTopo
-      for (IFeature feature : collection) {
-
-        List<ILineString> lLLS = FromPolygonToLineString
-            .convertPolToLineStrings((IPolygon) FromGeomToSurface.convertGeom(
-                feature.getGeom()).get(0));
-
-        for (ILineString ls : lLLS) {
-
-          if (ls.length() == 0) {
-            System.out.println("");
-          }
-
-          // création d'un nouvel élément
-          Arc arc = arcs.nouvelElement();
-          // affectation de la géométrie de l'objet issu de la
-          // collection
-          // à l'arc de la carteTopo
-          arc.setGeometrie(ls);
-          // instanciation de la relation entre l'arc créé et l'objet
-          // issu de la collection
-          arc.addCorrespondant(feature);
-
-        }
-
-      }
-
-      if (!test(carteTopo)) {
-        System.out.println("Error 1");
-      }
-
-      carteTopo.creeNoeudsManquants(-1);
-
-      if (!test(carteTopo)) {
-        System.out.println("Error 2");
-      }
-
-      carteTopo.fusionNoeuds(threshold);
-
-      carteTopo.filtreArcsDoublons();
-
-      // Création de la topologie Arcs Noeuds
-
-      carteTopo.creeTopologieArcsNoeuds(threshold);
-      // La carteTopo est rendue planaire
-
-      /*
-       * if (!test(carteTopo)) { System.out.println("Error 3"); }
-       */
-
-      carteTopo.rendPlanaire(threshold);
-
-      /*
-       * if (!test(carteTopo)) { System.out.println("Error 4"); }
-       * carteTopo.filtreArcsDoublons(); if (!test(carteTopo)) {
-       * System.out.println("Error 5"); }
-       */
-
-      // DEBUG2.addAll(carteTopo.getListeArcs());
-
-      carteTopo.creeTopologieArcsNoeuds(threshold);
-
-      /*
-       * if (!test(carteTopo)) { System.out.println("Error 6"); }
-       */
-
-      carteTopo.creeTopologieFaces();
-
-      // carteTopo.filtreNoeudsSimples();
-
-      // Création des faces de la carteTopo
-      // carteTopo.creeTopologieFaces();
-
-      /*
-       * if (!test(carteTopo)) { System.out.println("Error 7"); }
-       */
-
-      return carteTopo;
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return null;
-  }
-
-  public static boolean test(CarteTopo ct) {
-
-    for (Arc a : ct.getPopArcs()) {
-      if (a.getGeometrie().length() == 0) {
-        return false;
-      }
-
-    }
-    return true;
-  }
+		}
+		return true;
+	}
 
 }
