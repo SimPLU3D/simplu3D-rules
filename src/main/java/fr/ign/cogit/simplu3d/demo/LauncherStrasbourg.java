@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.load.instruction;
+package fr.ign.cogit.simplu3d.demo;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -17,6 +17,8 @@ import fr.ign.cogit.geoxygene.sig3d.representation.basic.Object2d;
 import fr.ign.cogit.geoxygene.sig3d.semantic.Map3D;
 import fr.ign.cogit.geoxygene.sig3d.semantic.VectorLayer;
 import fr.ign.cogit.geoxygene.sig3d.util.ColorLocalRandom;
+import fr.ign.cogit.simplu3d.io.load.instruction.Load;
+import fr.ign.cogit.simplu3d.io.load.instruction.LoaderPostGISTest;
 import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.application.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.application.Environnement;

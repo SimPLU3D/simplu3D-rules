@@ -57,6 +57,16 @@ public class SpecificWallSurface extends CG_WallSurface {
 	public boolean isWindowLess;
 	public double length;
 
+	public SpecificWallSurface() {
+		super();
+	}
+
+	public SpecificWallSurface(SpecificWallSurfaceType type, boolean isWindowLess) {
+		super();
+		this.type = type;
+		this.isWindowLess = isWindowLess;
+	}
+
 	public Materiau getMat() {
 		return material;
 	}
@@ -73,21 +83,11 @@ public class SpecificWallSurface extends CG_WallSurface {
 		this.idBuildPart = idBuildPart;
 	}
 
-	public SpecificWallSurface() {
-		super();
-	}
-
-	public SpecificWallSurface(SpecificWallSurfaceType type, boolean isWindowLess) {
-		super();
-		this.type = type;
-		this.isWindowLess = isWindowLess;
-	}
-
 	public boolean isWindowLess() {
 		return isWindowLess;
 	}
 
-	public void setAveugle(boolean isWindowLess) {
+	public void setWindowLess(boolean isWindowLess) {
 		this.isWindowLess = isWindowLess;
 	}
 

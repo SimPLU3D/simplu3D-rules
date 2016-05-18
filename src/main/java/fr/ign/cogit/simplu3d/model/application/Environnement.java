@@ -163,14 +163,4 @@ public class Environnement extends CG_CityModel {
 		this.urbaDoc = plu;
 	}
 
-	public Parameters loadParameters(String path) {
-		try {
-			return ParameterComponent.unmarshall(new File(path));
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 }

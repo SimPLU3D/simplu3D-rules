@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.load.instruction;
+package fr.ign.cogit.simplu3d.demo;
 
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.AssignBuildingPartToSubParcel;
@@ -6,6 +6,7 @@ import fr.ign.cogit.simplu3d.importer.applicationClasses.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.applicationClasses.ZonesImporter;
 import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
+import fr.ign.cogit.simplu3d.io.load.instruction.Load;
 
 public class LoadExpRennes {
 

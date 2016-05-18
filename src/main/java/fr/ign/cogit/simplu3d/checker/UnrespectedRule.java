@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.load.instruction.checker;
+package fr.ign.cogit.simplu3d.checker;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 

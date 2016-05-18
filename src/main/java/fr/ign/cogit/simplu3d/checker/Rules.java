@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.load.instruction.checker;
+package fr.ign.cogit.simplu3d.checker;
 
 import java.io.BufferedReader;
 import java.io.File;

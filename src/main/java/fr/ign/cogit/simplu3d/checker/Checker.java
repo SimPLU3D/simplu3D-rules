@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.load.instruction.checker;
+package fr.ign.cogit.simplu3d.checker;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,15 +29,6 @@ public class Checker {
 
   // id de la version par défaut
   public static int idVersion = -1;
-
-  // chemin d'accès aux données
-  public static String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/"
-      + "simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
-
-  // Chemin d'accès au fichier csv contenant les règles
-  public static String file = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/"
-      + "simplu3D-rules/src/main/resources/rules/rennes-ub2/regles_rennes.csv";
-
 
 
   /**
