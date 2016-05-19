@@ -154,7 +154,11 @@ public class Checker {
 
 		// On récupère la limite de fond
 		IMultiCurve<IOrientableCurve> ims = getBotLimit(bPU);
-
+		
+		if ( ims.isEmpty() ){
+			return lUNR;
+		}
+		
 		// On récupère les parties de bâtiments
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
 
