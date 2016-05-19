@@ -16,7 +16,7 @@
  **/
 package fr.ign.cogit.simplu3d.indicator;
 
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 
 /**
  * 

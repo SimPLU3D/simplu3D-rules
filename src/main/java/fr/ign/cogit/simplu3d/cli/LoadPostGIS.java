@@ -2,9 +2,9 @@ package fr.ign.cogit.simplu3d.cli;
 
 import java.io.File;
 
-import fr.ign.cogit.simplu3d.io.load.application.LoaderSHP;
-import fr.ign.cogit.simplu3d.io.load.instruction.Load;
-import fr.ign.cogit.simplu3d.model.application.Environnement;
+import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
+import fr.ign.cogit.simplu3d.io.structDatabase.postgis.storer.BasicStorer;
+import fr.ign.cogit.simplu3d.model.Environnement;
 
 public class LoadPostGIS {
 	
@@ -27,7 +27,7 @@ public class LoadPostGIS {
 		
 		try {
 			Environnement env = LoaderSHP.loadNoDTM(folder);
-			Load.loadPlu(host, port, user, pw, database, env);
+			BasicStorer.loadPlu(host, port, user, pw, database, env);
 		} catch (Exception e) {
 			e.printStackTrace();	
 		}		

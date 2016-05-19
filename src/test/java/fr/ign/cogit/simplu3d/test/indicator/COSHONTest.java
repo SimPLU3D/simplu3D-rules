@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import fr.ign.cogit.simplu3d.demo.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.demo.nonStructDatabase.shp.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
-import fr.ign.cogit.simplu3d.model.application.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import junit.framework.Assert;
 
 public class COSHONTest {

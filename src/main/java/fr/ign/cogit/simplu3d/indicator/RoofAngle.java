@@ -18,7 +18,7 @@ package fr.ign.cogit.simplu3d.indicator;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.sig3d.calculation.AngleFromSurface;
-import fr.ign.cogit.simplu3d.model.application.RoofSurface;
+import fr.ign.cogit.simplu3d.model.RoofSurface;
 
 /**
  * 

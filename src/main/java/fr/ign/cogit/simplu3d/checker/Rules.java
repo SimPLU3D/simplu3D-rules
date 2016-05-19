@@ -10,7 +10,8 @@ import java.util.Map;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
-import fr.ign.cogit.simplu3d.io.load.instruction.ParametersInstructionPG;
+import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
+
 
 public class Rules {
 

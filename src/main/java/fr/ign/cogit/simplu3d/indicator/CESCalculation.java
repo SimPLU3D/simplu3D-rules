@@ -16,8 +16,8 @@
  **/
 package fr.ign.cogit.simplu3d.indicator;
 
-import fr.ign.cogit.simplu3d.model.application.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.application.SubParcel;
+import fr.ign.cogit.simplu3d.model.AbstractBuilding;
+import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
  * Calcul du Coefficient d'Emprise au Sol
