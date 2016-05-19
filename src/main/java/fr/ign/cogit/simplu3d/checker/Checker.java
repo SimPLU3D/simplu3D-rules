@@ -12,7 +12,6 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IEnvelope;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
@@ -21,11 +20,19 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 public class Checker {
+
+	public final static String CODE_CES = "CES";
+	public final static String CODE_BANDE_FOND_PARCELLE = "BANDE_FOND_PARCELLE";
+	public final static String CODE_PROSPECT_VOIRIE = "PROSPECT_VOIRIE";
+	public final static String CODE_PROSPECT_LAT = "PROSPECT_LAT";
+	public final static String CODE_ALIGNEMENT = "ALIGNEMENT";
+	public final static String CODE_ALIGNEMENT_LAT = "ALIGNEMENT_LAT";
+	public static final String CODE_HMAX_BAND2 = "HMAX_BAND2";
 
 	// id de la version par défaut
 	public static int idVersion = -1;
@@ -147,7 +154,6 @@ public class Checker {
 
 		// On récupère la limite de fond
 		IMultiCurve<IOrientableCurve> ims = getBotLimit(bPU);
-		IFeature feat = new DefaultFeature(ims);
 
 		// On récupère les parties de bâtiments
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
@@ -158,10 +164,13 @@ public class Checker {
 
 					// On vérifie si la distance est bonne
 					if (bP.getFootprint().distance(ims) < rules.getBandIncons()) {
-						// System.out.println("Distance : " +
-						// bP.getFootprint().distance(ims));
-						lUNR.add(new UnrespectedRule("Bande de constructibilité de fond de parcelle non respectée ", bP,
-								feat));
+
+						IGeometry buffer = ims.buffer(rules.getBandIncons());
+
+						IGeometry geomError = cP.getGeom().intersection(buffer);
+
+						lUNR.add(new UnrespectedRule("Bande de constructibilité de fond de parcelle non respectée ",
+								geomError, CODE_BANDE_FOND_PARCELLE));
 					}
 
 				}
@@ -263,8 +272,12 @@ public class Checker {
 		if (bPU.getGeom().area() * ces < aireBati) {
 			// LE CES n'est pas respectée on ajoute une incohérence
 
-			lUNR.add(new UnrespectedRule("Le CES n'est pas respecté - CES mesuré : " + (aireBati / bPU.getGeom().area())
-					+ "  CES attendu " + ces, bPU, null));
+			double cesCalculated = (aireBati / bPU.getGeom().area());
+			cesCalculated = (Math.round(100 * cesCalculated)) / 100.0;
+
+			lUNR.add(new UnrespectedRule(
+					"Le CES n'est pas respecté - CES mesuré : " + cesCalculated + "  CES attendu " + ces, bPU.getGeom(),
+					CODE_CES));
 
 		}
 
@@ -319,7 +332,8 @@ public class Checker {
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie2Slope(),
 								r.getWidth() * rules.getProspectVoirie2Slope() + rules.getProspectVoirie2Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de plus de "
-									+ rules.getLargMaxProspect1() + " m de large", ab, sc));
+									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
+									CODE_PROSPECT_VOIRIE));
 						}
 
 					} else {
@@ -327,7 +341,8 @@ public class Checker {
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie1Slope(),
 								r.getWidth() * rules.getProspectVoirie1Slope() + rules.getProspectVoirie1Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de moins de "
-									+ rules.getLargMaxProspect1() + " m de large", ab, sc));
+									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
+									CODE_PROSPECT_VOIRIE));
 						}
 					}
 				}
@@ -360,8 +375,10 @@ public class Checker {
 
 		for (AbstractBuilding aB : list) {
 			if (aB.getFootprint().distance(iMSFront) > rules.getAlignement() + 0.5) {
-				lUNR.add(new UnrespectedRule("Non respect de la distance à l'alignement ", aB,
-						new DefaultFeature(iMSFront)));
+
+				IGeometry geomError = bPU.getGeom().intersection(iMSFront.buffer(0.5));
+
+				lUNR.add(new UnrespectedRule("Non respect de la distance à l'alignement ", geomError, CODE_ALIGNEMENT));
 			}
 		}
 
@@ -370,8 +387,13 @@ public class Checker {
 		for (AbstractBuilding aB : list) {
 			if (aB.getFootprint().distance(iMSLat) > rules.getReculLatMin()
 					&& aB.getFootprint().distance(iMSLat) < rules.getReculLatMax()) {
-				lUNR.add(new UnrespectedRule("Non respect de la distance aux limites latérales ", aB,
-						new DefaultFeature(iMSLat)));
+
+				IGeometry geomError = bPU.getGeom().intersection(iMSLat.buffer(rules.getReculLatMax()));
+
+				geomError = geomError.difference(iMSLat.buffer(rules.getReculLatMin()));
+
+				lUNR.add(new UnrespectedRule("Non respect de la distance aux limites latérales ", geomError,
+						CODE_ALIGNEMENT_LAT));
 			}
 		}
 
@@ -404,8 +426,8 @@ public class Checker {
 
 				// Est-ce qu'il respecte l'autre prospect ?
 				if (!ab.prospect(os, rules.getSlopeProspectLat(), rules.gethIniProspectLat())) {
-					lUNR.add(new UnrespectedRule("Prospect latéral non respecté en seconde bande ", ab,
-							new DefaultFeature(os)));
+					lUNR.add(new UnrespectedRule("Prospect latéral non respecté en seconde bande ", ab.getFootprint(),
+							CODE_PROSPECT_LAT));
 					continue bouclebuilding;
 				}
 
@@ -437,7 +459,8 @@ public class Checker {
 			double hauteur = ab.height(0, 1);
 
 			if (hauteur > rules.getHauteurMax2()) {
-				lUNR.add(new UnrespectedRule("Non respect de la hauteur maximale en seconde bande ", ab, null));
+				lUNR.add(new UnrespectedRule("Non respect de la hauteur maximale en seconde bande ", ab.getFootprint(),
+						CODE_HMAX_BAND2));
 			}
 
 		}

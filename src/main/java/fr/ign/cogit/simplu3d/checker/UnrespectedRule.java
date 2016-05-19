@@ -1,11 +1,16 @@
 package fr.ign.cogit.simplu3d.checker;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 
 public class UnrespectedRule {
-	String message; IFeature feat1; IFeature feat2;
-	
-	public UnrespectedRule(){
+	String message;
+	IGeometry geom;
+	String code;
+
+	public UnrespectedRule() {
 		super();
 	}
 
@@ -13,41 +18,34 @@ public class UnrespectedRule {
 		this.message = message;
 	}
 
-	public void setFeat1(IFeature feat1) {
-		this.feat1 = feat1;
-	}
-
-	public void setFeat2(IFeature feat2) {
-		this.feat2 = feat2;
-	}
-
-	public UnrespectedRule(String message, IFeature feat1, IFeature feat2) {
+	public UnrespectedRule(String message, IGeometry geom, String code) {
 		super();
 		this.message = message;
-		this.feat1 = feat1;
-		this.feat2 = feat2;
+		this.geom = geom;
+		this.code = code;
+
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public IFeature getFeat1() {
-		return feat1;
+	public IGeometry getGeom() {
+		return geom;
 	}
 
-	public IFeature getFeat2() {
-		return feat2;
+	public String getCode(){
+		return ""+code;
 	}
+	
+	public Geometry getGeometry() {
 
-	public String toString(){
-		String str = this.getMessage() + " ";
-		str += feat1;
-		if(this.getFeat2() != null){
-			str += "  -  " + this.getFeat2();
+		try {
+			return JtsGeOxygene.makeJtsGeom(geom);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException(e);
 		}
-		return str;
-		
 	}
 
 }
