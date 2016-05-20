@@ -389,8 +389,8 @@ public class Checker {
 		IMultiCurve<IOrientableCurve> iMSLat = getLatLimit(bPU);
 
 		for (AbstractBuilding aB : list) {
-			if (aB.getFootprint().distance(iMSLat) > rules.getReculLatMin()
-					&& aB.getFootprint().distance(iMSLat) < rules.getReculLatMax()) {
+			if (aB.getFootprint().distance(iMSLat) < rules.getReculLatMin()
+					&& aB.getFootprint().distance(iMSLat) > rules.getReculLatMax()) {
 
 				IGeometry geomError = bPU.getGeom().intersection(iMSLat.buffer(rules.getReculLatMax()));
 
@@ -460,7 +460,7 @@ public class Checker {
 
 		// On vérifie la hauteur
 		for (AbstractBuilding ab : list) {
-			double hauteur = ab.height(0, 1);
+			double hauteur = ab.height(1, 1);
 
 			if (hauteur > rules.getHauteurMax2()) {
 				lUNR.add(new UnrespectedRule("Non respect de la hauteur maximale en seconde bande ", ab.getFootprint(),

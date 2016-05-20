@@ -15,7 +15,7 @@ import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Environnement;
 
-public class TheUseLessClass {
+public class DemoClassLoaderSimPLU3DApi {
 
 	public static void main(String[] args) throws Exception {
 		
