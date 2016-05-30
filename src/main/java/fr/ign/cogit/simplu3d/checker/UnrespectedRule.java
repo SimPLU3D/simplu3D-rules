@@ -1,51 +1,55 @@
 package fr.ign.cogit.simplu3d.checker;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+import fr.ign.cogit.simplu3d.serializer.IGeometrySerializer;
 
+/**
+ * 
+ * Represents a non respected rule
+ * 
+ * @author MBrabesin
+ *
+ */
 public class UnrespectedRule {
 	String message;
-	IGeometry geom;
+	@JsonSerialize(using = IGeometrySerializer.class)
+	IGeometry geometry;
 	String code;
 
 	public UnrespectedRule() {
-		super();
+	
 	}
-
+	
+	public UnrespectedRule(String message, IGeometry geom, String code) {
+		this.message = message;
+		this.geometry = geom;
+		this.code = code;
+	}
+	
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	public UnrespectedRule(String message, IGeometry geom, String code) {
-		super();
-		this.message = message;
-		this.geom = geom;
-		this.code = code;
-
 	}
 
 	public String getMessage() {
 		return message;
 	}
-
-	public IGeometry getGeom() {
-		return geom;
-	}
-
-	public String getCode(){
-		return ""+code;
+	
+	public void setCode(String code){
+		this.code = code ;
 	}
 	
-	public Geometry getGeometry() {
-
-		try {
-			return JtsGeOxygene.makeJtsGeom(geom);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new RuntimeException(e);
-		}
+	public String getCode(){
+		return code;
 	}
 
+	public IGeometry getGeometry() {
+		return geometry;
+	}
+
+	public void setGeometry(IGeometry geometry){
+		this.geometry = geometry;
+	}
+	
 }
