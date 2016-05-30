@@ -10,9 +10,12 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IEnvelope;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
@@ -52,7 +55,8 @@ public class Checker {
 				ParametersInstructionPG.user, ParametersInstructionPG.pw, ParametersInstructionPG.database);
 
 		// On vérifie le contenu de l'import des règles
-		System.out.println("\n" + "Résultat Import Règles : " + map.get("UB2").toString());
+		// System.out.println("\n" + "Résultat Import Règles : " +
+		// map.get("UB2").toString());
 		String nomZone = "UB2";
 
 		List<UnrespectedRule> lUNRTot = new ArrayList<>();
@@ -64,16 +68,18 @@ public class Checker {
 			List<UnrespectedRule> lUNR = check(currentBPU, map.get(nomZone));
 
 			// On affiche les résultats
-			System.out.println("\n" + "Unrespected Rules on BPU " + currentBPU.getId() + " : ");
+			// System.out.println("\n" + "Unrespected Rules on BPU " +
+			// currentBPU.getId() + " : ");
 			for (UnrespectedRule un : lUNR) {
-				System.out.println("\t" + un);
+				// System.out.println("\t" + un);
 			}
 
 			lUNRTot.addAll(lUNR);
 
 		}
 
-		System.out.println("\n" + " ----- Fin de la vérification des règles ----- " + "\n");
+		// System.out.println("\n" + " ----- Fin de la vérification des règles
+		// ----- " + "\n");
 		return lUNRTot;
 	}
 
@@ -226,23 +232,43 @@ public class Checker {
 
 					List<SpecificWallSurface> lSWS = bP.getWallSurfaces();
 
-					// System.out.println("facades : " + lSWS);
+					// //System.out.println("facades : " + lSWS);
 
-					for (SpecificWallSurface sWS : lSWS) {
+					if (lSWS != null && !lSWS.isEmpty()) {
+						for (SpecificWallSurface sWS : lSWS) {
 
-						if (!sWS.getGeom().isEmpty()) {
+							if (!sWS.getGeom().isEmpty()) {
 
-							IEnvelope enve = sWS.getGeom().getEnvelope();
+								IEnvelope enve = sWS.getGeom().getEnvelope();
 
-							if (enve.length() > rules.getEmpLargeurMin()) {
-								hasBeenCheckded = true;
-								break bouclecp;
+								if (enve.length() > rules.getEmpLargeurMin()) {
+									hasBeenCheckded = true;
+									break bouclecp;
+								}
+
 							}
 
 						}
-
+						break bouclecp;
 					}
 
+					// Si on n'a pas de wallsurface, on se sert de l'emprise
+					IMultiSurface<IOrientableSurface> multiS = FromGeomToSurface.convertMSGeom(bP.getFootprint());
+
+					List<IOrientableCurve> ios = new ArrayList<>();
+					for (IOrientableSurface os : multiS) {
+						ios.addAll(FromGeomToLineString.convert(os));
+					}
+
+					for (IOrientableCurve os : ios) {
+						IEnvelope enve = os.getEnvelope();
+
+						if (enve.length() > rules.getEmpLargeurMin()) {
+							hasBeenCheckded = true;
+							break bouclecp;
+						}
+
+					}
 				}
 
 			}
@@ -312,20 +338,20 @@ public class Checker {
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
 		// nous donner une information sur les routes)
 		List<SpecificCadastralBoundary> lFronLimit = getFrontLimit(bPU);
-		// System.out.println("Liste SCB road : " + lFronLimit);
+		// //System.out.println("Liste SCB road : " + lFronLimit);
 
 		for (SpecificCadastralBoundary sc : lFronLimit) {
 			// On récupère la route adjance
 			if (sc.getFeatAdj() != null) {
 
 				IFeature routeAdj = sc.getFeatAdj();
-				// System.out.println("Road v1 : " + routeAdj);
+				// //System.out.println("Road v1 : " + routeAdj);
 
 				// Normalement on peut caster
 				Road r = (Road) routeAdj;
-				// System.out.println("Road v2 : " + r);
-				// System.out.println("Road Width : " + r.getWidth());
-				// System.out.println("Rule larg max prospect 1 : "
+				// //System.out.println("Road v2 : " + r);
+				// //System.out.println("Road Width : " + r.getWidth());
+				// //System.out.println("Rule larg max prospect 1 : "
 				// + rules.getLargMaxProspect1());
 
 				for (AbstractBuilding ab : list) {
@@ -508,8 +534,8 @@ public class Checker {
 					if (bP.getFootprint().distance(getFrontLimit) < r.getAlignement() + r.getBand1()) {
 						// Bande 1 : on ajoute la bâtiment à la liste 1
 						mapB.get(1).add(bP);
-						
-						System.out.println("Activated");
+
+						// System.out.println("Activated");
 
 						IGeometry geom = getFrontLimit.buffer(r.getAlignement() + r.getBand1());
 
@@ -544,14 +570,14 @@ public class Checker {
 		List<SpecificCadastralBoundary> lSC = new ArrayList<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			// System.out.println("parcelle : " + cP);
+			// //System.out.println("parcelle : " + cP);
 
 			for (SubParcel sP : cP.getSubParcel()) {
-				// System.out.println("sous-parcelle : " + sP);
+				// //System.out.println("sous-parcelle : " + sP);
 
 				for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
-					// System.out.println("SCB : " + sc);
-					// System.out.println("SCB type : " + sc.getType());
+					// //System.out.println("SCB : " + sc);
+					// //System.out.println("SCB type : " + sc.getType());
 
 					if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
 						lSC.add(sc);
@@ -569,29 +595,28 @@ public class Checker {
 
 	private static IMultiCurve<IOrientableCurve> getFrontLimitGeom(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
-		
-		System.out.println("NB Parcelle : " + bPU.getCadastralParcel().size());
+
+		// System.out.println("NB Parcelle : " +
+		// bPU.getCadastralParcel().size());
 
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
 
-			System.out.println("NB boundaries : " + cP.getSpecificCadastralBoundary().size());
-			
-			
+			// System.out.println("NB boundaries : " +
+			// cP.getSpecificCadastralBoundary().size());
+
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-				
-				System.out.println("Boundary type : " + sc.getType());
 
-					if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
-						img.addAll(FromGeomToLineString.convert(sc.getGeom()));
-					}
+				// System.out.println("Boundary type : " + sc.getType());
 
-				
+				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
+					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
+				}
 
 			}
 
 		}
-		
-		System.out.println("nombre de limite front  : " + img.size());
+
+		// System.out.println("nombre de limite front : " + img.size());
 
 		return img;
 
@@ -602,21 +627,17 @@ public class Checker {
 
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
 
-			
+			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 
-				for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-
-					if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
-						img.addAll(FromGeomToLineString.convert(sc.getGeom()));
-					}
-
-			
+				if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
+					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
+				}
 
 			}
 
 		}
-		
-		System.out.println("nombre de limites latérales  : " + img.size());
+
+		// System.out.println("nombre de limites latérales : " + img.size());
 
 		return img;
 
@@ -627,27 +648,23 @@ public class Checker {
 
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
 
+			// ////////////////////////
+			// / Cette partie du code contient les vérificateurs de règles
+			// /
+			// /
+			// /////////////////////////
 
+			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 
-				// ////////////////////////
-				// / Cette partie du code contient les vérificateurs de règles
-				// /
-				// /
-				// /////////////////////////
-
-				for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-
-					if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
-						img.addAll(FromGeomToLineString.convert(sc.getGeom()));
-					}
-
+				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
+					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 
-			
+			}
 
 		}
-		
-		System.out.println("nombre de limites de fond  : " + img.size());
+
+		// System.out.println("nombre de limites de fond : " + img.size());
 
 		return img;
 

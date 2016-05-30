@@ -16,20 +16,16 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import java.io.File;
-
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.parameters.ParameterComponent;
-import fr.ign.parameters.Parameters;
 
 /**
  * 
- * Regroupe les différents éléments nécessaire pour la vérification et la simulation des règles
- * d'urbanisme.
+ * Regroupe les différents éléments nécessaire pour la vérification et la
+ * simulation des règles d'urbanisme.
  * 
  * @author Brasebin Mickaël
  *
@@ -54,7 +50,6 @@ public class Environnement extends CG_CityModel {
 
 	public static boolean VERBOSE = false;
 	public static boolean TRANSLATE_TO_ZERO = false;
-
 
 	protected Environnement() {
 

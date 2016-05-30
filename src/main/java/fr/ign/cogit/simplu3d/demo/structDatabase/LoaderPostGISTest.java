@@ -5,7 +5,6 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.loader.BasicLoader;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.storer.BasicStorer;
 import fr.ign.cogit.simplu3d.model.Environnement;
 
 public class LoaderPostGISTest {
@@ -54,8 +53,7 @@ public class LoaderPostGISTest {
 		IFeatureCollection<IFeature> prescriptions = PostgisManager.loadGeometricTable(host, port, database, user, pw,
 				NOM_TABLE_SPECIFIC_CBOUNDARY);
 
-		return BasicLoader.load(idVersion, pluColl, zoneColl, parcelleColl, voirieColl, batiColl,
-				prescriptions);
+		return BasicLoader.load(idVersion, pluColl, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions);
 
 	}
 }
