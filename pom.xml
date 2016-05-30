@@ -16,6 +16,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jackson.version>2.7.2</jackson.version>
+		<jackson.datatype.jts.version>2.2</jackson.datatype.jts.version>		
 	</properties>
 
 	<developers>
@@ -440,6 +442,19 @@
 					<artifactId>weka-dev</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<!-- JSON serialization -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bedatadriven</groupId>
+			<artifactId>jackson-datatype-jts</artifactId>
+			<version>${jackson.datatype.jts.version}</version>
 		</dependency>
 	</dependencies>
 	<distributionManagement>
