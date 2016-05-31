@@ -233,7 +233,7 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
 	public double height(int pB, int pH) {
 		double h = HauteurCalculation.calculate(this, pB, pH);
-		System.out.println("Hauteur calculée : " + h);
+		//System.out.println("Hauteur calculée : " + h);
 		return h;
 	}
 
