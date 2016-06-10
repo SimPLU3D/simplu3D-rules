@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
@@ -12,7 +13,6 @@ import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
-import fr.ign.cogit.simplu3d.importer.ZonesImporter;
 import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
@@ -22,7 +22,9 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.cogit.simplu3d.reader.AbstractReader;
 import fr.ign.cogit.simplu3d.reader.UrbaDocumentReader;
+import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.util.AssignZ;
 
 /**
@@ -105,7 +107,7 @@ public class LoadFromCollection {
     if (featPLU == null) {
       plu = new UrbaDocument();
     } else {
-		UrbaDocumentReader urbaDocumentReader = new UrbaDocumentReader();
+		AbstractReader<UrbaDocument> urbaDocumentReader = new UrbaDocumentReader();
 		plu = urbaDocumentReader.read(featPLU);
     }
 
@@ -114,7 +116,9 @@ public class LoadFromCollection {
     logger.info("PLU creation");
 
     // Etape 2 : création des zones et assignation des règles aux zones
-    IFeatureCollection<UrbaZone> zones = ZonesImporter.importUrbaZone(zoneColl);
+    UrbaZoneReader urbaZoneReader = new UrbaZoneReader();
+    IFeatureCollection<UrbaZone> zones = new FT_FeatureCollection<>();
+    urbaZoneReader.read(zoneColl,zones);
 
     logger.info("Zones loaded");
 

@@ -17,7 +17,6 @@ import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.RoadImporter;
-import fr.ign.cogit.simplu3d.importer.ZonesImporter;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -27,6 +26,7 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
+import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 
 /**
  * 
@@ -68,7 +68,7 @@ public class LoaderSHPExec {
 		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 		CadastralParcelLoader.TYPE_ANNOTATION = 2;
 
-		ZonesImporter.NOM_ATT_TYPE_ZONE = "TYPE";
+		UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
 

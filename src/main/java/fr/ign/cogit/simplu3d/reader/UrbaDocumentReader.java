@@ -1,16 +1,8 @@
 package fr.ign.cogit.simplu3d.reader;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
@@ -21,7 +13,7 @@ import fr.ign.cogit.simplu3d.model.UrbaDocument;
  * @author MBorne
  *
  */
-public class UrbaDocumentReader {
+public class UrbaDocumentReader extends AbstractReader<UrbaDocument> {
 
 	public static String ATT_ID_URBA = "IDURBA";
 	public static String ATT_TYPE_DOC = "TYPEDOC";
@@ -37,29 +29,6 @@ public class UrbaDocumentReader {
 	public static String ATT_SITE_WEB = "SITEWEB";
 	public static String ATT_TYPE_REF = "TYPEREF";
 	public static String ATT_DATE_REF = "DATEREF";
-
-	/**
-	 * Read shapefile
-	 * @param path
-	 * @return
-	 */
-	public List<UrbaDocument> readShapefile(File path){
-		IFeatureCollection<IFeature> features = ShapefileReader.read(path.toString());
-		return read(features);
-	}
-	
-	/**
-	 * Read feature collection
-	 * @param features
-	 * @return
-	 */
-	public List<UrbaDocument> read(IFeatureCollection<IFeature> features) {
-		List<UrbaDocument> result = new ArrayList<>();
-		for (IFeature feature : features) {
-			result.add(read(feature));
-		}
-		return result;
-	}
 
 	/**
 	 * Read a single feature
@@ -114,41 +83,6 @@ public class UrbaDocumentReader {
 		result.setDateRef(readDateAttribute(feature, ATT_DATE_REF, sdfref));
 
 		return result;
-	}
-	
-	/**
-	 * Read a string 
-	 * @param feature
-	 * @param attributeName
-	 * @return a string or null
-	 */
-	private String readStringAttribute(IFeature feature, String attributeName){
-		Object object = feature.getAttribute(attributeName);
-		if ( object == null ){
-			return null;
-		}else{
-			return object.toString();
-		}
-	}
-
-	/**
-	 * Read a date with a given format
-	 * @param feature
-	 * @param attributeName
-	 * @param dateFormat
-	 * @return
-	 */
-	private Date readDateAttribute(IFeature feature, String attributeName, DateFormat dateFormat){
-		Object object = feature.getAttribute(attributeName);
-		if ( object == null ){
-			return null;
-		}
-		try {
-			return dateFormat.parse(object.toString());
-		} catch (ParseException e) {
-			//TODO log
-			return null;
-		}
 	}
 	
 }

@@ -50,7 +50,9 @@ public class UrbaZone extends CG_LandUse {
 	private String nomFic = "";
 	private String urlFic = "";
 	private String insee = "";
+	//TODO rename DATAPPRO
 	private Date dateDeb = null;
+	//TODO rename DATVALID
 	private Date dateFin = null;
 	private String text = "";
 	private String idPLU;
