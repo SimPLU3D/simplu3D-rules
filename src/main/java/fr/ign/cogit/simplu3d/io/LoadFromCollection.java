@@ -10,7 +10,6 @@ import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.BasicPropertyUnitImporter;
 import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.PLUImporter;
 import fr.ign.cogit.simplu3d.importer.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
 import fr.ign.cogit.simplu3d.importer.ZonesImporter;
@@ -23,6 +22,7 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.cogit.simplu3d.reader.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.util.AssignZ;
 
 /**
@@ -105,7 +105,8 @@ public class LoadFromCollection {
     if (featPLU == null) {
       plu = new UrbaDocument();
     } else {
-      plu = PLUImporter.loadPLU(featPLU);
+		UrbaDocumentReader urbaDocumentReader = new UrbaDocumentReader();
+		plu = urbaDocumentReader.read(featPLU);
     }
 
     env.setUrbaDocument(plu);
