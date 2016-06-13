@@ -16,7 +16,6 @@ import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.RoadImporter;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -26,6 +25,7 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
+import fr.ign.cogit.simplu3d.reader.RoadReader;
 import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 
 /**
@@ -49,9 +49,9 @@ public class LoaderSHPExec {
 
 	public static void main(String[] args) throws Exception {
 
-		RoadImporter.ATT_NOM_RUE = "NOM_VOIE_G";
-		RoadImporter.ATT_LARGEUR = "LARGEUR";
-		RoadImporter.ATT_TYPE = "NATURE";
+		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+		RoadReader.ATT_LARGEUR = "LARGEUR";
+		RoadReader.ATT_TYPE = "NATURE";
 
 		CadastralParcelLoader.WIDTH_DEP = 30;
 

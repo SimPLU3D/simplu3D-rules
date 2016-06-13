@@ -9,6 +9,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.simplu3d.demo.nonStructDatabase.shp.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -26,6 +27,8 @@ public class LoaderSimpluSHPTest {
 
 	@Test
 	public void testImport() throws FileNotFoundException {
+		//TODO normalize file name
+		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT.asc";
 
 		Environnement env = LoadDefaultEnvironment.getENVDEF();
 

@@ -55,7 +55,10 @@ public abstract class AbstractReader<Model> {
 	 */
 	public void read(IFeatureCollection<IFeature> features, Collection<Model> result){
 		for (IFeature feature : features) {
-			result.add(read(feature));
+			Model model = read(feature);
+			if ( model != null ){
+				result.add(model);	
+			}
 		}
 	}
 
@@ -74,6 +77,22 @@ public abstract class AbstractReader<Model> {
 		}
 	}
 
+	/**
+	 * Read a double 
+	 * @param feature
+	 * @param attributeName
+	 * @return a string or null
+	 */
+	protected Double readDoubleAttribute(IFeature feature, String attributeName) {
+		Object object = feature.getAttribute(attributeName);
+		if ( object == null ){
+			return null;
+		}else{
+			return Double.parseDouble(object.toString());
+		}
+	}
+
+	
 	/**
 	 * Read a date with a given format
 	 * @param feature

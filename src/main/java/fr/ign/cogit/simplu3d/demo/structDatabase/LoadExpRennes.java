@@ -3,9 +3,9 @@ package fr.ign.cogit.simplu3d.demo.structDatabase;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.RoadImporter;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.storer.BasicStorer;
+import fr.ign.cogit.simplu3d.reader.RoadReader;
 import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 
 public class LoadExpRennes {
@@ -38,9 +38,9 @@ public class LoadExpRennes {
     LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
     // Corrections on attributes
-    RoadImporter.ATT_LARGEUR = "LARGEUR";
-    RoadImporter.ATT_NOM_RUE = "NOM_VOIE_G";
-    RoadImporter.ATT_TYPE = "NATURE";
+    RoadReader.ATT_LARGEUR = "LARGEUR";
+    RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+    RoadReader.ATT_TYPE = "NATURE";
 
     CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
     CadastralParcelLoader.TYPE_ANNOTATION = 1;

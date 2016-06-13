@@ -11,7 +11,6 @@ import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.BasicPropertyUnitImporter;
 import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.RoadImporter;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
 import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -23,6 +22,7 @@ import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 import fr.ign.cogit.simplu3d.reader.AbstractReader;
+import fr.ign.cogit.simplu3d.reader.RoadReader;
 import fr.ign.cogit.simplu3d.reader.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.util.AssignZ;
@@ -163,7 +163,9 @@ public class LoadFromCollection {
 
     // Etape 8 : chargement des voiries
 
-    IFeatureCollection<Road> roads = RoadImporter.importRoad(voirieColl);
+    RoadReader roadReader = new RoadReader();
+    IFeatureCollection<Road> roads = new FT_FeatureCollection<>();
+    roadReader.read(voirieColl,roads);
     env.setRoads(roads);
 
     logger.info("Roads loaded");

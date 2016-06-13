@@ -49,7 +49,7 @@ public class UrbaDocumentReaderTest extends TestCase {
 		AbstractReader<UrbaDocument> reader = new UrbaDocumentReader();
 		List<UrbaDocument> urbaDocuments = reader.readShapefile(path);
 /*
- * TODO fix geoxygene
+ * TODO allow EMPTY/NULL geometry in geoxygene https://github.com/IGNF/geoxygene/issues/3
  * 
  * fr.ign.cogit.geoxygene.util.conversion.ShapefileReader read
  * AVERTISSEMENT: géométrie nulle, objet ignoré
