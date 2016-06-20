@@ -1,3 +1,19 @@
+/**
+ * 
+ *        This software is released under the licence CeCILL
+ * 
+ *        see LICENSE.TXT
+ * 
+ *        see <http://www.cecill.info/ http://www.cecill.info/
+ * 
+ * 
+ * 
+ * @copyright IGN
+ * 
+ * @author Brasebin Mickaël
+ * 
+ * @version 1.0
+ **/
 package fr.ign.cogit.simplu3d.importer;
 
 import java.util.ArrayList;
@@ -18,22 +34,12 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Polygon;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
+
 /**
  * 
- *        This software is released under the licence CeCILL
- * 
- *        see LICENSE.TXT
- * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
- * 
- * 
- * 
- * @copyright IGN
- * 
- * @author Brasebin Mickaël
- * 
- * @version 1.0
- **/
+ * @author MBrasebin
+ *
+ */
 public class EmpriseGenerator {
 
   public static IPolygon convert(Building b) {

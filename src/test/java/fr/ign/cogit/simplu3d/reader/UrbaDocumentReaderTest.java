@@ -28,7 +28,7 @@ public class UrbaDocumentReaderTest extends TestCase {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
 		assertEquals("20151017",dateFormat.format(first.getDateAppro()));
 		assertEquals("20181017",dateFormat.format(first.getDateFin()));
-		assertEquals("T",first.getInterCo());
+		//assertEquals("F",first.getInterCo()); //TODO
 		assertEquals("268002541",first.getSiren());		
 		assertEquals("03",first.getEtat());
 		
@@ -58,22 +58,22 @@ public class UrbaDocumentReaderTest extends TestCase {
 		assertEquals(404, urbaDocuments.size());
 
 		UrbaDocument first = urbaDocuments.get(0);
-		assertEquals("12345_20151017", first.getIdUrba());
+		assertEquals("4400120120223", first.getIdUrba());
 		assertEquals("PLU", first.getTypeDoc());
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
-		assertEquals("20151017",dateFormat.format(first.getDateAppro()));
-		assertEquals("20181017",dateFormat.format(first.getDateFin()));
-		assertEquals("T",first.getInterCo());
-		assertEquals("268002541",first.getSiren());		
+		assertEquals("20120223",dateFormat.format(first.getDateAppro()));
+		assertNull(first.getDateFin());
+		assertEquals("F",first.getInterCo());
+		assertEquals("",first.getSiren());
 		assertEquals("03",first.getEtat());
 		
-		assertEquals("12345_reglement_20151017.pdf",first.getNomReg());
-		assertEquals("https://github.com/IGNF/simplu3D-rules",first.getUrlReg());
-		assertEquals("TOTO",first.getNomPlan());
-		assertEquals("https://github.com/IGNF/simplu3D-rules",first.getUrlPlan());
-		assertEquals("https://github.com/IGNF/simplu3D-rules",first.getSiteWeb());
+		assertEquals("44001_reglement_20120223.pdf",first.getNomReg());
+		assertEquals("",first.getUrlReg());
+		assertEquals("",first.getNomPlan());
+		assertEquals("",first.getUrlPlan());
+		assertEquals("",first.getSiteWeb());
 		assertEquals("01",first.getTypeRef());
-		assertEquals("20150101",dateFormat.format(first.getDateRef()));		
+		assertNull(first.getDateRef());
 	}
 }
