@@ -32,6 +32,7 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 
 /**
  * 
+ * Adjacent CadastralParcels with common owner
  * 
  * @see http://inspire.ec.europa.eu/featureconcept/BasicPropertyUnit
  * 

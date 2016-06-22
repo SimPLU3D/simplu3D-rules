@@ -40,12 +40,30 @@ public class SubParcel extends CG_LandUse {
 
 	private CadastralParcel parcelle;
 
+	/**
+	 * TODO replace by ZoneUrba
+	 */
 	private int idZU = 0;
 	private int idCp = 0;
 	private double avgSlope;
 	private double area = -1;
 	private UrbaZone zU = null;
 
+	/**
+	 * BuildingParts associated to the SubParcel
+	 * 
+	 * Note that an original input building can be split to match the SubParcel
+	 * 
+	 */
+	public IFeatureCollection<AbstractBuilding> buildingsParts = new FT_FeatureCollection<AbstractBuilding>();
+	
+	/**
+	 * Boundaries
+	 * TODO check construction / remove if useless?
+	 */
+	public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
+
+	
 	public UrbaZone getUrbaZone() {
 		return zU;
 	}
@@ -107,11 +125,6 @@ public class SubParcel extends CG_LandUse {
 		}
 		return area;
 	}
-
-	public IFeatureCollection<AbstractBuilding> buildingsParts = new FT_FeatureCollection<AbstractBuilding>();
-	// private IFeatureCollection<Voirie> voiries = new
-	// FT_FeatureCollection<Voirie>();
-	public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
 	public void setSpecificCadBoundary(IFeatureCollection<SpecificCadastralBoundary> spCBoundary) {
 		this.sCBoundary = spCBoundary;
@@ -188,6 +201,11 @@ public class SubParcel extends CG_LandUse {
 		this.buildingsParts = buildingsParts;
 	}
 
+	/**
+	 * Compute CES
+	 * TODO externalize
+	 * @return
+	 */
 	public double getces() {
 
 		double area = this.getArea();
@@ -225,21 +243,5 @@ public class SubParcel extends CG_LandUse {
 		SubParcel.getLogger().error("Empty method getConsline()");
 		return null;
 	}
-	/*
-	 * public IFeatureCollection<Voirie> getVoiries() { return voiries; }
-	 * 
-	 * public void setVoiries(IFeatureCollection<Voirie> voiries) { this.voiries
-	 * = voiries; }
-	 */
 
-	/*
-	 * public IFeatureCollection<Bordure> getBordures() { return bordures; }
-	 * 
-	 * 
-	 * public void setBordures(IFeatureCollection<Bordure> bordures) {
-	 * this.bordures = bordures; }
-	 * 
-	 * public void setParcelle(CadastralParcel parcelle) { this.parcelle =
-	 * parcelle; }
-	 */
 }

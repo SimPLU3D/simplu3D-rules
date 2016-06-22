@@ -78,6 +78,21 @@ public abstract class AbstractReader<Model> {
 	}
 
 	/**
+	 * Read an integer
+	 * @param feature
+	 * @param attributeName
+	 * @return
+	 */
+	protected Integer readIntegerAttribute(IFeature feature, String attributeName) {
+		Object object = feature.getAttribute(attributeName);
+		if ( object == null ){
+			return null;
+		}else{
+			return Integer.parseInt(object.toString());
+		}
+	}
+	
+	/**
 	 * Read a double 
 	 * @param feature
 	 * @param attributeName

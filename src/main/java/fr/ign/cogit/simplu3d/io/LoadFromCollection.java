@@ -6,9 +6,9 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.builder.BasicPropertyUnitBuilder;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
-import fr.ign.cogit.simplu3d.importer.BasicPropertyUnitImporter;
 import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
@@ -148,8 +148,8 @@ public class LoadFromCollection {
     logger.info("Sub parcels loaded");
 
     // Etape 6 : création des unités foncirèes
-    IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitImporter
-        .importBPU(parcelles);
+    IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitBuilder
+        .buildPropertyUnits(parcelles);
     env.setBpU(collBPU);
 
     logger.info("Basic property units created");
@@ -171,7 +171,7 @@ public class LoadFromCollection {
     logger.info("Roads loaded");
 
     // Etape 9 : on affecte les liens entres une bordure et ses objets
-    // adjacents
+    // adjacents (bordure sur route => route + relation entre les limites de parcelles)
     AssignLinkToBordure.process(parcelles, roads);
 
     logger.info("Links with roads created");
