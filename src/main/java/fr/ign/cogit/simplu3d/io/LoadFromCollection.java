@@ -148,8 +148,8 @@ public class LoadFromCollection {
     logger.info("Sub parcels loaded");
 
     // Etape 6 : création des unités foncirèes
-    IFeatureCollection<BasicPropertyUnit> collBPU = BasicPropertyUnitBuilder
-        .buildPropertyUnits(parcelles);
+    BasicPropertyUnitBuilder bpuBuilder = new BasicPropertyUnitBuilder(parcelles);
+    IFeatureCollection<BasicPropertyUnit> collBPU = bpuBuilder.buildPropertyUnits();
     env.setBpU(collBPU);
 
     logger.info("Basic property units created");

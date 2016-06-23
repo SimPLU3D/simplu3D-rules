@@ -3,7 +3,6 @@ package fr.ign.cogit.simplu3d.demo;
 import java.io.File;
 import java.util.List;
 
-
 import fr.ign.cogit.simplu3d.checker.Checker;
 import fr.ign.cogit.simplu3d.checker.Rules;
 import fr.ign.cogit.simplu3d.checker.UnrespectedRule;

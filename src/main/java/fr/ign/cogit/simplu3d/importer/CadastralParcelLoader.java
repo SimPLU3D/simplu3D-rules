@@ -1,41 +1,3 @@
-package fr.ign.cogit.simplu3d.importer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.feature.IPopulation;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
-import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
-import fr.ign.cogit.geoxygene.util.index.Tiling;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
-import fr.ign.cogit.simplu3d.util.PointInPolygon;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -56,8 +18,53 @@ import fr.ign.cogit.simplu3d.util.PointInPolygon;
  *          ou latéral) en fonction du voisinage
  * 
  */
-public class CadastralParcelLoader {
+package fr.ign.cogit.simplu3d.importer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
+import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
+import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
+import fr.ign.cogit.geoxygene.util.index.Tiling;
+import fr.ign.cogit.simplu3d.builder.CarteTopoBuilder;
+import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.util.PointInPolygon;
+
+/**
+ * 
+ * Create CadastralParcel and SpecificCadastralBoundaries from a set of Features
+ * 
+ * TODO split processing (take an input Collection<CadastralParcel> in a CadastralBoundaryBuilder)
+ * 
+ * @author MBrasebin
+ *
+ */
+public class CadastralParcelLoader {
+	// TODO member variable
 	public static int TYPE_ANNOTATION = 1;
 	public static double MINIMUM_AREA_PARC = 2;
 	public static int WIDTH_DEP = 3;
@@ -76,9 +83,7 @@ public class CadastralParcelLoader {
 		IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 
 		// On créer une carte topo avec les parcelles
-		CarteTopo cT = newCarteTopo("Parcelles", parcelCollection, 0.2);
-
-		// System.out.println("Je passe là !!!!");
+		CarteTopo cT = CarteTopoBuilder.newCarteTopo("Parcelles", parcelCollection, 0.2);
 
 		for (Face f : cT.getPopFaces()) {
 			IFeatureCollection<CadastralParcel> cadastralParcelTemp;
@@ -786,109 +791,5 @@ public class CadastralParcelLoader {
 		return thresholdIni;
 	}
 
-	public static CarteTopo newCarteTopo(String name, IFeatureCollection<? extends IFeature> collection,
-			double threshold) {
-
-		try {
-			// Initialisation d'une nouvelle CarteTopo
-			CarteTopo carteTopo = new CarteTopo(name);
-			carteTopo.setBuildInfiniteFace(false);
-			// Récupération des arcs de la carteTopo
-			IPopulation<Arc> arcs = carteTopo.getPopArcs();
-			// Import des arcs de la collection dans la carteTopo
-			for (IFeature feature : collection) {
-
-				List<ILineString> lLLS = FromPolygonToLineString
-						.convertPolToLineStrings((IPolygon) FromGeomToSurface.convertGeom(feature.getGeom()).get(0));
-
-				for (ILineString ls : lLLS) {
-
-					if (ls.length() == 0) {
-						System.out.println("");
-					}
-
-					// création d'un nouvel élément
-					Arc arc = arcs.nouvelElement();
-					// affectation de la géométrie de l'objet issu de la
-					// collection
-					// à l'arc de la carteTopo
-					arc.setGeometrie(ls);
-					// instanciation de la relation entre l'arc créé et l'objet
-					// issu de la collection
-					arc.addCorrespondant(feature);
-
-				}
-
-			}
-
-			if (!test(carteTopo)) {
-				System.out.println("Error 1");
-			}
-
-			carteTopo.creeNoeudsManquants(-1);
-
-			if (!test(carteTopo)) {
-				System.out.println("Error 2");
-			}
-
-			carteTopo.fusionNoeuds(threshold);
-
-			carteTopo.filtreArcsDoublons();
-
-			// Création de la topologie Arcs Noeuds
-
-			carteTopo.creeTopologieArcsNoeuds(threshold);
-			// La carteTopo est rendue planaire
-
-			/*
-			 * if (!test(carteTopo)) { System.out.println("Error 3"); }
-			 */
-
-			carteTopo.rendPlanaire(threshold);
-
-			/*
-			 * if (!test(carteTopo)) { System.out.println("Error 4"); }
-			 * carteTopo.filtreArcsDoublons(); if (!test(carteTopo)) {
-			 * System.out.println("Error 5"); }
-			 */
-
-			// DEBUG2.addAll(carteTopo.getListeArcs());
-
-			carteTopo.creeTopologieArcsNoeuds(threshold);
-
-			/*
-			 * if (!test(carteTopo)) { System.out.println("Error 6"); }
-			 */
-
-			carteTopo.creeTopologieFaces();
-
-			// carteTopo.filtreNoeudsSimples();
-
-			// Création des faces de la carteTopo
-			// carteTopo.creeTopologieFaces();
-
-			/*
-			 * if (!test(carteTopo)) { System.out.println("Error 7"); }
-			 */
-
-			return carteTopo;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public static boolean test(CarteTopo ct) {
-
-		for (Arc a : ct.getPopArcs()) {
-			if (a.getGeometrie().length() == 0) {
-				return false;
-			}
-
-		}
-		return true;
-	}
 
 }

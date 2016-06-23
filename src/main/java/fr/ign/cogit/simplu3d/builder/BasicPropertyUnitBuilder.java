@@ -16,6 +16,8 @@
  **/
 package fr.ign.cogit.simplu3d.builder;
 
+import java.util.Collection;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
@@ -34,22 +36,32 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * @warning aggregation is not yet implemented. A BasicPropertyUnit is
  *          associated to a CadastralParcel
  * 
- * TODO implement aggregation based on a "owerId"
+ * 
  * 
  * @author MBrasebin
  *
  */
 public class BasicPropertyUnitBuilder {
-
-	/***
+	
+	/**
 	 * 
-	 *  
+	 */
+	private Collection<CadastralParcel> cadastralParcels;
+
+	/**
+	 * TODO Constructor with a CadastralParcel iterator?
+	 * @param cadastralParcels
+	 */
+	public BasicPropertyUnitBuilder(Collection<CadastralParcel> cadastralParcels){
+		this.cadastralParcels = cadastralParcels ;
+	}
+
+	/**
+	 * TODO implement aggregation based on a "owerId"
 	 * @param cadastralParcels
 	 * @return
 	 */
-	public static IFeatureCollection<BasicPropertyUnit> buildPropertyUnits(
-		IFeatureCollection<CadastralParcel> cadastralParcels
-	) {
+	public IFeatureCollection<BasicPropertyUnit> buildPropertyUnits() {
 
 		IFeatureCollection<BasicPropertyUnit> result = new FT_FeatureCollection<BasicPropertyUnit>();
 
