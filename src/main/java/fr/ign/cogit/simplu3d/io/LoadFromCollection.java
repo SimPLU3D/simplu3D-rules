@@ -55,8 +55,10 @@ public class LoadFromCollection {
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, String ruleFolder,
-      AbstractDTM dtm) throws Exception {
+      IFeatureCollection<IFeature> prescriptions, 
+      String ruleFolder,
+      AbstractDTM dtm
+    ) throws Exception {
     Environnement env = Environnement.getInstance();
 
     return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,

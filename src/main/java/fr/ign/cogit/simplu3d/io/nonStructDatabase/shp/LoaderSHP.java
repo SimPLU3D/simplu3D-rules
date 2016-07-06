@@ -1,17 +1,3 @@
-package fr.ign.cogit.simplu3d.io.nonStructDatabase.shp;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
-import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
-import fr.ign.cogit.simplu3d.io.LoadFromCollection;
-import fr.ign.cogit.simplu3d.model.Environnement;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -28,6 +14,29 @@ import fr.ign.cogit.simplu3d.model.Environnement;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.io.nonStructDatabase.shp;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
+import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
+import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
+import fr.ign.cogit.simplu3d.io.LoadFromCollection;
+import fr.ign.cogit.simplu3d.model.Environnement;
+
+/**
+ * 
+ * Helper to load shapefile data
+ * 
+ * TODO move constants to "final" 
+ * 
+ * @author MBrasebin
+ *
+ */
 public class LoaderSHP {
 
   /*

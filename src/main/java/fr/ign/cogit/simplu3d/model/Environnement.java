@@ -36,25 +36,28 @@ public class Environnement extends CG_CityModel {
 
 	private static Environnement env = null;
 
-	public IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
-	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
-	public IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
-	public IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
-	public IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
-	public IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
+	private IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
+	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
+	private IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
+	private IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
+	private IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
+	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 
-	public AbstractDTM terrain;
-	public IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
+	private AbstractDTM terrain;
+	private IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
 
 	public static IDirectPosition dpTranslate = null;
 
-	public static boolean VERBOSE = false;
 	public static boolean TRANSLATE_TO_ZERO = false;
 
 	protected Environnement() {
 
 	}
 
+	/**
+	 * TODO remove and replace usage by demo.DefaultEnvironnement.getInstance()
+	 * @return
+	 */
 	public static Environnement getInstance() {
 		if (env == null) {
 			env = new Environnement();
@@ -116,22 +119,6 @@ public class Environnement extends CG_CityModel {
 
 	public static void setDpTranslate(IDirectPosition dpTranslate) {
 		Environnement.dpTranslate = dpTranslate;
-	}
-
-	public static boolean isVERBOSE() {
-		return VERBOSE;
-	}
-
-	public static void setVERBOSE(boolean vERBOSE) {
-		VERBOSE = vERBOSE;
-	}
-
-	public static boolean isTRANSLATE_TO_ZERO() {
-		return TRANSLATE_TO_ZERO;
-	}
-
-	public static void setTRANSLATE_TO_ZERO(boolean tRANSLATE_TO_ZERO) {
-		TRANSLATE_TO_ZERO = tRANSLATE_TO_ZERO;
 	}
 
 	public IFeatureCollection<Road> getRoads() {

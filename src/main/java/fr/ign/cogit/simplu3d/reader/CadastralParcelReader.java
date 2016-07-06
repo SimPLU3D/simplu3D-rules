@@ -14,7 +14,7 @@ public class CadastralParcelReader extends AbstractReader<CadastralParcel>{
 	/**
 	 * TODO change to IDU (more universal than "NUMERO" from IGN's BDParcellaire)
 	 */
-	public static String ATT_ID_PARC = "NUMERO";
+	private static String ATT_ID_PARC = "NUMERO";
 	
 	@Override
 	public CadastralParcel read(IFeature feature) {
