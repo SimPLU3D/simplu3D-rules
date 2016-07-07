@@ -20,6 +20,7 @@
  */
 package fr.ign.cogit.simplu3d.importer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -69,7 +70,7 @@ public class CadastralParcelLoader {
 	public static double MINIMUM_AREA_PARC = 2;
 	public static int WIDTH_DEP = 3;
 
-	public static String ATT_ID_PARC = "ID_Parcell";
+	public static String ATT_ID_PARC = "NUMERO";
 	public static String ATT_HAS_TO_BE_SIMULATED = "simul";
 	// public static String ATT_ID_PARC = "NUMERO";
 
@@ -137,7 +138,11 @@ public class CadastralParcelLoader {
 			Iterator<IFeature> it = coll.iterator();
 			IFeature feat = it.next();
 
-			int idParc = Integer.parseInt(feat.getAttribute(ATT_ID_PARC).toString());
+			Object idParc = feat.getAttribute(ATT_ID_PARC);
+			if ( idParc == null ){
+				throw new RuntimeException("attribute "+ATT_ID_PARC+" not found");
+			}
+			//int idParc = Integer.parseInt(.toString());
 
 			Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
 
@@ -147,7 +152,7 @@ public class CadastralParcelLoader {
 			}
 
 			// System.out.println(idParc);
-			parc.setId(idParc);
+			parc.setId(Integer.parseInt(idParc.toString()));
 
 			List<Arc> lArc = f.arcs();
 			int nbArcs = lArc.size();

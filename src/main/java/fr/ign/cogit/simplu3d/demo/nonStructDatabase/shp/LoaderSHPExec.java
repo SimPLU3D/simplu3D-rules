@@ -56,14 +56,14 @@ public class LoaderSHPExec {
 		CadastralParcelLoader.WIDTH_DEP = 30;
 
 		// Rerouting towards the new files
-		LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
-		LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
-		LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
-		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
-		LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
-		LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
-
-		LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
+//		LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
+//		LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
+//		LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
+//		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
+//		LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
+//		LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+//
+//		LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
 		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 		CadastralParcelLoader.TYPE_ANNOTATION = 2;

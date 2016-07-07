@@ -53,11 +53,20 @@ public class Environnement extends CG_CityModel {
 	protected Environnement() {
 
 	}
-
+	
+	/**
+	 * Create a new environment instance
+	 * @return
+	 */
+	public static Environnement createEnvironnement(){
+		return new Environnement();
+	}
+	
 	/**
 	 * TODO remove and replace usage by demo.DefaultEnvironnement.getInstance()
 	 * @return
 	 */
+	@Deprecated
 	public static Environnement getInstance() {
 		if (env == null) {
 			env = new Environnement();

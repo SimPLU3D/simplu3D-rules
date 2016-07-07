@@ -86,7 +86,7 @@ public class RoadReader extends AbstractReader<Road> {
 
 		// TODO epsilon check?
 		if (result.getWidth() == 0.0 ) {
-			throw new RuntimeException("Error in Voirie Importer axe is not a ILineString");
+			throw new RuntimeException("Unsupported Road "+ATT_LARGEUR+" (0.0) for feature "+feature.getId());
 		}
 
 		IGeometry obj = geom.buffer(result.getWidth());

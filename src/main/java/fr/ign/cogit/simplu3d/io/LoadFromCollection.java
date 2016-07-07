@@ -59,7 +59,7 @@ public class LoadFromCollection {
       String ruleFolder,
       AbstractDTM dtm
     ) throws Exception {
-    Environnement env = Environnement.getInstance();
+	  Environnement env = Environnement.createEnvironnement();
 
     return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
         batiColl, prescriptions, ruleFolder, dtm, env);

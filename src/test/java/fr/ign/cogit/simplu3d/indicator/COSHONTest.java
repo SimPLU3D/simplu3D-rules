@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.test.indicator;
+package fr.ign.cogit.simplu3d.indicator;
 
 import java.io.FileNotFoundException;
 
@@ -21,7 +21,7 @@ public class COSHONTest {
 	@Test
 	public void testCOS() throws FileNotFoundException {
 		// TODO normalize file name
-		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT.asc";
+//		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT.asc";
 
 		BasicPropertyUnit sp = LoadDefaultEnvironment.getENVDEF().getBpU().get(0);
 

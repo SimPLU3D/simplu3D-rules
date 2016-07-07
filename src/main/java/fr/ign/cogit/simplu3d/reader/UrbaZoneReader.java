@@ -41,8 +41,6 @@ public class UrbaZoneReader extends AbstractReader<UrbaZone>{
 	public UrbaZone read(IFeature feature) {
 		UrbaZone z = new UrbaZone(FromGeomToSurface.convertMSGeom(feature.getGeom()));
 
-		System.out.println("ZoneImporter : " + z.getGeom().getClass());
-
 		// Pour le Libelle de la zone urba
 		z.setLibelle(readStringAttribute(feature,ATT_LIBELLE));
 
