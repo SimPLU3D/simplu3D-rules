@@ -193,7 +193,6 @@ public class SubParcel extends CG_LandUse {
 	}
 
 	public IFeatureCollection<AbstractBuilding> getBuildingsParts() {
-		// System.out.println("NB BP : " + buildingsParts.size());
 		return buildingsParts;
 	}
 
@@ -232,8 +231,6 @@ public class SubParcel extends CG_LandUse {
 		if (geom == null) {
 			return 0;
 		}
-
-		// System.out.println(areaB / area);
 
 		return geom.getArea() / area;
 

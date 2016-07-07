@@ -65,7 +65,7 @@ public class LoaderSHPExec {
 //
 //		LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
-		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
+//		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 		CadastralParcelLoader.TYPE_ANNOTATION = 2;
 
 		//UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
@@ -268,14 +268,5 @@ public class LoaderSHPExec {
 		System.out.println("Chat qui râle");
 
 	}
-
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * System.out.println("Nombre d'alignements concernés" + featAL.size());
-	 * ShapefileWriter.write(featAL, folderOut + "alignements.shp");
-	 */
 
 }

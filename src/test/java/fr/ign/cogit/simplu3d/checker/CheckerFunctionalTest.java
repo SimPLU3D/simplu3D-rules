@@ -13,10 +13,7 @@ import junit.framework.TestCase;
 public class CheckerFunctionalTest extends TestCase {
 
 	public void testDemo01(){
-		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 		CadastralParcelLoader.TYPE_ANNOTATION = 1;
-
-		//UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.8;
 		AssignBuildingPartToSubParcel.ASSIGN_METHOD = 0;

@@ -165,21 +165,12 @@ public class AssignBuildingPartToSubParcel {
 			// Assignation bâtiment BDPU
 			collBPU.get(index).getBuildings().add(b);
 
-			// Quand on va assigner les sous parties, il va falloir découper le
-			// bâtiment
-			// System.out.println("\n \t" +
-			// "----- On est ici dans AssignBuildingpartToSubParcel -----");
-			// System.out.println("b : " + b.getGeom() + "\n" + "poly : " +
-			// polySP);
-
 			BuildingPart bP = null;
 
 			if (FromPolygonToTriangle.isConvertible(FromGeomToSurface.convertGeom(b.getGeom()))) {
 
 				List<IOrientableSurface> listCut = Cut3DGeomFrom2D.cutFeatureFromPolygon(b, (IPolygon) polySP.clone());
 				bP = new BuildingPart(new GM_MultiSurface<>(listCut));
-
-				// System.out.println(listCut);
 			} else {
 				bP = cutForBDTopo(b, (IPolygon) polySP.clone());
 			}

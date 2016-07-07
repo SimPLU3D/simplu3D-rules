@@ -79,19 +79,12 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			// ////////////////////////
-			// / Cette partie du code contient les vérificateurs de règles
-			// /
-			// /
-			// /////////////////////////
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}
 		}
-
-		// System.out.println("nombre de limites de fond : " + img.size());
 
 		return img;
 	}

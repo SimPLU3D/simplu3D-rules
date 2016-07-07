@@ -66,8 +66,6 @@ public class CheckerCES implements IRuleChecker {
 
 					List<SpecificWallSurface> lSWS = bP.getWallSurfaces();
 
-					// //System.out.println("facades : " + lSWS);
-
 					if (lSWS != null && !lSWS.isEmpty()) {
 						for (SpecificWallSurface sWS : lSWS) {
 

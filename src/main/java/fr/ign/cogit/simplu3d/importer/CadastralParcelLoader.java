@@ -70,7 +70,7 @@ public class CadastralParcelLoader {
 	public static double MINIMUM_AREA_PARC = 2;
 	public static int WIDTH_DEP = 3;
 
-	public static String ATT_ID_PARC = "NUMERO";
+	public static final String ATT_ID_PARC = "NUMERO";
 	public static String ATT_HAS_TO_BE_SIMULATED = "simul";
 	// public static String ATT_ID_PARC = "NUMERO";
 
@@ -79,7 +79,6 @@ public class CadastralParcelLoader {
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
 			IFeatureCollection<IFeature> parcelCollection) {
 
-		// System.out.println("NB Parcelles : " + parcelCollection.size());
 
 		IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 
@@ -151,7 +150,6 @@ public class CadastralParcelLoader {
 
 			}
 
-			// System.out.println(idParc);
 			parc.setId(Integer.parseInt(idParc.toString()));
 
 			List<Arc> lArc = f.arcs();
@@ -313,8 +311,6 @@ public class CadastralParcelLoader {
 
 		// On classe les arcs
 		for (Arc a : listArcTemp) {
-
-			// System.out.println("Classement des arcs");
 
 			// On ne garde que les arcs latéraux
 
@@ -591,8 +587,6 @@ public class CadastralParcelLoader {
 		// On classe les arcs
 		for (Arc a : listArcTemp) {
 
-			// System.out.println("Classement des arcs");
-
 			// On ne garde que les arcs latéraux
 
 			double currentSide = a.getPoids();
@@ -783,13 +777,7 @@ public class CadastralParcelLoader {
 
 		double largeur = Math.min(l1, l2);
 
-		// System.out.println(largeur);
-
 		if (largeur / 2.5 < thresholdIni) {
-
-			// System.out.println("Modification de la largeur de dépassementj'y
-			// passe");
-
 			return largeur / 2.5;
 		}
 

@@ -64,17 +64,10 @@ public class SubParcelImporter {
 
         SubParcel sp = new SubParcel();
 
-        IMultiSurface<IOrientableSurface> ms = FromGeomToSurface
-            .convertMSGeom(geom);
+        IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(geom);
 
         sp.setGeom(ms);
         
-        /*
-        if (ms.size() == 1) {
-          sp.setGeom(ms.get(0));
-        } else {
-          sp.setGeom(ms);
-        }*/
 
         sp.setLod2MultiSurface(FromGeomToSurface.convertMSGeom(geom));
 
@@ -119,9 +112,6 @@ public class SubParcelImporter {
     while (itZone.hasNext()) {
 
       UrbaZone z = itZone.next();
-
-      System.out.println(z.getGeom().getClass().toString());
-      System.out.println(geom.getClass().toString());
 
       IGeometry geomInter = z.getGeom().intersection(geom);
 

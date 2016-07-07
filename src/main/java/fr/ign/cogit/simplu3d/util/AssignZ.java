@@ -1,16 +1,3 @@
-package fr.ign.cogit.simplu3d.util;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.simplu3d.model.Alignement;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaZone;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -29,6 +16,26 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  * 
  *          Classe pour affecter un z à différents types d'objets
  * 
+ */
+package fr.ign.cogit.simplu3d.util;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
+import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.model.Alignement;
+import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.Road;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.model.UrbaZone;
+
+/**
+ * 
+ * Assign Z to features according to DTM
+ * 
+ * @author MBrasebin
+ *
  */
 public class AssignZ {
   // IF no DTM is used a default Z can be set
@@ -54,12 +61,6 @@ public class AssignZ {
 
       for (SpecificCadastralBoundary b : p.getSpecificCadastralBoundary()) {
 
-        //if (b.getGeom().isEmpty()) {
-          //System.out.println("point 1------> Geom vide");
-        //} else {
-          //System.out.println("ok");
-        //}
-
         if (isZSet) {
           IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);
           
@@ -75,12 +76,6 @@ public class AssignZ {
 
         }
         
-        //if (b.getGeom().isEmpty()) {
-          //System.out.println("point 2------> Geom vide");
-        //} else {
-          //System.out.println("okay");
-        //}
-
       }
 
     }

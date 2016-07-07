@@ -91,21 +91,15 @@ public class BandsChecker implements IRuleChecker {
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
 		// nous donner une information sur les routes)
 		List<SpecificCadastralBoundary> lFronLimit = getFrontLimit(bPU);
-		// //System.out.println("Liste SCB road : " + lFronLimit);
 
 		for (SpecificCadastralBoundary sc : lFronLimit) {
 			// On récupère la route adjance
 			if (sc.getFeatAdj() != null) {
 
 				IFeature routeAdj = sc.getFeatAdj();
-				// //System.out.println("Road v1 : " + routeAdj);
 
 				// Normalement on peut caster
 				Road r = (Road) routeAdj;
-				// //System.out.println("Road v2 : " + r);
-				// //System.out.println("Road Width : " + r.getWidth());
-				// //System.out.println("Rule larg max prospect 1 : "
-				// + rules.getLargMaxProspect1());
 
 				for (AbstractBuilding ab : list) {
 
@@ -283,8 +277,6 @@ public class BandsChecker implements IRuleChecker {
 						// Bande 1 : on ajoute la bâtiment à la liste 1
 						mapB.get(1).add(bP);
 
-						// System.out.println("Activated");
-
 						IGeometry geom = getFrontLimit.buffer(r.getAlignement() + r.getBand1());
 
 						IGeometry geom2 = getFrontLimit.buffer(r.getAlignement() + r.getBand1() + r.getBand2());
@@ -350,30 +342,15 @@ public class BandsChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getFrontLimitGeom(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		// System.out.println("NB Parcelle : " +
-		// bPU.getCadastralParcel().size());
-
 		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-
-			// System.out.println("NB boundaries : " +
-			// cP.getSpecificCadastralBoundary().size());
-
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-
-				// System.out.println("Boundary type : " + sc.getType());
-
 				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
-
 			}
-
 		}
 
-		// System.out.println("nombre de limite front : " + img.size());
-
 		return img;
-
 	}
 
 	/**

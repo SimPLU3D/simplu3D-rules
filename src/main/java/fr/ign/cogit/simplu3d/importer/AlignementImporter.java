@@ -153,7 +153,6 @@ public class AlignementImporter {
 
   private static SpecificCadastralBoundary determineBestBordure(
       IFeatureCollection<SpecificCadastralBoundary> bordures, Alignement a) {
-  //  System.out.println("Alignement " + a.getId());
 
     double scoreMax = -1;
     SpecificCadastralBoundary bCand = null;
@@ -175,10 +174,6 @@ public class AlignementImporter {
     for (SpecificCadastralBoundary b : bordures) {
 
       List<IOrientableCurve> lIOC = FromGeomToLineString.convert(b.getGeom());
-
-//      if (lIOC.size() != 1) {
-//        System.out.println("Alignement : différent de 1 ???");
-//      }
 
       Vecteur v1 = new Vecteur(lIOC.get(0).coord().get(0), lIOC.get(0).coord()
           .get(1));
@@ -214,7 +209,6 @@ public class AlignementImporter {
 
     }
 
-    // System.out.println(scoreMax);
     AttributeManager.addAttribute(a, "ID_B", bCand.getId(), "Integer");
     AttributeManager.addAttribute(a, "score", scoreMax, "Double");
     return bCand;

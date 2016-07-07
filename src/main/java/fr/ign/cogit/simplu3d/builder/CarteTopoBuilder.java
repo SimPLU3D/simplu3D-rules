@@ -73,7 +73,6 @@ public class CarteTopoBuilder {
 			carteTopo.creeNoeudsManquants(-1);
 
 			if ( ! hasNullLengthEdge(carteTopo) ) {
-				System.out.println("Error 2");
 				logger.warn("null length edges found");
 			}
 
@@ -88,9 +87,6 @@ public class CarteTopoBuilder {
 			carteTopo.creeTopologieArcsNoeuds(threshold);
 			// La carteTopo est rendue planaire
 
-			/*
-			 * if (!test(carteTopo)) { System.out.println("Error 3"); }
-			 */
 			logger.info("Make planar graph...");
 			carteTopo.rendPlanaire(threshold);
 
