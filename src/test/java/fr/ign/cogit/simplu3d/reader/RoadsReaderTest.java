@@ -16,9 +16,9 @@ public class RoadsReaderTest extends TestCase {
 			getClass().getClassLoader().getResource("demo-01/TRONCON_ROUTE.shp").getPath()
 		);
 		
-		RoadReader.ATT_LARGEUR = "LARGEUR"; //TODO case insensitive
-		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
-		RoadReader.ATT_TYPE    = "NATURE"; //TODO case insensitive
+//		RoadReader.ATT_LARGEUR = "LARGEUR"; //TODO case insensitive
+//		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+//		RoadReader.ATT_TYPE    = "NATURE"; //TODO case insensitive
 
 		RoadReader reader = new RoadReader();
 		List<Road> roads = reader.readShapefile(path);

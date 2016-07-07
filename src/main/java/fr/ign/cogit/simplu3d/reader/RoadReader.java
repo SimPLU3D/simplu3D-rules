@@ -43,9 +43,9 @@ import fr.ign.cogit.simplu3d.model.Road;
  */
 public class RoadReader extends AbstractReader<Road> {
 
-	public static String ATT_NOM_RUE = "nom_rue_g";
-	public static String ATT_LARGEUR = "largeur";
-	public static String ATT_TYPE = "nature";
+	public static final String ATT_NOM_RUE = "NOM_RUE_G";
+	public static final String ATT_LARGEUR = "LARGEUR";
+	public static final String ATT_TYPE = "NATURE";
 
 
 	@Override

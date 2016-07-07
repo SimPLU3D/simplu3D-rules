@@ -49,9 +49,9 @@ public class LoaderSHPExec {
 
 	public static void main(String[] args) throws Exception {
 
-		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
-		RoadReader.ATT_LARGEUR = "LARGEUR";
-		RoadReader.ATT_TYPE = "NATURE";
+//		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+//		RoadReader.ATT_LARGEUR = "LARGEUR";
+//		RoadReader.ATT_TYPE = "NATURE";
 
 		CadastralParcelLoader.WIDTH_DEP = 30;
 
@@ -68,7 +68,7 @@ public class LoaderSHPExec {
 		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 		CadastralParcelLoader.TYPE_ANNOTATION = 2;
 
-		UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
+		//UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
 

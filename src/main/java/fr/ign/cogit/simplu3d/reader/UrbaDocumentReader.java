@@ -15,20 +15,20 @@ import fr.ign.cogit.simplu3d.model.UrbaDocument;
  */
 public class UrbaDocumentReader extends AbstractReader<UrbaDocument> {
 
-	public static String ATT_ID_URBA = "IDURBA";
-	public static String ATT_TYPE_DOC = "TYPEDOC";
-	public static String ATT_DATE_APPRO = "DATAPPRO";
-	public static String ATT_DATE_FIN = "DATEFIN";
-	public static String ATT_INTER_CO = "INTERCO";
-	public static String ATT_SIREN = "SIREN";
-	public static String ATT_ETAT = "ETAT";
-	public static String ATT_NOM_REG = "NOMREG";
-	public static String ATT_URL_REG = "URLREG";
-	public static String ATT_NOM_PLAN = "NOMPLAN";
-	public static String ATT_URL_PLAN = "URLPLAN";
-	public static String ATT_SITE_WEB = "SITEWEB";
-	public static String ATT_TYPE_REF = "TYPEREF";
-	public static String ATT_DATE_REF = "DATEREF";
+	public static final String ATT_ID_URBA = "IDURBA";
+	public static final String ATT_TYPE_DOC = "TYPEDOC";
+	public static final String ATT_DATE_APPRO = "DATAPPRO";
+	public static final String ATT_DATE_FIN = "DATEFIN";
+	public static final String ATT_INTER_CO = "INTERCO";
+	public static final String ATT_SIREN = "SIREN";
+	public static final String ATT_ETAT = "ETAT";
+	public static final String ATT_NOM_REG = "NOMREG";
+	public static final String ATT_URL_REG = "URLREG";
+	public static final String ATT_NOM_PLAN = "NOMPLAN";
+	public static final String ATT_URL_PLAN = "URLPLAN";
+	public static final String ATT_SITE_WEB = "SITEWEB";
+	public static final String ATT_TYPE_REF = "TYPEREF";
+	public static final String ATT_DATE_REF = "DATEREF";
 
 	/**
 	 * Read a single feature

@@ -25,16 +25,16 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  **/
 public class UrbaZoneReader extends AbstractReader<UrbaZone>{
 
-	public static String ATT_LIBELLE = "LIBELLE";
-	public static String ATT_LIBELONG = "LIBELONG";
-	public static String ATT_TYPE_ZONE = "TYPEZONE";
-	public static String ATT_DESTDOMI = "DESTDOMI";
-	public static String ATT_NOMFIC = "NOMFIC";
-	public static String ATT_URLFIC = "URLFIC";
-	public static String ATT_INSEE = "INSEE";
-	public static String VALIDITY_DATE_APPRO = "DATAPPRO";
-	public static String VALIDITY_DATE_VALID = "DATVALID";
-	public static String ATT_TEXT = "TEXT";
+	public static final String ATT_LIBELLE = "LIBELLE";
+	public static final String ATT_LIBELONG = "LIBELONG";
+	public static final String ATT_TYPE_ZONE = "TYPEZONE";
+	public static final String ATT_DESTDOMI = "DESTDOMI";
+	public static final String ATT_NOMFIC = "NOMFIC";
+	public static final String ATT_URLFIC = "URLFIC";
+	public static final String ATT_INSEE = "INSEE";
+	public static final String VALIDITY_DATE_APPRO = "DATAPPRO";
+	public static final String VALIDITY_DATE_VALID = "DATVALID";
+	public static final String ATT_TEXT = "TEXT";
 
 
 	@Override
