@@ -63,6 +63,7 @@ public class CadastralParcelLoader {
 	public static int WIDTH_DEP = 3;
 
 	public static String ATT_ID_PARC = "ID_Parcell";
+	public static String ATT_ID_PARC_STR = "IDPAR";
 	public static String ATT_HAS_TO_BE_SIMULATED = "simul";
 	// public static String ATT_ID_PARC = "NUMERO";
 
@@ -133,11 +134,20 @@ public class CadastralParcelLoader {
 			IFeature feat = it.next();
 
 			int idParc = Integer.parseInt(feat.getAttribute(ATT_ID_PARC).toString());
+			
+			
 
 			Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
 
 			if (o != null) {
 				parc.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
+
+			}
+			
+			o = feat.getAttribute(ATT_ID_PARC_STR);
+
+			if (o != null) {
+				parc.setParcelle_id(o.toString());
 
 			}
 
@@ -375,7 +385,7 @@ public class CadastralParcelLoader {
 				}
 
 				if (arcsATraites.size() > 1) {
-					System.out.println("> 1, il doit y avoir un bug");
+					System.out.println(CadastralParcelLoader.class.toString() + "   > 1, il doit y avoir un bug");
 				}
 
 				// Nous n'avons qu'un candidat ... normalement
@@ -652,7 +662,7 @@ public class CadastralParcelLoader {
 				}
 
 				if (arcsATraites.size() > 1) {
-					System.out.println("> 1, il doit y avoir un bug");
+					System.out.println(CadastralParcelLoader.class.toString() + "  > 1, il doit y avoir un bug");
 				}
 
 				// Nous n'avons qu'un candidat ... normalement
