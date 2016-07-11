@@ -3,10 +3,7 @@ package fr.ign.cogit.simplu3d.demo.structDatabase;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.storer.BasicStorer;
-import fr.ign.cogit.simplu3d.reader.RoadReader;
-import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 
 public class LoadExpRennes {
 

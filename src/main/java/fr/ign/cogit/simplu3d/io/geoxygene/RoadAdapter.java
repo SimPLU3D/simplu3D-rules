@@ -14,7 +14,7 @@
  * 
  * @version 1.0
  **/
-package fr.ign.cogit.simplu3d.reader;
+package fr.ign.cogit.simplu3d.io.geoxygene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ import fr.ign.cogit.simplu3d.model.Road;
  * @author MBorne
  *
  */
-public class RoadReader extends AbstractReader<Road> {
+public class RoadAdapter extends AbstractFeatureAdapter<Road> {
 
 	public static final String ATT_NOM_RUE = "NOM_RUE_G";
 	public static final String ATT_LARGEUR = "LARGEUR";
@@ -51,6 +51,7 @@ public class RoadReader extends AbstractReader<Road> {
 	@Override
 	public Road read(IFeature feature) {
 		Road result = new Road();
+		result.setId(feature.getId());
 		result.setName(readStringAttribute(feature, ATT_NOM_RUE));
 		
 		Double width = readDoubleAttribute(feature, ATT_LARGEUR);

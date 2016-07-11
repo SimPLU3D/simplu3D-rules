@@ -1,12 +1,3 @@
-package fr.ign.cogit.simplu3d.reader;
-
-import java.text.SimpleDateFormat;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
-import fr.ign.cogit.simplu3d.model.UrbaZone;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -23,7 +14,23 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  * 
  * @version 1.0
  **/
-public class UrbaZoneReader extends AbstractReader<UrbaZone>{
+package fr.ign.cogit.simplu3d.io.geoxygene;
+
+import java.text.SimpleDateFormat;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
+import fr.ign.cogit.simplu3d.model.UrbaZone;
+
+/**
+ * 
+ * UrbaZone feature adapter
+ * 
+ * @author MBorne
+ *
+ */
+public class UrbaZoneAdapter extends AbstractFeatureAdapter<UrbaZone>{
 
 	public static final String ATT_LIBELLE = "LIBELLE";
 	public static final String ATT_LIBELONG = "LIBELONG";

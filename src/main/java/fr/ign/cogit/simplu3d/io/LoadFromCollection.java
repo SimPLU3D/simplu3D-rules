@@ -7,11 +7,16 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.builder.BasicPropertyUnitBuilder;
+import fr.ign.cogit.simplu3d.dao.RoadRepository;
+import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
+import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
+import fr.ign.cogit.simplu3d.io.geoxygene.UrbaDocumentAdapter;
 import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
@@ -21,10 +26,6 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
-import fr.ign.cogit.simplu3d.reader.AbstractReader;
-import fr.ign.cogit.simplu3d.reader.RoadReader;
-import fr.ign.cogit.simplu3d.reader.UrbaDocumentReader;
-import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.util.AssignZ;
 
 /**
@@ -47,8 +48,7 @@ public class LoadFromCollection {
 
   public final static boolean SURSAMPLED = true;
 
-  private final static Logger logger = Logger
-      .getLogger(LoadFromCollection.class.getCanonicalName());
+  private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
 
   public static Environnement load(IFeature featPLU,
       IFeatureCollection<IFeature> zoneColl,
@@ -107,10 +107,10 @@ public class LoadFromCollection {
     // Etape 1 : création de l'objet PLU
     UrbaDocument plu;
     if (featPLU == null) {
-      plu = new UrbaDocument();
+    	plu = new UrbaDocument();
     } else {
-		AbstractReader<UrbaDocument> urbaDocumentReader = new UrbaDocumentReader();
-		plu = urbaDocumentReader.read(featPLU);
+    	UrbaDocumentAdapter urbaDocumentAdapter = new UrbaDocumentAdapter();
+		plu = urbaDocumentAdapter.read(featPLU);
     }
 
     env.setUrbaDocument(plu);
@@ -118,9 +118,9 @@ public class LoadFromCollection {
     logger.info("PLU creation");
 
     // Etape 2 : création des zones et assignation des règles aux zones
-    UrbaZoneReader urbaZoneReader = new UrbaZoneReader();
+    UrbaZoneRepository urbaZoneRepository = new UrbaZoneRepositoryGeoxygene(zoneColl);
     IFeatureCollection<UrbaZone> zones = new FT_FeatureCollection<>();
-    urbaZoneReader.read(zoneColl,zones);
+    zones.addAll(urbaZoneRepository.findAll());
 
     logger.info("Zones loaded");
 
@@ -164,10 +164,9 @@ public class LoadFromCollection {
     logger.info("Buildings imported");
 
     // Etape 8 : chargement des voiries
-
-    RoadReader roadReader = new RoadReader();
+    RoadRepository roadRepository = new RoadRepositoryGeoxygene(voirieColl);
     IFeatureCollection<Road> roads = new FT_FeatureCollection<>();
-    roadReader.read(voirieColl,roads);
+    roads.addAll(roadRepository.findAll());
     env.setRoads(roads);
 
     logger.info("Roads loaded");

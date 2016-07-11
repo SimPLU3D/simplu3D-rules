@@ -2,15 +2,15 @@ package fr.ign.cogit.simplu3d.builder;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 import org.junit.Test;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
+import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
+import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.reader.CadastralParcelReader;
 import junit.framework.TestCase;
 
 /**
@@ -31,9 +31,8 @@ public class BasicPropertyUnitBuilderTest extends TestCase {
 		File path = new File(
 			getClass().getClassLoader().getResource("demo-01/PARCELLE.shp").getPath()
 		);
-
-		CadastralParcelReader reader = new CadastralParcelReader();
-		cadastralParcels = reader.readShapefile(path);
+		CadastralParcelRepository repository = new CadastralParcelRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		cadastralParcels = repository.findAll();
 	}
 	
 	@Test

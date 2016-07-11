@@ -18,9 +18,12 @@ package fr.ign.cogit.simplu3d.model;
 
 import org.citygml4j.model.citygml.core.CityObject;
 
+import com.vividsolutions.jts.geom.LineString;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityObject;
+import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 
 /**
  * 
@@ -106,6 +109,10 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	// à la bordure
 	private IFeature featAdj = null;
 
+	public SpecificCadastralBoundary(){
+		
+	}
+	
 	public SpecificCadastralBoundary(IGeometry geom) {
 		this.setGeom(geom);
 	}
@@ -117,8 +124,6 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	public void setFeatAdj(IFeature featAdj) {
 		this.featAdj = featAdj;
 	}
-
-
 
 
 	@Override
@@ -188,6 +193,23 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	 */
 	public void setSide(SpecificCadastralBoundarySide side) {
 		this.side = side;
+	}
+	
+	
+	public void setGeometry(LineString geometry){
+		try {
+			setGeom(JtsGeOxygene.makeGeOxygeneGeom(geometry));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public LineString getGeometry(){
+		try {
+			return (LineString)JtsGeOxygene.makeJtsGeom(getGeom());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}		
 	}
 
 }

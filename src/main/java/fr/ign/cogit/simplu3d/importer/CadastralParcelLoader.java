@@ -20,7 +20,6 @@
  */
 package fr.ign.cogit.simplu3d.importer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -49,6 +48,7 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.builder.CarteTopoBuilder;
+import fr.ign.cogit.simplu3d.io.geoxygene.CadastralParcelAdapter;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
@@ -70,12 +70,9 @@ public class CadastralParcelLoader {
 	public static double MINIMUM_AREA_PARC = 2;
 	public static int WIDTH_DEP = 3;
 
-	public static final String ATT_ID_PARC = "NUMERO";
-	public static String ATT_HAS_TO_BE_SIMULATED = "simul";
-	// public static String ATT_ID_PARC = "NUMERO";
-
 	private static Logger logger = Logger.getLogger(CadastralParcelLoader.class);
-
+	
+	
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
 			IFeatureCollection<IFeature> parcelCollection) {
 
@@ -137,13 +134,13 @@ public class CadastralParcelLoader {
 			Iterator<IFeature> it = coll.iterator();
 			IFeature feat = it.next();
 
-			Object idParc = feat.getAttribute(ATT_ID_PARC);
+			Object idParc = feat.getAttribute(CadastralParcelAdapter.ATT_ID_PARC);
 			if ( idParc == null ){
-				throw new RuntimeException("attribute "+ATT_ID_PARC+" not found");
+				throw new RuntimeException("attribute "+CadastralParcelAdapter.ATT_ID_PARC+" not found");
 			}
 			//int idParc = Integer.parseInt(.toString());
 
-			Object o = feat.getAttribute(ATT_HAS_TO_BE_SIMULATED);
+			Object o = feat.getAttribute(CadastralParcelAdapter.ATT_HAS_TO_BE_SIMULATED);
 
 			if (o != null) {
 				parc.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));

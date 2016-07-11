@@ -1,70 +1,12 @@
-package fr.ign.cogit.simplu3d.reader;
+package fr.ign.cogit.simplu3d.io.geoxygene;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 
-/**
- * 
- * Converts features to Model
- *  
- * @warning attribute must be searched with their upper case form
- *  
- * @author MBorne
- *
- * @param <Model> target class
- */
-public abstract class AbstractReader<Model> {
-
-	/**
-	 * Read a feature
-	 * @param feature
-	 * @return
-	 */
-	public abstract Model read(IFeature feature);
-
-	/**
-	 * Read shapefile
-	 * @param path
-	 * @return
-	 */
-	public List<Model> readShapefile(File path) {
-		IFeatureCollection<IFeature> features = ShapefileReader.read(path.toString());
-		return read(features);
-	}
-
-	/**
-	 * Read feature collection
-	 * @param features
-	 * @return
-	 */
-	public List<Model> read(IFeatureCollection<IFeature> features) {
-		List<Model> result = new ArrayList<>(features.size());
-		read(features,result);
-		return result;
-	}
-	
-	/**
-	 * Read features to result
-	 * @param features
-	 * @param result
-	 */
-	public void read(IFeatureCollection<IFeature> features, Collection<Model> result){
-		for (IFeature feature : features) {
-			Model model = read(feature);
-			if ( model != null ){
-				result.add(model);	
-			}
-		}
-	}
+public abstract class AbstractFeatureAdapter<T> implements IFeatureAdapter<T>{
 
 	/**
 	 * Read a string 
@@ -150,5 +92,4 @@ public abstract class AbstractReader<Model> {
 		result = feature.getAttribute(attributeName.toLowerCase());
 		return result;
 	}
-
 }

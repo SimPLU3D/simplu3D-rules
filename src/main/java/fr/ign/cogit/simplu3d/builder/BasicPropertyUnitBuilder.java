@@ -72,7 +72,7 @@ public class BasicPropertyUnitBuilder {
 			bpU.getCadastralParcel().add(cadastralParcel);
 			cadastralParcel.setbPU(bpU);
 
-			// TODO fix in case of aggregation
+			// TODO find a better way to identify BasicPropertyUnits
 			bpU.setId(cadastralParcel.getId());
 			
 			// TODO check if it's possible to use a single setter

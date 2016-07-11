@@ -7,7 +7,6 @@ import org.junit.Test;
 import fr.ign.cogit.simplu3d.demo.nonStructDatabase.shp.LoadDefaultEnvironment;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
-import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import junit.framework.Assert;
 

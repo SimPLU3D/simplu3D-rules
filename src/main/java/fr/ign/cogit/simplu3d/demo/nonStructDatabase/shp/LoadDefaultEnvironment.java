@@ -4,7 +4,6 @@ import java.io.File;
 
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.util.FileLocator;
 
 /**
  * 

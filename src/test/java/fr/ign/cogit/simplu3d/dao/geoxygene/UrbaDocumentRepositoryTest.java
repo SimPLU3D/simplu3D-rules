@@ -1,27 +1,29 @@
-package fr.ign.cogit.simplu3d.reader;
+package fr.ign.cogit.simplu3d.dao.geoxygene;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.List;
-
+import java.util.Collection;
 import org.junit.Test;
 
+import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
+import fr.ign.cogit.simplu3d.dao.UrbaDocumentRepository;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
-public class UrbaDocumentReaderTest extends TestCase {
+public class UrbaDocumentRepositoryTest extends TestCase {
+	
 	
 	@Test
 	public void testDemo01(){
 		File path = new File(
 			getClass().getClassLoader().getResource("demo-01/DOC_URBA.shp").getPath()
 		);
-		AbstractReader<UrbaDocument> reader = new UrbaDocumentReader();
-		List<UrbaDocument> urbaDocuments = reader.readShapefile(path);
+		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 		assertEquals(1, urbaDocuments.size());
 
-		UrbaDocument first = urbaDocuments.get(0);
+		UrbaDocument first = urbaDocuments.iterator().next();
 		assertEquals("12345_20151017", first.getIdUrba());
 		assertEquals("PLU", first.getTypeDoc());
 		
@@ -46,8 +48,8 @@ public class UrbaDocumentReaderTest extends TestCase {
 		File path = new File(
 			getClass().getClassLoader().getResource("44118_PLU_20150219/DOC_URBA.shp").getPath()
 		);
-		AbstractReader<UrbaDocument> reader = new UrbaDocumentReader();
-		List<UrbaDocument> urbaDocuments = reader.readShapefile(path);
+		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 /*
  * TODO allow EMPTY/NULL geometry in geoxygene https://github.com/IGNF/geoxygene/issues/3
  * 
@@ -57,7 +59,7 @@ public class UrbaDocumentReaderTest extends TestCase {
  */
 		assertEquals(404, urbaDocuments.size());
 
-		UrbaDocument first = urbaDocuments.get(0);
+		UrbaDocument first = urbaDocuments.iterator().next();
 		assertEquals("4400120120223", first.getIdUrba());
 		assertEquals("PLU", first.getTypeDoc());
 		

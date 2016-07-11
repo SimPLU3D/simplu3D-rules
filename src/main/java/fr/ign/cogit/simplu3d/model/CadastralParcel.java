@@ -16,6 +16,8 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
@@ -26,6 +28,7 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
@@ -164,7 +167,22 @@ public class CadastralParcel extends CG_LandUse {
 		}
 
 		return consLine;
-
 	}
 
+	public Geometry getGeometry(){
+		try {
+			return JtsGeOxygene.makeJtsGeom(this.getGeom());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void setGeometry(Geometry geometry){
+		try {
+			setGeom(JtsGeOxygene.makeGeOxygeneGeom(geometry));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }

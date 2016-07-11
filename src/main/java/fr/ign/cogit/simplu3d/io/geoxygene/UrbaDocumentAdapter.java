@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.reader;
+package fr.ign.cogit.simplu3d.io.geoxygene;
 
 import java.text.SimpleDateFormat;
 
@@ -6,14 +6,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
-/**
- * 
- * Read features as UrbaDocument
- * 
- * @author MBorne
- *
- */
-public class UrbaDocumentReader extends AbstractReader<UrbaDocument> {
+public class UrbaDocumentAdapter extends AbstractFeatureAdapter<UrbaDocument> {
 
 	public static final String ATT_ID_URBA = "IDURBA";
 	public static final String ATT_TYPE_DOC = "TYPEDOC";
@@ -29,12 +22,8 @@ public class UrbaDocumentReader extends AbstractReader<UrbaDocument> {
 	public static final String ATT_SITE_WEB = "SITEWEB";
 	public static final String ATT_TYPE_REF = "TYPEREF";
 	public static final String ATT_DATE_REF = "DATEREF";
-
-	/**
-	 * Read a single feature
-	 * @param feature
-	 * @return
-	 */
+	
+	@Override
 	public UrbaDocument read(IFeature feature) {
 		UrbaDocument result = new UrbaDocument();
 
@@ -84,5 +73,5 @@ public class UrbaDocumentReader extends AbstractReader<UrbaDocument> {
 
 		return result;
 	}
-	
+
 }

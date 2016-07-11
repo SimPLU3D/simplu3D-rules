@@ -25,8 +25,6 @@ import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
-import fr.ign.cogit.simplu3d.reader.RoadReader;
-import fr.ign.cogit.simplu3d.reader.UrbaZoneReader;
 
 /**
  * 

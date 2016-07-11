@@ -1,27 +1,31 @@
-package fr.ign.cogit.simplu3d.reader;
+package fr.ign.cogit.simplu3d.dao.geoxygene;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.Test;
 
+import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
+import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 import junit.framework.TestCase;
 
-public class UrbaZoneReaderTest extends TestCase {
+public class UrbaZoneRepositoryTest extends TestCase {
 	
 	@Test
 	public void testReadShapefile(){
 		File path = new File(
 			getClass().getClassLoader().getResource("44118_PLU_20150219/ZONE_URBA.shp").getPath()
 		);
-		UrbaZoneReader reader = new UrbaZoneReader();
-		List<UrbaZone> urbaZones = reader.readShapefile(path);
+		UrbaZoneRepository repository = new UrbaZoneRepositoryGeoxygene(
+			ShapefileReader.read(path.toString())
+		);
+		Collection<UrbaZone> urbaZones = repository.findAll();
 		assertEquals(124, urbaZones.size());
 
-		UrbaZone first = urbaZones.get(0);
+		UrbaZone first = urbaZones.iterator().next();
 		
 		assertNotNull(first.getGeom());
 		
