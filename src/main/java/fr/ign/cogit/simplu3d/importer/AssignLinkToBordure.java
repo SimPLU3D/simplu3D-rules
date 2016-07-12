@@ -84,7 +84,7 @@ public class AssignLinkToBordure {
     }
 
     if (sP.size() < 2) {
-      System.out.println("Error in sousParcelle selection");
+      System.out.println(AssignLinkToBordure.class.toString() + " Error in sousParcelle selection");
     }
 
     Iterator<CadastralParcel> itP = sP.iterator();

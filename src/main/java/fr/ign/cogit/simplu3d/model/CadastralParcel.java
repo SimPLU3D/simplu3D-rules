@@ -24,9 +24,9 @@ import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
@@ -40,9 +40,16 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBo
  * @author Brasebin Mickaël
  *
  */
-public class CadastralParcel extends CG_LandUse {
+public class CadastralParcel extends DefaultFeature {
 
 	public final String CLASSE = "Parcelle";
+
+	/**
+	 * Logical identifier of the CadastralParcel
+	 * 
+	 * For BDParcellaire (france) : INSEE_COMMUNE + COMM_ABS + SECTION + NUMERO (ex : 15012011AD250)
+	 */
+	private String code;
 
 	/**
 	 * TODO déplacer au niveau applicatif?
@@ -53,6 +60,15 @@ public class CadastralParcel extends CG_LandUse {
 	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
 	public BasicPropertyUnit bPU;
+
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	/**
 	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être
@@ -77,10 +93,7 @@ public class CadastralParcel extends CG_LandUse {
 	public CadastralParcel(IMultiSurface<IOrientableSurface> iMS) {
 		super();
 
-		this.setLod2MultiSurface(iMS);
 		this.setGeom(iMS);
-
-		this.setClazz(CLASSE);
 
 	}
 
@@ -100,8 +113,8 @@ public class CadastralParcel extends CG_LandUse {
 		this.specificCB = bordures;
 	}
 
-	
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(SpecificCadastralBoundarySide  scbSide) {
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(
+			SpecificCadastralBoundarySide scbSide) {
 		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
 
 		for (SpecificCadastralBoundary sc : specificCB) {
@@ -114,10 +127,9 @@ public class CadastralParcel extends CG_LandUse {
 
 		return featC;
 	}
-	
 
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(SpecificCadastralBoundaryType type) {
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(
+			SpecificCadastralBoundaryType type) {
 		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
 		for (SpecificCadastralBoundary b : this.specificCB) {
 			if (b.getType() == type) {

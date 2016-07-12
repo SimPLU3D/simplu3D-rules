@@ -32,8 +32,7 @@ public class CadastralParcelRepositoryTest extends TestCase {
 		assertEquals(84, cadastralParcels.size());
 
 		CadastralParcel first = cadastralParcels.iterator().next();
-		//TODO "0952" with string identifier
-		assertEquals( 952, first.getId() );
+		assertEquals( "35238000BW0952", first.getCode() );
 		assertNotNull( first.getGeom() );
 		assertTrue( Math.abs( first.getGeom().area() - 306.51 ) < 0.1 );
 	}

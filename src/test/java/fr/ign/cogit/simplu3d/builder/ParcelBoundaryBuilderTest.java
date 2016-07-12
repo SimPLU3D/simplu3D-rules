@@ -30,7 +30,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	public void testParcel0001(){
 		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(0);
-		assertEquals(0001, cadastralParcel.getId());
+		assertEquals("0001", cadastralParcel.getCode());
 		Collection<SpecificCadastralBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
 		assertEquals(1, boundaries.size());
 	}
@@ -38,7 +38,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	public void testParcel0002(){
 		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(1);
-		assertEquals(0002, cadastralParcel.getId());
+		assertEquals("0002", cadastralParcel.getCode());
 		
 		Collection<SpecificCadastralBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
 		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
@@ -47,7 +47,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	public void testParcel0003(){
 		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(2);
-		assertEquals(0003, cadastralParcel.getId());
+		assertEquals("0003", cadastralParcel.getCode());
 		
 		Collection<SpecificCadastralBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
 		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
@@ -56,7 +56,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	public void testParcel0004(){
 		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(3);
-		assertEquals(0004, cadastralParcel.getId());
+		assertEquals("0004", cadastralParcel.getCode());
 		
 		Collection<SpecificCadastralBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
 		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
