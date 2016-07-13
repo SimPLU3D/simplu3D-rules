@@ -16,20 +16,23 @@
  **/
 package fr.ign.cogit.simplu3d.io;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.dao.BuildingRepository;
 import fr.ign.cogit.simplu3d.dao.RoadRepository;
 import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
+import fr.ign.cogit.simplu3d.dao.geoxygene.BuildingRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
+import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
-import fr.ign.cogit.simplu3d.importer.BuildingImporter;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
@@ -170,12 +173,17 @@ public class LoadFromCollection {
     logger.info("Basic property units created");
 
     // Etape 7 : import des bâtiments
-    IFeatureCollection<Building> buildings = BuildingImporter.importBuilding(
-        batiColl, collBPU);
+    BuildingRepository buildingRepository = new BuildingRepositoryGeoxygene(batiColl);
+    Collection<Building> buildings = buildingRepository.findAll();
     env.getBuildings().addAll(buildings);
-
+    
     logger.info("Buildings imported");
 
+    // Etape 7.1 : assignation des batiments aux BpU
+    
+    AssignBuildingPartToSubParcel.assign(buildings, collBPU);
+    
+    
     // Etape 8 : chargement des voiries
     RoadRepository roadRepository = new RoadRepositoryGeoxygene(voirieColl);
     IFeatureCollection<Road> roads = new FT_FeatureCollection<>();

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
+import fr.ign.cogit.simplu3d.io.feature.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 import junit.framework.TestCase;
 
@@ -40,7 +40,7 @@ public class UrbaZoneRepositoryTest extends TestCase {
 		assertEquals("",first.getUrlFic());
 		assertEquals("44118",first.getInsee());
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(UrbaZoneReader.DATE_FORMAT_DU1);
 		assertEquals("20150219",dateFormat.format(first.getDateDeb()));
 		assertNull(first.getDateFin());
 

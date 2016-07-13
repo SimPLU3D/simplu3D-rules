@@ -3,7 +3,6 @@ package fr.ign.cogit.simplu3d.io.feature;
 import java.text.SimpleDateFormat;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
 public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
@@ -23,6 +22,9 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 	public static final String ATT_TYPE_REF = "TYPEREF";
 	public static final String ATT_DATE_REF = "DATEREF";
 	
+	public final static String DATE_FORMAT_DU1 = "yyyyMMdd";
+	public final static String DATE_FORMAT_DU2 = "yyyy";
+	
 	@Override
 	public UrbaDocument read(IFeature feature) {
 		UrbaDocument result = new UrbaDocument();
@@ -34,7 +36,7 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 		result.setTypeDoc(readStringAttribute(feature,ATT_TYPE_DOC));
 
 		// Date Approbation Document Urbanisme
-		SimpleDateFormat sdfdeb = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
+		SimpleDateFormat sdfdeb = new SimpleDateFormat(DATE_FORMAT_DU1);
 		result.setDateAppro(readDateAttribute(feature, ATT_DATE_APPRO, sdfdeb));
 
 		// Date Fin Document Urbanisme
@@ -68,7 +70,7 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 		result.setTypeRef(readStringAttribute(feature,ATT_TYPE_REF));
 
 		// Date Référence
-		SimpleDateFormat sdfref = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU2);
+		SimpleDateFormat sdfref = new SimpleDateFormat(DATE_FORMAT_DU2);
 		result.setDateRef(readDateAttribute(feature, ATT_DATE_REF, sdfref));
 
 		return result;

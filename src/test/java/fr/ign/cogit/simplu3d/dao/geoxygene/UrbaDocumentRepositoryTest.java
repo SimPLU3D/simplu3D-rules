@@ -3,11 +3,12 @@ package fr.ign.cogit.simplu3d.dao.geoxygene;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+
 import org.junit.Test;
 
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.UrbaDocumentRepository;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
+import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
@@ -27,7 +28,7 @@ public class UrbaDocumentRepositoryTest extends TestCase {
 		assertEquals("12345_20151017", first.getIdUrba());
 		assertEquals("PLU", first.getTypeDoc());
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(UrbaDocumentReader.DATE_FORMAT_DU1);
 		assertEquals("20151017",dateFormat.format(first.getDateAppro()));
 		assertEquals("20181017",dateFormat.format(first.getDateFin()));
 		//assertEquals("F",first.getInterCo()); //TODO
@@ -63,7 +64,7 @@ public class UrbaDocumentRepositoryTest extends TestCase {
 		assertEquals("4400120120223", first.getIdUrba());
 		assertEquals("PLU", first.getTypeDoc());
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(UrbaDocumentReader.DATE_FORMAT_DU1);
 		assertEquals("20120223",dateFormat.format(first.getDateAppro()));
 		assertNull(first.getDateFin());
 		assertEquals("F",first.getInterCo());

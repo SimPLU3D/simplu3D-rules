@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Assert;
+import org.apache.log4j.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
@@ -25,6 +27,8 @@ import fr.ign.cogit.simplu3d.util.PointInPolygon;
  *
  */
 public class CadastralBoundaryGenerator {
+	
+	private static Logger logger = Logger.getLogger(CarteTopoParcelBoundaryBuilder.class);
 	
 	/**
 	 * Context cadastral parcels
@@ -67,14 +71,16 @@ public class CadastralBoundaryGenerator {
 			allFaces.initSpatialIndex(Tiling.class, false);
 		}
 		
-		Collection<Face> candidateFaces = allFaces.select(PointInPolygon.get((IPolygon) cadastralParcel.getGeom()), 0);
+		IDirectPosition centroid = PointInPolygon.get((IPolygon) cadastralParcel.getGeom());
+		Collection<Face> candidateFaces = allFaces.select(centroid, 0);
 		if ( candidateFaces.isEmpty() ){
 			throw new RuntimeException("Face not found for parcel "+cadastralParcel.getCode());
 		}
+		//TODO blindage (contrôle topologique en amont, cas des polygones mal modélisé (trou ~ contour))
 		if ( candidateFaces.size() != 1 ){
-			throw new RuntimeException(candidateFaces.size()+" faces found for parcel "+cadastralParcel.getCode());
+			logger.error(candidateFaces.size()+" faces found for parcel "+cadastralParcel.getCode());
 		}
-		
+
 		Face face = candidateFaces.iterator().next();
 
 		List<SpecificCadastralBoundary> result = new ArrayList<>();

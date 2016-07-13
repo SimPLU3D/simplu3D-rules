@@ -123,7 +123,7 @@ public class HauteurCalculation {
     return box.getURDP().getZ();
   }
 
-  public static double calculateZHautPHF(CG_AbstractBuilding b) {
+  public static double calculateZHautPHF(AbstractBuilding b) {
     Box3D box = new Box3D(b.getGeom());
     return box.getURDP().getZ();
   }
@@ -164,7 +164,7 @@ public class HauteurCalculation {
     return zMin;
   }
 
-  private static double calculateZBasPBB(CG_AbstractBuilding b) {
+  private static double calculateZBasPBB(AbstractBuilding b) {
     Box3D box = new Box3D(b.getGeom());
     return box.getLLDP().getZ();
   }

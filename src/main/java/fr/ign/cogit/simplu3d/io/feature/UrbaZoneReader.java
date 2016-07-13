@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
-import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 
 /**
@@ -43,6 +42,7 @@ public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone>{
 	public static final String VALIDITY_DATE_VALID = "DATVALID";
 	public static final String ATT_TEXT = "TEXT";
 
+	public final static String DATE_FORMAT_DU1 = "yyyyMMdd";
 
 	@Override
 	public UrbaZone read(IFeature feature) {
@@ -70,7 +70,7 @@ public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone>{
 		z.setInsee(readStringAttribute(feature,ATT_INSEE));
 
 		// Pour la date d'approbation de la zone urba (date de début)
-		SimpleDateFormat sdfdeb = new SimpleDateFormat(ParametersInstructionPG.DATE_FORMAT_DU1);
+		SimpleDateFormat sdfdeb = new SimpleDateFormat(DATE_FORMAT_DU1);
 		z.setDateDeb(readDateAttribute(feature, VALIDITY_DATE_APPRO, sdfdeb));
 
 		// Pour la date de validité de la zone urba (date de fin)

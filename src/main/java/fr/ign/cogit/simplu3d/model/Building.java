@@ -31,6 +31,7 @@ public class Building extends AbstractBuilding {
 		super();
 	}
 
+	@Deprecated
 	public Building(IGeometry geom) {
 		super(geom);
 	}

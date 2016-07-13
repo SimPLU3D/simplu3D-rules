@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.citygml4j.model.citygml.CityGML;
-import org.citygml4j.model.citygml.core.CityObject;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -28,11 +27,11 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
 import fr.ign.cogit.simplu3d.importer.EmpriseGenerator;
 import fr.ign.cogit.simplu3d.importer.RoofImporter;
@@ -51,7 +50,7 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
  * @author Brasebin Mickaël
  *
  */
-public abstract class AbstractBuilding extends CG_AbstractBuilding {
+public abstract class AbstractBuilding extends DefaultFeature {
 
 	public List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
@@ -64,19 +63,19 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
 	private BasicPropertyUnit bPU;
 
-	private int idSubPar;
-	private int idVersion = -1;
+	private IMultiSurface<IOrientableSurface> lod2MultiSurface;
+	
+	private int storeysAboveGround;
+	
+	private double storeyHeightsAboveGround;
 
 	public boolean isNew = false;
-
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
-	}
-
+	
 	protected AbstractBuilding() {
 		super();
 	}
 
+	@Deprecated
 	public AbstractBuilding(IGeometry geom) {
 		this.setGeom(geom);
 		this.setLod2MultiSurface(FromGeomToSurface.convertMSGeom(geom));
@@ -113,6 +112,11 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 
 	}
 
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
@@ -137,20 +141,25 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.roofSurface = roof;
 	}
 
-	public int getIdSubPar() {
-		return idSubPar;
+	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
+		return lod2MultiSurface;
 	}
 
-	public void setIdSubPar(int idSubPar) {
-		this.idSubPar = idSubPar;
+	public void setLod2MultiSurface(IMultiSurface<IOrientableSurface> lod2MultiSurface) {
+		this.lod2MultiSurface = lod2MultiSurface;
 	}
 
-	public int getIdVersion() {
-		return idVersion;
+	public void setStoreysAboveGround(int storeysAboveGround) {
+		this.storeysAboveGround = storeysAboveGround;
+	}
+	
+
+	public double getStoreyHeightsAboveGround() {
+		return storeyHeightsAboveGround;
 	}
 
-	public void setIdVersion(int idVersion) {
-		this.idVersion = idVersion;
+	public void setStoreyHeightsAboveGround(double storeyHeightsAboveGround) {
+		this.storeyHeightsAboveGround = storeyHeightsAboveGround;
 	}
 
 	public List<BuildingPart> getBuildingPart() {
@@ -177,14 +186,12 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.buildingParts = buildingPart;
 	}
 
-	@Override
 	public int getStoreysAboveGround() {
 		if (this.storeysAboveGround == -1) {
 			this.storeysAboveGround = StoreyCalculation.process(this);
 		}
 
 		return this.storeysAboveGround;
-
 	}
 
 	public void setRoofSurface(RoofSurface toit) {
@@ -216,12 +223,6 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		return footprint;
 	}
 
-	@Override
-	public CityObject export() {
-	//	@TODO : to complete
-		return null;
-	}
-	
 	
 	////Geometric operators @TODO : Should we move this ?
 	

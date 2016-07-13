@@ -1,5 +1,6 @@
 package fr.ign.cogit.simplu3d.importer;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class AssignBuildingPartToSubParcel {
 
 	public static int ASSIGN_METHOD = 0;
 
-	public static void assign(IFeatureCollection<Building> buildings, IFeatureCollection<BasicPropertyUnit> collBPU) {
+	public static void assign(Collection<Building> buildings, IFeatureCollection<BasicPropertyUnit> collBPU) {
 
 		for (Building b : buildings) {
 
