@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.builder;
+package fr.ign.cogit.simplu3d.experimental;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
  * @author MBorne
  *
  */
-public class ParcelBoundaryBuilder {
+public class GeometryBasedParcelBoundaryGenerator {
 
 	private CadastralParcelRepository parcelRepository;
 
-	public ParcelBoundaryBuilder(CadastralParcelRepository parcelRepository) {
+	public GeometryBasedParcelBoundaryGenerator(CadastralParcelRepository parcelRepository) {
 		this.parcelRepository = parcelRepository;
 	}
 

@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.geoxygene;
+package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
@@ -6,7 +6,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.simplu3d.io.structDatabase.postgis.ParametersInstructionPG;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
-public class UrbaDocumentAdapter extends AbstractFeatureAdapter<UrbaDocument> {
+public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 
 	public static final String ATT_ID_URBA = "IDURBA";
 	public static final String ATT_TYPE_DOC = "TYPEDOC";

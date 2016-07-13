@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.builder;
+package fr.ign.cogit.simplu3d.generator;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,9 +22,9 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
  * @author MBrasebin
  *
  */
-public class CarteTopoBuilder {
+public class CarteTopoParcelBoundaryBuilder {
 	
-	private static Logger logger = Logger.getLogger(CarteTopoBuilder.class);
+	private static Logger logger = Logger.getLogger(CarteTopoParcelBoundaryBuilder.class);
 	
 	
 	public static CarteTopo newCarteTopo(
@@ -42,8 +42,7 @@ public class CarteTopoBuilder {
 			// Import des arcs de la collection dans la carteTopo
 			for (IFeature feature : features) {
 
-				List<ILineString> lLLS = FromPolygonToLineString
-						.convertPolToLineStrings((IPolygon) FromGeomToSurface.convertGeom(feature.getGeom()).get(0));
+				List<ILineString> lLLS = FromPolygonToLineString.convertPolToLineStrings((IPolygon) feature.getGeom());
 
 				for (ILineString ls : lLLS) {
 					//TODO use threshold?
@@ -94,14 +93,16 @@ public class CarteTopoBuilder {
 			carteTopo.creeTopologieArcsNoeuds(threshold);
 			logger.info("Build faces...");
 			carteTopo.creeTopologieFaces();
+			
+			if ( carteTopo.getPopFaces().isEmpty() ){
+				throw new RuntimeException("no faces created!");
+			}
 
 			// carteTopo.filtreNoeudsSimples();
 			return carteTopo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		//TODO replace by an exception (better than NullPointerException)?
-		return null;
 	}
 
 	private static boolean hasNullLengthEdge(CarteTopo ct) {

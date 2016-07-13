@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.builder;
+package fr.ign.cogit.simplu3d.generator;
 
 import java.io.File;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import junit.framework.TestCase;
@@ -22,7 +23,7 @@ import junit.framework.TestCase;
  * @author MBorne
  *
  */
-public class BasicPropertyUnitBuilderTest extends TestCase {
+public class BasicPropertyUnitGeneratorTest extends TestCase {
 
 	private Collection<CadastralParcel> cadastralParcels ;
 	
@@ -37,8 +38,8 @@ public class BasicPropertyUnitBuilderTest extends TestCase {
 	
 	@Test
 	public void testAggregation(){
-		BasicPropertyUnitBuilder builder = new BasicPropertyUnitBuilder(cadastralParcels);
-		IFeatureCollection<BasicPropertyUnit> propertyUnits = builder.buildPropertyUnits();
+		BasicPropertyUnitGenerator builder = new BasicPropertyUnitGenerator(cadastralParcels);
+		IFeatureCollection<BasicPropertyUnit> propertyUnits = builder.createPropertyUnits();
 		assertEquals(84, propertyUnits.size() );
 	}
 	

@@ -12,7 +12,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IEnvelope;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.simplu3d.io.geoxygene.IFeatureAdapter;
+import fr.ign.cogit.simplu3d.io.feature.IFeatureReader;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class AbstractRepositoryGeoxygene<T> {
 	/**
 	 * helper for IFeature/domain conversion
 	 */
-	private IFeatureAdapter<T> featureAdapter ;
+	private IFeatureReader<T> featureAdapter ;
 	/**
 	 * Items read from geoxygene's feature collection
 	 */
@@ -38,7 +38,7 @@ public class AbstractRepositoryGeoxygene<T> {
 	private SpatialIndex spatialIndex;
 
 	
-	public AbstractRepositoryGeoxygene(IFeatureCollection<IFeature> features, IFeatureAdapter<T> featureAdapter){
+	public AbstractRepositoryGeoxygene(IFeatureCollection<IFeature> features, IFeatureReader<T> featureAdapter){
 		this.featureAdapter = featureAdapter;
 		this.items = new ArrayList<>(features.size());
 		for (IFeature feature : features) {
@@ -48,7 +48,7 @@ public class AbstractRepositoryGeoxygene<T> {
 	}
 
 
-	protected IFeatureAdapter<T> getFeatureAdapter() {
+	protected IFeatureReader<T> getFeatureAdapter() {
 		return featureAdapter;
 	}
 

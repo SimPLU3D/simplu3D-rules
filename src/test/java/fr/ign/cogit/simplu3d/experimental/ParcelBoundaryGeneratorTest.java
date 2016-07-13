@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.builder;
+package fr.ign.cogit.simplu3d.experimental;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,11 +8,12 @@ import java.util.List;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.experimental.GeometryBasedParcelBoundaryGenerator;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import junit.framework.TestCase;
 
-public class ParcelBoundaryBuilderTest extends TestCase {
+public class ParcelBoundaryGeneratorTest extends TestCase {
 	
 	private CadastralParcelRepository repository ;
 	
@@ -28,7 +29,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	}
 
 	public void testParcel0001(){
-		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
+		GeometryBasedParcelBoundaryGenerator builder = new GeometryBasedParcelBoundaryGenerator(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(0);
 		assertEquals("0001", cadastralParcel.getCode());
 		Collection<SpecificCadastralBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
@@ -36,7 +37,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	}
 	
 	public void testParcel0002(){
-		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
+		GeometryBasedParcelBoundaryGenerator builder = new GeometryBasedParcelBoundaryGenerator(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(1);
 		assertEquals("0002", cadastralParcel.getCode());
 		
@@ -45,7 +46,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	}
 
 	public void testParcel0003(){
-		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
+		GeometryBasedParcelBoundaryGenerator builder = new GeometryBasedParcelBoundaryGenerator(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(2);
 		assertEquals("0003", cadastralParcel.getCode());
 		
@@ -54,7 +55,7 @@ public class ParcelBoundaryBuilderTest extends TestCase {
 	}
 	
 	public void testParcel0004(){
-		ParcelBoundaryBuilder builder = new ParcelBoundaryBuilder(repository);
+		GeometryBasedParcelBoundaryGenerator builder = new GeometryBasedParcelBoundaryGenerator(repository);
 		CadastralParcel cadastralParcel = cadastralParcels.get(3);
 		assertEquals("0004", cadastralParcel.getCode());
 		

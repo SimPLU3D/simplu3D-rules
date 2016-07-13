@@ -14,7 +14,7 @@
  * 
  * @version 1.0
  **/
-package fr.ign.cogit.simplu3d.builder;
+package fr.ign.cogit.simplu3d.generator;
 
 import java.util.Collection;
 
@@ -41,7 +41,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * @author MBrasebin
  *
  */
-public class BasicPropertyUnitBuilder {
+public class BasicPropertyUnitGenerator {
 	
 	/**
 	 * 
@@ -52,7 +52,7 @@ public class BasicPropertyUnitBuilder {
 	 * TODO Constructor with a CadastralParcel iterator?
 	 * @param cadastralParcels
 	 */
-	public BasicPropertyUnitBuilder(Collection<CadastralParcel> cadastralParcels){
+	public BasicPropertyUnitGenerator(Collection<CadastralParcel> cadastralParcels){
 		this.cadastralParcels = cadastralParcels ;
 	}
 
@@ -61,7 +61,7 @@ public class BasicPropertyUnitBuilder {
 	 * @param cadastralParcels
 	 * @return
 	 */
-	public IFeatureCollection<BasicPropertyUnit> buildPropertyUnits() {
+	public IFeatureCollection<BasicPropertyUnit> createPropertyUnits() {
 
 		IFeatureCollection<BasicPropertyUnit> result = new FT_FeatureCollection<BasicPropertyUnit>();
 

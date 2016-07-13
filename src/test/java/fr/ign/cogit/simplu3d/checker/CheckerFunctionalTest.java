@@ -25,7 +25,8 @@ public class CheckerFunctionalTest extends TestCase {
 			Environnement env = LoaderSHP.loadNoDTM(path);
 			BasicPropertyUnit bPU = env.getBpU().get(20);
 			List<UnrespectedRule> lSp = Checker.check(bPU, new Rules("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7"));
-			assertEquals(0, lSp.size());
+			assertEquals(3, lSp.size());
+			//TODO complete test
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

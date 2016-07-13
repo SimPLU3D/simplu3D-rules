@@ -14,7 +14,7 @@
  * 
  * @version 1.0
  **/
-package fr.ign.cogit.simplu3d.io.geoxygene;
+package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
@@ -30,7 +30,7 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  * @author MBorne
  *
  */
-public class UrbaZoneAdapter extends AbstractFeatureAdapter<UrbaZone>{
+public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone>{
 
 	public static final String ATT_LIBELLE = "LIBELLE";
 	public static final String ATT_LIBELONG = "LIBELONG";

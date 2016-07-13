@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.geoxygene;
+package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -6,7 +6,7 @@ import java.util.Date;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 
-public abstract class AbstractFeatureAdapter<T> implements IFeatureAdapter<T>{
+public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 
 	/**
 	 * Read a string 

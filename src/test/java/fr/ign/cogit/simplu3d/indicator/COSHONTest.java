@@ -33,8 +33,8 @@ public class COSHONTest {
 		//Assert.assertTrue(Math.abs(1.599950942067229 - cos1) < epsilon);
 		//Assert.assertTrue(Math.abs(1.59979612630762089 - cos2) < epsilon);
 		
-		Assert.assertTrue(Math.abs(1.5159052971393518 - cos1) < epsilon);
-		Assert.assertTrue(Math.abs(1.5158158834751623 - cos2) < epsilon);
+		Assert.assertTrue(Math.abs(1.5195472566046677 - cos1) < epsilon);
+		Assert.assertTrue(Math.abs(1.5194576281243275 - cos2) < epsilon);
 	}
 
 }

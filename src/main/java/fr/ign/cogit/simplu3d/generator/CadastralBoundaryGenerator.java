@@ -1,0 +1,102 @@
+package fr.ign.cogit.simplu3d.generator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.junit.Assert;
+
+import fr.ign.cogit.geoxygene.api.feature.IPopulation;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
+import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
+import fr.ign.cogit.geoxygene.util.index.Tiling;
+import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
+import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.util.PointInPolygon;
+
+/**
+ * 
+ * @author MBorne
+ *
+ */
+public class CadastralBoundaryGenerator {
+	
+	/**
+	 * Context cadastral parcels
+	 */
+	private Collection<CadastralParcel> cadastralParcels ;
+	
+	/**
+	 * cached carteTopo
+	 */
+	private CarteTopo carteTopo;
+	
+	/**
+	 * 
+	 */
+	private IParcelBoundaryAnalyzer boundaryAnalyzer;
+	
+	public CadastralBoundaryGenerator(Collection<CadastralParcel> cadastralParcels){
+		this.cadastralParcels = cadastralParcels;
+		this.boundaryAnalyzer = new NullParcelBoundaryAnalyzer();
+	}
+	
+	
+	public IParcelBoundaryAnalyzer getBoundaryAnalyzer() {
+		return boundaryAnalyzer;
+	}
+
+	public void setBoundaryAnalyzer(IParcelBoundaryAnalyzer boundaryAnalyzer) {
+		this.boundaryAnalyzer = boundaryAnalyzer;
+	}
+
+
+	public Collection<SpecificCadastralBoundary> createParcelBoundaries(CadastralParcel cadastralParcel){
+		buildCarteTopoAndAnalyzeFaces();
+			
+		/*
+		 * retrieve face for cadastralParcel
+		 */
+		IPopulation<Face> allFaces = carteTopo.getPopFaces() ;
+		if ( ! allFaces.hasSpatialIndex() ){
+			allFaces.initSpatialIndex(Tiling.class, false);
+		}
+		
+		Collection<Face> candidateFaces = allFaces.select(PointInPolygon.get((IPolygon) cadastralParcel.getGeom()), 0);
+		if ( candidateFaces.isEmpty() ){
+			throw new RuntimeException("Face not found for parcel "+cadastralParcel.getCode());
+		}
+		if ( candidateFaces.size() != 1 ){
+			throw new RuntimeException(candidateFaces.size()+" faces found for parcel "+cadastralParcel.getCode());
+		}
+		
+		Face face = candidateFaces.iterator().next();
+
+		List<SpecificCadastralBoundary> result = new ArrayList<>();
+		for (Arc arc : face.arcs()) {
+			SpecificCadastralBoundary boundary = new SpecificCadastralBoundary();
+			//TODO custom arc attribute
+			boundary.setType(SpecificCadastralBoundaryType.getTypeFromInt(arc.getOrientation()));
+			boundary.setSide(SpecificCadastralBoundarySide.getTypeFromInt((int)arc.getPoids()));
+			boundary.setGeom(arc.getGeom());
+			result.add(boundary);
+		}
+		return result;
+	}
+
+	private void buildCarteTopoAndAnalyzeFaces() {
+		if ( carteTopo != null ){
+			return ;
+		}
+		carteTopo = CarteTopoParcelBoundaryBuilder.newCarteTopo("parcelle", cadastralParcels, 0.2);
+		for ( Face f : carteTopo.getPopFaces() ){
+			this.boundaryAnalyzer.analyze(f);
+		}
+	}
+	
+}

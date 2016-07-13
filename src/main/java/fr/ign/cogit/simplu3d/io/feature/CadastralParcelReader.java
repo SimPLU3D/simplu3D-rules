@@ -1,6 +1,11 @@
-package fr.ign.cogit.simplu3d.io.geoxygene;
+package fr.ign.cogit.simplu3d.io.feature;
+
+import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 
 /**
@@ -12,7 +17,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * @author MBorne
  *
  */
-public class CadastralParcelAdapter extends AbstractFeatureAdapter<CadastralParcel>{
+public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel>{
 	public static final String ATT_CODE_PARC = "CODE";
 	
 	public static final String ATT_BDP_CODE_DEP = "CODE_DEP";
@@ -53,7 +58,15 @@ public class CadastralParcelAdapter extends AbstractFeatureAdapter<CadastralParc
 			cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
 		}
 
-		cadastralParcel.setGeom(feature.getGeom());
+		List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(feature.getGeom());
+		if ( polygons.size() == 1 ){
+			IPolygon polygon = (IPolygon)polygons.get(0);
+			cadastralParcel.setGeom(polygon);
+		}else if ( polygons.size() > 1 ){
+			throw new RuntimeException(
+				"CadastralParcel should be either Polygon or MultiPolygon with 1 polygon ("+polygons.size()+" found)"
+			);
+		}
 		return cadastralParcel;
 	}
 	

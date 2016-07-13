@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.io.geoxygene;
+package fr.ign.cogit.simplu3d.io.feature;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 
@@ -7,16 +7,19 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
  * Convert features to domain object
  * 
  * TODO check consistency for id management (forward feature.getId() to item.id)
+ * TODO clarify ability to (dont') manage relationships 
  * 
  * @author MBorne
  *
  * @param <T>
  */
-public interface IFeatureAdapter<T> {
+public interface IFeatureReader<T> {
 	
+	/**
+	 * Converts a feature to a model
+	 * @param feature
+	 * @return
+	 */
 	public T read(IFeature feature);
-
-	//public IFeature write(T item);
-	//public IFeatureType getFeatureType();
 
 }

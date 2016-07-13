@@ -1,33 +1,3 @@
-package fr.ign.cogit.simplu3d.io;
-
-import java.util.logging.Logger;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.simplu3d.builder.BasicPropertyUnitBuilder;
-import fr.ign.cogit.simplu3d.dao.RoadRepository;
-import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
-import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
-import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
-import fr.ign.cogit.simplu3d.importer.AlignementImporter;
-import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
-import fr.ign.cogit.simplu3d.importer.BuildingImporter;
-import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
-import fr.ign.cogit.simplu3d.io.geoxygene.UrbaDocumentAdapter;
-import fr.ign.cogit.simplu3d.model.Alignement;
-import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
-import fr.ign.cogit.simplu3d.model.UrbaZone;
-import fr.ign.cogit.simplu3d.util.AssignZ;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -44,6 +14,49 @@ import fr.ign.cogit.simplu3d.util.AssignZ;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.io;
+
+import java.util.logging.Logger;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.dao.RoadRepository;
+import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
+import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
+import fr.ign.cogit.simplu3d.importer.AlignementImporter;
+import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
+import fr.ign.cogit.simplu3d.importer.BuildingImporter;
+import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
+import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
+import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
+import fr.ign.cogit.simplu3d.model.Alignement;
+import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.Building;
+import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.cogit.simplu3d.model.Road;
+import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.model.UrbaDocument;
+import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.cogit.simplu3d.util.AssignZ;
+
+/**
+ * 
+ * TODO EnvironnementBuilder to ease/clarify option management
+ *   setZoneUrbas(..)
+ *   set...
+ *   setGenerateSubParcel(true)
+ *   setTranslateToZero(origin)
+ *   //...
+ *   build() : Environnement
+ *   
+ * @author MBrasebin
+ *
+ */
 public class LoadFromCollection {
 
   public final static boolean SURSAMPLED = true;
@@ -109,7 +122,7 @@ public class LoadFromCollection {
     if (featPLU == null) {
     	plu = new UrbaDocument();
     } else {
-    	UrbaDocumentAdapter urbaDocumentAdapter = new UrbaDocumentAdapter();
+    	UrbaDocumentReader urbaDocumentAdapter = new UrbaDocumentReader();
 		plu = urbaDocumentAdapter.read(featPLU);
     }
 
@@ -150,8 +163,8 @@ public class LoadFromCollection {
     logger.info("Sub parcels loaded");
 
     // Etape 6 : création des unités foncirèes
-    BasicPropertyUnitBuilder bpuBuilder = new BasicPropertyUnitBuilder(parcelles);
-    IFeatureCollection<BasicPropertyUnit> collBPU = bpuBuilder.buildPropertyUnits();
+    BasicPropertyUnitGenerator bpuBuilder = new BasicPropertyUnitGenerator(parcelles);
+    IFeatureCollection<BasicPropertyUnit> collBPU = bpuBuilder.createPropertyUnits();
     env.setBpU(collBPU);
 
     logger.info("Basic property units created");

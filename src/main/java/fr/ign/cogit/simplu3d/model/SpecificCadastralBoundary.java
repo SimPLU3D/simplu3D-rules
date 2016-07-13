@@ -29,6 +29,9 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  * 
  * Frontière de parcelle
  * 
+ * 
+ * Note that SpecificCadastralBoundary forms a topology map
+ * 
  * @author Brasebin Mickaël
  *
  */
