@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.generator;
+package fr.ign.cogit.simplu3d.generator.boundary;
 
 import java.util.Collection;
 import java.util.List;

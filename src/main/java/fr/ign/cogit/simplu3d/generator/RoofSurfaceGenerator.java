@@ -1,23 +1,3 @@
-package fr.ign.cogit.simplu3d.importer;
-
-import java.util.List;
-
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.sig3d.analysis.roof.ClassifyRoof;
-import fr.ign.cogit.geoxygene.sig3d.analysis.roof.DetectPignon;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.simplu3d.model.RoofSurface;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -34,19 +14,56 @@ import fr.ign.cogit.simplu3d.model.RoofSurface;
  * 
  * @version 1.0
  **/
-public class RoofImporter {
+package fr.ign.cogit.simplu3d.generator;
+
+import java.util.List;
+
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.sig3d.analysis.roof.ClassifyRoof;
+import fr.ign.cogit.geoxygene.sig3d.analysis.roof.DetectPignon;
+import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
+import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
+import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.model.RoofSurface;
+
+/**
+ * Create a RoofSurface from MultiPolygon
+ *  
+ * @author MBrasebin
+ *
+ */
+public class RoofSurfaceGenerator {
 
 	private static final double epsilonAngle = 0.15;
 	private static final double epsilonDist = 1;
 
-	public static RoofSurface create(IMultiSurface<IOrientableSurface> mS, IPolygon emprise) {
+	/**
+	 * 
+	 * Create a RoofSurface from polygons corresponding to the Roof
+	 * 
+	 * @see RoofDetection.detectRoof to extract roof polygons from building geometry
+	 * 
+	 * @param surfaceRoof
+	 * @param emprise
+	 * @return
+	 */
+	public static RoofSurface create(IMultiSurface<IOrientableSurface> surfaceRoof, IPolygon emprise) {
 
 		RoofSurface t = new RoofSurface();
-		t.setLod2MultiSurface(mS);
-		t.setGeom(mS);
+		t.setLod2MultiSurface(surfaceRoof);
+		t.setGeom(surfaceRoof);
 
 		t.setGutter(affectZEmprise(emprise,
-				FromPolygonToLineString.convertListPolToLineStrings((IMultiSurface<IOrientableSurface>) mS.clone()),
+				FromPolygonToLineString.convertListPolToLineStrings((IMultiSurface<IOrientableSurface>) surfaceRoof.clone()),
 				0.5));
 
 		//

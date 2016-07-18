@@ -33,8 +33,8 @@ import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.simplu3d.importer.EmpriseGenerator;
-import fr.ign.cogit.simplu3d.importer.RoofImporter;
+import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
+import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
 import fr.ign.cogit.simplu3d.indicator.HauteurCalculation;
 import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
 
@@ -101,11 +101,11 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.setFacade(lF);
 
 		// Etape 2 : on créé l'emprise du bâtiment
-		footprint = EmpriseGenerator.convert(surfaceRoof);
+		footprint = FootprintGenerator.convert(surfaceRoof);
 
 		if (footprint != null) {
 			// Création toit
-			RoofSurface t = RoofImporter.create(surfaceRoof, (IPolygon) footprint.clone());
+			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (IPolygon) footprint.clone());
 
 			// Affectation
 			this.setRoofSurface(t);

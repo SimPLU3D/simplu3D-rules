@@ -30,11 +30,11 @@ import fr.ign.cogit.simplu3d.dao.geoxygene.BuildingRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
+import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.SubParcelImporter;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -159,9 +159,15 @@ public class LoadFromCollection {
     logger.info("Parcel borders created");
 
     // Etape 5 : import des sous parcelles
-    IFeatureCollection<SubParcel> sousParcelles = SubParcelImporter.create(
-        parcelles, zones);
-    env.setSubParcels(sousParcelles);
+    {
+    	IFeatureCollection<SubParcel> sousParcelles = new FT_FeatureCollection<>();
+    	SubParcelGenerator subParcelGenerator = new SubParcelGenerator(parcelles);
+    	for (UrbaZone urbaZone : zones) {
+    		Collection<SubParcel> subParcelsForZone = subParcelGenerator.createSubParcels(urbaZone);
+    		sousParcelles.addAll(subParcelsForZone);
+		}
+    	env.setSubParcels(sousParcelles);
+    }
 
     logger.info("Sub parcels loaded");
 

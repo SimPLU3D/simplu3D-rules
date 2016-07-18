@@ -10,8 +10,8 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
-import fr.ign.cogit.simplu3d.importer.EmpriseGenerator;
-import fr.ign.cogit.simplu3d.importer.RoofImporter;
+import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
+import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
 import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
@@ -56,12 +56,12 @@ public class BuildingFactory {
 		building.setFacade(lF);
 
 		// Etape 2 : on créé l'emprise du bâtiment
-		IOrientableSurface footprint = EmpriseGenerator.convert(surfaceRoof);
+		IOrientableSurface footprint = FootprintGenerator.convert(surfaceRoof);
 		building.setFootprint(footprint);
 		
 		if (footprint != null) {
 			// Création toit
-			RoofSurface t = RoofImporter.create(surfaceRoof, (IPolygon) footprint.clone());
+			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (IPolygon) footprint.clone());
 
 			// Affectation
 			building.setRoofSurface(t);

@@ -47,7 +47,7 @@ public class SubParcel extends CG_LandUse {
 	private int idCp = 0;
 	private double avgSlope;
 	private double area = -1;
-	private UrbaZone zU = null;
+	private UrbaZone urbaZone = null;
 
 	/**
 	 * BuildingParts associated to the SubParcel
@@ -65,11 +65,11 @@ public class SubParcel extends CG_LandUse {
 
 	
 	public UrbaZone getUrbaZone() {
-		return zU;
+		return urbaZone;
 	}
 
 	public void setZoneUrba(UrbaZone zU) {
-		this.zU = zU;
+		this.urbaZone = zU;
 	}
 
 	public void setIdZoneUrba(int idZU) {

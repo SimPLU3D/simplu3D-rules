@@ -14,6 +14,7 @@ import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
+import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
@@ -28,7 +29,7 @@ import fr.ign.cogit.simplu3d.util.PointInPolygon;
  */
 public class CadastralBoundaryGenerator {
 	
-	private static Logger logger = Logger.getLogger(CarteTopoParcelBoundaryBuilder.class);
+	private static Logger logger = Logger.getLogger(CadastralBoundaryGenerator.class);
 	
 	/**
 	 * Context cadastral parcels
