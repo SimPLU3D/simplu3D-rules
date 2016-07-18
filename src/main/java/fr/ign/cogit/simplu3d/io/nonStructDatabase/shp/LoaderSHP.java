@@ -56,10 +56,6 @@ public class LoaderSHP {
 	public static final String NOM_FICHIER_PRESC_LINEAIRE = "prescription_lin.shp";
 	public static final String NOM_FICHIER_PLU = "doc_urba.shp";
 		
-	
-	public Environnement getEnvironnement(File folder) throws Exception {
-		return LoaderSHP.load(folder);
-	}
 
 	public static Environnement load(File folder) throws Exception {
 		File terrainFile = FileLocator.findFile(folder, NOM_FICHIER_TERRAIN);

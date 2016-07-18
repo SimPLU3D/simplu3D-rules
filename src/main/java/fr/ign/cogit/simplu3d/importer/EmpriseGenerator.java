@@ -145,7 +145,7 @@ public class EmpriseGenerator {
 
   }
 
-  public static CarteTopo newCarteTopo(String name, List<ILineString> lLLS,
+  private static CarteTopo newCarteTopo(String name, List<ILineString> lLLS,
       double threshold) {
 
     try {

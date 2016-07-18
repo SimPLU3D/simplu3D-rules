@@ -65,8 +65,9 @@ public abstract class AbstractBuilding extends DefaultFeature {
 
 	private IMultiSurface<IOrientableSurface> lod2MultiSurface;
 	
-	private int storeysAboveGround;
+	private int storeysAboveGround = -1;
 	
+	//TODO check default value for CityGML (was not restored for storeysAboveGround)
 	private double storeyHeightsAboveGround;
 
 	public boolean isNew = false;
