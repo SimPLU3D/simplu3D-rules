@@ -20,6 +20,7 @@ import java.util.Date;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 
@@ -33,7 +34,7 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
  * @author Brasebin Mickaël
  *
  */
-public class UrbaZone extends CG_LandUse {
+public class UrbaZone extends DefaultFeature {
 
 	public final String CLASSE = "Zone";
 

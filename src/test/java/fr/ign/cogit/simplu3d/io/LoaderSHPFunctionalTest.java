@@ -6,7 +6,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.simplu3d.demo.nonStructDatabase.shp.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.demo.DemoEnvironmentProvider;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -27,12 +27,12 @@ import junit.framework.TestCase;
 public class LoaderSHPFunctionalTest extends TestCase {
 
 	public void testDefaultEnvironment(){
-		Environnement env = LoadDefaultEnvironment.getENVDEF();
+		Environnement env = DemoEnvironmentProvider.getDefaultEnvironment();
 
 		UrbaDocument plu = env.getUrbaDocument();
 
 		Assert.assertNotNull(plu);
-		Assert.assertEquals(1, plu.getlUrbaZone().size());
+		Assert.assertEquals(1, plu.getUrbaZones().size());
 
 		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
 

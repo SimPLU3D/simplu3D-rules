@@ -84,6 +84,9 @@ public class CadastralParcel extends DefaultFeature {
 		this.bPU = bPU;
 	}
 
+	/**
+	 * Cached area
+	 */
 	public double area = Double.NaN;
 
 	public CadastralParcel() {
@@ -149,17 +152,12 @@ public class CadastralParcel extends DefaultFeature {
 	}
 
 	public double getArea() {
-
 		if (Double.isNaN(area)) {
 			area = this.getGeom().area();
 		}
-
 		return area;
 	}
 
-	public void setArea(double area) {
-		this.area = area;
-	}
 
 	public IGeometry getConsLine() {
 

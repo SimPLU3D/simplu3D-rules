@@ -46,7 +46,7 @@ public class AlignementImporter {
 
   public static IFeatureCollection<Alignement> importRecul(
       IFeatureCollection<IFeature> prescriptions,
-      IFeatureCollection<CadastralParcel> spColl)
+      IFeatureCollection<CadastralParcel> cadastralParcels)
       throws CloneNotSupportedException {
 
     IFeatureCollection<Alignement> lAlignement = new FT_FeatureCollection<Alignement>();
@@ -57,11 +57,11 @@ public class AlignementImporter {
 
     }
 
-    for (CadastralParcel sP : spColl) {
+    for (CadastralParcel cadastralParcel : cadastralParcels) {
 
       IFeatureCollection<Alignement> lAlignementTemp = new FT_FeatureCollection<Alignement>();
 
-      Collection<IFeature> coll = prescriptions.select(sP.getGeom());
+      Collection<IFeature> coll = prescriptions.select(cadastralParcel.getGeom());
 
       if (coll.isEmpty()) {
         continue;
@@ -81,7 +81,7 @@ public class AlignementImporter {
 
         IFeature featTemp = feat.cloneGeom();
 
-        IGeometry geom = feat.getGeom().intersection(sP.getGeom());
+        IGeometry geom = feat.getGeom().intersection(cadastralParcel.getGeom());
 
         if (geom.isEmpty()) {
           continue;
@@ -134,7 +134,7 @@ public class AlignementImporter {
 
       // On a 1 feature par segment d'alignement
 
-      IFeatureCollection<SpecificCadastralBoundary> iFCVoie = sP
+      IFeatureCollection<SpecificCadastralBoundary> iFCVoie = cadastralParcel
           .getSpecificCadastralBoundary();
 
       for (Alignement a : lAlignementTemp) {

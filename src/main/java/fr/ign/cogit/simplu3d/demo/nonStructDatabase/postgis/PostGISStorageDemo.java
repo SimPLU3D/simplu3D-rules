@@ -51,7 +51,7 @@ public class PostGISStorageDemo {
     UrbaDocument plu = env.getUrbaDocument();
 
     System.out.println("Nombre de zones dans le PLU : "
-        + plu.getlUrbaZone().size());
+        + plu.getUrbaZones().size());
 
     IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
     IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();

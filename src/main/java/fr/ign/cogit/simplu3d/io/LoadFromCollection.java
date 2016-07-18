@@ -141,7 +141,7 @@ public class LoadFromCollection {
     logger.info("Zones loaded");
 
     // Etape 3 : assignement des zonages au PLU
-    plu.getlUrbaZone().addAll(zones);
+    plu.getUrbaZones().addAll(zones);
     env.setUrbaZones(zones);
 
     logger.info("Zones assigned");

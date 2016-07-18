@@ -16,6 +16,7 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_Feature;
 
 /**
@@ -25,7 +26,7 @@ import fr.ign.cogit.geoxygene.feature.FT_Feature;
  * @author Brasebin Mickaël
  *
  */
-public class Prescription extends FT_Feature {
+public class Prescription extends DefaultFeature {
 	
 	/**
 	 * Type of the prescription according to COVADIS standard

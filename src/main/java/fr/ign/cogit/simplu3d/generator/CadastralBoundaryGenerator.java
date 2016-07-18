@@ -93,6 +93,7 @@ public class CadastralBoundaryGenerator {
 			boundary.setGeom(arc.getGeom());
 			result.add(boundary);
 		}
+		//TODO add boundaries to cadastralParcel
 		return result;
 	}
 

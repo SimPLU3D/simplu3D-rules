@@ -38,7 +38,6 @@ public class RoofSurface extends CG_RoofSurface {
 	public IMultiCurve<IOrientableCurve> gable;
 	public IMultiCurve<IOrientableCurve> roofing;
 	public IMultiCurve<IOrientableCurve> interiorEdge;
-	public int idBuildPart;
 
 
 	public IMultiCurve<IOrientableCurve> getInteriorEdge() {
@@ -142,15 +141,6 @@ public class RoofSurface extends CG_RoofSurface {
 	public IMultiCurve<IOrientableCurve> getGable() {
 		return gable;
 	}
-
-	public int getIdBuildPart() {
-		return idBuildPart;
-	}
-
-	public void setIdBuildPart(int idBuildPart) {
-		this.idBuildPart = idBuildPart;
-	}
-
 
 
 }

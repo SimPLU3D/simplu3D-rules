@@ -32,13 +32,14 @@ public class BuildingPart extends AbstractBuilding {
 
 
 	public SubParcel subParcel;
-	
-	public BuildingPart(IGeometry geom) {
-		super(geom);
-	}
 
 	public BuildingPart() {
 		super();
+	}
+	
+	@Deprecated
+	public BuildingPart(IGeometry geom) {
+		super(geom);
 	}
 
 	public SubParcel getsP() {

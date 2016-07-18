@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import fr.ign.cogit.simplu3d.demo.nonStructDatabase.shp.LoadDefaultEnvironment;
+import fr.ign.cogit.simplu3d.demo.DemoEnvironmentProvider;
 import fr.ign.cogit.simplu3d.indicator.COSCalculation.METHOD;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import junit.framework.Assert;
@@ -17,7 +17,7 @@ public class COSHONTest extends TestCase {
 	
 	@Test
 	public void testCOS() throws FileNotFoundException {
-		BasicPropertyUnit sp = LoadDefaultEnvironment.getENVDEF().getBpU().get(0);
+		BasicPropertyUnit sp = DemoEnvironmentProvider.getDefaultEnvironment().getBpU().get(0);
 
 		double cos1 = COSCalculation.assess(sp, METHOD.SIMPLE);
 		double cos2 = COSCalculation.assess(sp, METHOD.FLOOR_CUT);

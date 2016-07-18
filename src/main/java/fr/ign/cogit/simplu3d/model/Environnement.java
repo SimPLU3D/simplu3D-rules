@@ -19,7 +19,6 @@ package fr.ign.cogit.simplu3d.model;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityModel;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 
 /**
@@ -30,7 +29,7 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
  * @author Brasebin Mickaël
  *
  */
-public class Environnement extends CG_CityModel {
+public class Environnement {
 	public String folder;
 	public UrbaDocument urbaDoc;
 

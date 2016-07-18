@@ -110,7 +110,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 			// Affectation
 			this.setRoofSurface(t);
 		}
-
 	}
 
 	public void setNew(boolean isNew) {
@@ -122,7 +121,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		return subParcels;
 	}
 
-	public void setSousParcelles(List<SubParcel> subParcels) {
+	public void setSubParcels(List<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
 
@@ -206,7 +205,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	public void setFacade(List<? extends SpecificWallSurface> facades) {
 		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
 		this.wallSurfaces.addAll(facades);
-
 	}
 
 

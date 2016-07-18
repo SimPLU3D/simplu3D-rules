@@ -35,6 +35,7 @@ public class PublicSpace extends DefaultFeature {
 
 	public String type;
 
+	// TODO redundant with inherited
 	public IPolygon geom;
 
 	public String getType() {

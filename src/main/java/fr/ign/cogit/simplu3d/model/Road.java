@@ -34,7 +34,6 @@ public class Road extends CG_Road {
 	private IMultiCurve<ILineString> axis;
 	public String name;
 	public String type;
-	public int idRoad;
 	private double width;
 
 
@@ -82,15 +81,6 @@ public class Road extends CG_Road {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public int getIdRoad() {
-		return idRoad;
-	}
-
-	public void setIdRoad(int idRoad) {
-		this.idRoad = idRoad;
-	}
-
 
 
 }
