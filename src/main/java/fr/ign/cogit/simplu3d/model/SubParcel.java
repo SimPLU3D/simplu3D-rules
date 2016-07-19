@@ -88,17 +88,6 @@ public class SubParcel extends CG_LandUse {
 		return idCp;
 	}
 
-	public double builtRatio() {
-		return 0;
-	}
-
-	public double FARVolume() {
-		return 0;
-	}
-
-	public double FARRatio() {
-		return 0;
-	}
 
 	public SubParcel(IGeometry iMS) {
 		super();
