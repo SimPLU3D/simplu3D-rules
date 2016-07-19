@@ -34,7 +34,6 @@ public class BuildingFactory {
 	public static Building createBuildingFromMultiSurface(IGeometry geom){
 		Building building = new Building();
 		building.setGeom(geom);
-		building.setLod2MultiSurface(FromGeomToSurface.convertMSGeom(geom));
 
 		// Etape 1 : détection du toit et des façades
 		List<IOrientableSurface> lOS = FromGeomToSurface.convertGeom(geom);

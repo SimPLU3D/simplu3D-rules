@@ -134,8 +134,7 @@ public class AlignementImporter {
 
       // On a 1 feature par segment d'alignement
 
-      IFeatureCollection<SpecificCadastralBoundary> iFCVoie = cadastralParcel
-          .getSpecificCadastralBoundary();
+      List<SpecificCadastralBoundary> iFCVoie = cadastralParcel.getSpecificCadastralBoundary();
 
       for (Alignement a : lAlignementTemp) {
         SpecificCadastralBoundary b = determineBestBordure(iFCVoie, a);
@@ -152,7 +151,7 @@ public class AlignementImporter {
   }
 
   private static SpecificCadastralBoundary determineBestBordure(
-      IFeatureCollection<SpecificCadastralBoundary> bordures, Alignement a) {
+      List<SpecificCadastralBoundary> bordures, Alignement a) {
 
     double scoreMax = -1;
     SpecificCadastralBoundary bCand = null;

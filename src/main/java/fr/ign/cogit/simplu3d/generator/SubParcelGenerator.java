@@ -95,10 +95,8 @@ public class SubParcelGenerator {
 			}
 		}
 
-		//TODO check why it's necessary to duplicate geometry (feature/CityGML inheritance?)
 		subParcel.setGeom(iMS);
-		subParcel.setLod2MultiSurface(iMS);
-
+		
 		return subParcel;
 	}
 }

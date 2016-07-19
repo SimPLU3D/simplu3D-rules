@@ -18,8 +18,8 @@ import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.util.PointInPolygon;
 
 /**

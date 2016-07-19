@@ -113,7 +113,7 @@ public class LoaderSHPExec {
 
 			lTotArc.addAll(cs.getInteriorArcs());
 
-			for (CadastralParcel sp : bPU.getCadastralParcel()) {
+			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
 				count = count + sp.getSpecificCadastralBoundary().size();
 

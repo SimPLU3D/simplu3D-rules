@@ -16,7 +16,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -267,7 +267,7 @@ public class BandsChecker implements IRuleChecker {
 		mapB.put(1, new ArrayList<AbstractBuilding>());
 		mapB.put(2, new ArrayList<AbstractBuilding>());
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
 			for (SubParcel sP : cP.getSubParcel()) {
 
@@ -317,7 +317,7 @@ public class BandsChecker implements IRuleChecker {
 	private List<SpecificCadastralBoundary> getFrontLimit(BasicPropertyUnit bPU) {
 		List<SpecificCadastralBoundary> lSC = new ArrayList<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 			for (SubParcel sP : cP.getSubParcel()) {
 				for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
 					if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
@@ -342,7 +342,7 @@ public class BandsChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getFrontLimitGeom(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
@@ -364,7 +364,7 @@ public class BandsChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getLatLimit(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));

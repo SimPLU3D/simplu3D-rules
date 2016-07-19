@@ -59,7 +59,6 @@ public class RoofSurfaceGenerator {
 	public static RoofSurface create(IMultiSurface<IOrientableSurface> surfaceRoof, IPolygon emprise) {
 
 		RoofSurface t = new RoofSurface();
-		t.setLod2MultiSurface(surfaceRoof);
 		t.setGeom(surfaceRoof);
 
 		t.setGutter(affectZEmprise(emprise,

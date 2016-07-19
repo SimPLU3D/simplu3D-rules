@@ -26,8 +26,8 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
@@ -174,7 +174,7 @@ public class HauteurCalculation {
 
     double zMin = Double.POSITIVE_INFINITY;
 
-    for (CadastralParcel cp : bpuList.getCadastralParcel()) {
+    for (CadastralParcel cp : bpuList.getCadastralParcels()) {
 
       for (SubParcel sp : cp.getSubParcel()) {
         IFeatureCollection<SpecificCadastralBoundary> bordures = sp

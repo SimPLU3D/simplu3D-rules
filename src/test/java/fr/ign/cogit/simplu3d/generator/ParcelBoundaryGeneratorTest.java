@@ -14,8 +14,8 @@ import fr.ign.cogit.simplu3d.generator.boundary.Method1BoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.generator.boundary.Method2BoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import junit.framework.TestCase;
 
 public class ParcelBoundaryGeneratorTest extends TestCase {

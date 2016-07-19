@@ -30,10 +30,10 @@ import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
@@ -153,7 +153,7 @@ public class RepEnvironnement {
 
 		for (CadastralParcel sp : sPF) {
 
-			IFeatureCollection<SpecificCadastralBoundary> featBord = sp.getSpecificCadastralBoundary();
+			List<SpecificCadastralBoundary> featBord = sp.getSpecificCadastralBoundary();
 
 			for (SpecificCadastralBoundary b : featBord) {
 				SpecificCadastralBoundaryType type = b.getType();
@@ -332,7 +332,7 @@ public class RepEnvironnement {
 
 		for (AbstractBuilding b : env.getBuildings()) {
 
-			IMultiCurve<IOrientableCurve> geom = b.getRoof().setGable();
+			IMultiCurve<IOrientableCurve> geom = b.getRoof().getGable();
 
 			if (geom == null || geom.isEmpty()) {
 				continue;

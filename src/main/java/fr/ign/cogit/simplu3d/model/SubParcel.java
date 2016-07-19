@@ -18,23 +18,24 @@ package fr.ign.cogit.simplu3d.model;
 
 import java.util.List;
 
-import org.citygml4j.model.citygml.landuse.LandUse;
-
 import com.vividsolutions.jts.geom.Geometry;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
+ * 
+ * A SubParcel is a part of CadastralParcel cut according to an UrbaZone
  * 
  * @author Brasebin Mickaël
  *
  */
-public class SubParcel extends CG_LandUse {
+public class SubParcel extends DefaultFeature {
 
 	public final String CLASSE = "SousParcelle";
 
@@ -48,6 +49,7 @@ public class SubParcel extends CG_LandUse {
 	private double avgSlope;
 	private double area = -1;
 	private UrbaZone urbaZone = null;
+	
 
 	/**
 	 * BuildingParts associated to the SubParcel
@@ -92,7 +94,6 @@ public class SubParcel extends CG_LandUse {
 	public SubParcel(IGeometry iMS) {
 		super();
 		this.setGeom(iMS);
-		this.setClazz(CLASSE);
 	}
 
 	public void setArea(Double area) {
@@ -129,15 +130,6 @@ public class SubParcel extends CG_LandUse {
 
 	public SubParcel() {
 		super();
-		this.setClazz(CLASSE);
-
-	}
-
-	public SubParcel(LandUse landUse) {
-		super(landUse);
-
-		this.setClazz(CLASSE);
-
 	}
 
 	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFond() {
@@ -230,4 +222,10 @@ public class SubParcel extends CG_LandUse {
 		return null;
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public IMultiSurface<IOrientableSurface> getLod2MultiSurface(){
+		return (IMultiSurface<IOrientableSurface>) this.getGeom();
+	}
+	
 }

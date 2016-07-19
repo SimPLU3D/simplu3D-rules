@@ -62,7 +62,7 @@ public class PostGISStorageDemo {
 
     for (BasicPropertyUnit bPU : env.getBpU()) {
 
-      for (CadastralParcel sp : bPU.getCadastralParcel()) {
+      for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
         count = count + sp.getSpecificCadastralBoundary().size();
 

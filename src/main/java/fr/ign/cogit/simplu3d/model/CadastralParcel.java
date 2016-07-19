@@ -16,7 +16,8 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
@@ -28,9 +29,6 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
@@ -42,8 +40,6 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBo
  */
 public class CadastralParcel extends DefaultFeature {
 
-	public final String CLASSE = "Parcelle";
-
 	/**
 	 * Logical identifier of the CadastralParcel
 	 * 
@@ -51,38 +47,20 @@ public class CadastralParcel extends DefaultFeature {
 	 */
 	private String code;
 
+	public List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	public List<SpecificCadastralBoundary> specificCB = new ArrayList<SpecificCadastralBoundary>();
+
+	public BasicPropertyUnit bPU;
+
+	/**
+	 * (cache) Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
+	 */
+	private IGeometry consLine = null;
+
 	/**
 	 * TODO déplacer au niveau applicatif?
 	 */
 	private boolean hasToBeSimulated = false;
-
-	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
-	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
-
-	public BasicPropertyUnit bPU;
-
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	/**
-	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être
-	 * construit
-	 */
-	private IGeometry consLine = null;
-
-	public BasicPropertyUnit getbPU() {
-		return bPU;
-	}
-
-	public void setbPU(BasicPropertyUnit bPU) {
-		this.bPU = bPU;
-	}
 
 	/**
 	 * Cached area
@@ -97,66 +75,21 @@ public class CadastralParcel extends DefaultFeature {
 		super();
 
 		this.setGeom(iMS);
-
+	}
+	
+	public String getCode() {
+		return code;
 	}
 
-	public boolean hasToBeSimulated() {
-		return hasToBeSimulated;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public void setHasToBeSimulated(boolean bool) {
-		hasToBeSimulated = bool;
+
+	public BasicPropertyUnit getbPU() {
+		return bPU;
 	}
 
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
-		return specificCB;
-	}
-
-	public void setSpecificCadastralBoundary(IFeatureCollection<SpecificCadastralBoundary> bordures) {
-		this.specificCB = bordures;
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(
-			SpecificCadastralBoundarySide scbSide) {
-		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
-
-		for (SpecificCadastralBoundary sc : specificCB) {
-
-			if (sc.getSide() == scbSide) {
-				featC.add(sc);
-			}
-
-		}
-
-		return featC;
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(
-			SpecificCadastralBoundaryType type) {
-		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.specificCB) {
-			if (b.getType() == type) {
-				borduresLat.add(b);
-			}
-
-		}
-		return borduresLat;
-	}
-
-	public IFeatureCollection<SubParcel> getSubParcel() {
-		return subParcels;
-	}
-
-	public void setSubParcel(IFeatureCollection<SubParcel> sousParcelles) {
-		this.subParcels = sousParcelles;
-	}
-
-	public double getArea() {
-		if (Double.isNaN(area)) {
-			area = this.getGeom().area();
-		}
-		return area;
-	}
 
 
 	public IGeometry getConsLine() {
@@ -179,20 +112,66 @@ public class CadastralParcel extends DefaultFeature {
 		return consLine;
 	}
 
-	public Geometry getGeometry(){
-		try {
-			return JtsGeOxygene.makeJtsGeom(this.getGeom());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+	public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
+		return specificCB;
+	}
+
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(
+			SpecificCadastralBoundaryType type) {
+		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		for (SpecificCadastralBoundary b : this.specificCB) {
+			if (b.getType() == type) {
+				borduresLat.add(b);
+			}
+
 		}
+		return borduresLat;
+	}
+
+	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(
+			SpecificCadastralBoundarySide scbSide) {
+		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
+
+		for (SpecificCadastralBoundary sc : specificCB) {
+
+			if (sc.getSide() == scbSide) {
+				featC.add(sc);
+			}
+
+		}
+
+		return featC;
+	}
+
+	public List<SubParcel> getSubParcel() {
+		return subParcels;
+	}
+
+	public boolean hasToBeSimulated() {
+		return hasToBeSimulated;
+	}
+
+	public void setbPU(BasicPropertyUnit bPU) {
+		this.bPU = bPU;
+	}
+
+
+	public void setHasToBeSimulated(boolean bool) {
+		hasToBeSimulated = bool;
+	}
+
+	public void setSpecificCadastralBoundary(List<SpecificCadastralBoundary> bordures) {
+		this.specificCB = bordures;
 	}
 	
-	public void setGeometry(Geometry geometry){
-		try {
-			setGeom(JtsGeOxygene.makeGeOxygeneGeom(geometry));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public void setSubParcel(List<SubParcel> sousParcelles) {
+		this.subParcels = sousParcelles;
 	}
 	
+	public double getArea() {
+		if (Double.isNaN(area)) {
+			area = this.getGeom().area();
+		}
+		return area;
+	}
 }

@@ -58,7 +58,7 @@ public class CheckerCES implements IRuleChecker {
 		// Est-ce que la largeur des façades est supérieure à EmpLargeurMin
 		boolean hasBeenCheckded = false;
 		// On récupère les parties de bâtiments
-		bouclecp: for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		bouclecp: for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
 			for (SubParcel sP : cP.getSubParcel()) {
 
@@ -116,7 +116,7 @@ public class CheckerCES implements IRuleChecker {
 
 		// On calcule l'aire totale bâtie
 		double aireBati = 0;
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
 			for (SubParcel sP : cP.getSubParcel()) {
 

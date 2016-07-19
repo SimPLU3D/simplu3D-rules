@@ -2,6 +2,7 @@ package fr.ign.cogit.simplu3d.importer;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -11,7 +12,7 @@ import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -42,8 +43,7 @@ public class AssignLinkToBordure {
 
     for (CadastralParcel sP : cadastralParcels) {
 
-      IFeatureCollection<SpecificCadastralBoundary> bordures = sP
-          .getSpecificCadastralBoundary();
+      List<SpecificCadastralBoundary> bordures = sP.getSpecificCadastralBoundary();
 
       for (SpecificCadastralBoundary b : bordures) {
 

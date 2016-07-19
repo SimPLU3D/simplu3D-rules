@@ -12,8 +12,8 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * Une bande de getBandIncons() m (par rapport au fond de la parcelle) est
@@ -45,7 +45,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		}
 
 		// On récupère les parties de bâtiments
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
 			for (SubParcel sP : cP.getSubParcel()) {
 
@@ -78,7 +78,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getBotLimit(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));

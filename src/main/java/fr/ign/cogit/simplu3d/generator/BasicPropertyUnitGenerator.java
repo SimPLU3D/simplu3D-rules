@@ -69,7 +69,7 @@ public class BasicPropertyUnitGenerator {
 			BasicPropertyUnit bpU = new BasicPropertyUnit();
 			
 			// relation with CadastralParcel
-			bpU.getCadastralParcel().add(cadastralParcel);
+			bpU.getCadastralParcels().add(cadastralParcel);
 			cadastralParcel.setbPU(bpU);
 
 			// TODO find a better way to identify BasicPropertyUnits

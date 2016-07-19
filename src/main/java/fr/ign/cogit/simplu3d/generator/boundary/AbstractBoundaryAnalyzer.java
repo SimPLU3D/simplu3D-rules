@@ -5,8 +5,7 @@ import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.simplu3d.generator.IParcelBoundaryAnalyzer;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundarySide;
 
 public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyzer {
 
@@ -68,11 +67,11 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 
 			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
 
-				aTemp.setPoids(SpecificCadastralBoundary.SpecificCadastralBoundarySide.RIGHT.getValueType());
+				aTemp.setPoids(SpecificCadastralBoundarySide.RIGHT.getValueType());
 
 			} else {
 
-				aTemp.setPoids(SpecificCadastralBoundary.SpecificCadastralBoundarySide.LEFT.getValueType());
+				aTemp.setPoids(SpecificCadastralBoundarySide.LEFT.getValueType());
 			}
 
 		}

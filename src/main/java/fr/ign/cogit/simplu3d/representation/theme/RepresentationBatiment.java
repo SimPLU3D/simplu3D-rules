@@ -81,7 +81,7 @@ public class RepresentationBatiment extends Default3DRep {
     GeometryInfo geometryInfoToit = null;
     Appearance appToit = null;
 
-    Materiau matToit = t.getMat();
+    Materiau matToit = t.getMaterial();
 
     if (matToit != null) {
       geometryInfoToit = Util.geometryWithTexture(t.getGeom(),

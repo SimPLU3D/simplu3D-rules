@@ -27,10 +27,6 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
  */
 public class BuildingPart extends AbstractBuilding {
 
-	private int idBuildind = 0;
-	private int idSubPar = 0;
-
-
 	public SubParcel subParcel;
 
 	public BuildingPart() {
@@ -42,38 +38,19 @@ public class BuildingPart extends AbstractBuilding {
 		super(geom);
 	}
 
-	public SubParcel getsP() {
+	public SubParcel getSubParcel() {
 		return subParcel;
 	}
 
-	public void setsP(SubParcel sP) {
+	public void setSubParcel(SubParcel sP) {
 		this.subParcel = sP;
-	}
-
-	public void setIdBuilding(int idBuildind) {
-		this.idBuildind = idBuildind;
-	}
-
-	public int getIdBuilding() {
-		return idBuildind;
-	}
-
-	public void setIdSubPar(int idSubPar) {
-		this.idSubPar = idSubPar;
-	}
-
-	public int getIdSubPar() {
-		return idSubPar;
 	}
 
 	@Override
 	public AbstractBuilding clone() {
-
 		BuildingPart b = new BuildingPart((IGeometry) this.getGeom().clone());
 		b.isNew = this.isNew;
-
 		return b;
-
 	}
 
 }

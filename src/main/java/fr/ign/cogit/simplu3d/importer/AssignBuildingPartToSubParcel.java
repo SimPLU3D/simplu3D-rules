@@ -60,7 +60,7 @@ public class AssignBuildingPartToSubParcel {
 
 				IMultiSurface<IOrientableSurface> iMSTemp = new GM_MultiSurface<IOrientableSurface>();
 
-				for (CadastralParcel cP : bPU.getCadastralParcel()) {
+				for (CadastralParcel cP : bPU.getCadastralParcels()) {
 					iMSTemp.addAll(FromGeomToSurface.convertGeom(cP.getGeom()));
 
 				}
@@ -124,7 +124,7 @@ public class AssignBuildingPartToSubParcel {
 				int index = featTemp.getElements().indexOf(sp);
 
 				collBPU.get(index).getBuildings().add(b);
-				collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0).getBuildingsParts().add(b);
+				collBPU.get(index).getCadastralParcels().get(0).getSubParcel().get(0).getBuildingsParts().add(b);
 
 				isAttached = true;
 
@@ -178,7 +178,7 @@ public class AssignBuildingPartToSubParcel {
 
 			if (bP != null) {
 				// Puis on assigne
-				collBPU.get(index).getCadastralParcel().get(0).getSubParcel().get(0).getBuildingsParts().add(bP);
+				collBPU.get(index).getCadastralParcels().get(0).getSubParcel().get(0).getBuildingsParts().add(bP);
 			}
 
 			// Il faut vérifier et recompter le nombre de partie par bâtiment

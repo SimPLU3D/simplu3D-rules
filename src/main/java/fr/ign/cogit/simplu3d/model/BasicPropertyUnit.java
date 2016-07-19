@@ -19,8 +19,6 @@ package fr.ign.cogit.simplu3d.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
@@ -28,7 +26,6 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 
 /**
  * 
@@ -41,16 +38,38 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  */
 public class BasicPropertyUnit extends DefaultFeature {
 	/**
-	 * Les bâtiments présents sur la parcelle
-	 */
-	public List<Building> buildings = new ArrayList<Building>();
-	/**
 	 * Les parcelles cadastrales
 	 */
-	public List<CadastralParcel> cadastralParcels = new ArrayList<CadastralParcel>();
+	private List<CadastralParcel> cadastralParcels = new ArrayList<CadastralParcel>();
+	/**
+	 * Les bâtiments présents sur la BasicPropertyUnit
+	 */
+	private List<Building> buildings = new ArrayList<Building>();
+	
+	/**
+	 * TODO remove this attribute and define geom when BasicPropertyUnit is created
+	 */
+	private IMultiSurface<IOrientableSurface> geometryFromChildren = null;
 
+	/**
+	 * TODO describe, duplicate geom?
+	 */
+	private IPolygon pol2D = null;
+	/**
+	 * cached area
+	 */
+	private double area = -1;
+	
 	public BasicPropertyUnit() {
+		
+	}
 
+	public List<CadastralParcel> getCadastralParcels() {
+		return cadastralParcels;
+	}
+
+	public void setCadastralParcels(List<CadastralParcel> cadastralParcel) {
+		this.cadastralParcels = cadastralParcel;
 	}
 
 	public List<Building> getBuildings() {
@@ -61,41 +80,32 @@ public class BasicPropertyUnit extends DefaultFeature {
 		this.buildings = buildings;
 	}
 
-	public List<CadastralParcel> getCadastralParcel() {
-		return cadastralParcels;
-	}
 
-	public void setCadastralParcel(List<CadastralParcel> cadastralParcel) {
-		this.cadastralParcels = cadastralParcel;
-	}
-
-	IMultiSurface<IOrientableSurface> geom = null;
-
+	/**
+	 * Build geometry as the union of CadastralParcel's geometries
+	 * @return
+	 */
 	public IMultiSurface<IOrientableSurface> generateGeom() {
-
-		if (geom == null) {
-			geom = new GM_MultiSurface<IOrientableSurface>();
-			for (CadastralParcel cP : this.getCadastralParcel()) {
+		if (geometryFromChildren == null) {
+			geometryFromChildren = new GM_MultiSurface<IOrientableSurface>();
+			for (CadastralParcel cP : this.getCadastralParcels()) {
 				IGeometry geomP = cP.getGeom();
 
 				if (geomP != null) {
 
 					List<IOrientableSurface> lG = FromGeomToSurface.convertGeom(geomP);
 					if (lG != null) {
-						geom.addAll(lG);
+						geometryFromChildren.addAll(lG);
 					}
 				}
-
 			}
 		}
 
-		return geom;
+		return geometryFromChildren;
 	}
 
-	private IPolygon pol2D = null;
 
 	public IPolygon getpol2D() {
-
 		return pol2D;
 	}
 
@@ -103,28 +113,9 @@ public class BasicPropertyUnit extends DefaultFeature {
 		pol2D = pol;
 	}
 
-	Geometry geomjts = null;
-
-	public Geometry getGeomJTS() {
-
-		if (geomjts == null) {
-			try {
-				geomjts = JtsGeOxygene.makeJtsGeom(geom);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return geomjts;
-	}
-
 	public String toString() {
-
 		return "" + id;
-
 	}
-
-	private double area = -1;
 
 	public double getArea() {
 		if (area == -1) {

@@ -16,14 +16,9 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import org.citygml4j.model.citygml.core.CityObject;
-
-import com.vividsolutions.jts.geom.LineString;
-
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.core.CG_CityObject;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
  * 
@@ -35,81 +30,23 @@ import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
  * @author Brasebin Mickaël
  *
  */
-public class SpecificCadastralBoundary extends CG_CityObject {
-
-	public enum SpecificCadastralBoundaryType{
-		BOT(0),
-		LAT(1),
-		UNKNOWN(99),
-		INTRA(3),
-		ROAD(4),
-		LATERAL_TEMP(98),
-		PUB(5);
-		
-		private int value;
-		
-		private SpecificCadastralBoundaryType(int type){
-			value = type;
-		}
-		public int getValueType(){
-			return value;
-		}
-		
-		public static SpecificCadastralBoundaryType getTypeFromInt(int type){
-			SpecificCadastralBoundaryType[] val = SpecificCadastralBoundaryType.values();
-			for(int i=0; i <val.length; i++){
-				if(val[i].getValueType() == type)
-				{
-					return val[i];
-				}
-			}
-			
-			return null;
-		}
-		
-	}
-	
-	public enum SpecificCadastralBoundarySide{
-		LEFT(0),
-		RIGHT(1),
-		UNKNOWN(99);
-		
-		private int value;
-		
-		private SpecificCadastralBoundarySide(int type){
-			value = type;
-		}
-		public int getValueType(){
-			return value;
-		}
-		
-		public static SpecificCadastralBoundarySide getTypeFromInt(int type){
-			SpecificCadastralBoundarySide[] val = SpecificCadastralBoundarySide.values();
-			for(int i=0; i <val.length; i++){
-				if(val[i].getValueType() == type)
-				{
-					return val[i];
-				}
-			}
-			
-			return null;
-		}
-	}
-	
+public class SpecificCadastralBoundary extends DefaultFeature {
+	/**
+	 * The type of the boundary
+	 */
 	private SpecificCadastralBoundaryType type;
+	/**
+	 * The side of the boundary (relative to the parcel)
+	 */
 	private SpecificCadastralBoundarySide side;
-	
+	private Alignement alignement = null;
+	private Recoil recoil = null;
 
-
-	public Alignement alignement = null;
-	public Recoil recoil = null;
-	public int id_subpar;
-	public int id_adj;
-	public String tabRef = "";
-
-	// Il s'agit de l'objet qui ne référence pas cette bordure et qui est
-	// adjacent
-	// à la bordure
+	/**
+	 * Il s'agit de l'objet qui ne référence pas cette bordure et qui est adjacent
+	 * à la bordure
+	 * TODO 
+	 */
 	private IFeature featAdj = null;
 
 	public SpecificCadastralBoundary(){
@@ -126,13 +63,6 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 
 	public void setFeatAdj(IFeature featAdj) {
 		this.featAdj = featAdj;
-	}
-
-
-	@Override
-	public CityObject export() {
-
-		return null;
 	}
 
 	public Alignement getAlignement() {
@@ -159,37 +89,12 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 		this.type = type;
 	}
 
-	public int getIdSubPar() {
-		return id_subpar;
-	}
-
-	public void setIdSubPar(int id_subpar) {
-		this.id_subpar = id_subpar;
-	}
-
-	public int getIdAdj() {
-		return id_adj;
-	}
-
-	public void setIdAdj(int id_adj) {
-		this.id_adj = id_adj;
-	}
-
-	public String getTableRef() {
-		return tabRef;
-	}
-
-	public void setTableRef(String tabRef) {
-		this.tabRef = tabRef;
-	}
-
 	/**
 	 * @return the side
 	 */
 	public SpecificCadastralBoundarySide getSide() {
 		return side;
 	}
-
 	/**
 	 * @param side
 	 *            the side to set
@@ -197,22 +102,6 @@ public class SpecificCadastralBoundary extends CG_CityObject {
 	public void setSide(SpecificCadastralBoundarySide side) {
 		this.side = side;
 	}
-	
-	
-	public void setGeometry(LineString geometry){
-		try {
-			setGeom(JtsGeOxygene.makeGeOxygeneGeom(geometry));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public LineString getGeometry(){
-		try {
-			return (LineString)JtsGeOxygene.makeJtsGeom(getGeom());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}		
-	}
+
 
 }

@@ -35,9 +35,6 @@ public class PublicSpace extends DefaultFeature {
 
 	public String type;
 
-	// TODO redundant with inherited
-	public IPolygon geom;
-
 	public String getType() {
 		return type;
 	}
@@ -47,7 +44,7 @@ public class PublicSpace extends DefaultFeature {
 	}
 
 	public IPolygon getGeom() {
-		return geom;
+		return (IPolygon) geom;
 	}
 
 	public void setGeom(IPolygon geom) {

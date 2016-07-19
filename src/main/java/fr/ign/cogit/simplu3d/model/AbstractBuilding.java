@@ -52,24 +52,32 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
  */
 public abstract class AbstractBuilding extends DefaultFeature {
 
-	public List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
+	private List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
 
 	private List<SpecificWallSurface> wallSurfaces;
 
-	public String destination;
-	public IOrientableSurface footprint;
+	private String destination;
+	private IOrientableSurface footprint;
 
+	/**
+	 * TODO compute from BuildingParts?
+	 */
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	/**
+	 * TODO compute from the first subParcel?
+	 */
 	private BasicPropertyUnit bPU;
 
-	private IMultiSurface<IOrientableSurface> lod2MultiSurface;
 	
 	private int storeysAboveGround = -1;
 	
 	//TODO check default value for CityGML (was not restored for storeysAboveGround)
 	private double storeyHeightsAboveGround;
 
+	/**
+	 * TODO go private
+	 */
 	public boolean isNew = false;
 	
 	protected AbstractBuilding() {
@@ -79,7 +87,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	@Deprecated
 	public AbstractBuilding(IGeometry geom) {
 		this.setGeom(geom);
-		this.setLod2MultiSurface(FromGeomToSurface.convertMSGeom(geom));
 
 		// Etape 1 : détection du toit et des façades
 		List<IOrientableSurface> lOS = FromGeomToSurface.convertGeom(geom);
@@ -141,12 +148,9 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.roofSurface = roof;
 	}
 
+	@SuppressWarnings("unchecked")
 	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return lod2MultiSurface;
-	}
-
-	public void setLod2MultiSurface(IMultiSurface<IOrientableSurface> lod2MultiSurface) {
-		this.lod2MultiSurface = lod2MultiSurface;
+		return (IMultiSurface<IOrientableSurface>)getGeom();
 	}
 
 	public void setStoreysAboveGround(int storeysAboveGround) {
@@ -206,12 +210,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
 		this.wallSurfaces.addAll(facades);
 	}
-
-
-	public RoofSurface getRoofSurface() {
-		return roofSurface;
-	}
-
 
 
 	public boolean isNew() {

@@ -1,6 +1,7 @@
 package fr.ign.cogit.simplu3d.io;
 
 import java.io.File;
+import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -13,6 +14,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -45,10 +47,10 @@ public class LoaderSHPFunctionalTest extends TestCase {
 
 		for (BasicPropertyUnit bPU : env.getBpU()) {
 
-			Assert.assertNotNull(bPU.getCadastralParcel());
-			Assert.assertFalse(bPU.getCadastralParcel().isEmpty());
+			Assert.assertNotNull(bPU.getCadastralParcels());
+			Assert.assertFalse(bPU.getCadastralParcels().isEmpty());
 
-			for (CadastralParcel sp : bPU.getCadastralParcel()) {
+			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
 				count = count + sp.getSpecificCadastralBoundary().size();
 
