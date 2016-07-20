@@ -16,9 +16,7 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 

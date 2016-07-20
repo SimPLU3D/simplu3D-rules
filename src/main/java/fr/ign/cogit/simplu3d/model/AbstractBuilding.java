@@ -78,7 +78,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	/**
 	 * TODO go private
 	 */
-	public boolean isNew = false;
+	protected boolean generated = false;
 	
 	protected AbstractBuilding() {
 		super();
@@ -116,10 +116,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 			// Affectation
 			this.setRoofSurface(t);
 		}
-	}
-
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
 	}
 
 	
@@ -209,12 +205,16 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
 		this.wallSurfaces.addAll(facades);
 	}
-
-
-	public boolean isNew() {
-		return isNew;
+	
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
 	}
 
+	public boolean isGenerated() {
+		return generated;
+	}
+
+	
 	public IOrientableSurface getFootprint() {
 		return footprint;
 	}

@@ -45,7 +45,7 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 	/**
 	 * Il s'agit de l'objet qui ne référence pas cette bordure et qui est adjacent
 	 * à la bordure
-	 * TODO 
+	 * TODO split to Road and CadastralParcel
 	 */
 	private IFeature featAdj = null;
 

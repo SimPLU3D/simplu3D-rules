@@ -47,7 +47,7 @@ public class Building extends AbstractBuilding {
 	@Override
 	public AbstractBuilding clone() {
 		Building b = new Building((IGeometry) this.getGeom().clone());
-		b.isNew = this.isNew;
+		setGenerated( this.isGenerated() );
 		return b;
 	}
 

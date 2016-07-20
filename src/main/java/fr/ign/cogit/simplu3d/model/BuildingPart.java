@@ -49,7 +49,7 @@ public class BuildingPart extends AbstractBuilding {
 	@Override
 	public AbstractBuilding clone() {
 		BuildingPart b = new BuildingPart((IGeometry) this.getGeom().clone());
-		b.isNew = this.isNew;
+		b.generated = this.generated;
 		return b;
 	}
 

@@ -62,7 +62,7 @@ public class RoadReader extends AbstractFeatureReader<Road> {
 
 		List<String> usages = new ArrayList<String>();
 		usages.add(readStringAttribute(feature, ATT_TYPE));
-		result.setUsage(usages);
+		result.setUsages(usages);
 
 		// read axis...
 		IGeometry geom = feature.getGeom();
@@ -81,7 +81,7 @@ public class RoadReader extends AbstractFeatureReader<Road> {
 			throw new RuntimeException("Error in Voirie Importer axe is not a ILineString");
 		}
 
-		result.setAxe(axe);
+		result.setAxis(axe);
 
 		// build surface geometry...
 
@@ -113,8 +113,6 @@ public class RoadReader extends AbstractFeatureReader<Road> {
 		}
 
 		IMultiSurface<IOrientableSurface> surfVoie = FromGeomToSurface.convertMSGeom(obj);
-
-		result.setLod2MultiSurface(surfVoie);
 		result.setGeom(surfVoie);
 
 		return result;
