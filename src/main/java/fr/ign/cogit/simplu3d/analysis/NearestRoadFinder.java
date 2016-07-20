@@ -1,7 +1,6 @@
 package fr.ign.cogit.simplu3d.analysis;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
