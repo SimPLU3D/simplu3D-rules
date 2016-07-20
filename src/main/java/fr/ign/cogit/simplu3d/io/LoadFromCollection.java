@@ -23,6 +23,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.analysis.AssignRoadToParcelBoundary;
 import fr.ign.cogit.simplu3d.dao.BuildingRepository;
 import fr.ign.cogit.simplu3d.dao.RoadRepository;
 import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
@@ -33,7 +34,6 @@ import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
 import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
-import fr.ign.cogit.simplu3d.importer.AssignLinkToBordure;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.model.Alignement;
@@ -194,7 +194,7 @@ public class LoadFromCollection {
 
     // Etape 9 : on affecte les liens entres une bordure et ses objets
     // adjacents (bordure sur route => route + relation entre les limites de parcelles)
-    AssignLinkToBordure.process(parcelles, roads);
+    AssignRoadToParcelBoundary.process(parcelles, roads);
 
     logger.info("Links with roads created");
 
