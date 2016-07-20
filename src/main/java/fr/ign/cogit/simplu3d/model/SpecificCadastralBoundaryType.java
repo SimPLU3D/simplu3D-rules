@@ -4,6 +4,10 @@ public enum SpecificCadastralBoundaryType {
 	BOT(0),
 	LAT(1),
 	UNKNOWN(99),
+	/**
+	 * Represent a boundary between SubParcel in a CadastralParcel
+	 * @warning unused (boundaries are computed on CadastralParcels)
+	 */
 	INTRA(3),
 	ROAD(4),
 	LATERAL_TEMP(98),

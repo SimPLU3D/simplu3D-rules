@@ -8,7 +8,6 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
-import fr.ign.cogit.simplu3d.io.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 
 /**

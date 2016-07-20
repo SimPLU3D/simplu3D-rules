@@ -3,7 +3,6 @@ package fr.ign.cogit.simplu3d.generator.boundary;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
@@ -13,7 +12,6 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;

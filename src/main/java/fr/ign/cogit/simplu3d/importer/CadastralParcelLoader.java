@@ -60,7 +60,7 @@ public class CadastralParcelLoader {
 		}
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
 			Collection<SpecificCadastralBoundary> boundaries = boundaryGenerator.createParcelBoundaries(cadastralParcel);
-			cadastralParcel.getSpecificCadastralBoundary().addAll(boundaries);
+			cadastralParcel.getBoundaries().addAll(boundaries);
 		}
 		return cadastralParcels;
 	}

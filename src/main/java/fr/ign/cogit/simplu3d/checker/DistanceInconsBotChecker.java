@@ -47,7 +47,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		// On récupère les parties de bâtiments
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
@@ -79,7 +79,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
+			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}

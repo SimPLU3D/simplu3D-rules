@@ -134,7 +134,7 @@ public class AlignementImporter {
 
       // On a 1 feature par segment d'alignement
 
-      List<SpecificCadastralBoundary> iFCVoie = cadastralParcel.getSpecificCadastralBoundary();
+      List<SpecificCadastralBoundary> iFCVoie = cadastralParcel.getBoundaries();
 
       for (Alignement a : lAlignementTemp) {
         SpecificCadastralBoundary b = determineBestBordure(iFCVoie, a);

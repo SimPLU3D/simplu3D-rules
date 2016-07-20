@@ -42,8 +42,8 @@ public class BuildingPart extends AbstractBuilding {
 		return subParcel;
 	}
 
-	public void setSubParcel(SubParcel sP) {
-		this.subParcel = sP;
+	public void setSubParcel(SubParcel subParcel) {
+		this.subParcel = subParcel;
 	}
 
 	@Override

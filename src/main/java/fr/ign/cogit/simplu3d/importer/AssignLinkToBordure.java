@@ -43,7 +43,7 @@ public class AssignLinkToBordure {
 
     for (CadastralParcel sP : cadastralParcels) {
 
-      List<SpecificCadastralBoundary> bordures = sP.getSpecificCadastralBoundary();
+      List<SpecificCadastralBoundary> bordures = sP.getBoundaries();
 
       for (SpecificCadastralBoundary b : bordures) {
 

@@ -16,12 +16,11 @@
  **/
 package fr.ign.cogit.simplu3d.indicator;
 
+import java.util.Collection;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -38,168 +37,162 @@ import fr.ign.cogit.simplu3d.model.SubParcel;
  */
 public class HauteurCalculation {
 
-  public enum POINT_HAUT_TYPE {
-    PLUS_HAUT_EGOUT, PLUS_HAUT_FAITAGE, PLANCHER_PLUS_ELEVE
-  };
+	public enum POINT_HAUT_TYPE {
+		PLUS_HAUT_EGOUT, PLUS_HAUT_FAITAGE, PLANCHER_PLUS_ELEVE
+	};
 
-  public static double calculate(AbstractBuilding b, int type_pb, int type_ph) {
+	public static double calculate(AbstractBuilding b, int type_pb, int type_ph) {
 
-    double zBas = calculateZBas(b, type_pb);
+		double zBas = calculateZBas(b, type_pb);
 
-    double zHaut = calculateZHaut(b, type_ph);
+		double zHaut = calculateZHaut(b, type_ph);
 
-    return zHaut - zBas;
+		return zHaut - zBas;
 
-  }
+	}
 
-  public static double calculateZHaut(AbstractBuilding b, int type_ph) {
+	public static double calculateZHaut(AbstractBuilding b, int type_ph) {
 
-    double zHaut = Double.NaN;
+		double zHaut = Double.NaN;
 
-    switch (type_ph) {
-      case 0:
-        zHaut = calculateZHautPPE(b);
-        break;
-      case 1:
-        zHaut = calculateZHautPHE(b);
-        break;
-      case 2:
-        zHaut = calculateZHautPHF(b);
-        break;
+		switch (type_ph) {
+		case 0:
+			zHaut = calculateZHautPPE(b);
+			break;
+		case 1:
+			zHaut = calculateZHautPHE(b);
+			break;
+		case 2:
+			zHaut = calculateZHautPHF(b);
+			break;
 
-    }
+		}
 
-    return zHaut;
-  }
+		return zHaut;
+	}
 
-  public static double calculateZBas(AbstractBuilding b, Integer type_pb) {
+	public static double calculateZBas(AbstractBuilding b, Integer type_pb) {
 
-    double zBas = -1;
+		double zBas = -1;
 
-    if (type_pb == PointBasType.EMPRISE_PUBLIQUE) {
-      zBas = calculateZBasEP(b);
-    }
+		if (type_pb == PointBasType.EMPRISE_PUBLIQUE) {
+			zBas = calculateZBasEP(b);
+		}
 
-    if (type_pb == PointBasType.PLUS_BAS_BATIMENT) {
-      zBas = calculateZBasPBB(b);
-    }
+		if (type_pb == PointBasType.PLUS_BAS_BATIMENT) {
+			zBas = calculateZBasPBB(b);
+		}
 
-    if (type_pb == PointBasType.PLUS_BAS_TERRAIN) {
-      zBas = calculateZBasPBT(b);
-    }
+		if (type_pb == PointBasType.PLUS_BAS_TERRAIN) {
+			zBas = calculateZBasPBT(b);
+		}
 
-    if (type_pb == PointBasType.PLUS_HAUT_TERRAIN) {
-      zBas = calculateZBasPHT(b);
-    }
+		if (type_pb == PointBasType.PLUS_HAUT_TERRAIN) {
+			zBas = calculateZBasPHT(b);
+		}
 
-    return zBas;
-  }
+		return zBas;
+	}
 
-  // //////////////////DIFFERENTS TYPES DE ZHAUT
-  // // IL s'agit d'un Z et pas d'un H bien sur
-  public static double calculateZHautPPE(AbstractBuilding b) {
+	// //////////////////DIFFERENTS TYPES DE ZHAUT
+	// // IL s'agit d'un Z et pas d'un H bien sur
+	public static double calculateZHautPPE(AbstractBuilding b) {
 
-    double hauteurParEtage = b.getStoreyHeightsAboveGround();
+		double hauteurParEtage = b.getStoreyHeightsAboveGround();
 
-    if (hauteurParEtage <= 0 || !StoreyCalculation.USE_STOREYS_HEIGH_ATT) {
-      hauteurParEtage = StoreyCalculation.HAUTEUR_ETAGE;
-    }
+		if (hauteurParEtage <= 0 || !StoreyCalculation.USE_STOREYS_HEIGH_ATT) {
+			hauteurParEtage = StoreyCalculation.HAUTEUR_ETAGE;
+		}
 
-    int nbEtage = StoreyCalculation.process(b);
+		int nbEtage = StoreyCalculation.process(b);
 
-    double hauteur = hauteurParEtage * nbEtage;
+		double hauteur = hauteurParEtage * nbEtage;
 
-    Box3D box = new Box3D(b.getGeom());
+		Box3D box = new Box3D(b.getGeom());
 
-    return hauteur + box.getLLDP().getZ();
-  }
+		return hauteur + box.getLLDP().getZ();
+	}
 
-  public static double calculateZHautPHE(AbstractBuilding b) {
+	public static double calculateZHautPHE(AbstractBuilding b) {
 
-    IGeometry g = b.getRoof().getGutter();
+		IGeometry g = b.getRoof().getGutter();
 
-    Box3D box = new Box3D(g);
+		Box3D box = new Box3D(g);
 
-    return box.getURDP().getZ();
-  }
+		return box.getURDP().getZ();
+	}
 
-  public static double calculateZHautPHF(AbstractBuilding b) {
-    Box3D box = new Box3D(b.getGeom());
-    return box.getURDP().getZ();
-  }
+	public static double calculateZHautPHF(AbstractBuilding b) {
+		Box3D box = new Box3D(b.getGeom());
+		return box.getURDP().getZ();
+	}
 
-  // //////////////////DIFFERENTS TYPES DE ZBAS
+	// //////////////////DIFFERENTS TYPES DE ZBAS
 
-  private static double calculateZBasPHT(AbstractBuilding b) {
+	private static double calculateZBasPHT(AbstractBuilding b) {
 
-    List<SubParcel> spList = b.getSubParcels();
+		List<SubParcel> spList = b.getSubParcels();
 
-    double zMax = Double.NEGATIVE_INFINITY;
+		double zMax = Double.NEGATIVE_INFINITY;
 
-    for (SubParcel sp : spList) {
+		for (SubParcel sp : spList) {
 
-      Box3D box = new Box3D(sp.getGeom());
+			Box3D box = new Box3D(sp.getGeom());
 
-      zMax = Math.max(zMax, box.getLLDP().getZ());
+			zMax = Math.max(zMax, box.getLLDP().getZ());
 
-    }
+		}
 
-    return zMax;
-  }
+		return zMax;
+	}
 
-  private static double calculateZBasPBT(AbstractBuilding b) {
+	private static double calculateZBasPBT(AbstractBuilding b) {
 
-    List<SubParcel> spList = b.getSubParcels();
+		List<SubParcel> spList = b.getSubParcels();
 
-    double zMin = Double.POSITIVE_INFINITY;
+		double zMin = Double.POSITIVE_INFINITY;
 
-    for (SubParcel sp : spList) {
+		for (SubParcel sp : spList) {
 
-      Box3D box = new Box3D(sp.getGeom());
+			Box3D box = new Box3D(sp.getGeom());
 
-      zMin = Math.min(zMin, box.getLLDP().getZ());
+			zMin = Math.min(zMin, box.getLLDP().getZ());
 
-    }
+		}
 
-    return zMin;
-  }
+		return zMin;
+	}
 
-  private static double calculateZBasPBB(AbstractBuilding b) {
-    Box3D box = new Box3D(b.getGeom());
-    return box.getLLDP().getZ();
-  }
+	private static double calculateZBasPBB(AbstractBuilding b) {
+		Box3D box = new Box3D(b.getGeom());
+		return box.getLLDP().getZ();
+	}
 
-  private static double calculateZBasEP(AbstractBuilding b) {
-    BasicPropertyUnit bpuList = b.getbPU();
+	private static double calculateZBasEP(AbstractBuilding b) {
+		BasicPropertyUnit bpuList = b.getbPU();
 
-    double zMin = Double.POSITIVE_INFINITY;
+		double zMin = Double.POSITIVE_INFINITY;
 
-    for (CadastralParcel cp : bpuList.getCadastralParcels()) {
+		for (CadastralParcel cp : bpuList.getCadastralParcels()) {
+			Collection<SpecificCadastralBoundary> bordures = cp.getBoundaries();
 
-      for (SubParcel sp : cp.getSubParcel()) {
-        IFeatureCollection<SpecificCadastralBoundary> bordures = sp
-            .getSpecificCadastralBoundaryColl();
+			for (SpecificCadastralBoundary bord : bordures) {
 
-        for (SpecificCadastralBoundary bord : bordures) {
+				if (bord.getType() == SpecificCadastralBoundaryType.ROAD
+						|| bord.getType() == SpecificCadastralBoundaryType.PUB) {
 
-          if (bord.getType() == SpecificCadastralBoundaryType.ROAD
-              || bord.getType() == SpecificCadastralBoundaryType.PUB) {
+					Box3D box = new Box3D(bord.getGeom());
+					zMin = Math.min(zMin, box.getLLDP().getZ());
+				}
 
-            Box3D box = new Box3D(bord.getGeom());
+			}
+		}
 
-            zMin = Math.min(zMin, box.getLLDP().getZ());
+		if (zMin == Double.POSITIVE_INFINITY) {
+			zMin = calculateZBasPBB(b);
+		}
 
-          }
-
-        }
-      }
-    }
-
-    if (zMin == Double.POSITIVE_INFINITY) {
-      zMin = calculateZBasPBB(b);
-    }
-
-    return zMin;
-  }
+		return zMin;
+	}
 
 }

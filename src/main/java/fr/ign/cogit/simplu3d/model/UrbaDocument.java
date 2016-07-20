@@ -58,10 +58,6 @@ public class UrbaDocument {
 	 * Type de document d'urbanisme
 	 */
 	public UrbaDocumentType documentType;
-	/**
-	 * Liste des zones d'urbanismes
-	 */
-	public List<UrbaZone> urbaZones = new ArrayList<UrbaZone>();
 
 	public UrbaDocument() {
 		super();
@@ -203,14 +199,5 @@ public class UrbaDocument {
 		return dateRef;
 	}
 
-
-	public List<UrbaZone> getUrbaZones() {
-		return urbaZones;
-	}
-	
-	// Pour les zones urba
-	public void setUrbaZones(List<UrbaZone> urbaZones) {
-		this.urbaZones = urbaZones;
-	}
 
 }

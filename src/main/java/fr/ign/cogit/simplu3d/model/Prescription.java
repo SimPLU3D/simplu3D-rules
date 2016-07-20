@@ -17,7 +17,6 @@
 package fr.ign.cogit.simplu3d.model;
 
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.feature.FT_Feature;
 
 /**
  * 

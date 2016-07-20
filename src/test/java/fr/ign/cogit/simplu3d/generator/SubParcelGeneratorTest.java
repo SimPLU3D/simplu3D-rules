@@ -52,7 +52,7 @@ public class SubParcelGeneratorTest extends TestCase {
 		// check UrbaZone
 		assertNull(subParcel.getUrbaZone());
 		// check relation SubParcel/CadastralParcel
-		assertSame(cadastralParcel, subParcel.getParcel());
+		assertSame(cadastralParcel, subParcel.getCadastralParcel());
 		
 		assertTrue(subParcel.getGeom().equals(cadastralParcel.getGeom())); // same geometry
 		assertNotSame(subParcel.getGeom(), cadastralParcel.getGeom()); // geom is cloned

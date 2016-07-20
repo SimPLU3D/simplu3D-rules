@@ -269,7 +269,7 @@ public class BandsChecker implements IRuleChecker {
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
@@ -318,11 +318,9 @@ public class BandsChecker implements IRuleChecker {
 		List<SpecificCadastralBoundary> lSC = new ArrayList<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SubParcel sP : cP.getSubParcel()) {
-				for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
-					if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
-						lSC.add(sc);
-					}
+			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
+					lSC.add(sc);
 				}
 			}
 		}
@@ -343,7 +341,7 @@ public class BandsChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
+			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
@@ -365,7 +363,7 @@ public class BandsChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
+			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
 				if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}

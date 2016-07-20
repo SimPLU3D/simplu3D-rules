@@ -9,7 +9,6 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
-import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import junit.framework.TestCase;

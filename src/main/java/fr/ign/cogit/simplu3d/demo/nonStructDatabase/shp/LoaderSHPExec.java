@@ -84,7 +84,7 @@ public class LoaderSHPExec {
 
 		UrbaDocument plu = env.getUrbaDocument();
 
-		System.out.println("Nombre de zones dans le PLU : " + plu.getUrbaZones().size());
+		System.out.println("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 
 		IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
 		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
@@ -115,15 +115,15 @@ public class LoaderSHPExec {
 
 			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
-				count = count + sp.getSpecificCadastralBoundary().size();
+				count = count + sp.getBoundaries().size();
 
 				IDirectPosition centroidParcel = sp.getGeom().centroid();
 
 				AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");
-				AttributeManager.addAttribute(sp, "NBBord", sp.getSpecificCadastralBoundary().size(), "Integer");
+				AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(), "Integer");
 				AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(), "Integer");
 
-				for (SpecificCadastralBoundary b : sp.getSpecificCadastralBoundary()) {
+				for (SpecificCadastralBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
 
 					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
@@ -257,7 +257,7 @@ public class LoaderSHPExec {
 
 			featOutTestCons.add(new DefaultFeature(sp.getConsLine()));
 
-			System.out.println(sp.getSpecificCadastralBoundary().size());
+			System.out.println(sp.getBoundaries().size());
 
 		}
 

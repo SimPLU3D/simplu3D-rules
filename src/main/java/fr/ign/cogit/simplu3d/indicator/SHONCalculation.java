@@ -50,7 +50,7 @@ public class SHONCalculation {
 
 	public static double assess(SubParcel p, METHOD m) {
 
-		return assess(p.getBuildingsParts().getElements(), m);
+		return assess(p.getBuildingsParts(), m);
 	}
 
 	public static double assess(BasicPropertyUnit bPu, METHOD m) {

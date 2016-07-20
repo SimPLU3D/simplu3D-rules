@@ -59,7 +59,7 @@ public class AssignZ {
 
       }
 
-      for (SpecificCadastralBoundary b : p.getSpecificCadastralBoundary()) {
+      for (SpecificCadastralBoundary b : p.getBoundaries()) {
 
         if (isZSet) {
           IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);

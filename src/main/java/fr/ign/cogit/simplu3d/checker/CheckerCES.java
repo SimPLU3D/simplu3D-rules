@@ -60,7 +60,7 @@ public class CheckerCES implements IRuleChecker {
 		// On récupère les parties de bâtiments
 		bouclecp: for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
@@ -118,7 +118,7 @@ public class CheckerCES implements IRuleChecker {
 		double aireBati = 0;
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 

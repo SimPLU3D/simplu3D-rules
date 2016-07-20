@@ -5,7 +5,6 @@ import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
@@ -16,9 +15,7 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 
 public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {

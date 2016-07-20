@@ -153,7 +153,7 @@ public class RepEnvironnement {
 
 		for (CadastralParcel sp : sPF) {
 
-			List<SpecificCadastralBoundary> featBord = sp.getSpecificCadastralBoundary();
+			List<SpecificCadastralBoundary> featBord = sp.getBoundaries();
 
 			for (SpecificCadastralBoundary b : featBord) {
 				SpecificCadastralBoundaryType type = b.getType();

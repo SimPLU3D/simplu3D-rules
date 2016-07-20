@@ -37,7 +37,7 @@ public class COSCalculation {
 
   public static double assess(SubParcel p, METHOD m) {
     double area = p.getLod2MultiSurface().area();
-    return assess(p.getBuildingsParts().getElements(), m, area);
+    return assess(p.getBuildingsParts(), m, area);
   }
 
   public static double assess(BasicPropertyUnit bPu, METHOD m) {

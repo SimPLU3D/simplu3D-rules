@@ -57,8 +57,8 @@ public class SubParcelGenerator {
 			SubParcel subParcel = createSubParcel(intersection);
 
 			// CadastralParcel / SubParcel
-			subParcel.setParcelle(cadastralParcel);
-			cadastralParcel.getSubParcel().add(subParcel);
+			subParcel.setCadastralParcel(cadastralParcel);
+			cadastralParcel.getSubParcels().add(subParcel);
 			
 			// UrbaZone / SubParcel
 			subParcel.setZoneUrba(urbaZone);
@@ -77,8 +77,8 @@ public class SubParcelGenerator {
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
 			
 			// CadastralParcel / SubParcel
-			subParcelWithoutZone.setParcelle(cadastralParcel);
-			cadastralParcel.getSubParcel().add(subParcelWithoutZone);
+			subParcelWithoutZone.setCadastralParcel(cadastralParcel);
+			cadastralParcel.getSubParcels().add(subParcelWithoutZone);
 			
 			subParcels.add(subParcelWithoutZone);
 		} else if ( ! union.equals(cadastralParcel.getGeom()) ){
@@ -87,8 +87,8 @@ public class SubParcelGenerator {
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
 			
 			// CadastralParcel / SubParcel
-			subParcelWithoutZone.setParcelle(cadastralParcel);
-			cadastralParcel.getSubParcel().add(subParcelWithoutZone);
+			subParcelWithoutZone.setCadastralParcel(cadastralParcel);
+			cadastralParcel.getSubParcels().add(subParcelWithoutZone);
 			
 			subParcels.add(subParcelWithoutZone);
 		}

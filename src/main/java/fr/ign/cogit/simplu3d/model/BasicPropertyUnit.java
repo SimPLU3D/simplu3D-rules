@@ -68,9 +68,10 @@ public class BasicPropertyUnit extends DefaultFeature {
 		return cadastralParcels;
 	}
 
-	public void setCadastralParcels(List<CadastralParcel> cadastralParcel) {
-		this.cadastralParcels = cadastralParcel;
+	public void setCadastralParcels(List<CadastralParcel> cadastralParcels) {
+		this.cadastralParcels = cadastralParcels;
 	}
+
 
 	public List<Building> getBuildings() {
 		return buildings;
@@ -83,6 +84,9 @@ public class BasicPropertyUnit extends DefaultFeature {
 
 	/**
 	 * Build geometry as the union of CadastralParcel's geometries
+	 * 
+	 * TODO remove and define geometry in BasicPropertyUnitGenerator
+	 * 
 	 * @return
 	 */
 	public IMultiSurface<IOrientableSurface> generateGeom() {
@@ -113,9 +117,6 @@ public class BasicPropertyUnit extends DefaultFeature {
 		pol2D = pol;
 	}
 
-	public String toString() {
-		return "" + id;
-	}
 
 	public double getArea() {
 		if (area == -1) {
@@ -123,5 +124,6 @@ public class BasicPropertyUnit extends DefaultFeature {
 		}
 		return area;
 	}
+	
 
 }

@@ -24,7 +24,7 @@ public class BuildingInParcelChecker implements IRuleChecker {
 		//TODO see why bPU.getBuildings() is empty (loader issue?)
 		
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 				Geometry parcelGeometry = toJTS(sP.getGeom());
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 					Geometry footprint = toJTS(bP.getFootprint());

@@ -16,12 +16,12 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class UrbaZone extends DefaultFeature {
 	 * Les sous parcelles correspondant à la zone d'urbanisme (les parcelles
 	 * peuvent être à cheval sur plusieurs zone d'urbanisme)
 	 */
-	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
+	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
 
 	private String libelle = "";
 	private String libelong = "";
@@ -62,11 +62,11 @@ public class UrbaZone extends DefaultFeature {
 	}
 
 	// Pour les sous-parcelles
-	public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
+	public void setSubParcels(List<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
 
-	public IFeatureCollection<SubParcel> getSubParcels() {
+	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 

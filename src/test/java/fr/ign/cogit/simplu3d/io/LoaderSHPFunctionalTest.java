@@ -1,7 +1,6 @@
 package fr.ign.cogit.simplu3d.io;
 
 import java.io.File;
-import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -14,7 +13,6 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -34,7 +32,7 @@ public class LoaderSHPFunctionalTest extends TestCase {
 		UrbaDocument plu = env.getUrbaDocument();
 
 		Assert.assertNotNull(plu);
-		Assert.assertEquals(1, plu.getUrbaZones().size());
+		Assert.assertEquals(1, env.getUrbaZones().size());
 
 		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
 
@@ -52,12 +50,12 @@ public class LoaderSHPFunctionalTest extends TestCase {
 
 			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
-				count = count + sp.getSpecificCadastralBoundary().size();
+				count = count + sp.getBoundaries().size();
 
-				Assert.assertNotNull(sp.getSpecificCadastralBoundary());
-				Assert.assertFalse(sp.getSpecificCadastralBoundary().isEmpty());
+				Assert.assertNotNull(sp.getBoundaries());
+				Assert.assertFalse(sp.getBoundaries().isEmpty());
 
-				for (SpecificCadastralBoundary b : sp.getSpecificCadastralBoundary()) {
+				for (SpecificCadastralBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
 
 				}

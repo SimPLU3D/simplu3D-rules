@@ -101,7 +101,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		// Création facade
 		SpecificWallSurface f = new SpecificWallSurface();
 		f.setGeom(surfaceWall);
-		f.setLod2MultiSurface(surfaceWall);
 
 		List<SpecificWallSurface> lF = new ArrayList<SpecificWallSurface>();
 		lF.add(f);
@@ -224,10 +223,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	////Geometric operators @TODO : Should we move this ?
 	
 	public abstract AbstractBuilding clone();
-
-	public double distance(AbstractBuilding b2) {
-		return this.footprint.distance(b2.getFootprint());
-	}
 
 	public double height(int pB, int pH) {
 		double h = HauteurCalculation.calculate(this, pB, pH);

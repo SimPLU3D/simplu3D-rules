@@ -8,7 +8,6 @@ import org.junit.Test;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.BuildingRepository;
 import fr.ign.cogit.simplu3d.model.Building;

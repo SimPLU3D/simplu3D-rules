@@ -16,6 +16,9 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
 
 /**
@@ -23,7 +26,7 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
  * @author Brasebin Mickaël
  *
  */
-public class SpecificWallSurface extends CG_WallSurface {
+public class SpecificWallSurface extends DefaultFeature {
 
 	public enum SpecificWallSurfaceType {
 		BOT(0), LAT(1), UNKNOWN(99), ROAD(2);
@@ -75,14 +78,6 @@ public class SpecificWallSurface extends CG_WallSurface {
 		this.material = mat;
 	}
 
-	public int getIdBuildPart() {
-		return idBuildPart;
-	}
-
-	public void setIdBuildPart(int idBuildPart) {
-		this.idBuildPart = idBuildPart;
-	}
-
 	public boolean isWindowLess() {
 		return isWindowLess;
 	}
@@ -97,6 +92,11 @@ public class SpecificWallSurface extends CG_WallSurface {
 
 	public void setType(SpecificWallSurfaceType type) {
 		this.type = type;
+	}
+
+	@SuppressWarnings("unchecked")
+	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
+		return (IMultiSurface<IOrientableSurface>) this.getGeom();
 	}
 
 }

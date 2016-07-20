@@ -11,7 +11,6 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
 
 /**

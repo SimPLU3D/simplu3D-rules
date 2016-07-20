@@ -141,7 +141,6 @@ public class LoadFromCollection {
     logger.info("Zones loaded");
 
     // Etape 3 : assignement des zonages au PLU
-    plu.getUrbaZones().addAll(zones);
     env.setUrbaZones(zones);
 
     logger.info("Zones assigned");
@@ -149,10 +148,6 @@ public class LoadFromCollection {
     // Etape 4 : chargement des parcelles et créations des bordures
     IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
         .assignBordureToParcelleWithOrientation(parcelleColl);
-
-    if (parcelles == null) {
-      throw new Exception("Bad topology in Parcel List");
-    }
 
     env.setCadastralParcels(parcelles);
 

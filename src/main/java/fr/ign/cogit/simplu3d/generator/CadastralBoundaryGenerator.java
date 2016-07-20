@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
