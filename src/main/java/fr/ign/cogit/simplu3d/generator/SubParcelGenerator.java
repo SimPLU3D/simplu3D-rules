@@ -3,7 +3,6 @@ package fr.ign.cogit.simplu3d.generator;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
@@ -24,19 +23,17 @@ public class SubParcelGenerator {
 	/**
 	 * 
 	 */
-	private IFeatureCollection<CadastralParcel> cadastralParcels;
+	private Collection<UrbaZone> urbaZones;
 
-	/**
-	 * Minimal area (filter subparcels bellow this value)
-	 */
-	private double minArea;
+	// removed : not the place to fix topology (snap geometries to each other)
+	// private double minArea;
 
 	/**
 	 * 
 	 * @param cadastralParcels
 	 */
-	public SubParcelGenerator(IFeatureCollection<CadastralParcel> cadastralParcels) {
-		this.cadastralParcels = cadastralParcels;
+	public SubParcelGenerator(Collection<UrbaZone> urbaZones) {
+		this.urbaZones = urbaZones;
 	}
 
 	/**
@@ -44,35 +41,73 @@ public class SubParcelGenerator {
 	 * @param urbaZone
 	 * @return
 	 */
-	public Collection<SubParcel> createSubParcels(UrbaZone urbaZone) {
-		Collection<SubParcel> result = new ArrayList<>();
-
-		Collection<CadastralParcel> candidates = cadastralParcels.select(urbaZone.getGeom());
-		for (CadastralParcel candidate : candidates) {
-			IGeometry intersection = candidate.getGeom().intersection(urbaZone.getGeom());
-			if (intersection == null) {
-				continue;
-			}
-			if (intersection.area() < minArea) {
+	public Collection<SubParcel> createSubParcels(CadastralParcel cadastralParcel) {
+		
+		Collection<SubParcel> subParcels = new ArrayList<>();
+		
+		/*
+		 * create SubParcel as the intersection with UrbaZone
+		 */
+		for (UrbaZone urbaZone : urbaZones) {
+			IGeometry intersection = urbaZone.getGeom().intersection(cadastralParcel.getGeom());
+			if ( intersection == null || intersection.isEmpty() ){
 				continue;
 			}
 			
 			SubParcel subParcel = createSubParcel(intersection);
 
 			// CadastralParcel / SubParcel
-			subParcel.setParcelle(candidate);
-			candidate.getSubParcel().add(subParcel);
+			subParcel.setParcelle(cadastralParcel);
+			cadastralParcel.getSubParcel().add(subParcel);
 			
 			// UrbaZone / SubParcel
 			subParcel.setZoneUrba(urbaZone);
 			urbaZone.getSubParcels().add(subParcel);
 			
-			result.add(subParcel);
+			subParcels.add(subParcel);
 		}
-
-		return result;
+		
+		/*
+		 * Compute SubParcel's union to create a SubParcel with a null UrbaZone
+		 * to ensure that the union of SubParcels is equal to CadastralParcel
+		 */
+		IGeometry union = unionAll(subParcels);
+		if ( union == null || union.isEmpty() ){
+			IGeometry nonSharedGeometry = (IGeometry)cadastralParcel.getGeom().clone();
+			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
+			
+			// CadastralParcel / SubParcel
+			subParcelWithoutZone.setParcelle(cadastralParcel);
+			cadastralParcel.getSubParcel().add(subParcelWithoutZone);
+			
+			subParcels.add(subParcelWithoutZone);
+		} else if ( ! union.equals(cadastralParcel.getGeom()) ){
+			// part(s) of CadastralParcel belong to UrbaZone
+			IGeometry nonSharedGeometry = cadastralParcel.getGeom().difference(union);
+			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
+			
+			// CadastralParcel / SubParcel
+			subParcelWithoutZone.setParcelle(cadastralParcel);
+			cadastralParcel.getSubParcel().add(subParcelWithoutZone);
+			
+			subParcels.add(subParcelWithoutZone);
+		}
+		
+		return subParcels;
 	}
 	
+	private IGeometry unionAll(Collection<SubParcel> subParcels){
+		IGeometry result = null;
+		for (SubParcel subParcel : subParcels) {
+			if ( result == null ){
+				result = subParcel.getGeom();
+			}else{
+				result = result.union(subParcel.getGeom());
+			}
+		}
+		return result;
+	}
+		
 	/**
 	 * Create SubParcel from intersection's geometry
 	 * @param intersection

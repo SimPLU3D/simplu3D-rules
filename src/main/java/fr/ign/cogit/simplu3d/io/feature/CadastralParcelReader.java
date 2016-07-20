@@ -1,11 +1,14 @@
 package fr.ign.cogit.simplu3d.io.feature;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.simplu3d.io.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 
 /**
@@ -18,6 +21,9 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  *
  */
 public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel>{
+	
+	private final static Logger logger = Logger.getLogger(CadastralParcelReader.class.getCanonicalName());
+	
 	public static final String ATT_CODE_PARC = "CODE";
 	
 	public static final String ATT_BDP_CODE_DEP = "CODE_DEP";
@@ -58,7 +64,11 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 			cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
 		}
 
-		List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(feature.getGeom());
+		IGeometry geometry = feature.getGeom() ;
+		if ( ! geometry.isSimple() ){
+			logger.warning("Geometry is not simple for CadastralParcel "+code+"!");
+		}
+		List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(geometry);
 		if ( polygons.size() == 1 ){
 			IPolygon polygon = (IPolygon)polygons.get(0);
 			cadastralParcel.setGeom(polygon);

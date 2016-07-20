@@ -234,19 +234,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		return h;
 	}
 
-	
-	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2) {
-		return null;
-	}
-
-	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1) {
-		return bandEpsilon(geom, d1, Double.POSITIVE_INFINITY);
-	}
-
-	public List<AbstractBuilding> bandEpsilon(CadastralParcel cP, double distMin, double distMax) {
-		return bandEpsilon(cP.getGeom(), distMin, distMax);
-	}
-
 	/**
 	 *
 	 * @param geom

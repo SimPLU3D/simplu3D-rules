@@ -161,10 +161,9 @@ public class LoadFromCollection {
     // Etape 5 : import des sous parcelles
     {
     	IFeatureCollection<SubParcel> sousParcelles = new FT_FeatureCollection<>();
-    	SubParcelGenerator subParcelGenerator = new SubParcelGenerator(parcelles);
-    	for (UrbaZone urbaZone : zones) {
-    		Collection<SubParcel> subParcelsForZone = subParcelGenerator.createSubParcels(urbaZone);
-    		sousParcelles.addAll(subParcelsForZone);
+    	SubParcelGenerator subParcelGenerator = new SubParcelGenerator(zones);
+    	for (CadastralParcel cadastralParcel : parcelles) {
+    		sousParcelles.addAll(subParcelGenerator.createSubParcels(cadastralParcel));
 		}
     	env.setSubParcels(sousParcelles);
     }
