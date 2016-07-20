@@ -86,6 +86,7 @@ public class CadastralBoundaryGenerator {
 		List<SpecificCadastralBoundary> result = new ArrayList<>();
 		for (Arc arc : face.arcs()) {
 			SpecificCadastralBoundary boundary = new SpecificCadastralBoundary();
+			boundary.setCadastralParcel(cadastralParcel);
 			//TODO custom arc attribute
 			boundary.setType(SpecificCadastralBoundaryType.getTypeFromInt(arc.getOrientation()));
 			boundary.setSide(SpecificCadastralBoundarySide.getTypeFromInt((int)arc.getPoids()));

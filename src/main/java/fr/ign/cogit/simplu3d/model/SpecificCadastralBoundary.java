@@ -32,6 +32,10 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  */
 public class SpecificCadastralBoundary extends DefaultFeature {
 	/**
+	 * CadastralParcel owning the boundary
+	 */
+	private CadastralParcel cadastralParcel;
+	/**
 	 * The type of the boundary
 	 */
 	private SpecificCadastralBoundaryType type;
@@ -39,15 +43,16 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 	 * The side of the boundary (relative to the parcel)
 	 */
 	private SpecificCadastralBoundarySide side;
+
+	/**
+	 * Optional Road linked to the boundary
+	 */
+	private Road road = null ;
+	
 	private Alignement alignement = null;
 	private Recoil recoil = null;
 
-	/**
-	 * Il s'agit de l'objet qui ne référence pas cette bordure et qui est adjacent
-	 * à la bordure
-	 * TODO split to Road and CadastralParcel
-	 */
-	private IFeature featAdj = null;
+
 
 	public SpecificCadastralBoundary(){
 		
@@ -57,12 +62,39 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 		this.setGeom(geom);
 	}
 	
-	public IFeature getFeatAdj() {
-		return featAdj;
+	
+	public CadastralParcel getCadastralParcel() {
+		return cadastralParcel;
 	}
 
-	public void setFeatAdj(IFeature featAdj) {
-		this.featAdj = featAdj;
+	public void setCadastralParcel(CadastralParcel cadastralParcel) {
+		this.cadastralParcel = cadastralParcel;
+	}
+
+	public SpecificCadastralBoundaryType getType() {
+		return type;
+	}
+
+	public void setType(SpecificCadastralBoundaryType type) {
+		this.type = type;
+	}
+
+
+	public SpecificCadastralBoundarySide getSide() {
+		return side;
+	}
+
+	public void setSide(SpecificCadastralBoundarySide side) {
+		this.side = side;
+	}
+	
+	
+	public Road getRoad() {
+		return road;
+	}
+
+	public void setRoad(Road road) {
+		this.road = road;
 	}
 
 	public Alignement getAlignement() {
@@ -81,27 +113,17 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 		this.recoil = recoil;
 	}
 
-	public SpecificCadastralBoundaryType getType() {
-		return type;
-	}
-
-	public void setType(SpecificCadastralBoundaryType type) {
-		this.type = type;
-	}
-
 	/**
-	 * @return the side
+	 * Returns the Road if defined, else the CadastralParcel
+	 * @return
 	 */
-	public SpecificCadastralBoundarySide getSide() {
-		return side;
+	@Deprecated
+	public IFeature getFeatAdj(){
+		if ( this.road != null ){
+			return this.road ;
+		}else{
+			return this.cadastralParcel;
+		}
 	}
-	/**
-	 * @param side
-	 *            the side to set
-	 */
-	public void setSide(SpecificCadastralBoundarySide side) {
-		this.side = side;
-	}
-
-
+	
 }

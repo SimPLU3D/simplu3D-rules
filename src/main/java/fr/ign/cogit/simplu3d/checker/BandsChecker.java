@@ -93,21 +93,18 @@ public class BandsChecker implements IRuleChecker {
 		List<SpecificCadastralBoundary> lFronLimit = getFrontLimit(bPU);
 
 		for (SpecificCadastralBoundary sc : lFronLimit) {
+			Road road = sc.getRoad();
+			
 			// On récupère la route adjance
-			if (sc.getFeatAdj() != null) {
-
-				IFeature routeAdj = sc.getFeatAdj();
-
-				// Normalement on peut caster
-				Road r = (Road) routeAdj;
+			if (road != null) {
 
 				for (AbstractBuilding ab : list) {
 
 					// suivant le cas, on a 2 prospect
-					if (r.getWidth() > rules.getLargMaxProspect1()) {
+					if (road.getWidth() > rules.getLargMaxProspect1()) {
 						// Est-ce qu'il respecte le prospect ?
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie2Slope(),
-								r.getWidth() * rules.getProspectVoirie2Slope() + rules.getProspectVoirie2Hini())) {
+								road.getWidth() * rules.getProspectVoirie2Slope() + rules.getProspectVoirie2Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de plus de "
 									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
 									CODE_PROSPECT_VOIRIE));
@@ -116,7 +113,7 @@ public class BandsChecker implements IRuleChecker {
 					} else {
 						// Est-ce qu'il respecte l'autre prospect ?
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie1Slope(),
-								r.getWidth() * rules.getProspectVoirie1Slope() + rules.getProspectVoirie1Hini())) {
+								road.getWidth() * rules.getProspectVoirie1Slope() + rules.getProspectVoirie1Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de moins de "
 									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
 									CODE_PROSPECT_VOIRIE));

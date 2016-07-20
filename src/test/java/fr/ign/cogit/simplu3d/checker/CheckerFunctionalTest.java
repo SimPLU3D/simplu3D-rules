@@ -28,6 +28,7 @@ public class CheckerFunctionalTest extends TestCase {
 			assertEquals(3, lSp.size());
 			//TODO complete test
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail(e.getMessage());
 		}
 

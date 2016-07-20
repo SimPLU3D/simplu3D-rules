@@ -1,18 +1,3 @@
-package fr.ign.cogit.simplu3d.importer;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.util.index.Tiling;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -29,6 +14,23 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.importer;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
+import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
+import fr.ign.cogit.geoxygene.util.index.Tiling;
+import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.Road;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+
+
 public class AssignLinkToBordure {
 
   public static void process(IFeatureCollection<CadastralParcel> cadastralParcels,
@@ -41,6 +43,7 @@ public class AssignLinkToBordure {
       voiries.initSpatialIndex(Tiling.class, false);
     }
 
+    //TODO only find roads for boundaries of type ROAD
     for (CadastralParcel sP : cadastralParcels) {
 
       List<SpecificCadastralBoundary> bordures = sP.getBoundaries();
@@ -50,78 +53,13 @@ public class AssignLinkToBordure {
         // 2 cas : c'est une bordure avec voirie
         if (b.getType() == SpecificCadastralBoundaryType.ROAD) {
 
-          b.setFeatAdj(retrieveVoirie(b, voiries));
+          b.setRoad(retrieveVoirie(b, voiries));
           continue;
         }
 
-        // Sinon c'est un lien avec une autre sous Parceller
-        CadastralParcel sPOut = retrieveSousParcelle(b, sP, cadastralParcels);
-        if (sP == null) {
-
-          System.out.println("La sousParcelle est nulle Oo");
-
-        } else {
-
-          b.setFeatAdj(sPOut);
-
-        }
-
       }
 
     }
-
-  }
-
-  private static CadastralParcel retrieveSousParcelle(
-      SpecificCadastralBoundary b, CadastralParcel sousParcelleIni,
-      IFeatureCollection<CadastralParcel> parcelles) {
-
-    Collection<CadastralParcel> sP = parcelles.select(b.getGeom(), 0);
-
-    if (sP.size() < 2) {
-
-      sP = parcelles.select(b.getGeom(), 0.3);
-    }
-
-    if (sP.size() < 2) {
-      System.out.println(AssignLinkToBordure.class.toString() + " Error in sousParcelle selection");
-    }
-
-    Iterator<CadastralParcel> itP = sP.iterator();
-
-    if (sP.size() == 2) {
-
-      CadastralParcel spC = itP.next();
-
-      if (spC == sousParcelleIni) {
-        return itP.next();
-      }
-
-      return spC;
-
-    }
-    
-    sP.remove(sousParcelleIni);
-    
-    
-    CadastralParcel cSP = null;
-    double score = Double.NEGATIVE_INFINITY;
-    
-    for(CadastralParcel cP : sP){
-      
-          double aire = cP.getGeom().intersection(b.getGeom().buffer(0.5)).area();
-      
-          if(aire > score){
-            score = aire;
-            cSP = cP;
-          }
-      
-    }
-    
-    
-    
-    
-    return cSP;
 
   }
 
