@@ -7,7 +7,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
  * Convert features to domain object
  * 
  * TODO check consistency for id management (forward feature.getId() to item.id)
- * TODO clarify ability to (dont') manage relationships 
+ * TODO clarify ability to manage relationships (or not)
  * 
  * @author MBorne
  *

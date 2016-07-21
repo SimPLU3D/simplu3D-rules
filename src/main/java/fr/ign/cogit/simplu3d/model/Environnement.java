@@ -39,7 +39,7 @@ public class Environnement {
 	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
 	private IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
 	private IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
-	private IFeatureCollection<Alignement> alignements = new FT_FeatureCollection<>();
+	private IFeatureCollection<Prescription> prescriptions = new FT_FeatureCollection<>();
 	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 
 	private AbstractDTM terrain;
@@ -105,12 +105,12 @@ public class Environnement {
 		this.urbaZones = urbaZones;
 	}
 
-	public IFeatureCollection<Alignement> getAlignements() {
-		return alignements;
+	public IFeatureCollection<Prescription> getPrescriptions() {
+		return prescriptions;
 	}
 
-	public void setAlignements(IFeatureCollection<Alignement> alignements) {
-		this.alignements = alignements;
+	public void setPrescriptions(IFeatureCollection<Prescription> prescriptions) {
+		this.prescriptions = prescriptions;
 	}
 
 	public AbstractDTM getTerrain() {

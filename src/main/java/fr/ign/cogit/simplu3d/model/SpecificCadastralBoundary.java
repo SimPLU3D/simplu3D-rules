@@ -49,9 +49,10 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 	 */
 	private Road road = null ;
 	
-	private Alignement alignement = null;
-	private Recoil recoil = null;
-
+	/**
+	 * TODO see if a list is required
+	 */
+	private Prescription prescription = null;
 
 
 	public SpecificCadastralBoundary(){
@@ -97,21 +98,14 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 		this.road = road;
 	}
 
-	public Alignement getAlignement() {
-		return alignement;
+	public Prescription getPrescription() {
+		return prescription;
 	}
 
-	public void setAlignement(Alignement alignement) {
-		this.alignement = alignement;
+	public void setAlignement(Prescription prescription) {
+		this.prescription = prescription;
 	}
 
-	public Recoil getRecoil() {
-		return recoil;
-	}
-
-	public void setRecoil(Recoil recoil) {
-		this.recoil = recoil;
-	}
 
 	/**
 	 * Returns the Road if defined, else the CadastralParcel

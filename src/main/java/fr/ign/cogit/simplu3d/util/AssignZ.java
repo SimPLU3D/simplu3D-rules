@@ -23,7 +23,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.simplu3d.model.Alignement;
+import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
@@ -135,13 +135,13 @@ public class AssignZ {
 
   }
 
-  public static void toAlignement(
-      IFeatureCollection<Alignement> alignementColl, AbstractDTM dtm,
+  public static void toPrescriptions(
+      IFeatureCollection<Prescription> prescriptions, AbstractDTM dtm,
       boolean sursampled) throws Exception {
 
     boolean isZSet = (dtm != null);
 
-    for (Alignement a : alignementColl) {
+    for (Prescription a : prescriptions) {
       if (isZSet) {
 
         IGeometry geom = dtm.mapGeom(a.getGeom(), 0, true, sursampled);

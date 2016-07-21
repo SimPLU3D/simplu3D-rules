@@ -21,7 +21,6 @@ import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.ICurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
@@ -29,9 +28,9 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
-import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Recoil;
+import fr.ign.cogit.simplu3d.model.Prescription;
+import fr.ign.cogit.simplu3d.model.PrescriptionType;
 import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 
 /**
@@ -39,17 +38,19 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
  * @author MBrasebin
  *
  */
+// TODO discuss comment in Prescription to manage relationships and finalize PrescriptionReader
+@Deprecated
 public class AlignementImporter {
 
   public final static String ATT_TYPE = "TYPEPSC";
   public final static String ATT_Param = "Param";
 
-  public static IFeatureCollection<Alignement> importRecul(
+  public static IFeatureCollection<Prescription> importRecul(
       IFeatureCollection<IFeature> prescriptions,
       IFeatureCollection<CadastralParcel> cadastralParcels)
       throws CloneNotSupportedException {
 
-    IFeatureCollection<Alignement> lAlignement = new FT_FeatureCollection<Alignement>();
+    IFeatureCollection<Prescription> lAlignement = new FT_FeatureCollection<Prescription>();
 
     if (!prescriptions.hasSpatialIndex()) {
 
@@ -59,7 +60,7 @@ public class AlignementImporter {
 
     for (CadastralParcel cadastralParcel : cadastralParcels) {
 
-      IFeatureCollection<Alignement> lAlignementTemp = new FT_FeatureCollection<Alignement>();
+      IFeatureCollection<Prescription> lAlignementTemp = new FT_FeatureCollection<Prescription>();
 
       Collection<IFeature> coll = prescriptions.select(cadastralParcel.getGeom());
 
@@ -107,23 +108,17 @@ public class AlignementImporter {
 
         for (IOrientableCurve c : lIOC) {
 
-          Alignement a;
+          Prescription a = new Prescription();
+          a.setGeom(c);
 
-          Integer type = Integer.parseInt(featTemp.getAttribute(ATT_TYPE)
-              .toString());
-
+          //TODO rely on TYPEPSC2 instead of TYPEPSC
+          Integer type = Integer.parseInt(featTemp.getAttribute(ATT_TYPE).toString());
           if (type == 11) {
-
-            Recoil b = new Recoil((int) type, (ICurve) c);
-
-            Double param = Double.parseDouble(featTemp.getAttribute(ATT_Param)
-                .toString());
-
-            b.setDistance(param);
-            a = b;
+        	  a.setType(PrescriptionType.RECOIL);
+        	  Double param = Double.parseDouble(featTemp.getAttribute(ATT_Param).toString());
+        	  a.setRecoilDistance(param);
           } else {
-            a = new Alignement(type, (ICurve) c);
-
+           	  a.setType(PrescriptionType.FACADE_ALIGNMENT);
           }
 
           lAlignementTemp.add(a);
@@ -136,7 +131,7 @@ public class AlignementImporter {
 
       List<SpecificCadastralBoundary> iFCVoie = cadastralParcel.getBoundaries();
 
-      for (Alignement a : lAlignementTemp) {
+      for (Prescription a : lAlignementTemp) {
         SpecificCadastralBoundary b = determineBestBordure(iFCVoie, a);
         if (b != null) {
           b.setAlignement(a);
@@ -151,16 +146,15 @@ public class AlignementImporter {
   }
 
   private static SpecificCadastralBoundary determineBestBordure(
-      List<SpecificCadastralBoundary> bordures, Alignement a) {
+      List<SpecificCadastralBoundary> bordures, Prescription a) {
 
     double scoreMax = -1;
     SpecificCadastralBoundary bCand = null;
 
     double rec = 0;
 
-    if (a instanceof Recoil) {
-
-      rec = ((Recoil) a).getDistance();
+    if ( a.getType().equals(PrescriptionType.RECOIL) ) {
+      rec = a.getRecoilDistance();
     }
 
     IOrientableCurve geomAlignement = FromGeomToLineString.convert(a.getGeom())

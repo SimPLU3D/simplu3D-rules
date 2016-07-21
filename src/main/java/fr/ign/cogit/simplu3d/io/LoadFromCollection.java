@@ -25,22 +25,23 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.analysis.AssignRoadToParcelBoundary;
 import fr.ign.cogit.simplu3d.dao.BuildingRepository;
+import fr.ign.cogit.simplu3d.dao.PrescriptionRepository;
 import fr.ign.cogit.simplu3d.dao.RoadRepository;
 import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.BuildingRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.dao.geoxygene.PrescriptionRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.RoadRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
-import fr.ign.cogit.simplu3d.importer.AlignementImporter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
-import fr.ign.cogit.simplu3d.model.Alignement;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
@@ -71,14 +72,14 @@ public class LoadFromCollection {
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, 
+      IFeatureCollection<IFeature> linearPrescriptions, 
       String ruleFolder,
       AbstractDTM dtm
     ) throws Exception {
 	  Environnement env = Environnement.createEnvironnement();
 
     return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl,
-        batiColl, prescriptions, ruleFolder, dtm, env);
+        batiColl, linearPrescriptions, ruleFolder, dtm, env);
   }
 
   public static Environnement load(IFeature featPLU,
@@ -86,7 +87,7 @@ public class LoadFromCollection {
       IFeatureCollection<IFeature> parcelleColl,
       IFeatureCollection<IFeature> voirieColl,
       IFeatureCollection<IFeature> batiColl,
-      IFeatureCollection<IFeature> prescriptions, String ruleFolder,
+      IFeatureCollection<IFeature> linearPrescriptions, String ruleFolder,
       AbstractDTM dtm, Environnement env) throws Exception {
 
     // Etape 0 : doit on translater tous les objets ?
@@ -113,7 +114,7 @@ public class LoadFromCollection {
             -Environnement.dpTranslate.getX(),
             -Environnement.dpTranslate.getY(), 0));
       }
-      for (IFeature feat : prescriptions) {
+      for (IFeature feat : linearPrescriptions) {
         feat.setGeom(feat.getGeom().translate(
             -Environnement.dpTranslate.getX(),
             -Environnement.dpTranslate.getY(), 0));
@@ -199,9 +200,11 @@ public class LoadFromCollection {
     logger.info("Links with roads created");
 
     // Etape 10 : on importe les alignements
-    IFeatureCollection<Alignement> alignementColl = AlignementImporter
-        .importRecul(prescriptions, parcelles);
-    env.setAlignements(alignementColl);
+    {
+        PrescriptionRepository prescriptionRepository = new PrescriptionRepositoryGeoxygene(linearPrescriptions);
+        Collection<Prescription> prescriptions = prescriptionRepository.findAll();
+        env.getPrescriptions().addAll(prescriptions);
+    }
 
     logger.info("Alignment loaded");
 
@@ -212,7 +215,7 @@ public class LoadFromCollection {
       AssignZ.toParcelle(env.getCadastralParcels(), dtm, SURSAMPLED);
       AssignZ.toSousParcelle(env.getSubParcels(), dtm, SURSAMPLED);
       AssignZ.toVoirie(env.getRoads(), dtm, SURSAMPLED);
-      AssignZ.toAlignement(alignementColl, dtm, SURSAMPLED);
+      AssignZ.toPrescriptions(env.getPrescriptions(), dtm, SURSAMPLED);
       AssignZ.toZone(env.getUrbaZones(), dtm, false);
     } catch (Exception e) {
       e.printStackTrace();
