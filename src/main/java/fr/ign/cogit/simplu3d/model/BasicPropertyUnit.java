@@ -72,6 +72,18 @@ public class BasicPropertyUnit extends DefaultFeature {
 		this.cadastralParcels = cadastralParcels;
 	}
 
+	/**
+	 * Helper to get all SubParcels
+	 * @return
+	 */
+	public List<SubParcel> getSubParcels(){
+		List<SubParcel> subParcels = new ArrayList<>();
+		for (CadastralParcel cadastralParcel : cadastralParcels) {
+			subParcels.addAll(cadastralParcel.getSubParcels());
+		}
+		return subParcels;
+	}
+	
 
 	public List<Building> getBuildings() {
 		return buildings;

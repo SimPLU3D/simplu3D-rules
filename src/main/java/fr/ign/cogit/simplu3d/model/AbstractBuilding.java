@@ -161,10 +161,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.storeyHeightsAboveGround = storeyHeightsAboveGround;
 	}
 
-	public List<BuildingPart> getBuildingPart() {
-		return buildingParts;
-	}
-
 	public String getDestination() {
 		return destination;
 	}
@@ -177,12 +173,12 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.footprint = footprint;
 	}
 
-	public List<BuildingPart> consistsOfBuildingPart() {
+	public List<BuildingPart> getBuildingParts() {
 		return buildingParts;
 	}
 
-	public void setBuildingPart(List<BuildingPart> buildingPart) {
-		this.buildingParts = buildingPart;
+	public void setBuildingParts(List<BuildingPart> buildingParts) {
+		this.buildingParts = buildingParts;
 	}
 
 	public int getStoreysAboveGround() {

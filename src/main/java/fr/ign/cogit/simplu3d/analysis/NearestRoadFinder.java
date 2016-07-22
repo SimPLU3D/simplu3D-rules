@@ -59,14 +59,13 @@ public class NearestRoadFinder {
 			return candidates.iterator().next();
 		}
 
+		
+		// Find best orientation		
 		IDirectPositionList dpl = geometry.coord();
-
 		Vecteur v = new Vecteur(dpl.get(0), dpl.get(dpl.size() - 1));
 		v.normalise();
-
 		Road bestCandidate = null;
 		double bestScore = Double.NEGATIVE_INFINITY;
-
 		for (Road candidate : candidates ) {
 			IDirectPositionList dpl2 = geometry.coord();
 			Vecteur v2 = new Vecteur(dpl2.get(0), dpl2.get(dpl2.size() - 1));
