@@ -103,7 +103,7 @@ public class CadastralBoundaryGenerator {
 		}
 		carteTopo = CarteTopoParcelBoundaryBuilder.newCarteTopo("parcelle", cadastralParcels, 0.2);
 		for ( Face f : carteTopo.getPopFaces() ){
-			this.boundaryAnalyzer.analyze(f);
+			getBoundaryAnalyzer().analyze(f);
 		}
 	}
 	

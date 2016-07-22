@@ -11,6 +11,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
+import fr.ign.cogit.simplu3d.util.JTS;
 
 /**
  * 
@@ -26,15 +27,7 @@ public class IGeometrySerializer extends JsonSerializer<IGeometry>{
 	@Override
 	public void serialize(IGeometry value, JsonGenerator gen, SerializerProvider serializers)
 			throws IOException, JsonProcessingException {
-		jtsSerializer.serialize(toJTS(value), gen, serializers);
+		jtsSerializer.serialize(JTS.toJTS(value), gen, serializers);
 	}
 
-	private Geometry toJTS(IGeometry value){
-		try {
-			return JtsGeOxygene.makeJtsGeom(value);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
 }
