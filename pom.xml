@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ign.cogit</groupId>
 	<artifactId>simplu3d-rules</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>simplu3d-rules</name>
 
@@ -16,8 +16,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<geoxygene.version>1.9-SNAPSHOT</geoxygene.version>
 		<jackson.version>2.7.2</jackson.version>
-		<jackson.datatype.jts.version>2.2</jackson.datatype.jts.version>		
+		<jackson.datatype.jts.version>2.2</jackson.datatype.jts.version>
+		<junit.version>4.12</junit.version>
 	</properties>
 
 	<developers>
@@ -74,14 +76,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19</version>
-        			<configuration>
-          <excludes>
-            <exclude>**/LoaderSimpluSHPTest.java</exclude>
-            <exclude>**/COSHONTest.java</exclude>
-          </excludes>
-        			</configuration>
-      			</plugin>
-      			<plugin>
+				<configuration>
+					<excludes>
+						<exclude>**/LoaderSimpluSHPTest.java</exclude>
+						<exclude>**/COSHONTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
@@ -323,22 +325,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<!---<repository>
-			<id>iscpif-ign-snapshots</id>
-			<name>ISCPIF snapshots repository for IGN</name>
-			<url>http://maven.iscpif.fr/ign-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>iscpif-ign-releases</id>
-			<name>ISCPIF Release repository for IGN</name>
-			<url>http://maven.iscpif.fr/ign-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository> -->
 		<repository>
 			<id>osgeo-geotools</id>
 			<url>http://download.osgeo.org/webdav/geotools/</url>
@@ -352,14 +338,14 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>fr.ign.cogit</groupId>
-			<artifactId>geoxygene-sig3d</artifactId>
-			<version>1.8-SNAPSHOT</version>
+			<artifactId>geoxygene-sig3d-gui</artifactId>
+			<version>${geoxygene.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.twitter4j</groupId>
@@ -434,6 +420,10 @@
 					<artifactId>hibernate-spatial-postgis</artifactId>
 				</exclusion>
 				<exclusion>
+					<groupId>net.postgis</groupId>
+					<artifactId>postgis-jdbc</artifactId>
+				</exclusion>
+				<exclusion>
 					<groupId>org.apache</groupId>
 					<artifactId>ojb</artifactId>
 				</exclusion>
@@ -443,7 +433,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- JSON serialization -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -468,15 +458,5 @@
 			<name>Nexus Snapshots Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
-	     <!---   <repository>
-			<id>iscpif-ign-releases</id>
-			<name>ISCPIF Release repository for IGN</name>
-			<url>http://maven.iscpif.fr/ign-releases/</url>
-		</repository> 
-		<snapshotRepository>
-			<id>iscpif-ign-snapshots</id>
-			<name>ISCPIF Snapshot repository for IGN</name>
-			<url>http://maven.iscpif.fr/ign-snapshots/</url>
-		</snapshotRepository> -->
 	</distributionManagement>
 </project>
