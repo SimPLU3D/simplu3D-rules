@@ -78,7 +78,7 @@
 				<version>2.19</version>
 				<configuration>
 					<excludes>
-						<exclude>**/LoaderSimpluSHPTest.java</exclude>
+						<exclude>**/LoaderSHPFunctionalTest.java</exclude>
 						<exclude>**/COSHONTest.java</exclude>
 					</excludes>
 				</configuration>
