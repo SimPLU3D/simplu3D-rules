@@ -1,6 +1,9 @@
 package fr.ign.cogit.simplu3d.io.feature;
 
+import java.util.Collection;
+
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 
 /**
  * 
@@ -21,5 +24,12 @@ public interface IFeatureReader<T> {
 	 * @return
 	 */
 	public T read(IFeature feature);
+	
+	/**
+	 * Converts a collection of features to a collection of models
+	 * @param features
+	 * @return
+	 */
+	public Collection<T> readAll(IFeatureCollection<IFeature> features);
 
 }

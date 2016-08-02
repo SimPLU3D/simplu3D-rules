@@ -1,13 +1,3 @@
-package fr.ign.cogit.simplu3d.importer;
-
-import java.util.Collection;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.simplu3d.analysis.BasicPropertyUnitFinder;
-import fr.ign.cogit.simplu3d.generator.BuildingPartToSubParcelAssigner;
-import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Building;
-
 /**
  * 
  * This software is released under the licence CeCILL
@@ -24,6 +14,27 @@ import fr.ign.cogit.simplu3d.model.Building;
  * 
  * @version 1.0
  **/
+package fr.ign.cogit.simplu3d.importer;
+
+import java.util.Collection;
+
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.simplu3d.analysis.BasicPropertyUnitFinder;
+import fr.ign.cogit.simplu3d.generator.BuildingPartToSubParcelAssigner;
+import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.Building;
+
+/**
+ * 
+ * Assign BuildingPart to SubParcel 
+ * 
+ * ASSIGN_METHOD = 0 : find the best SubParcel
+ * ASSIGN_METHOD = 1 : split building according to SubParcels
+ * 
+ * @author MBrasebin
+ * @author MBorne
+ *
+ */
 public class AssignBuildingPartToSubParcel {
 
 	/**

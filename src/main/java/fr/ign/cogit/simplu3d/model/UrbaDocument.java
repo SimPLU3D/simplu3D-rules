@@ -18,6 +18,8 @@ package fr.ign.cogit.simplu3d.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 /**
  * 
  * Un document d'urbanisme porteur d'une liste de zone d'urbanisme.
@@ -28,6 +30,7 @@ import java.util.Date;
  * @author Brasebin Mickaël
  *
  */
+@Entity
 public class UrbaDocument {
 	private String idUrba = "";
 	private String typeDoc = "";

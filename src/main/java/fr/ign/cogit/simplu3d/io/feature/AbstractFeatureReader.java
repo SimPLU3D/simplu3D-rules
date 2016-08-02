@@ -2,11 +2,32 @@ package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 
+/**
+ * 
+ * Partial implementation of IFeatureReader and helpers
+ * 
+ * @author MBorne
+ *
+ * @param <T>
+ */
 public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
+
+	@Override
+	public Collection<T> readAll(IFeatureCollection<IFeature> features) {
+		List<T> result = new ArrayList<>(features.size());
+		for (IFeature feature : features) {
+			result.add(read(feature));
+		}
+		return result;
+	}
 
 	/**
 	 * Read a string 
