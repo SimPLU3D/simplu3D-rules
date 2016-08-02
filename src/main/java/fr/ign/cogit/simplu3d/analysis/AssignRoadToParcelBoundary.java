@@ -21,8 +21,8 @@ import java.util.Collection;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class AssignRoadToParcelBoundary {
 	public static void process(Collection<CadastralParcel> cadastralParcels, IFeatureCollection<Road> roads) {
 		NearestRoadFinder roadFinder = new NearestRoadFinder(roads);
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
-			for (SpecificCadastralBoundary boundary : cadastralParcel.getBoundariesByType(SpecificCadastralBoundaryType.ROAD)) {
+			for (ParcelBoundary boundary : cadastralParcel.getBoundariesByType(ParcelBoundaryType.ROAD)) {
 				boundary.setRoad(roadFinder.findNearestRoad(boundary.getGeom()));
 			}
 		}

@@ -12,7 +12,7 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -64,10 +64,10 @@ public class CheckerCES implements IRuleChecker {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
-					List<SpecificWallSurface> lSWS = bP.getWallSurfaces();
+					List<WallSurface> lSWS = bP.getWallSurfaces();
 
 					if (lSWS != null && !lSWS.isEmpty()) {
-						for (SpecificWallSurface sWS : lSWS) {
+						for (WallSurface sWS : lSWS) {
 
 							if (!sWS.getGeom().isEmpty()) {
 

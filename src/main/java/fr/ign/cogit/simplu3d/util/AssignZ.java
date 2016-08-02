@@ -26,7 +26,7 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 
@@ -59,7 +59,7 @@ public class AssignZ {
 
       }
 
-      for (SpecificCadastralBoundary b : p.getBoundaries()) {
+      for (ParcelBoundary b : p.getBoundaries()) {
 
         if (isZSet) {
           IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);

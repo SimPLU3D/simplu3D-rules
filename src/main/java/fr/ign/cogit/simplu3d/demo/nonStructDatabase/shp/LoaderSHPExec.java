@@ -22,7 +22,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
@@ -87,7 +87,7 @@ public class LoaderSHPExec {
 		System.out.println("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 
 		IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
-		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		IFeatureCollection<ParcelBoundary> bordures = new FT_FeatureCollection<ParcelBoundary>();
 
 		int count = 0;
 
@@ -123,7 +123,7 @@ public class LoaderSHPExec {
 				AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(), "Integer");
 				AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(), "Integer");
 
-				for (SpecificCadastralBoundary b : sp.getBoundaries()) {
+				for (ParcelBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
 
 					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");

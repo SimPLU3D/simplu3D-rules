@@ -54,7 +54,7 @@ public class CadastralParcel extends DefaultFeature {
 	 * 
 	 * TODO see if it's possible to store boundaries only on subParcels
 	 */
-	private List<SpecificCadastralBoundary> boundaries = new ArrayList<SpecificCadastralBoundary>();
+	private List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
 
 	/**
 	 * Logical identifier of the CadastralParcel
@@ -106,13 +106,13 @@ public class CadastralParcel extends DefaultFeature {
 	}
 
 	
-	public List<SpecificCadastralBoundary> getBoundaries() {
+	public List<ParcelBoundary> getBoundaries() {
 		return boundaries;
 	}
 
-	public List<SpecificCadastralBoundary> getBoundariesByType(SpecificCadastralBoundaryType type) {
-		List<SpecificCadastralBoundary> result = new ArrayList<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary boundary : getBoundaries()) {
+	public List<ParcelBoundary> getBoundariesByType(ParcelBoundaryType type) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
 			if ( boundary.getType().equals(type) ) {
 				result.add(boundary);
 			}
@@ -120,9 +120,9 @@ public class CadastralParcel extends DefaultFeature {
 		return result;
 	}
 
-	public List<SpecificCadastralBoundary> getBoundariesBySide(SpecificCadastralBoundarySide side) {
-		List<SpecificCadastralBoundary> result = new ArrayList<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary boundary : getBoundaries()) {
+	public List<ParcelBoundary> getBoundariesBySide(ParcelBoundarySide side) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
 			if ( boundary.getSide().equals(side) ) {
 				result.add(boundary);
 			}
@@ -130,7 +130,7 @@ public class CadastralParcel extends DefaultFeature {
 		return result;
 	}
 
-	public void setBoundaries(List<SpecificCadastralBoundary> bordures) {
+	public void setBoundaries(List<ParcelBoundary> bordures) {
 		this.boundaries = bordures;
 	}
 
@@ -156,8 +156,8 @@ public class CadastralParcel extends DefaultFeature {
 	public IGeometry getConsLine() {
 		if (consLine == null) {
 			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
-			Collection<SpecificCadastralBoundary> sCP = getBoundariesByType(SpecificCadastralBoundaryType.ROAD);
-			for (SpecificCadastralBoundary sCB : sCP) {
+			Collection<ParcelBoundary> sCP = getBoundariesByType(ParcelBoundaryType.ROAD);
+			for (ParcelBoundary sCB : sCP) {
 				iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
 			}
 			consLine = iMS;

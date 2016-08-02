@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 

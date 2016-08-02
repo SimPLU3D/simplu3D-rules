@@ -30,7 +30,7 @@ import fr.ign.cogit.simplu3d.generator.boundary.Method1BoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.generator.boundary.Method2BoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.io.feature.CadastralParcelReader;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 
 @Deprecated
 public class CadastralParcelLoader {
@@ -59,7 +59,7 @@ public class CadastralParcelLoader {
 			boundaryGenerator.setBoundaryAnalyzer(new Method2BoundaryAnalyzer());
 		}
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
-			Collection<SpecificCadastralBoundary> boundaries = boundaryGenerator.createParcelBoundaries(cadastralParcel);
+			Collection<ParcelBoundary> boundaries = boundaryGenerator.createParcelBoundaries(cadastralParcel);
 			cadastralParcel.getBoundaries().addAll(boundaries);
 		}
 		return cadastralParcels;

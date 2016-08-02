@@ -14,7 +14,7 @@ import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
 import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 
 /**
  * 
@@ -46,10 +46,10 @@ public class BuildingFactory {
 		IMultiSurface<IOrientableSurface> surfaceWall = Util.detectVertical(lOS, 0.2);
 
 		// Création facade
-		SpecificWallSurface f = new SpecificWallSurface();
+		WallSurface f = new WallSurface();
 		f.setGeom(surfaceWall);
 
-		List<SpecificWallSurface> lF = new ArrayList<SpecificWallSurface>();
+		List<WallSurface> lF = new ArrayList<WallSurface>();
 		lF.add(f);
 		building.setFacade(lF);
 

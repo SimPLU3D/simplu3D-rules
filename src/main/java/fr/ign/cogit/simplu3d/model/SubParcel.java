@@ -59,7 +59,7 @@ public class SubParcel extends DefaultFeature {
 	/**
 	 * Boundaries TODO check construction / remove if useless?
 	 */
-	public List<SpecificCadastralBoundary> boundaries = new ArrayList<SpecificCadastralBoundary>();
+	public List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
 
 	/**
 	 * cached area

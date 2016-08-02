@@ -55,7 +55,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	private List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
 
-	private List<SpecificWallSurface> wallSurfaces;
+	private List<WallSurface> wallSurfaces;
 
 	private String destination;
 	private IOrientableSurface footprint;
@@ -99,10 +99,10 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		IMultiSurface<IOrientableSurface> surfaceWall = Util.detectVertical(lOS, 0.2);
 
 		// Création facade
-		SpecificWallSurface f = new SpecificWallSurface();
+		WallSurface f = new WallSurface();
 		f.setGeom(surfaceWall);
 
-		List<SpecificWallSurface> lF = new ArrayList<SpecificWallSurface>();
+		List<WallSurface> lF = new ArrayList<WallSurface>();
 		lF.add(f);
 		this.setFacade(lF);
 
@@ -193,12 +193,12 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.roofSurface = toit;
 	}
 
-	public List<SpecificWallSurface> getWallSurfaces() {
+	public List<WallSurface> getWallSurfaces() {
 		return wallSurfaces;
 	}
 
-	public void setFacade(List<? extends SpecificWallSurface> facades) {
-		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
+	public void setFacade(List<? extends WallSurface> facades) {
+		this.wallSurfaces = new ArrayList<WallSurface>();
 		this.wallSurfaces.addAll(facades);
 	}
 	

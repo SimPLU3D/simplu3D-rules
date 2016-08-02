@@ -12,7 +12,7 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -34,7 +34,7 @@ public class LoaderSHPFunctionalTest extends TestCase {
 		Assert.assertNotNull(plu);
 		Assert.assertEquals(1, env.getUrbaZones().size());
 
-		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		IFeatureCollection<ParcelBoundary> bordures = new FT_FeatureCollection<ParcelBoundary>();
 
 		int count = 0;
 		Assert.assertEquals("Toutes les parcelles sont chargées.", 19, env.getCadastralParcels().size());
@@ -55,7 +55,7 @@ public class LoaderSHPFunctionalTest extends TestCase {
 				Assert.assertNotNull(sp.getBoundaries());
 				Assert.assertFalse(sp.getBoundaries().isEmpty());
 
-				for (SpecificCadastralBoundary b : sp.getBoundaries()) {
+				for (ParcelBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
 
 				}

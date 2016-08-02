@@ -11,8 +11,8 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -79,8 +79,8 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.BOT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}

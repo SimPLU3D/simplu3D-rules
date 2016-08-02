@@ -5,7 +5,7 @@ import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.simplu3d.generator.IParcelBoundaryAnalyzer;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundarySide;
+import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 
 public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyzer {
 
@@ -53,11 +53,11 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 
 			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
 
-				aTemp.setPoids(SpecificCadastralBoundarySide.LEFT.getValueType());
+				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
 
 			} else {
 
-				aTemp.setPoids(SpecificCadastralBoundarySide.RIGHT.getValueType());
+				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
 			}
 
 			return;
@@ -67,11 +67,11 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 
 			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
 
-				aTemp.setPoids(SpecificCadastralBoundarySide.RIGHT.getValueType());
+				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
 
 			} else {
 
-				aTemp.setPoids(SpecificCadastralBoundarySide.LEFT.getValueType());
+				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
 			}
 
 		}

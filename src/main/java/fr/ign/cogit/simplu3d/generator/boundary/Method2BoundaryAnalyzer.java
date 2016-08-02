@@ -17,7 +17,7 @@ import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 
 public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
@@ -41,10 +41,10 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 				continue;
 			}
 			if (a.getFaceDroite() == null || a.getFaceGauche() == null) {
-				a.setOrientation(SpecificCadastralBoundaryType.ROAD.getValueType());
+				a.setOrientation(ParcelBoundaryType.ROAD.getValueType());
 
 			} else {
-				a.setOrientation(SpecificCadastralBoundaryType.UNKNOWN.getValueType());
+				a.setOrientation(ParcelBoundaryType.UNKNOWN.getValueType());
 
 			}
 
@@ -59,7 +59,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		// Type latéral, les noeuds débouchent sur une arete sans parcelle
 		for (Arc a : arcsParcelles) {
 
-			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+			if (a.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 
 				List<Arc> lA = new ArrayList<Arc>();
 
@@ -70,11 +70,11 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 				for (Arc aTemp : lA) {
 
-					if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+					if (aTemp.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 						continue;
 					}
 
-					aTemp.setOrientation(SpecificCadastralBoundaryType.LAT.getValueType());
+					aTemp.setOrientation(ParcelBoundaryType.LAT.getValueType());
 
 					// On détermine le côté de la parcelle
 					determineSide(aTemp, a, f);
@@ -91,7 +91,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
 		for (Arc a : arcsParcelles) {
 
-			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+			if (a.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 
 				iMS.add(a.getGeometrie());
 
@@ -105,7 +105,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		for (Arc a : arcsParcelles) {
 
-			if (a.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+			if (a.getOrientation() != ParcelBoundaryType.UNKNOWN.getValueType()) {
 				continue;
 			}
 
@@ -120,7 +120,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		// On affecte Bot à ceux qui sont proches de bot
 		if (bestCandidate != null) {
-			bestCandidate.setOrientation(SpecificCadastralBoundaryType.BOT.getValueType());
+			bestCandidate.setOrientation(ParcelBoundaryType.BOT.getValueType());
 
 			annoteBotCandidate(bestCandidate, f);
 		}
@@ -134,7 +134,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		for (Arc a : arcsParcelles) {
 
-			if (a.getOrientation() == SpecificCadastralBoundaryType.LAT.getValueType()) {
+			if (a.getOrientation() == ParcelBoundaryType.LAT.getValueType()) {
 				listArcTemp.add(a);
 
 			}
@@ -159,7 +159,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 			for (Arc aTemp : a.getNoeudIni().arcs()) {
 
-				if (aTemp.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+				if (aTemp.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 					somInitial = a.getNoeudIni().getCoord();
 					somFinal = a.getNoeudFin().getCoord();
 					break;
@@ -186,7 +186,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 					Arc aTemp = arcsATraites.get(i);
 
 					// déjà typé, on ne le traite pas
-					if (aTemp.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+					if (aTemp.getOrientation() != ParcelBoundaryType.UNKNOWN.getValueType()) {
 						arcsATraites.remove(i);
 						i--;
 						continue;
@@ -267,14 +267,14 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		// Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
 		for (Arc a : arcsParcelles) {
-			if (a.getOrientation() == SpecificCadastralBoundaryType.ROAD.getValueType()) {
+			if (a.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 				continue;
 			}
 
 			if (listArcLat.contains(a)) {
-				a.setOrientation(SpecificCadastralBoundaryType.LAT.getValueType());
+				a.setOrientation(ParcelBoundaryType.LAT.getValueType());
 			} else {
-				a.setOrientation(SpecificCadastralBoundaryType.BOT.getValueType());
+				a.setOrientation(ParcelBoundaryType.BOT.getValueType());
 			}
 		}
 
@@ -290,7 +290,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 			Arc a = arcsATraites.remove(0);
 
-			a.setOrientation(SpecificCadastralBoundaryType.BOT.getValueType());
+			a.setOrientation(ParcelBoundaryType.BOT.getValueType());
 
 			List<Arc> laTemp = new ArrayList<>();
 			laTemp.addAll(a.getNoeudFin().arcs());
@@ -300,7 +300,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 			v.normalise();
 			for (Arc aTemp : laTemp) {
 
-				if (aTemp.getOrientation() != SpecificCadastralBoundaryType.UNKNOWN.getValueType()) {
+				if (aTemp.getOrientation() != ParcelBoundaryType.UNKNOWN.getValueType()) {
 					continue;
 				}
 

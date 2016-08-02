@@ -34,7 +34,7 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableCurve;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Materiau;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -75,7 +75,7 @@ public class RepresentationBatiment extends Default3DRep {
     this.representFaitage = representFaitage;
     this.representGouttiere = representGouttiere;
     RoofSurface t = b.getRoof();
-    List<SpecificWallSurface> f = b.getWallSurfaces();
+    List<WallSurface> f = b.getWallSurfaces();
 
     // /1 on s'occupe du toit
     GeometryInfo geometryInfoToit = null;
@@ -108,7 +108,7 @@ public class RepresentationBatiment extends Default3DRep {
 
     // On s'occupe des façades
 
-    for (SpecificWallSurface facade : f) {
+    for (WallSurface facade : f) {
 
       GeometryInfo geometryInfoF = null;
       Appearance appF = null;

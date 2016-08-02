@@ -19,52 +19,23 @@ package fr.ign.cogit.simplu3d.model;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_WallSurface;
 
 /**
  * 
  * @author Brasebin Mickaël
  *
  */
-public class SpecificWallSurface extends DefaultFeature {
+public class WallSurface extends DefaultFeature {
 
-	public enum SpecificWallSurfaceType {
-		BOT(0), LAT(1), UNKNOWN(99), ROAD(2);
+	private WallSurfaceType type;
+	private Materiau material;
+	private boolean isWindowLess;
 
-		private int value;
-
-		private SpecificWallSurfaceType(int type) {
-			value = type;
-		}
-
-		public int getValueType() {
-			return value;
-		}
-
-		public static SpecificWallSurfaceType getTypeFromInt(int type) {
-			SpecificWallSurfaceType[] val = SpecificWallSurfaceType.values();
-			for (int i = 0; i < val.length; i++) {
-				if (val[i].getValueType() == type) {
-					return val[i];
-				}
-			}
-
-			return null;
-		}
-
-	}
-
-	public SpecificWallSurfaceType type;
-	public int idBuildPart;
-	public Materiau material;
-	public boolean isWindowLess;
-	public double length;
-
-	public SpecificWallSurface() {
+	public WallSurface() {
 		super();
 	}
 
-	public SpecificWallSurface(SpecificWallSurfaceType type, boolean isWindowLess) {
+	public WallSurface(WallSurfaceType type, boolean isWindowLess) {
 		super();
 		this.type = type;
 		this.isWindowLess = isWindowLess;
@@ -86,11 +57,11 @@ public class SpecificWallSurface extends DefaultFeature {
 		this.isWindowLess = isWindowLess;
 	}
 
-	public SpecificWallSurfaceType getType() {
+	public WallSurfaceType getType() {
 		return type;
 	}
 
-	public void setType(SpecificWallSurfaceType type) {
+	public void setType(WallSurfaceType type) {
 		this.type = type;
 	}
 

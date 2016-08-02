@@ -16,9 +16,9 @@ import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.util.PointInPolygon;
 
 /**
@@ -60,7 +60,7 @@ public class CadastralBoundaryGenerator {
 	}
 
 
-	public Collection<SpecificCadastralBoundary> createParcelBoundaries(CadastralParcel cadastralParcel){
+	public Collection<ParcelBoundary> createParcelBoundaries(CadastralParcel cadastralParcel){
 		buildCarteTopoAndAnalyzeFaces();
 			
 		/*
@@ -83,13 +83,13 @@ public class CadastralBoundaryGenerator {
 
 		Face face = candidateFaces.iterator().next();
 
-		List<SpecificCadastralBoundary> result = new ArrayList<>();
+		List<ParcelBoundary> result = new ArrayList<>();
 		for (Arc arc : face.arcs()) {
-			SpecificCadastralBoundary boundary = new SpecificCadastralBoundary();
+			ParcelBoundary boundary = new ParcelBoundary();
 			boundary.setCadastralParcel(cadastralParcel);
 			//TODO custom arc attribute
-			boundary.setType(SpecificCadastralBoundaryType.getTypeFromInt(arc.getOrientation()));
-			boundary.setSide(SpecificCadastralBoundarySide.getTypeFromInt((int)arc.getPoids()));
+			boundary.setType(ParcelBoundaryType.getTypeFromInt(arc.getOrientation()));
+			boundary.setSide(ParcelBoundarySide.getTypeFromInt((int)arc.getPoids()));
 			boundary.setGeom(arc.getGeom());
 			result.add(boundary);
 		}

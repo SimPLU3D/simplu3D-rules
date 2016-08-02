@@ -30,7 +30,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * @author Brasebin Mickaël
  *
  */
-public class SpecificCadastralBoundary extends DefaultFeature {
+public class ParcelBoundary extends DefaultFeature {
 	/**
 	 * CadastralParcel owning the boundary
 	 */
@@ -38,11 +38,11 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 	/**
 	 * The type of the boundary
 	 */
-	private SpecificCadastralBoundaryType type;
+	private ParcelBoundaryType type;
 	/**
 	 * The side of the boundary (relative to the parcel)
 	 */
-	private SpecificCadastralBoundarySide side;
+	private ParcelBoundarySide side;
 
 	/**
 	 * Optional Road linked to the boundary
@@ -55,11 +55,11 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 	private Prescription prescription = null;
 
 
-	public SpecificCadastralBoundary(){
+	public ParcelBoundary(){
 		
 	}
 	
-	public SpecificCadastralBoundary(IGeometry geom) {
+	public ParcelBoundary(IGeometry geom) {
 		this.setGeom(geom);
 	}
 	
@@ -72,20 +72,20 @@ public class SpecificCadastralBoundary extends DefaultFeature {
 		this.cadastralParcel = cadastralParcel;
 	}
 
-	public SpecificCadastralBoundaryType getType() {
+	public ParcelBoundaryType getType() {
 		return type;
 	}
 
-	public void setType(SpecificCadastralBoundaryType type) {
+	public void setType(ParcelBoundaryType type) {
 		this.type = type;
 	}
 
 
-	public SpecificCadastralBoundarySide getSide() {
+	public ParcelBoundarySide getSide() {
 		return side;
 	}
 
-	public void setSide(SpecificCadastralBoundarySide side) {
+	public void setSide(ParcelBoundarySide side) {
 		this.side = side;
 	}
 	

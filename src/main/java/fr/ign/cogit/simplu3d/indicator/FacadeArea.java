@@ -19,7 +19,7 @@ package fr.ign.cogit.simplu3d.indicator;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Calculation3D;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 
 /**
  * 
@@ -33,13 +33,13 @@ public class FacadeArea {
 	private double value = 0;
 
 	public FacadeArea(AbstractBuilding b) {
-		for (SpecificWallSurface f : b.getWallSurfaces()) {
+		for (WallSurface f : b.getWallSurfaces()) {
 			FacadeArea fA = new FacadeArea(f);
 			value = value + fA.getValue();
 		}
 	}
 
-	public FacadeArea(SpecificWallSurface f) {
+	public FacadeArea(WallSurface f) {
 		value = Calculation3D.area(FromPolygonToTriangle.convertAndTriangle(f.getLod2MultiSurface().getList()));
 	}
 

@@ -14,8 +14,8 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -89,9 +89,9 @@ public class BandsChecker implements IRuleChecker {
 
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
 		// nous donner une information sur les routes)
-		List<SpecificCadastralBoundary> lFronLimit = getFrontLimit(bPU);
+		List<ParcelBoundary> lFronLimit = getFrontLimit(bPU);
 
-		for (SpecificCadastralBoundary sc : lFronLimit) {
+		for (ParcelBoundary sc : lFronLimit) {
 			Road road = sc.getRoad();
 			
 			// On récupère la route adjance
@@ -310,12 +310,12 @@ public class BandsChecker implements IRuleChecker {
 	 * @param bPU
 	 * @return
 	 */
-	private List<SpecificCadastralBoundary> getFrontLimit(BasicPropertyUnit bPU) {
-		List<SpecificCadastralBoundary> lSC = new ArrayList<>();
+	private List<ParcelBoundary> getFrontLimit(BasicPropertyUnit bPU) {
+		List<ParcelBoundary> lSC = new ArrayList<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.ROAD) {
 					lSC.add(sc);
 				}
 			}
@@ -337,8 +337,8 @@ public class BandsChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.ROAD) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}
@@ -359,8 +359,8 @@ public class BandsChecker implements IRuleChecker {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
-			for (SpecificCadastralBoundary sc : cP.getBoundaries()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.LAT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}
