@@ -45,7 +45,6 @@ public class UrbaZoneRepositoryTest extends TestCase {
 		assertNull(first.getDateFin());
 
 		assertNull(first.getText());
-		assertNull(first.getIdPLU());
 	}
 	
 	

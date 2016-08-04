@@ -21,6 +21,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
@@ -35,6 +40,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * @author Brasebin Mickaël
  *
  */
+@Entity
 public class UrbaZone extends DefaultFeature {
 
 	/**
@@ -50,29 +56,40 @@ public class UrbaZone extends DefaultFeature {
 	private String nomFic = "";
 	private String urlFic = "";
 	private String insee = "";
-	//TODO rename DATAPPRO
+	// TODO rename DATAPPRO
 	private Date dateDeb = null;
-	//TODO rename DATVALID
+	// TODO rename DATVALID
 	private Date dateFin = null;
 	private String text = "";
-	private String idPLU;
 
 	// Pour la zone urba
-	public UrbaZone(IGeometry geom) {
+	public UrbaZone() {
 		super();
-		this.setGeom(geom);
 	}
 
-	// Pour les sous-parcelles
-	public void setSubParcels(List<SubParcel> subParcels) {
-		this.subParcels = subParcels;
+	@Override
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return id;
+	}
+	
+	@Override
+	@Type(type = "fr.ign.cogit.geoxygene.datatools.hibernate.GeOxygeneGeometryUserType")
+	public IGeometry getGeom() {
+		return geom;
 	}
 
+	@Transient
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 
-	// Pour le libelle de la zone urba
+	public void setSubParcels(List<SubParcel> subParcels) {
+		this.subParcels = subParcels;
+	}
+
+
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
@@ -160,15 +177,6 @@ public class UrbaZone extends DefaultFeature {
 
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	// ID du PLU
-	public String getIdPLU() {
-		return idPLU;
-	}
-
-	public void setIdPLU(String idPLU) {
-		this.idPLU = idPLU;
 	}
 
 }

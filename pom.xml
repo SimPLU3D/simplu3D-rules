@@ -80,6 +80,7 @@
 					<excludes>
 						<exclude>**/LoaderSHPFunctionalTest.java</exclude>
 						<exclude>**/COSHONTest.java</exclude>
+						<exclude>**/jpa/*.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -396,32 +397,8 @@
 					<artifactId>batik-util</artifactId>
 				</exclusion>
 				<exclusion>
-					<groupId>org.hibernate.javax.persistence</groupId>
-					<artifactId>hibernate-jpa-2.0-api</artifactId>
-				</exclusion>
-				<exclusion>
 					<groupId>org.geonames</groupId>
 					<artifactId>geonames</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-annotations</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernatespatial</groupId>
-					<artifactId>hibernate-spatial</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernatespatial</groupId>
-					<artifactId>hibernate-spatial-postgis</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.postgis</groupId>
-					<artifactId>postgis-jdbc</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.apache</groupId>
