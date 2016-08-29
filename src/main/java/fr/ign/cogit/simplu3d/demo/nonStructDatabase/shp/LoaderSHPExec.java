@@ -5,24 +5,20 @@ import java.io.File;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
-import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
@@ -47,32 +43,29 @@ public class LoaderSHPExec {
 
 	public static void main(String[] args) throws Exception {
 
-//		RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
-//		RoadReader.ATT_LARGEUR = "LARGEUR";
-//		RoadReader.ATT_TYPE = "NATURE";
-
-		CadastralParcelLoader.WIDTH_DEP = 30;
+		// RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+		// RoadReader.ATT_LARGEUR = "LARGEUR";
+		// RoadReader.ATT_TYPE = "NATURE";
 
 		// Rerouting towards the new files
-//		LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
-//		LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
-//		LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
-//		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
-//		LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
-//		LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
-//
-//		LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
+		// LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
+		// LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
+		// LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+		//
+		// LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
-//		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
-		CadastralParcelLoader.TYPE_ANNOTATION = 2;
+		// CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 
-		//UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
+		// UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
-
+		AssignBuildingPartToSubParcel.ASSIGN_METHOD = 1;
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
-		String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
+		String folder = "/home/mickael/data/mbrasebin/donnees/PLU2PLUS/Projet/";
 		String folderOut = folder + "out/";
 
 		File fOut = new File(folderOut);
@@ -80,7 +73,7 @@ public class LoaderSHPExec {
 
 		double valShiftB = 1.5;
 
-		Environnement env = LoaderSHP.load(new File(folder));
+		Environnement env = LoaderSHP.loadNoDTM(new File(folder));
 
 		UrbaDocument plu = env.getUrbaDocument();
 
@@ -96,23 +89,6 @@ public class LoaderSHPExec {
 
 		for (BasicPropertyUnit bPU : env.getBpU()) {
 
-			if (bPU.getId() == 41)
-				continue;
-
-			IPolygon pol = (IPolygon) FromGeomToSurface.convertGeom(bPU.getGeom()).get(0);
-
-			int coordSize = pol.coord().size() - 1;
-
-			double[] tab = new double[coordSize];
-
-			for (int i = 0; i < coordSize; i++) {
-				tab[i] = Math.PI / 4;
-			}
-
-			CampSkeleton cs = new CampSkeleton(pol, tab);
-
-			lTotArc.addAll(cs.getInteriorArcs());
-
 			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
 				count = count + sp.getBoundaries().size();
@@ -127,9 +103,9 @@ public class LoaderSHPExec {
 					bordures.add(b);
 
 					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
-					AttributeManager.addAttribute(b, "Type", b.getType(), "Integer");
+					AttributeManager.addAttribute(b, "Type", b.getType().getValueType(), "Integer");
 					AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");
-					AttributeManager.addAttribute(b, "Type", b.getSide(), "Integer");
+					AttributeManager.addAttribute(b, "Type", b.getSide().getValueType(), "Integer");
 
 					if (b.getFeatAdj() != null) {
 
@@ -176,8 +152,8 @@ public class LoaderSHPExec {
 
 					IFeature feat = new DefaultFeature(geom2);
 
-					AttributeManager.addAttribute(feat, "Type", b.getType(), "Integer");
-					AttributeManager.addAttribute(feat, "Side", b.getSide(), "Integer");
+					AttributeManager.addAttribute(feat, "Type", b.getType().getValueType(), "Integer");
+					AttributeManager.addAttribute(feat, "Side", b.getSide().getValueType(), "Integer");
 					bordures_translated.add(feat);
 
 				}

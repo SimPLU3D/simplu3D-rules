@@ -6,17 +6,13 @@ import java.util.List;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 
 public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
@@ -126,7 +122,6 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		}
 
 		// On instancie l'objet parcelle à partir de la carte totpo
-		IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f.getGeom());
 
 		List<Arc> listArcLat = new ArrayList<Arc>();
 
@@ -215,7 +210,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 				}
 
 				if (arcsATraites.size() > 1) {
-					System.out.println(CadastralParcelLoader.class.toString() + "   > 1, il doit y avoir un bug");
+					System.out.println(Method2BoundaryAnalyzer.class.toString() + "   > 1, il doit y avoir un bug");
 				}
 
 				// Nous n'avons qu'un candidat ... normalement
@@ -280,7 +275,6 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 	}
 
-	
 	private static void annoteBotCandidate(Arc bestCandidate, Face f) {
 
 		List<Arc> arcsATraites = new ArrayList<>();
@@ -320,6 +314,5 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		}
 
 	}
-	
-}
 
+}

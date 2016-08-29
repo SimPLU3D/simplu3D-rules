@@ -6,21 +6,17 @@ import java.util.List;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 
 public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
-	
-	public Method1BoundaryAnalyzer(){
+
+	public Method1BoundaryAnalyzer() {
 		super();
 	}
 
@@ -32,7 +28,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		// On parcourt les arcs (futures limites de parcelles)
 		List<Arc> arcsParcelles = f.arcs();
-
+		
 		// Type voirie : elles n'ont qu'un voisin
 		for (Arc a : arcsParcelles) {
 
@@ -90,9 +86,6 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		double threshold = determineThreshold(f, getThresholdIni());
 
 		// On instancie l'objet parcelle à partir de la carte totpo
-		IMultiSurface<IOrientableSurface> ms = FromGeomToSurface.convertMSGeom(f.getGeom());
-
-
 		List<Arc> listArcLat = new ArrayList<Arc>();
 
 		List<Arc> listArcTemp = new ArrayList<>();
@@ -180,7 +173,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 				}
 
 				if (arcsATraites.size() > 1) {
-					System.out.println(CadastralParcelLoader.class.toString() + "  > 1, il doit y avoir un bug");
+					System.out.println(Method1BoundaryAnalyzer.class.toString() + "  > 1, il doit y avoir un bug");
 				}
 
 				// Nous n'avons qu'un candidat ... normalement
@@ -239,7 +232,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 		// Tous les arcs ont été mis dans une liste sauf les fonds de parcelle
 		for (Arc a : arcsParcelles) {
-			
+
 			if (a.getOrientation() == ParcelBoundaryType.ROAD.getValueType()) {
 				continue;
 			}
