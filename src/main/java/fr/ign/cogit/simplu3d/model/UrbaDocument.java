@@ -58,15 +58,15 @@ public class UrbaDocument {
 	/**
 	 * Date d'approbation du document (DOC_URBA.DATAPPRO)
 	 */
-	public Date approvalDate;
+	private Date approvalDate;
 	/**
 	 * Date de fin de validité (DOC_URBA.DATEFIN)
 	 */
-	public Date endDate;
+	private Date endDate;
 	/**
 	 * Type de document d'urbanisme
 	 */
-	public UrbaDocumentType documentType;
+	private UrbaDocumentType documentType;
 
 	public UrbaDocument() {
 		super();
