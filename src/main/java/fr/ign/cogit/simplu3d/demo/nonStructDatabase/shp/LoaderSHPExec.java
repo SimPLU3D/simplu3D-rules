@@ -5,10 +5,14 @@ import java.io.File;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
@@ -20,7 +24,6 @@ import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
 /**
  * 
@@ -75,7 +78,6 @@ public class LoaderSHPExec {
 
 		Environnement env = LoaderSHP.loadNoDTM(new File(folder));
 
-
 		System.out.println("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 
 		IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
@@ -84,6 +86,7 @@ public class LoaderSHPExec {
 		int count = 0;
 
 		IFeatureCollection<IFeature> lTotArc = new FT_FeatureCollection<>();
+		IFeatureCollection<IFeature> lOppositeBoundary = new FT_FeatureCollection<>();
 		System.out.println("nb Parcelles : " + env.getCadastralParcels().size());
 
 		for (BasicPropertyUnit bPU : env.getBpU()) {
@@ -100,6 +103,17 @@ public class LoaderSHPExec {
 
 				for (ParcelBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
+
+					if (b.getOppositeBoundary() != null) {
+
+						IDirectPositionList dpl = new DirectPositionList();
+						dpl.add(b.getGeom().centroid());
+						dpl.add(b.getOppositeBoundary().getGeom().centroid());
+						ILineString ls = new GM_LineString(dpl);
+						IFeature feat = new DefaultFeature(ls);
+						AttributeManager.addAttribute(feat, "length", ls.length(), "Double");
+						lOppositeBoundary.add(feat);
+					}
 
 					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
 					AttributeManager.addAttribute(b, "Type", b.getType().getValueType(), "Integer");
@@ -163,7 +177,7 @@ public class LoaderSHPExec {
 		System.out.println("Nombre sbordurs" + count);
 
 		// Export des parcelles
-
+		ShapefileWriter.write(lOppositeBoundary, folderOut + "opposites.shp");
 		ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
 		ShapefileWriter.write(bordures, folderOut + "bordures.shp");
 		ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");

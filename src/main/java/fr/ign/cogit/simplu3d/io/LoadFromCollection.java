@@ -23,6 +23,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+import fr.ign.cogit.simplu3d.analysis.AssignOppositeToBoundary;
 import fr.ign.cogit.simplu3d.analysis.AssignRoadToParcelBoundary;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
@@ -182,9 +183,13 @@ public class LoadFromCollection {
     // adjacents (bordure sur route => route + relation entre les limites de parcelles)
     logger.info("Assigning Roads to ParcelBoundaries...");
     AssignRoadToParcelBoundary.process(parcelles, roads);
+    
+    //Etape 10 : on détecte les limites séparatives opposées
+    logger.info("Assigning opposite boundaries to parcel boundaries...");
+    AssignOppositeToBoundary.process(parcelles);
 
 
-    // Etape 10 : on importe les alignements
+    // Etape 11 : on importe les alignements
     logger.info("Loading Prescriptions...");
     {
     	PrescriptionReader prescriptionReader = new PrescriptionReader();
@@ -193,7 +198,7 @@ public class LoadFromCollection {
     }
 
     logger.info("Assign Z to features...");
-    // Etape 11 : on affecte des z à tout ce bon monde // - parcelles,
+    // Etape 12 : on affecte des z à tout ce bon monde // - parcelles,
     // sous-parcelles route sans z, zonage, les bordures etc...
     env.setTerrain(dtm);
     try {

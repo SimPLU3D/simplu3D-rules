@@ -49,6 +49,13 @@ public class ParcelBoundary extends DefaultFeature {
 	 */
 	private Road road = null ;
 	
+	
+	/**
+	 * Optional oppositBoundary
+	 */
+	private ParcelBoundary oppositeBoundary;
+	
+
 	/**
 	 * TODO see if a list is required
 	 */
@@ -106,6 +113,14 @@ public class ParcelBoundary extends DefaultFeature {
 		this.prescription = prescription;
 	}
 
+	
+	public ParcelBoundary getOppositeBoundary() {
+		return oppositeBoundary;
+	}
+
+	public void setOppositeBoundary(ParcelBoundary oppositeBoundary) {
+		this.oppositeBoundary = oppositeBoundary;
+	}
 
 	/**
 	 * Returns the Road if defined, else the CadastralParcel

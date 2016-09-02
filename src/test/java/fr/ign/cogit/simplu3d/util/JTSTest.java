@@ -2,7 +2,6 @@ package fr.ign.cogit.simplu3d.util;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ISphere;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
