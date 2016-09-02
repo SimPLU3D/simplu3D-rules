@@ -43,7 +43,7 @@ public class BandsChecker implements IRuleChecker {
 	}
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère les bâtiments par bande :

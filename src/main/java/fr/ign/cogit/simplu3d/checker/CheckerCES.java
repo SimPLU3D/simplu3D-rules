@@ -41,7 +41,7 @@ public class CheckerCES implements IRuleChecker {
 	
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// Cette information permet de savoir si on doit avoir un CES de 0.5 ou

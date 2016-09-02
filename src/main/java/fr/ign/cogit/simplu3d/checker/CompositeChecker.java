@@ -16,11 +16,7 @@ public class CompositeChecker implements IRuleChecker {
 
 	private List<IRuleChecker> children = new ArrayList<>();
 	
-	/**
-	 * Indicates if all child rules should be checked or
-	 *  if process should stop when the first error is met
-	 */
-	private boolean stopOnFailure = false ;
+	
 	
 	public List<IRuleChecker> getChildren(){
 		return children;
@@ -30,21 +26,14 @@ public class CompositeChecker implements IRuleChecker {
 		this.children.add(child);
 	}
 
-	public boolean isStopOnFailure() {
-		return stopOnFailure;
-	}
 
-	public void setStopOnFailure(boolean stopOnFailure) {
-		this.stopOnFailure = stopOnFailure;
-	}
-	
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
 		List<UnrespectedRule> unrespectedRules = new ArrayList<>();
 		for (IRuleChecker child : children) {
-			unrespectedRules.addAll(child.check(bPU));
+			unrespectedRules.addAll(child.check(bPU, context));
 			// optional processing stop on failure
-			if ( stopOnFailure && ! unrespectedRules.isEmpty() ){
+			if ( context.isStopOnFailure() && ! unrespectedRules.isEmpty() ){
 				return unrespectedRules;
 			}
 		}

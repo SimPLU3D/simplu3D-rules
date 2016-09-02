@@ -75,7 +75,6 @@ public class LoaderSHPExec {
 
 		Environnement env = LoaderSHP.loadNoDTM(new File(folder));
 
-		UrbaDocument plu = env.getUrbaDocument();
 
 		System.out.println("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 

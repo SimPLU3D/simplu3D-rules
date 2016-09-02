@@ -14,19 +14,6 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
  */
 public class Checker {
 	
-	/**
-	 * Permet de vérifier les règles sur une BPU à partir d'un ensemble de règles
-	 * 
-	 * @param bPU
-	 *            Une Basic Property Unit
-	 * @param rules
-	 *            Les règles d'urbanisme
-	 * @return une liste de règles non respectées
-	 */
-	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules){
-		boolean stopOnFailure = false;
-		return check(bPU, rules, stopOnFailure);
-	}
 	
 
 	/**
@@ -38,14 +25,13 @@ public class Checker {
 	 *            Les règles d'urbanisme
 	 * @return une liste de règles non respectées
 	 */
-	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules, boolean stopOnFailure) {
+	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules,ContextRuleCheck context) {
 		CompositeChecker checker = new CompositeChecker();
-		checker.setStopOnFailure(stopOnFailure);
 		checker.addChild(new CheckerCES(rules));
 		checker.addChild(new BuildingInParcelChecker());
 		checker.addChild(new DistanceInconsBotChecker(rules));
 		checker.addChild(new BandsChecker(rules));
-		return checker.check(bPU);
+		return checker.check(bPU, context);
 	}
 
 }

@@ -17,7 +17,7 @@ public class BuildingInParcelChecker implements IRuleChecker {
 	
 	
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
 		List<UnrespectedRule> unrespectedRules = new ArrayList<>();
 
 		//TODO see why bPU.getBuildings() is empty (loader issue?)

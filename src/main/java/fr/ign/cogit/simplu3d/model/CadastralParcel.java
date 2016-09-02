@@ -119,6 +119,20 @@ public class CadastralParcel extends DefaultFeature {
 		}
 		return result;
 	}
+	
+	
+	public List<ParcelBoundary> getBoundariesByTypes(List<ParcelBoundaryType> types) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			for(ParcelBoundaryType type: types ){
+				if ( boundary.getType().equals(type) ) {
+					result.add(boundary);
+				}	
+			}
+		}
+		return result;
+	}
+	
 
 	public List<ParcelBoundary> getBoundariesBySide(ParcelBoundarySide side) {
 		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
@@ -129,6 +143,21 @@ public class CadastralParcel extends DefaultFeature {
 		}
 		return result;
 	}
+	
+	
+	public List<ParcelBoundary> getBoundariesBySides(List<ParcelBoundarySide> sides) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			for(ParcelBoundarySide side: sides ){
+				if ( boundary.getSide().equals(side) ) {
+					result.add(boundary);
+				}
+			}
+	
+		}
+		return result;
+	}
+
 
 	public void setBoundaries(List<ParcelBoundary> bordures) {
 		this.boundaries = bordures;
