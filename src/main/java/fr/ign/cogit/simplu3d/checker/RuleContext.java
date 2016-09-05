@@ -1,19 +1,22 @@
 package fr.ign.cogit.simplu3d.checker;
 
-public class ContextRuleCheck {
-	
-	
+/**
+ * 
+ * Execution parameters for RuleChecker
+ * 
+ * @author MBrasebin
+ *
+ */
+public class RuleContext {
+
 	private boolean stopOnFailure = false;
-	
-	public  boolean isStopOnFailure(){
+
+	public boolean isStopOnFailure() {
 		return stopOnFailure;
 	}
 
 	public void setStopOnFailure(boolean stopOnFailure) {
 		this.stopOnFailure = stopOnFailure;
 	}
-
-	
-	
 
 }

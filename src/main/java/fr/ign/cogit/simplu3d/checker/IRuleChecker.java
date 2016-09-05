@@ -14,7 +14,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 public interface IRuleChecker {
 
 
-	public abstract List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context);
+	public abstract List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context);
 
 	
 	

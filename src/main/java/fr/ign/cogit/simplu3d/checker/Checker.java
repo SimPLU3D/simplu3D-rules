@@ -25,7 +25,7 @@ public class Checker {
 	 *            Les règles d'urbanisme
 	 * @return une liste de règles non respectées
 	 */
-	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules,ContextRuleCheck context) {
+	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules,RuleContext context) {
 		CompositeChecker checker = new CompositeChecker();
 		checker.addChild(new CheckerCES(rules));
 		checker.addChild(new BuildingInParcelChecker());

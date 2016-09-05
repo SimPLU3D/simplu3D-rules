@@ -128,8 +128,6 @@ public class OppositeBoundaryFinder {
 		IDirectPositionList dplLineString = new DirectPositionList();
 		dplLineString.add(dpLine);
 		dplLineString.add(lineCenter);
-		
-		System.out.println("Distance : " + dpLine.distance(lineCenter));
 
 		return new GM_LineString(dplLineString);
 

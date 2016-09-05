@@ -28,7 +28,7 @@ public class CompositeChecker implements IRuleChecker {
 
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> unrespectedRules = new ArrayList<>();
 		for (IRuleChecker child : children) {
 			unrespectedRules.addAll(child.check(bPU, context));

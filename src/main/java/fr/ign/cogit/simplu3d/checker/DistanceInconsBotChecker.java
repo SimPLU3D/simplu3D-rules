@@ -34,7 +34,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 	}
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU, ContextRuleCheck context) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère la limite de fond
