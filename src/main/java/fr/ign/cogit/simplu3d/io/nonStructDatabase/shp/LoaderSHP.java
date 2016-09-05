@@ -54,6 +54,8 @@ public class LoaderSHP {
 	public static final String NOM_FICHIER_BATIMENTS = "batiment.shp";
 	public static final String NOM_FICHIER_TERRAIN = "mnt.asc";
 	public static final String NOM_FICHIER_PRESC_LINEAIRE = "prescription_lin.shp";
+	public static final String NOM_FICHIER_PRESC_PONCTUELLE = "prescription_pct.shp";
+	public static final String NOM_FICHIER_PRESC_SURFACIQUE = "prescription_surf.shp";
 	public static final String NOM_FICHIER_PLU = "doc_urba.shp";
 
 	public static Environnement load(File folder) throws Exception {
@@ -82,6 +84,9 @@ public class LoaderSHP {
 		IFeatureCollection<IFeature> voirieColl = readShapefile(folder, NOM_FICHIER_VOIRIE);
 		IFeatureCollection<IFeature> batiColl = readShapefile(folder, NOM_FICHIER_BATIMENTS);
 		IFeatureCollection<IFeature> prescriptions = readShapefile(folder, NOM_FICHIER_PRESC_LINEAIRE);
+		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_LINEAIRE));
+		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_PONCTUELLE));
+		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_SURFACIQUE));
 		// sous-parcelles route sans z, zonage, les bordures etc...
 		DTMArea dtm = null;
 

@@ -6,7 +6,8 @@ import fr.ign.cogit.simplu3d.model.PrescriptionType;
 
 /**
  * 
- * Read prescription features (PRESCRIPTION_PCT, PRESCRIPTION_LIN, PRESCRIPTION_SURF)
+ * Read prescription features (PRESCRIPTION_PCT, PRESCRIPTION_LIN,
+ * PRESCRIPTION_SURF)
  * 
  * @author MBorne
  *
@@ -14,7 +15,7 @@ import fr.ign.cogit.simplu3d.model.PrescriptionType;
 public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
 	public final static String ATT_TYPE = "TYPEPSC";
 	public static final String ATT_LABEL = "LIBELLE";
-	
+
 	@Override
 	public Prescription read(IFeature feature) {
 		Prescription prescription = new Prescription();
@@ -22,7 +23,7 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
 
 		prescription.setGeom(feature.getGeom());
 		prescription.setType(readPrescriptionType(feature));
-		prescription.setLabel( readStringAttribute(feature, ATT_LABEL) ) ;
+		prescription.setLabel(readStringAttribute(feature, ATT_LABEL));
 
 		return prescription;
 	}
@@ -34,16 +35,14 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
 	 * @param feature
 	 * @return
 	 */
-	protected PrescriptionType readPrescriptionType(IFeature feature){
+	protected PrescriptionType readPrescriptionType(IFeature feature) {
 		String type = readStringAttribute(feature, ATT_TYPE);
-		if ( type == null || type.isEmpty() ){
+		if (type == null || type.isEmpty()) {
 			return PrescriptionType.UNKNOWN;
 		}
-		if ( type.equals("11") ){
-			return PrescriptionType.RECOIL;
-		}else{
-			return PrescriptionType.FACADE_ALIGNMENT;
-		}
+
+		int typeInt = Integer.parseInt(type);
+		return PrescriptionType.getPrescriptionById(typeInt);
 	}
 
 }

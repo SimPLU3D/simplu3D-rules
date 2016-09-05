@@ -23,8 +23,8 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un
  * document d'urbanisme
  * 
- * TODO ajouter une zone d'influence pour éviter de gérer 45 types de relation avec les objets du modèle et s'appuyer 
- *  sur une relation spatiale?
+ * TODO ajouter une zone d'influence pour éviter de gérer 45 types de relation
+ * avec les objets du modèle et s'appuyer sur une relation spatiale?
  * 
  * @author MBrasebin
  * @author MBorne
@@ -38,18 +38,11 @@ public class Prescription extends DefaultFeature {
 	/**
 	 * The label of the prescription (CNIG : LIBELLE)
 	 */
-	private String label ;
-	/**
-	 * 
-	 * equivalent to LIB_VALRECUL in CNIG standard
-	 */
-	private double recoilDistance;
+	private String label;
 
-	
 	public Prescription() {
 		this.type = PrescriptionType.UNKNOWN;
 	}
-	
 
 	public PrescriptionType getType() {
 		return type;
@@ -65,14 +58,6 @@ public class Prescription extends DefaultFeature {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public double getRecoilDistance() {
-		return recoilDistance;
-	}
-
-	public void setRecoilDistance(double recoilDistance) {
-		this.recoilDistance = recoilDistance;
 	}
 
 }
