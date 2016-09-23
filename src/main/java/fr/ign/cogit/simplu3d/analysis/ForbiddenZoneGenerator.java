@@ -7,6 +7,7 @@ import java.util.List;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
+import fr.ign.cogit.simplu3d.io.feature.PrescriptionReader;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.PrescriptionType;
@@ -14,6 +15,11 @@ import fr.ign.cogit.simplu3d.model.PrescriptionType;
 public class ForbiddenZoneGenerator {
 
 	private double radiusOfInfluence = 20;
+	
+	private final static double DISTANCERECOILEVEGETATION = 3;
+	private final static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;
+	private final static double DISTANCERECOILPAYSAGE= 3;
+	
 
 	public IGeometry generateUnionGeometry(IFeatureCollection<Prescription> prescriptions, BasicPropertyUnit bPU) {
 
@@ -63,17 +69,17 @@ public class ForbiddenZoneGenerator {
 
 		switch (type) {
 		case ELEMENT_PAYSAGE:
-			break;
+			return generateGeometryElementPaysage(p, bPU);
 		case EMPLACEMENT_RESERVE:
-			break;
+			return generateEmplacementReserve(p, bPU);
 		case ESPACE_BOISE:
-			break;
+			return generateEspaceBoise(p, bPU);
 		case FACADE_ALIGNMENT:
 			break;
 		case LIMITATION_BRUIT:
 			break;
 		case RECOIL:
-			break;
+			return generateReculFacade(p, bPU);
 		case SECTEUR_MIXITE:
 			break;
 		case UNKNOWN:
@@ -82,6 +88,59 @@ public class ForbiddenZoneGenerator {
 			break;
 
 		}
+		return null;
+	}
+
+	private IGeometry generateReculFacade(Prescription p, BasicPropertyUnit bPU) {
+		
+		Object recul = p.getAttribute(PrescriptionReader.ATT_RECOIL);
+		
+		if(recul == null) return null;
+		
+		double valRecul = Double.parseDouble(recul.toString());
+		
+		if(valRecul <= 0) return null;
+
+		return p.getGeom().buffer(valRecul);
+	}
+
+	private IGeometry generateEspaceBoise(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+		case 1:
+
+			return p.getGeom().buffer(DISTANCERECOILEVEGETATION);
+		case 2:
+			return p.getGeom();
+		}
+		
+		return null;
+	}
+
+	private IGeometry generateEmplacementReserve(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+		case 1:
+			return p.getGeom().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
+		case 2:
+			return p.getGeom();
+		}		
+		
+		return null;
+	}
+
+	private IGeometry generateGeometryElementPaysage(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+		case 1:
+			return p.getGeom().buffer(DISTANCERECOILPAYSAGE);
+		case 2:
+			return p.getGeom();
+		}
+		
 		return null;
 	}
 }

@@ -22,7 +22,7 @@ import com.sun.j3d.utils.geometry.GeometryInfo;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.java3d.ConversionJava3DGeOxygene;
 import fr.ign.cogit.geoxygene.sig3d.representation.ConstantRepresentation;
 import fr.ign.cogit.geoxygene.sig3d.representation.Default3DRep;

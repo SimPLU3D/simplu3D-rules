@@ -31,6 +31,9 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  *
  */
 public class Prescription extends DefaultFeature {
+	
+
+	
 	/**
 	 * Type of the prescription according to CNIG standard (TYPEPSC2)
 	 */

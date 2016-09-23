@@ -19,7 +19,7 @@ package fr.ign.cogit.simplu3d.io.feature;
 import java.text.SimpleDateFormat;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 
 /**

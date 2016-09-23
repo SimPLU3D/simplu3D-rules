@@ -28,8 +28,8 @@ import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Proximity;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.equation.ApproximatedPlanEquation;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.model.Road;
@@ -47,6 +47,7 @@ public class RoadReader extends AbstractFeatureReader<Road> {
 	public static final String ATT_LARGEUR = "LARGEUR";
 	public static final String ATT_TYPE = "NATURE";
 
+	private static final double epsilon = 0.01;
 
 	@Override
 	public Road read(IFeature feature) {
@@ -86,8 +87,12 @@ public class RoadReader extends AbstractFeatureReader<Road> {
 		// build surface geometry...
 
 		// TODO epsilon check?
-		if (result.getWidth() == 0.0 ) {
+		if (result.getWidth() < 0.0 ) {
 			throw new RuntimeException("Unsupported Road "+ATT_LARGEUR+" (0.0) for feature "+feature.getId());
+		}
+		
+		if(result.getWidth() == 0){
+			result.setWidth(epsilon);
 		}
 
 		IGeometry obj = geom.buffer(result.getWidth());

@@ -43,6 +43,14 @@ public class SubParcel extends DefaultFeature {
 	 */
 	private UrbaZone urbaZone = null;
 
+	public List<AbstractBuilding> getBuildings() {
+		return buildings;
+	}
+
+	public List<ParcelBoundary> getBoundaries() {
+		return boundaries;
+	}
+
 	/**
 	 * average slope
 	 */
@@ -119,5 +127,7 @@ public class SubParcel extends DefaultFeature {
 	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
 		return (IMultiSurface<IOrientableSurface>) this.getGeom();
 	}
+	
+	
 
 }

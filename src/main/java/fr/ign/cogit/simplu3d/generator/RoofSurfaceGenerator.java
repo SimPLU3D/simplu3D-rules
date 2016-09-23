@@ -56,6 +56,7 @@ public class RoofSurfaceGenerator {
 	 * @param emprise
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static RoofSurface create(IMultiSurface<IOrientableSurface> surfaceRoof, IPolygon emprise) {
 
 		RoofSurface t = new RoofSurface();

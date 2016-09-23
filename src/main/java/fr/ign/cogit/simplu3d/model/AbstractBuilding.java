@@ -27,16 +27,16 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
+import fr.ign.cogit.geoxygene.sig3d.indicator.HauteurCalculation;
+import fr.ign.cogit.geoxygene.sig3d.indicator.StoreyCalculation;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
 import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
 import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
-import fr.ign.cogit.simplu3d.indicator.HauteurCalculation;
-import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
 
 /**
  * 
@@ -69,17 +69,17 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	 */
 	private BasicPropertyUnit bPU;
 
-	
 	private int storeysAboveGround = -1;
-	
-	//TODO check default value for CityGML (was not restored for storeysAboveGround)
+
+	// TODO check default value for CityGML (was not restored for
+	// storeysAboveGround)
 	private double storeyHeightsAboveGround;
 
 	/**
 	 * TODO go private
 	 */
 	protected boolean generated = false;
-	
+
 	protected AbstractBuilding() {
 		super();
 	}
@@ -118,7 +118,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		}
 	}
 
-	
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
@@ -145,13 +144,12 @@ public abstract class AbstractBuilding extends DefaultFeature {
 
 	@SuppressWarnings("unchecked")
 	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return (IMultiSurface<IOrientableSurface>)getGeom();
+		return (IMultiSurface<IOrientableSurface>) getGeom();
 	}
 
 	public void setStoreysAboveGround(int storeysAboveGround) {
 		this.storeysAboveGround = storeysAboveGround;
 	}
-	
 
 	public double getStoreyHeightsAboveGround() {
 		return storeyHeightsAboveGround;
@@ -201,7 +199,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.wallSurfaces = new ArrayList<WallSurface>();
 		this.wallSurfaces.addAll(facades);
 	}
-	
+
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}
@@ -210,19 +208,57 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		return generated;
 	}
 
-	
 	public IOrientableSurface getFootprint() {
 		return footprint;
 	}
 
-	
-	////Geometric operators @TODO : Should we move this ?
-	
+	//// Geometric operators @TODO : Should we move this ?
+
 	public abstract AbstractBuilding clone();
 
 	public double height(int pB, int pH) {
-		double h = HauteurCalculation.calculate(this, pB, pH);
-		return h;
+
+		double zHaut = Double.NaN;
+
+		switch (pH) {
+		case 0:
+			zHaut = HauteurCalculation.calculateZHautPPE(this);
+			break;
+		case 1:
+			zHaut = HauteurCalculation.calculateZhautMinRoof(this);
+			break;
+		case 2:
+			zHaut = HauteurCalculation.calculateZHautPHF(this);
+			break;
+
+		}
+		double zBas = Double.NaN;
+
+		switch (pB) {
+		case 0:
+			List<IGeometry> geom = new ArrayList<>();
+			for (ParcelBoundary bP : this.getSubParcels().get(0).getBoundaries()) {
+				geom.add(bP.getGeom());
+			}
+			zBas = HauteurCalculation.calculateZBasEP(this, geom);
+			break;
+		case 1:
+			zBas = HauteurCalculation.calculateZBasPBB(this);
+			break;
+		case 2:
+			List<IGeometry> geometriesParcel = new ArrayList<>();
+			geometriesParcel.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
+			zBas = HauteurCalculation.calculateZBasPBT(geometriesParcel);
+			break;
+		case 3:
+			List<IGeometry> geometriesParcel2 = new ArrayList<>();
+			geometriesParcel2.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
+			zBas = HauteurCalculation.calculateZBasPHT(geometriesParcel2);
+			break;
+
+		}
+
+		return zHaut - zBas;
 	}
 
 	/**

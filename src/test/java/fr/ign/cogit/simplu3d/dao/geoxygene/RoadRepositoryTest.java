@@ -34,6 +34,7 @@ public class RoadRepositoryTest extends TestCase {
 		Road first = roads.iterator().next();
 		assertEquals(4.0, first.getWidth());
 		assertTrue( Math.abs( first.getAxis().length() - 68.8) < 1.0 );
+		System.out.println(first.getGeom().area());
 		assertTrue( Math.abs( first.getGeom().area() - 601.0 ) < 1.0 );
 		
 	}

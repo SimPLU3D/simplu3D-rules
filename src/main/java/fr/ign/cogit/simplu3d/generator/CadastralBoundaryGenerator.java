@@ -12,6 +12,7 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
+import fr.ign.cogit.geoxygene.util.algo.PointInPolygon;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
@@ -19,7 +20,6 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.util.PointInPolygon;
 
 /**
  * 
