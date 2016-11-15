@@ -39,7 +39,7 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  */
 public class AssignZ {
   // IF no DTM is used a default Z can be set
-  public static double DEFAULT_Z = 70;
+  public static double DEFAULT_Z = 0;
 
   public static void toParcelle(IFeatureCollection<CadastralParcel> parcelles,
       AbstractDTM dtm, boolean sursampled) throws Exception {
