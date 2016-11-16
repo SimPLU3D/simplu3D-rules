@@ -24,7 +24,7 @@ public class OppositeBoundaryFinder {
 
 	private IFeatureCollection<ParcelBoundary> boundaries;
 
-	private double maximumDistance = 25.0;
+	private double maximumDistance = 50.0;
 	private double smallVectorSize = 0.01;
 
 	public OppositeBoundaryFinder(IFeatureCollection<CadastralParcel> parcelles) {
