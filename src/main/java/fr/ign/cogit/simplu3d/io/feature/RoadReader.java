@@ -1,10 +1,10 @@
 /**
  * 
- *        This software is released under the licence CeCILL
+ * This software is released under the licence CeCILL
  * 
- *        see LICENSE.TXT
+ * see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
  * 
@@ -43,84 +43,93 @@ import fr.ign.cogit.simplu3d.model.Road;
  */
 public class RoadReader extends AbstractFeatureReader<Road> {
 
-	public static final String ATT_NOM_RUE = "NOM_RUE_G";
-	public static final String ATT_LARGEUR = "LARGEUR";
-	public static final String ATT_TYPE = "NATURE";
+  public static final String ATT_NOM_RUE;// = "NOM_RUE_G";
+  public static final String ATT_LARGEUR;// = "LARGEUR";
+  public static final String ATT_TYPE;// = "NATURE";
 
-	private static final double epsilon = 0.01;
+  private static final double epsilon = 0.01;
 
-	@Override
-	public Road read(IFeature feature) {
-		Road result = new Road();
-		result.setId(feature.getId());
-		result.setName(readStringAttribute(feature, ATT_NOM_RUE));
-		
-		Double width = readDoubleAttribute(feature, ATT_LARGEUR);
-		if ( width == null ){
-			return null;
-		}
-		result.setWidth(width);
+  static {
+    ATT_NOM_RUE = AttribNames.getATT_NOM_RUE();
+    ATT_LARGEUR = AttribNames.getATT_LARGEUR();
+    ATT_TYPE = AttribNames.getATT_TYPE_ROAD();
+  }
 
-		List<String> usages = new ArrayList<String>();
-		usages.add(readStringAttribute(feature, ATT_TYPE));
-		result.setUsages(usages);
+  @Override
+  public Road read(IFeature feature) {
+    Road result = new Road();
+    result.setId(feature.getId());
+    result.setName(readStringAttribute(feature, ATT_NOM_RUE));
 
-		// read axis...
-		IGeometry geom = feature.getGeom();
+    Double width = readDoubleAttribute(feature, ATT_LARGEUR);
+    if (width == null) {
+      return null;
+    }
+    result.setWidth(width);
 
-		IMultiCurve<ILineString> axe = null;
+    List<String> usages = new ArrayList<String>();
+    usages.add(readStringAttribute(feature, ATT_TYPE));
+    result.setUsages(usages);
 
-		if (geom instanceof ILineString) {
-			ILineString c = (ILineString) geom;
-			axe = new GM_MultiCurve<ILineString>();
-			axe.add(c);
-		} else if (geom instanceof IMultiCurve<?>) {
-			axe = (IMultiCurve<ILineString>) geom;
-		}
+    // read axis...
+    IGeometry geom = feature.getGeom();
 
-		if (axe == null) {
-			throw new RuntimeException("Error in Voirie Importer axe is not a ILineString");
-		}
+    IMultiCurve<ILineString> axe = null;
 
-		result.setAxis(axe);
+    if (geom instanceof ILineString) {
+      ILineString c = (ILineString) geom;
+      axe = new GM_MultiCurve<ILineString>();
+      axe.add(c);
+    } else if (geom instanceof IMultiCurve<?>) {
+      axe = (IMultiCurve<ILineString>) geom;
+    }
 
-		// build surface geometry...
+    if (axe == null) {
+      throw new RuntimeException(
+          "Error in Voirie Importer axe is not a ILineString");
+    }
 
-		// TODO epsilon check?
-		if (result.getWidth() < 0.0 ) {
-			throw new RuntimeException("Unsupported Road "+ATT_LARGEUR+" (0.0) for feature "+feature.getId());
-		}
-		
-		if(result.getWidth() == 0){
-			result.setWidth(epsilon);
-		}
+    result.setAxis(axe);
 
-		IGeometry obj = geom.buffer(result.getWidth());
-		IDirectPositionList dpl = obj.coord();
-		IDirectPositionList dplRoute = feature.getGeom().coord();
+    // build surface geometry...
 
-		int nbDPL = dpl.size();
+    // TODO epsilon check?
+    if (result.getWidth() < 0.0) {
+      throw new RuntimeException("Unsupported Road " + ATT_LARGEUR
+          + " (0.0) for feature " + feature.getId());
+    }
 
-		for (int i = 0; i < nbDPL; i++) {
-			Proximity c = new Proximity();
-			IDirectPosition dp = dpl.get(i);
+    if (result.getWidth() == 0) {
+      result.setWidth(epsilon);
+    }
 
-			c.nearest(dp, dplRoute);
-			dp.setZ(c.nearest.getZ());
-		}
+    IGeometry obj = geom.buffer(result.getWidth());
+    IDirectPositionList dpl = obj.coord();
+    IDirectPositionList dplRoute = feature.getGeom().coord();
 
-		ApproximatedPlanEquation eq = new ApproximatedPlanEquation(dpl);
+    int nbDPL = dpl.size();
 
-		Vecteur normal = eq.getNormale();
+    for (int i = 0; i < nbDPL; i++) {
+      Proximity c = new Proximity();
+      IDirectPosition dp = dpl.get(i);
 
-		if (normal.getZ() < 0) {
-			dpl.inverseOrdre();
-		}
+      c.nearest(dp, dplRoute);
+      dp.setZ(c.nearest.getZ());
+    }
 
-		IMultiSurface<IOrientableSurface> surfVoie = FromGeomToSurface.convertMSGeom(obj);
-		result.setGeom(surfVoie);
+    ApproximatedPlanEquation eq = new ApproximatedPlanEquation(dpl);
 
-		return result;
-	}
+    Vecteur normal = eq.getNormale();
+
+    if (normal.getZ() < 0) {
+      dpl.inverseOrdre();
+    }
+
+    IMultiSurface<IOrientableSurface> surfVoie = FromGeomToSurface
+        .convertMSGeom(obj);
+    result.setGeom(surfVoie);
+
+    return result;
+  }
 
 }

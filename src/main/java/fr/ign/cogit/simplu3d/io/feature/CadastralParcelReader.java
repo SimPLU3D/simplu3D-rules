@@ -14,70 +14,84 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * 
  * CadastralParcel reader
  * 
- * TODO cleanup "code" management. Currently either "CODE" or CODE_DEP+CODE_COM+COM_ABS+SECTION+NUMERO
+ * TODO cleanup "code" management. Currently either "CODE" or
+ * CODE_DEP+CODE_COM+COM_ABS+SECTION+NUMERO
  * 
  * @author MBorne
  *
  */
-public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel>{
-	
-	private final static Logger logger = Logger.getLogger(CadastralParcelReader.class.getCanonicalName());
-	
-	public static final String ATT_CODE_PARC = "CODE";
-	
-	public static final String ATT_BDP_CODE_DEP = "CODE_DEP";
-	public static final String ATT_BDP_CODE_COM = "CODE_COM";
-	public static final String ATT_BDP_COM_ABS = "COM_ABS";	
-	public static final String ATT_BDP_SECTION = "SECTION";	
-	public static final String ATT_BDP_NUMERO = "NUMERO";	
+public class CadastralParcelReader
+    extends AbstractFeatureReader<CadastralParcel> {
 
-	public static final String ATT_HAS_TO_BE_SIMULATED = "SIMUL";
-	
-	@Override
-	public CadastralParcel read(IFeature feature) {
-		CadastralParcel cadastralParcel = new CadastralParcel();
-		cadastralParcel.setId(feature.getId());
+  private final static Logger logger = Logger
+      .getLogger(CadastralParcelReader.class.getCanonicalName());
 
-		/*
-		 * read code attribute
-		 */
-		String code = readStringAttribute(feature, ATT_CODE_PARC);
-		if ( code == null ){
-			String codeDep = readStringAttribute(feature, ATT_BDP_CODE_DEP);
-			String codeCom = readStringAttribute(feature, ATT_BDP_CODE_COM);
-			String comAbs  = readStringAttribute(feature, ATT_BDP_COM_ABS);
-			String section = readStringAttribute(feature, ATT_BDP_SECTION);
-			String numero = readStringAttribute(feature, ATT_BDP_NUMERO);
-			// complete BDP
-			if ( codeDep != null && codeCom != null && comAbs != null && section != null && numero != null ){
-				code = codeDep+codeCom+comAbs+section+numero;
-			}
-		}
-		cadastralParcel.setCode(code);
-		
-		/*
-		 * read simulation attribute
-		 */
-		Object o = findAttribute(feature, ATT_HAS_TO_BE_SIMULATED);
-		if (o != null) {
-			cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
-		}
+  public static final String ATT_CODE_PARC;// = "CODE";
 
-		IGeometry geometry = feature.getGeom() ;
-		if ( ! geometry.isSimple() ){
-			logger.warning("Geometry is not simple for CadastralParcel "+code+"!");
-		}
-		List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(geometry);
-		if ( polygons.size() == 1 ){
-			IPolygon polygon = (IPolygon)polygons.get(0);
-			cadastralParcel.setGeom(polygon);
-		}else if ( polygons.size() > 1 ){
-			throw new RuntimeException(
-				"CadastralParcel should be either Polygon or MultiPolygon with 1 polygon ("+polygons.size()+" found)"
-			);
-		}
-		return cadastralParcel;
-	}
-	
+  public static final String ATT_BDP_CODE_DEP;// = "CODE_DEP";
+  public static final String ATT_BDP_CODE_COM;// = "CODE_COM";
+  public static final String ATT_BDP_COM_ABS;// = "COM_ABS";
+  public static final String ATT_BDP_SECTION;// = "SECTION";
+  public static final String ATT_BDP_NUMERO;// = "NUMERO";
+
+  public static final String ATT_HAS_TO_BE_SIMULATED;// = "SIMUL";
+
+  static {
+    ATT_CODE_PARC = AttribNames.getATT_CODE_PARC();
+    ATT_BDP_CODE_DEP = AttribNames.getATT_BDP_CODE_DEP();
+    ATT_BDP_CODE_COM = AttribNames.getATT_BDP_CODE_COM();
+    ATT_BDP_COM_ABS = AttribNames.getATT_BDP_COM_ABS();
+    ATT_BDP_SECTION = AttribNames.getATT_BDP_SECTION();
+    ATT_BDP_NUMERO = AttribNames.getATT_BDP_NUMERO();
+    ATT_HAS_TO_BE_SIMULATED = AttribNames.getATT_HAS_TO_BE_SIMULATED();
+  }
+
+  @Override
+  public CadastralParcel read(IFeature feature) {
+    CadastralParcel cadastralParcel = new CadastralParcel();
+    cadastralParcel.setId(feature.getId());
+
+    /*
+     * read code attribute
+     */
+    String code = readStringAttribute(feature, ATT_CODE_PARC);
+    if (code == null) {
+      String codeDep = readStringAttribute(feature, ATT_BDP_CODE_DEP);
+      String codeCom = readStringAttribute(feature, ATT_BDP_CODE_COM);
+      String comAbs = readStringAttribute(feature, ATT_BDP_COM_ABS);
+      String section = readStringAttribute(feature, ATT_BDP_SECTION);
+      String numero = readStringAttribute(feature, ATT_BDP_NUMERO);
+      // complete BDP
+      if (codeDep != null && codeCom != null && comAbs != null
+          && section != null && numero != null) {
+        code = codeDep + codeCom + comAbs + section + numero;
+      }
+    }
+    cadastralParcel.setCode(code);
+
+    /*
+     * read simulation attribute
+     */
+    Object o = findAttribute(feature, ATT_HAS_TO_BE_SIMULATED);
+    if (o != null) {
+      cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
+    }
+
+    IGeometry geometry = feature.getGeom();
+    if (!geometry.isSimple()) {
+      logger
+          .warning("Geometry is not simple for CadastralParcel " + code + "!");
+    }
+    List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(geometry);
+    if (polygons.size() == 1) {
+      IPolygon polygon = (IPolygon) polygons.get(0);
+      cadastralParcel.setGeom(polygon);
+    } else if (polygons.size() > 1) {
+      throw new RuntimeException(
+          "CadastralParcel should be either Polygon or MultiPolygon with 1 polygon ("
+              + polygons.size() + " found)");
+    }
+    return cadastralParcel;
+  }
 
 }
