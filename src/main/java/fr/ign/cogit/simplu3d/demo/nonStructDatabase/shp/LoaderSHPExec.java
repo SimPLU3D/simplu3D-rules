@@ -5,28 +5,25 @@ import java.io.File;
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
+import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.calculation.CampSkeleton;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
+import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
-import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.importer.RoadImporter;
-import fr.ign.cogit.simplu3d.importer.ZonesImporter;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
 /**
  * 
@@ -49,32 +46,29 @@ public class LoaderSHPExec {
 
 	public static void main(String[] args) throws Exception {
 
-		RoadImporter.ATT_NOM_RUE = "NOM_VOIE_G";
-		RoadImporter.ATT_LARGEUR = "LARGEUR";
-		RoadImporter.ATT_TYPE = "NATURE";
-
-		CadastralParcelLoader.WIDTH_DEP = 30;
+		// RoadReader.ATT_NOM_RUE = "NOM_VOIE_G";
+		// RoadReader.ATT_LARGEUR = "LARGEUR";
+		// RoadReader.ATT_TYPE = "NATURE";
 
 		// Rerouting towards the new files
-		LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
-		LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
-		LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
-		LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
-		LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
-		LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+		// LoaderSHP.NOM_FICHIER_PLU = "DOC_URBA.shp";
+		// LoaderSHP.NOM_FICHIER_ZONAGE = "zones_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_PARCELLE = "parcelles_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_TERRAIN = "MNT_UB2_L93.asc";
+		// LoaderSHP.NOM_FICHIER_VOIRIE = "Voirie_UB2.shp";
+		// LoaderSHP.NOM_FICHIER_BATIMENTS = "Bati_UB2_3D.shp";
+		//
+		// LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
 
-		LoaderSHP.NOM_FICHIER_PRESC_LINEAIRE = "[Insert File Name].shp";
+		// CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
 
-		CadastralParcelLoader.ATT_ID_PARC = "NUMERO";
-		CadastralParcelLoader.TYPE_ANNOTATION = 2;
-
-		ZonesImporter.NOM_ATT_TYPE_ZONE = "TYPE";
+		// UrbaZoneReader.ATT_TYPE_ZONE = "TYPE";
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
-
+		AssignBuildingPartToSubParcel.ASSIGN_METHOD = 1;
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
-		String folder = "D:/0_Masson/1_CDD_SIMPLU/2_Travail/0_Workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/dataRennes/";
+		String folder = "/home/mcolomb/informatique/workspace/simplu3d/simplu3D-rules/src/main/resources/fr/ign/cogit/simplu3d/data/";
 		String folderOut = folder + "out/";
 
 		File fOut = new File(folderOut);
@@ -82,56 +76,49 @@ public class LoaderSHPExec {
 
 		double valShiftB = 1.5;
 
-		Environnement env = LoaderSHP.load(new File(folder));
+		Environnement env = LoaderSHP.loadNoDTM(new File(folder));
 
-		UrbaDocument plu = env.getUrbaDocument();
-
-		System.out.println("Nombre de zones dans le PLU : " + plu.getlUrbaZone().size());
+		System.out.println("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 
 		IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
-		IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		IFeatureCollection<ParcelBoundary> bordures = new FT_FeatureCollection<ParcelBoundary>();
 
 		int count = 0;
 
 		IFeatureCollection<IFeature> lTotArc = new FT_FeatureCollection<>();
+		IFeatureCollection<IFeature> lOppositeBoundary = new FT_FeatureCollection<>();
 		System.out.println("nb Parcelles : " + env.getCadastralParcels().size());
 
 		for (BasicPropertyUnit bPU : env.getBpU()) {
 
-			if (bPU.getId() == 41)
-				continue;
+			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
-			IPolygon pol = (IPolygon) FromGeomToSurface.convertGeom(bPU.getGeom()).get(0);
-
-			int coordSize = pol.coord().size() - 1;
-
-			double[] tab = new double[coordSize];
-
-			for (int i = 0; i < coordSize; i++) {
-				tab[i] = Math.PI / 4;
-			}
-
-			CampSkeleton cs = new CampSkeleton(pol, tab);
-
-			lTotArc.addAll(cs.getInteriorArcs());
-
-			for (CadastralParcel sp : bPU.getCadastralParcel()) {
-
-				count = count + sp.getSpecificCadastralBoundary().size();
+				count = count + sp.getBoundaries().size();
 
 				IDirectPosition centroidParcel = sp.getGeom().centroid();
 
 				AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");
-				AttributeManager.addAttribute(sp, "NBBord", sp.getSpecificCadastralBoundary().size(), "Integer");
+				AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(), "Integer");
 				AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(), "Integer");
 
-				for (SpecificCadastralBoundary b : sp.getSpecificCadastralBoundary()) {
+				for (ParcelBoundary b : sp.getBoundaries()) {
 					bordures.add(b);
 
+					if (b.getOppositeBoundary() != null) {
+
+						IDirectPositionList dpl = new DirectPositionList();
+						dpl.add(b.getGeom().centroid());
+						dpl.add(b.getOppositeBoundary().getGeom().centroid());
+						ILineString ls = new GM_LineString(dpl);
+						IFeature feat = new DefaultFeature(ls);
+						AttributeManager.addAttribute(feat, "length", ls.length(), "Double");
+						lOppositeBoundary.add(feat);
+					}
+
 					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
-					AttributeManager.addAttribute(b, "Type", b.getType(), "Integer");
+					AttributeManager.addAttribute(b, "Type", b.getType().getValueType(), "Integer");
 					AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");
-					AttributeManager.addAttribute(b, "Type", b.getSide(), "Integer");
+					AttributeManager.addAttribute(b, "Type", b.getSide().getValueType(), "Integer");
 
 					if (b.getFeatAdj() != null) {
 
@@ -178,8 +165,8 @@ public class LoaderSHPExec {
 
 					IFeature feat = new DefaultFeature(geom2);
 
-					AttributeManager.addAttribute(feat, "Type", b.getType(), "Integer");
-					AttributeManager.addAttribute(feat, "Side", b.getSide(), "Integer");
+					AttributeManager.addAttribute(feat, "Type", b.getType().getValueType(), "Integer");
+					AttributeManager.addAttribute(feat, "Side", b.getSide().getValueType(), "Integer");
 					bordures_translated.add(feat);
 
 				}
@@ -190,7 +177,7 @@ public class LoaderSHPExec {
 		System.out.println("Nombre sbordurs" + count);
 
 		// Export des parcelles
-
+		ShapefileWriter.write(lOppositeBoundary, folderOut + "opposites.shp");
 		ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
 		ShapefileWriter.write(bordures, folderOut + "bordures.shp");
 		ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
@@ -259,7 +246,7 @@ public class LoaderSHPExec {
 
 			featOutTestCons.add(new DefaultFeature(sp.getConsLine()));
 
-			System.out.println(sp.getSpecificCadastralBoundary().size());
+			System.out.println(sp.getBoundaries().size());
 
 		}
 
@@ -268,14 +255,5 @@ public class LoaderSHPExec {
 		System.out.println("Chat qui râle");
 
 	}
-
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * System.out.println("Nombre d'alignements concernés" + featAL.size());
-	 * ShapefileWriter.write(featAL, folderOut + "alignements.shp");
-	 */
 
 }

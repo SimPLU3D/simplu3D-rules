@@ -5,18 +5,17 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -44,7 +43,7 @@ public class BandsChecker implements IRuleChecker {
 	}
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère les bâtiments par bande :
@@ -90,30 +89,21 @@ public class BandsChecker implements IRuleChecker {
 
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
 		// nous donner une information sur les routes)
-		List<SpecificCadastralBoundary> lFronLimit = getFrontLimit(bPU);
-		// //System.out.println("Liste SCB road : " + lFronLimit);
+		List<ParcelBoundary> lFronLimit = getFrontLimit(bPU);
 
-		for (SpecificCadastralBoundary sc : lFronLimit) {
+		for (ParcelBoundary sc : lFronLimit) {
+			Road road = sc.getRoad();
+			
 			// On récupère la route adjance
-			if (sc.getFeatAdj() != null) {
-
-				IFeature routeAdj = sc.getFeatAdj();
-				// //System.out.println("Road v1 : " + routeAdj);
-
-				// Normalement on peut caster
-				Road r = (Road) routeAdj;
-				// //System.out.println("Road v2 : " + r);
-				// //System.out.println("Road Width : " + r.getWidth());
-				// //System.out.println("Rule larg max prospect 1 : "
-				// + rules.getLargMaxProspect1());
+			if (road != null) {
 
 				for (AbstractBuilding ab : list) {
 
 					// suivant le cas, on a 2 prospect
-					if (r.getWidth() > rules.getLargMaxProspect1()) {
+					if (road.getWidth() > rules.getLargMaxProspect1()) {
 						// Est-ce qu'il respecte le prospect ?
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie2Slope(),
-								r.getWidth() * rules.getProspectVoirie2Slope() + rules.getProspectVoirie2Hini())) {
+								road.getWidth() * rules.getProspectVoirie2Slope() + rules.getProspectVoirie2Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de plus de "
 									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
 									CODE_PROSPECT_VOIRIE));
@@ -122,7 +112,7 @@ public class BandsChecker implements IRuleChecker {
 					} else {
 						// Est-ce qu'il respecte l'autre prospect ?
 						if (!ab.prospect(sc.getGeom(), rules.getProspectVoirie1Slope(),
-								r.getWidth() * rules.getProspectVoirie1Slope() + rules.getProspectVoirie1Hini())) {
+								road.getWidth() * rules.getProspectVoirie1Slope() + rules.getProspectVoirie1Hini())) {
 							lUNR.add(new UnrespectedRule("Prospect non respecté (route de moins de "
 									+ rules.getLargMaxProspect1() + " m de large", ab.getFootprint(),
 									CODE_PROSPECT_VOIRIE));
@@ -273,17 +263,15 @@ public class BandsChecker implements IRuleChecker {
 		mapB.put(1, new ArrayList<AbstractBuilding>());
 		mapB.put(2, new ArrayList<AbstractBuilding>());
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
 					if (bP.getFootprint().distance(getFrontLimit) < r.getAlignement() + r.getBand1()) {
 						// Bande 1 : on ajoute la bâtiment à la liste 1
 						mapB.get(1).add(bP);
-
-						// System.out.println("Activated");
 
 						IGeometry geom = getFrontLimit.buffer(r.getAlignement() + r.getBand1());
 
@@ -322,15 +310,13 @@ public class BandsChecker implements IRuleChecker {
 	 * @param bPU
 	 * @return
 	 */
-	private List<SpecificCadastralBoundary> getFrontLimit(BasicPropertyUnit bPU) {
-		List<SpecificCadastralBoundary> lSC = new ArrayList<>();
+	private List<ParcelBoundary> getFrontLimit(BasicPropertyUnit bPU) {
+		List<ParcelBoundary> lSC = new ArrayList<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			for (SubParcel sP : cP.getSubParcel()) {
-				for (SpecificCadastralBoundary sc : sP.getSpecificCadastralBoundary()) {
-					if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
-						lSC.add(sc);
-					}
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.ROAD) {
+					lSC.add(sc);
 				}
 			}
 		}
@@ -350,30 +336,15 @@ public class BandsChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getFrontLimitGeom(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		// System.out.println("NB Parcelle : " +
-		// bPU.getCadastralParcel().size());
-
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-
-			// System.out.println("NB boundaries : " +
-			// cP.getSpecificCadastralBoundary().size());
-
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-
-				// System.out.println("Boundary type : " + sc.getType());
-
-				if (sc.getType() == SpecificCadastralBoundaryType.ROAD) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.ROAD) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
-
 			}
-
 		}
 
-		// System.out.println("nombre de limite front : " + img.size());
-
 		return img;
-
 	}
 
 	/**
@@ -387,9 +358,9 @@ public class BandsChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getLatLimit(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.LAT) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.LAT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}

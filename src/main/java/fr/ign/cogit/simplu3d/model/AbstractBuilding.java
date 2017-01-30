@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.citygml4j.model.citygml.CityGML;
-import org.citygml4j.model.citygml.core.CityObject;
 
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
@@ -28,16 +27,16 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.building.CG_AbstractBuilding;
+import fr.ign.cogit.geoxygene.sig3d.indicator.HauteurCalculation;
+import fr.ign.cogit.geoxygene.sig3d.indicator.StoreyCalculation;
 import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.simplu3d.importer.EmpriseGenerator;
-import fr.ign.cogit.simplu3d.importer.RoofImporter;
-import fr.ign.cogit.simplu3d.indicator.HauteurCalculation;
-import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
+import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
+import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
 
 /**
  * 
@@ -51,35 +50,43 @@ import fr.ign.cogit.simplu3d.indicator.StoreyCalculation;
  * @author Brasebin Mickaël
  *
  */
-public abstract class AbstractBuilding extends CG_AbstractBuilding {
+public abstract class AbstractBuilding extends DefaultFeature {
 
-	public List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
+	private List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
 	private RoofSurface roofSurface = null;
 
-	private List<SpecificWallSurface> wallSurfaces;
+	private List<WallSurface> wallSurfaces;
 
-	public String destination;
-	public IOrientableSurface footprint;
+	private String destination;
+	private IOrientableSurface footprint;
 
+	/**
+	 * TODO compute from BuildingParts?
+	 */
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	/**
+	 * TODO compute from the first subParcel?
+	 */
 	private BasicPropertyUnit bPU;
 
-	private int idSubPar;
-	private int idVersion = -1;
+	private int storeysAboveGround = -1;
 
-	public boolean isNew = false;
+	// TODO check default value for CityGML (was not restored for
+	// storeysAboveGround)
+	private double storeyHeightsAboveGround;
 
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
-	}
+	/**
+	 * TODO go private
+	 */
+	protected boolean generated = false;
 
 	protected AbstractBuilding() {
 		super();
 	}
 
+	@Deprecated
 	public AbstractBuilding(IGeometry geom) {
 		this.setGeom(geom);
-		this.setLod2MultiSurface(FromGeomToSurface.convertMSGeom(geom));
 
 		// Etape 1 : détection du toit et des façades
 		List<IOrientableSurface> lOS = FromGeomToSurface.convertGeom(geom);
@@ -92,32 +99,30 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		IMultiSurface<IOrientableSurface> surfaceWall = Util.detectVertical(lOS, 0.2);
 
 		// Création facade
-		SpecificWallSurface f = new SpecificWallSurface();
+		WallSurface f = new WallSurface();
 		f.setGeom(surfaceWall);
-		f.setLod2MultiSurface(surfaceWall);
 
-		List<SpecificWallSurface> lF = new ArrayList<SpecificWallSurface>();
+		List<WallSurface> lF = new ArrayList<WallSurface>();
 		lF.add(f);
 		this.setFacade(lF);
 
 		// Etape 2 : on créé l'emprise du bâtiment
-		footprint = EmpriseGenerator.convert(surfaceRoof);
+		footprint = FootprintGenerator.convert(surfaceRoof);
 
 		if (footprint != null) {
 			// Création toit
-			RoofSurface t = RoofImporter.create(surfaceRoof, (IPolygon) footprint.clone());
+			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (IPolygon) footprint.clone());
 
 			// Affectation
 			this.setRoofSurface(t);
 		}
-
 	}
 
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 
-	public void setSousParcelles(List<SubParcel> subParcels) {
+	public void setSubParcels(List<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
 
@@ -137,24 +142,21 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.roofSurface = roof;
 	}
 
-	public int getIdSubPar() {
-		return idSubPar;
+	@SuppressWarnings("unchecked")
+	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
+		return (IMultiSurface<IOrientableSurface>) getGeom();
 	}
 
-	public void setIdSubPar(int idSubPar) {
-		this.idSubPar = idSubPar;
+	public void setStoreysAboveGround(int storeysAboveGround) {
+		this.storeysAboveGround = storeysAboveGround;
 	}
 
-	public int getIdVersion() {
-		return idVersion;
+	public double getStoreyHeightsAboveGround() {
+		return storeyHeightsAboveGround;
 	}
 
-	public void setIdVersion(int idVersion) {
-		this.idVersion = idVersion;
-	}
-
-	public List<BuildingPart> getBuildingPart() {
-		return buildingParts;
+	public void setStoreyHeightsAboveGround(double storeyHeightsAboveGround) {
+		this.storeyHeightsAboveGround = storeyHeightsAboveGround;
 	}
 
 	public String getDestination() {
@@ -169,85 +171,94 @@ public abstract class AbstractBuilding extends CG_AbstractBuilding {
 		this.footprint = footprint;
 	}
 
-	public List<BuildingPart> consistsOfBuildingPart() {
+	public List<BuildingPart> getBuildingParts() {
 		return buildingParts;
 	}
 
-	public void setBuildingPart(List<BuildingPart> buildingPart) {
-		this.buildingParts = buildingPart;
+	public void setBuildingParts(List<BuildingPart> buildingParts) {
+		this.buildingParts = buildingParts;
 	}
 
-	@Override
 	public int getStoreysAboveGround() {
 		if (this.storeysAboveGround == -1) {
 			this.storeysAboveGround = StoreyCalculation.process(this);
 		}
 
 		return this.storeysAboveGround;
-
 	}
 
 	public void setRoofSurface(RoofSurface toit) {
 		this.roofSurface = toit;
 	}
 
-	public List<SpecificWallSurface> getWallSurfaces() {
+	public List<WallSurface> getWallSurfaces() {
 		return wallSurfaces;
 	}
 
-	public void setFacade(List<? extends SpecificWallSurface> facades) {
-		this.wallSurfaces = new ArrayList<SpecificWallSurface>();
+	public void setFacade(List<? extends WallSurface> facades) {
+		this.wallSurfaces = new ArrayList<WallSurface>();
 		this.wallSurfaces.addAll(facades);
-
 	}
 
-
-	public RoofSurface getRoofSurface() {
-		return roofSurface;
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
 	}
 
-
-
-	public boolean isNew() {
-		return isNew;
+	public boolean isGenerated() {
+		return generated;
 	}
 
 	public IOrientableSurface getFootprint() {
 		return footprint;
 	}
 
-	@Override
-	public CityObject export() {
-	//	@TODO : to complete
-		return null;
-	}
-	
-	
-	////Geometric operators @TODO : Should we move this ?
-	
+	//// Geometric operators @TODO : Should we move this ?
+
 	public abstract AbstractBuilding clone();
 
-	public double distance(AbstractBuilding b2) {
-		return this.footprint.distance(b2.getFootprint());
-	}
-
 	public double height(int pB, int pH) {
-		double h = HauteurCalculation.calculate(this, pB, pH);
-		//System.out.println("Hauteur calculée : " + h);
-		return h;
-	}
 
-	
-	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1, double d2) {
-		return null;
-	}
+		double zHaut = Double.NaN;
 
-	public List<AbstractBuilding> bandEpsilon(IGeometry geom, double d1) {
-		return bandEpsilon(geom, d1, Double.POSITIVE_INFINITY);
-	}
+		switch (pH) {
+		case 0:
+			zHaut = HauteurCalculation.calculateZHautPPE(this);
+			break;
+		case 1:
+			zHaut = HauteurCalculation.calculateZhautMinRoof(this);
+			break;
+		case 2:
+			zHaut = HauteurCalculation.calculateZHautPHF(this);
+			break;
 
-	public List<AbstractBuilding> bandEpsilon(CadastralParcel cP, double distMin, double distMax) {
-		return bandEpsilon(cP.getGeom(), distMin, distMax);
+		}
+		double zBas = Double.NaN;
+
+		switch (pB) {
+		case 0:
+			List<IGeometry> geom = new ArrayList<>();
+			for (ParcelBoundary bP : this.getSubParcels().get(0).getBoundaries()) {
+				geom.add(bP.getGeom());
+			}
+			zBas = HauteurCalculation.calculateZBasEP(this, geom);
+			break;
+		case 1:
+			zBas = HauteurCalculation.calculateZBasPBB(this);
+			break;
+		case 2:
+			List<IGeometry> geometriesParcel = new ArrayList<>();
+			geometriesParcel.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
+			zBas = HauteurCalculation.calculateZBasPBT(geometriesParcel);
+			break;
+		case 3:
+			List<IGeometry> geometriesParcel2 = new ArrayList<>();
+			geometriesParcel2.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
+			zBas = HauteurCalculation.calculateZBasPHT(geometriesParcel2);
+			break;
+
+		}
+
+		return zHaut - zBas;
 	}
 
 	/**

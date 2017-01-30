@@ -57,7 +57,7 @@ public class LoadPostGIS {
   }
 
   public Environnement load(String folder) throws Exception {
-    Environnement env = Environnement.getInstance();
+    Environnement env = Environnement.createEnvironnement();
     env.folder = folder;
     
     IFeatureCollection<IFeature> pluColl = PostgisManager.loadGeometricTable(

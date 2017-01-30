@@ -7,13 +7,13 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IEnvelope;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 
 /**
  * Le coefficient d'emprise au sol peut atteindre getEmpriseSol de la superficie
@@ -41,7 +41,7 @@ public class CheckerCES implements IRuleChecker {
 	
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// Cette information permet de savoir si on doit avoir un CES de 0.5 ou
@@ -58,18 +58,16 @@ public class CheckerCES implements IRuleChecker {
 		// Est-ce que la largeur des façades est supérieure à EmpLargeurMin
 		boolean hasBeenCheckded = false;
 		// On récupère les parties de bâtiments
-		bouclecp: for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		bouclecp: for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
-					List<SpecificWallSurface> lSWS = bP.getWallSurfaces();
-
-					// //System.out.println("facades : " + lSWS);
+					List<WallSurface> lSWS = bP.getWallSurfaces();
 
 					if (lSWS != null && !lSWS.isEmpty()) {
-						for (SpecificWallSurface sWS : lSWS) {
+						for (WallSurface sWS : lSWS) {
 
 							if (!sWS.getGeom().isEmpty()) {
 
@@ -118,9 +116,9 @@ public class CheckerCES implements IRuleChecker {
 
 		// On calcule l'aire totale bâtie
 		double aireBati = 0;
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 

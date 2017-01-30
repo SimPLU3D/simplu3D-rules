@@ -16,80 +16,87 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.citygml4j.model.citygml.landuse.LandUse;
-
-import com.vividsolutions.jts.geom.Geometry;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.landuse.CG_LandUse;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
+ * 
+ * A SubParcel is a part of CadastralParcel cut according to an UrbaZone
  * 
  * @author Brasebin Mickaël
  *
  */
-public class SubParcel extends CG_LandUse {
+public class SubParcel extends DefaultFeature {
 
-	public final String CLASSE = "SousParcelle";
+	/**
+	 * Parent CadastralParcel
+	 */
+	private CadastralParcel cadastralParcel;
 
-	private CadastralParcel parcelle;
+	/**
+	 * UrbaZone corresponding to the SubParcel (nullable)
+	 */
+	private UrbaZone urbaZone = null;
 
-	private int idZU = 0;
-	private int idCp = 0;
+	public List<AbstractBuilding> getBuildings() {
+		return buildings;
+	}
+
+	public List<ParcelBoundary> getBoundaries() {
+		return boundaries;
+	}
+
+	/**
+	 * average slope
+	 */
 	private double avgSlope;
+
+	/**
+	 * BuildingParts associated to the SubParcel
+	 * 
+	 * Note that an original input building can be split to match the SubParcel
+	 * 
+	 */
+	public List<AbstractBuilding> buildings = new ArrayList<AbstractBuilding>();
+
+	/**
+	 * Boundaries TODO check construction / remove if useless?
+	 */
+	public List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
+
+	/**
+	 * cached area
+	 */
 	private double area = -1;
-	private UrbaZone zU = null;
 
-	public UrbaZone getUrbaZone() {
-		return zU;
-	}
-
-	public void setZoneUrba(UrbaZone zU) {
-		this.zU = zU;
-	}
-
-	public void setIdZoneUrba(int idZU) {
-		this.idZU = idZU;
-	}
-
-	public int getIdZoneUrba() {
-		return idZU;
-	}
-
-	public void setIdCadPar(int idCp) {
-		this.idCp = idCp;
-	}
-
-	public int getIdCadPar() {
-		return idCp;
-	}
-
-	public double builtRatio() {
-		return 0;
-	}
-
-	public double FARVolume() {
-		return 0;
-	}
-
-	public double FARRatio() {
-		return 0;
+	public SubParcel() {
+		super();
 	}
 
 	public SubParcel(IGeometry iMS) {
 		super();
 		this.setGeom(iMS);
-		this.setClazz(CLASSE);
 	}
 
-	public void setArea(Double area) {
-		this.area = area;
+	public void setCadastralParcel(CadastralParcel cadastralParcel) {
+		this.cadastralParcel = cadastralParcel;
+	}
+
+	public CadastralParcel getCadastralParcel() {
+		return cadastralParcel;
+	}
+
+	public UrbaZone getUrbaZone() {
+		return urbaZone;
+	}
+
+	public void setZoneUrba(UrbaZone urbaZone) {
+		this.urbaZone = urbaZone;
 	}
 
 	public double getAvgSlope() {
@@ -100,146 +107,27 @@ public class SubParcel extends CG_LandUse {
 		this.avgSlope = avgSlope;
 	}
 
-	public double getArea() {
+	public List<AbstractBuilding> getBuildingsParts() {
+		return buildings;
+	}
 
+	public void setBuildingsParts(List<AbstractBuilding> buildingsParts) {
+		this.buildings = buildingsParts;
+	}
+
+
+	public double getArea() {
 		if (area == -1) {
 			area = this.getGeom().area();
 		}
 		return area;
 	}
 
-	public IFeatureCollection<AbstractBuilding> buildingsParts = new FT_FeatureCollection<AbstractBuilding>();
-	// private IFeatureCollection<Voirie> voiries = new
-	// FT_FeatureCollection<Voirie>();
-	public IFeatureCollection<SpecificCadastralBoundary> sCBoundary = new FT_FeatureCollection<SpecificCadastralBoundary>();
-
-	public void setSpecificCadBoundary(IFeatureCollection<SpecificCadastralBoundary> spCBoundary) {
-		this.sCBoundary = spCBoundary;
+	@SuppressWarnings("unchecked")
+	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
+		return (IMultiSurface<IOrientableSurface>) this.getGeom();
 	}
+	
+	
 
-	public List<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
-		return sCBoundary.getElements();
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryColl() {
-		return sCBoundary;
-	}
-
-	public SubParcel() {
-		super();
-		this.setClazz(CLASSE);
-
-	}
-
-	public SubParcel(LandUse landUse) {
-		super(landUse);
-
-		this.setClazz(CLASSE);
-
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getBorduresFond() {
-		IFeatureCollection<SpecificCadastralBoundary> borduresFond = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundaryType.BOT) {
-				borduresFond.add(b);
-			}
-
-		}
-		return borduresFond;
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getBorduresLat() {
-		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundaryType.LAT) {
-				borduresLat.add(b);
-			}
-
-		}
-		return borduresLat;
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getBorduresRoad() {
-		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.sCBoundary) {
-			if (b.getType() == SpecificCadastralBoundaryType.ROAD) {
-				borduresLat.add(b);
-			}
-
-		}
-		return borduresLat;
-	}
-
-	public void setParcelle(CadastralParcel cP) {
-		this.parcelle = cP;
-	}
-
-	public CadastralParcel getParcel() {
-		return parcelle;
-	}
-
-	public IFeatureCollection<AbstractBuilding> getBuildingsParts() {
-		// System.out.println("NB BP : " + buildingsParts.size());
-		return buildingsParts;
-	}
-
-	public void setBuildingsParts(IFeatureCollection<AbstractBuilding> buildingsParts) {
-		this.buildingsParts = buildingsParts;
-	}
-
-	public double getces() {
-
-		double area = this.getArea();
-
-		int bP = this.getBuildingsParts().size();
-
-		if (bP == 0) {
-			return 0;
-		}
-
-		Geometry geom = null;
-		try {
-			geom = JtsGeOxygene.makeJtsGeom(this.getBuildingsParts().get(0).getFootprint());
-
-			for (int i = 0; i < bP; i++) {
-				geom = geom.union(JtsGeOxygene.makeJtsGeom(this.getBuildingsParts().get(i).getFootprint()));
-
-			}
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
-		if (geom == null) {
-			return 0;
-		}
-
-		// System.out.println(areaB / area);
-
-		return geom.getArea() / area;
-
-	}
-
-	public IGeometry getConsLine() {
-		SubParcel.getLogger().error("Empty method getConsline()");
-		return null;
-	}
-	/*
-	 * public IFeatureCollection<Voirie> getVoiries() { return voiries; }
-	 * 
-	 * public void setVoiries(IFeatureCollection<Voirie> voiries) { this.voiries
-	 * = voiries; }
-	 */
-
-	/*
-	 * public IFeatureCollection<Bordure> getBordures() { return bordures; }
-	 * 
-	 * 
-	 * public void setBordures(IFeatureCollection<Bordure> bordures) {
-	 * this.bordures = bordures; }
-	 * 
-	 * public void setParcelle(CadastralParcel parcelle) { this.parcelle =
-	 * parcelle; }
-	 */
 }

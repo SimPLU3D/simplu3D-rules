@@ -16,33 +16,51 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.feature.FT_Feature;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
  * 
- * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un document d'urbanisme
+ * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un
+ * document d'urbanisme
  * 
- * @author Brasebin Mickaël
+ * TODO ajouter une zone d'influence pour éviter de gérer 45 types de relation
+ * avec les objets du modèle et s'appuyer sur une relation spatiale?
+ * 
+ * @author MBrasebin
+ * @author MBorne
  *
  */
-public class Prescription extends FT_Feature {
+public class Prescription extends DefaultFeature {
+	
+
 	
 	/**
-	 * Type of the prescription according to COVADIS standard
-	*/
-	public int type;
-	
-	public Prescription(int type) {
-		super();
-		this.type = type;
+	 * Type of the prescription according to CNIG standard (TYPEPSC2)
+	 */
+	public PrescriptionType type;
+	/**
+	 * The label of the prescription (CNIG : LIBELLE)
+	 */
+	private String label;
+
+	public Prescription() {
+		this.type = PrescriptionType.UNKNOWN;
 	}
 
-	public int getType() {
+	public PrescriptionType getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(PrescriptionType type) {
 		this.type = type;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }

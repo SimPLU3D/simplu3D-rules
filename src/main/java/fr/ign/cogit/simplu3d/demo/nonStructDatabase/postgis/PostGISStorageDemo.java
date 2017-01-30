@@ -16,8 +16,8 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 
@@ -51,10 +51,10 @@ public class PostGISStorageDemo {
     UrbaDocument plu = env.getUrbaDocument();
 
     System.out.println("Nombre de zones dans le PLU : "
-        + plu.getlUrbaZone().size());
+        + env.getUrbaZones().size());
 
     IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
-    IFeatureCollection<SpecificCadastralBoundary> bordures = new FT_FeatureCollection<SpecificCadastralBoundary>();
+    IFeatureCollection<ParcelBoundary> bordures = new FT_FeatureCollection<ParcelBoundary>();
 
     int count = 0;
 
@@ -62,19 +62,19 @@ public class PostGISStorageDemo {
 
     for (BasicPropertyUnit bPU : env.getBpU()) {
 
-      for (CadastralParcel sp : bPU.getCadastralParcel()) {
+      for (CadastralParcel sp : bPU.getCadastralParcels()) {
 
-        count = count + sp.getSpecificCadastralBoundary().size();
+        count = count + sp.getBoundaries().size();
 
         IDirectPosition centroidParcel = sp.getGeom().centroid();
 
         AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");
         AttributeManager.addAttribute(sp, "NBBord", sp
-            .getSpecificCadastralBoundary().size(), "Integer");
+            .getBoundaries().size(), "Integer");
         AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(),
             "Integer");
 
-        for (SpecificCadastralBoundary b : sp.getSpecificCadastralBoundary()) {
+        for (ParcelBoundary b : sp.getBoundaries()) {
           bordures.add(b);
 
           AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
@@ -204,7 +204,7 @@ public class PostGISStorageDemo {
 
       featOutTestCons.add(new DefaultFeature(sp.getConsLine()));
 
-      System.out.println(sp.getSpecificCadastralBoundary().size());
+      System.out.println(sp.getBoundaries().size());
 
     }
 

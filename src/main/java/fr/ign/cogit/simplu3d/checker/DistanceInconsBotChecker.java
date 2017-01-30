@@ -6,14 +6,14 @@ import java.util.List;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * Une bande de getBandIncons() m (par rapport au fond de la parcelle) est
@@ -34,7 +34,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 	}
 
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère la limite de fond
@@ -45,9 +45,9 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		}
 
 		// On récupère les parties de bâtiments
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
-			for (SubParcel sP : cP.getSubParcel()) {
+			for (SubParcel sP : cP.getSubParcels()) {
 
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
@@ -78,20 +78,13 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 	private IMultiCurve<IOrientableCurve> getBotLimit(BasicPropertyUnit bPU) {
 		IMultiCurve<IOrientableCurve> img = new GM_MultiCurve<>();
 
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			// ////////////////////////
-			// / Cette partie du code contient les vérificateurs de règles
-			// /
-			// /
-			// /////////////////////////
-			for (SpecificCadastralBoundary sc : cP.getSpecificCadastralBoundary()) {
-				if (sc.getType() == SpecificCadastralBoundaryType.BOT) {
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
+			for (ParcelBoundary sc : cP.getBoundaries()) {
+				if (sc.getType() == ParcelBoundaryType.BOT) {
 					img.addAll(FromGeomToLineString.convert(sc.getGeom()));
 				}
 			}
 		}
-
-		// System.out.println("nombre de limites de fond : " + img.size());
 
 		return img;
 	}

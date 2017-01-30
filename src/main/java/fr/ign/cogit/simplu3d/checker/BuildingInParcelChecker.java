@@ -5,12 +5,11 @@ import java.util.List;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.util.conversion.JtsGeOxygene;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.util.JTS;
 
 public class BuildingInParcelChecker implements IRuleChecker {
 
@@ -18,16 +17,16 @@ public class BuildingInParcelChecker implements IRuleChecker {
 	
 	
 	@Override
-	public List<UnrespectedRule> check(BasicPropertyUnit bPU) {
+	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> unrespectedRules = new ArrayList<>();
 
 		//TODO see why bPU.getBuildings() is empty (loader issue?)
 		
-		for (CadastralParcel cP : bPU.getCadastralParcel()) {
-			for (SubParcel sP : cP.getSubParcel()) {
-				Geometry parcelGeometry = toJTS(sP.getGeom());
+		for (CadastralParcel cP : bPU.getCadastralParcels()) {
+			for (SubParcel sP : cP.getSubParcels()) {
+				Geometry parcelGeometry = JTS.toJTS(sP.getGeom());
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
-					Geometry footprint = toJTS(bP.getFootprint());
+					Geometry footprint = JTS.toJTS(bP.getFootprint());
 					if ( footprint == null ){
 						throw new RuntimeException("No footprint!");
 					}
@@ -41,7 +40,7 @@ public class BuildingInParcelChecker implements IRuleChecker {
 					}
 					unrespectedRules.add(new UnrespectedRule(
 						"Le bâtiment est en dehors de la parcelle",
-						fromJTS(difference),
+						JTS.fromJTS(difference),
 						CODE
 					));
 				}
@@ -51,20 +50,5 @@ public class BuildingInParcelChecker implements IRuleChecker {
 		return unrespectedRules;
 	}
 	
-	private IGeometry fromJTS(Geometry geometry){
-		try {
-			return JtsGeOxygene.makeGeOxygeneGeom(geometry);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private Geometry toJTS(IGeometry geometry){
-		try {
-			return JtsGeOxygene.makeJtsGeom(geometry);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 }

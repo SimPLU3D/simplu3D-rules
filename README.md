@@ -3,7 +3,7 @@
 Simplu3D-rules
 ============
 
-A library to automatically check respect of local urban  regulations concerning constructability.
+A library that automatically checks the respect of local urban  regulations concerning constructability.
 
 
 Introduction

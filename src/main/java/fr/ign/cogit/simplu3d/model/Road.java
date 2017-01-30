@@ -16,11 +16,13 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import java.util.List;
+
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
+import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
  * 
@@ -29,25 +31,19 @@ import fr.ign.cogit.geoxygene.sig3d.model.citygml.transportation.CG_Road;
  * @author Brasebin Mickaël
  *
  */
-public class Road extends CG_Road {
+public class Road extends DefaultFeature {
 
 	private IMultiCurve<ILineString> axis;
 	public String name;
 	public String type;
-	public int idRoad;
 	private double width;
-
+	private List<String> usages;
 
 	public Road() {
 		super();
 	}
 
-	public Road(org.citygml4j.model.citygml.transportation.Road tO) {
-		super(tO);
-	}
-
 	public Road(IMultiSurface<IOrientableSurface> surfVoie) {
-		this.setLod2MultiSurface(surfVoie);
 		this.setGeom(surfVoie);
 	}
 
@@ -55,7 +51,7 @@ public class Road extends CG_Road {
 		return axis;
 	}
 
-	public void setAxe(IMultiCurve<ILineString> axis) {
+	public void setAxis(IMultiCurve<ILineString> axis) {
 		this.axis = axis;
 	}
 
@@ -83,14 +79,12 @@ public class Road extends CG_Road {
 		this.type = type;
 	}
 
-	public int getIdRoad() {
-		return idRoad;
+	public List<String> getUsages() {
+		return usages;
 	}
 
-	public void setIdRoad(int idRoad) {
-		this.idRoad = idRoad;
+	public void setUsages(List<String> usages) {
+		this.usages = usages;
 	}
-
-
 
 }

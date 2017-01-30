@@ -22,7 +22,7 @@ import com.sun.j3d.utils.geometry.GeometryInfo;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.java3d.ConversionJava3DGeOxygene;
 import fr.ign.cogit.geoxygene.sig3d.representation.ConstantRepresentation;
 import fr.ign.cogit.geoxygene.sig3d.representation.Default3DRep;
@@ -34,7 +34,7 @@ import fr.ign.cogit.geoxygene.spatial.geomprim.GM_OrientableCurve;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Materiau;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 /**
  * 
  *        This software is released under the licence CeCILL
@@ -75,13 +75,13 @@ public class RepresentationBatiment extends Default3DRep {
     this.representFaitage = representFaitage;
     this.representGouttiere = representGouttiere;
     RoofSurface t = b.getRoof();
-    List<SpecificWallSurface> f = b.getWallSurfaces();
+    List<WallSurface> f = b.getWallSurfaces();
 
     // /1 on s'occupe du toit
     GeometryInfo geometryInfoToit = null;
     Appearance appToit = null;
 
-    Materiau matToit = t.getMat();
+    Materiau matToit = t.getMaterial();
 
     if (matToit != null) {
       geometryInfoToit = Util.geometryWithTexture(t.getGeom(),
@@ -108,7 +108,7 @@ public class RepresentationBatiment extends Default3DRep {
 
     // On s'occupe des façades
 
-    for (SpecificWallSurface facade : f) {
+    for (WallSurface facade : f) {
 
       GeometryInfo geometryInfoF = null;
       Appearance appF = null;

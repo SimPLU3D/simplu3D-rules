@@ -16,18 +16,18 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundarySide;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
 
 /**
  * 
@@ -39,42 +39,43 @@ import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBo
  */
 public class CadastralParcel extends DefaultFeature {
 
-	public final String CLASSE = "Parcelle";
+	/**
+	 * Parent BasicPropertyUnit
+	 */
+	private BasicPropertyUnit bPU;
+	
+	/**
+	 * Children SubParcel
+	 */
+	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
 
+	/**
+	 * Boundaries for the CadastralParcel
+	 * 
+	 * TODO see if it's possible to store boundaries only on subParcels
+	 */
+	private List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
+
+	/**
+	 * Logical identifier of the CadastralParcel
+	 * 
+	 * For BDParcellaire (france) : INSEE_COMMUNE + COMM_ABS + SECTION + NUMERO (ex : 15012011AD250)
+	 */
+	private String code;
+	
 	/**
 	 * TODO déplacer au niveau applicatif?
 	 */
 	private boolean hasToBeSimulated = false;
 
-	public IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<SubParcel>();
-	public IFeatureCollection<SpecificCadastralBoundary> specificCB = new FT_FeatureCollection<SpecificCadastralBoundary>();
-
-	public BasicPropertyUnit bPU;
-
-	private String parcelle_id;
-
-	public String getParcelle_id() {
-		return parcelle_id;
-	}
-
-	public void setParcelle_id(String parcelle_id) {
-		this.parcelle_id = parcelle_id;
-	}
-
 	/**
-	 * Géométrie contenant la ligne contre laquelle un bâtiment doit être
-	 * construit
+	 * (cached) Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
 	 */
 	private IGeometry consLine = null;
 
-	public BasicPropertyUnit getbPU() {
-		return bPU;
-	}
-
-	public void setbPU(BasicPropertyUnit bPU) {
-		this.bPU = bPU;
-	}
-
+	/**
+	 * Cached area
+	 */
 	public double area = Double.NaN;
 
 	public CadastralParcel() {
@@ -85,92 +86,119 @@ public class CadastralParcel extends DefaultFeature {
 		super();
 
 		this.setGeom(iMS);
-
 	}
 
+	public BasicPropertyUnit getbPU() {
+		return bPU;
+	}
+	
+	public void setbPU(BasicPropertyUnit bPU) {
+		this.bPU = bPU;
+	}
+
+
+	public List<SubParcel> getSubParcels() {
+		return subParcels;
+	}
+	
+	public void setSubParcels(List<SubParcel> subParcels) {
+		this.subParcels = subParcels;
+	}
+
+	
+	public List<ParcelBoundary> getBoundaries() {
+		return boundaries;
+	}
+
+	public List<ParcelBoundary> getBoundariesByType(ParcelBoundaryType type) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			if ( boundary.getType().equals(type) ) {
+				result.add(boundary);
+			}
+		}
+		return result;
+	}
+	
+	
+	public List<ParcelBoundary> getBoundariesByTypes(List<ParcelBoundaryType> types) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			for(ParcelBoundaryType type: types ){
+				if ( boundary.getType().equals(type) ) {
+					result.add(boundary);
+				}	
+			}
+		}
+		return result;
+	}
+	
+
+	public List<ParcelBoundary> getBoundariesBySide(ParcelBoundarySide side) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			if ( boundary.getSide().equals(side) ) {
+				result.add(boundary);
+			}
+		}
+		return result;
+	}
+	
+	
+	public List<ParcelBoundary> getBoundariesBySides(List<ParcelBoundarySide> sides) {
+		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		for (ParcelBoundary boundary : getBoundaries()) {
+			for(ParcelBoundarySide side: sides ){
+				if ( boundary.getSide().equals(side) ) {
+					result.add(boundary);
+				}
+			}
+	
+		}
+		return result;
+	}
+
+
+	public void setBoundaries(List<ParcelBoundary> bordures) {
+		this.boundaries = bordures;
+	}
+
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	
 	public boolean hasToBeSimulated() {
 		return hasToBeSimulated;
 	}
 
-	public void setHasToBeSimulated(boolean bool) {
-		hasToBeSimulated = bool;
+	public void setHasToBeSimulated(boolean hasToBeSimulated) {
+		this.hasToBeSimulated = hasToBeSimulated;
 	}
 
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundary() {
-		return specificCB;
-	}
-
-	public void setSpecificCadastralBoundary(IFeatureCollection<SpecificCadastralBoundary> bordures) {
-		this.specificCB = bordures;
-	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificSideBoundary(
-			SpecificCadastralBoundarySide scbSide) {
-		FT_FeatureCollection<SpecificCadastralBoundary> featC = new FT_FeatureCollection<>();
-
-		for (SpecificCadastralBoundary sc : specificCB) {
-
-			if (sc.getSide() == scbSide) {
-				featC.add(sc);
+	
+	public IGeometry getConsLine() {
+		if (consLine == null) {
+			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
+			Collection<ParcelBoundary> sCP = getBoundariesByType(ParcelBoundaryType.ROAD);
+			for (ParcelBoundary sCB : sCP) {
+				iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
 			}
-
+			consLine = iMS;
 		}
-
-		return featC;
+		return consLine;
 	}
-
-	public IFeatureCollection<SpecificCadastralBoundary> getSpecificCadastralBoundaryByType(
-			SpecificCadastralBoundaryType type) {
-		IFeatureCollection<SpecificCadastralBoundary> borduresLat = new FT_FeatureCollection<SpecificCadastralBoundary>();
-		for (SpecificCadastralBoundary b : this.specificCB) {
-			if (b.getType() == type) {
-				borduresLat.add(b);
-			}
-
-		}
-		return borduresLat;
-	}
-
-	public IFeatureCollection<SubParcel> getSubParcel() {
-		return subParcels;
-	}
-
-	public void setSubParcel(IFeatureCollection<SubParcel> sousParcelles) {
-		this.subParcels = sousParcelles;
-	}
-
+	
+	
 	public double getArea() {
-
 		if (Double.isNaN(area)) {
 			area = this.getGeom().area();
 		}
-
 		return area;
 	}
-
-	public void setArea(double area) {
-		this.area = area;
-	}
-
-	public IGeometry getConsLine() {
-
-		if (consLine == null) {
-
-			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
-
-			IFeatureCollection<SpecificCadastralBoundary> sCP = this
-					.getSpecificCadastralBoundaryByType(SpecificCadastralBoundaryType.ROAD);
-
-			for (SpecificCadastralBoundary sCB : sCP) {
-
-				iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
-			}
-
-			consLine = iMS;
-		}
-
-		return consLine;
-
-	}
-
 }

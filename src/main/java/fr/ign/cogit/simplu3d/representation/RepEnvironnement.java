@@ -10,10 +10,10 @@ import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ITriangle;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.ClassifyRoof;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
 import fr.ign.cogit.geoxygene.sig3d.equation.PlanEquation;
 import fr.ign.cogit.geoxygene.sig3d.geometry.topology.Triangle;
@@ -27,13 +27,13 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.cogit.simplu3d.model.ParcelBoundary;
+import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.RoofSurface;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary;
-import fr.ign.cogit.simplu3d.model.SpecificWallSurface;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
-import fr.ign.cogit.simplu3d.model.SpecificCadastralBoundary.SpecificCadastralBoundaryType;
+import fr.ign.cogit.simplu3d.model.WallSurface;
 
 /**
  * 
@@ -145,18 +145,18 @@ public class RepEnvironnement {
 	private static final Color BORDURE_LATERAL = new Color(189, 189, 189);
 	private static final Color BORDURE_VOIE = new Color(51, 153, 153);
 
-	private static IFeatureCollection<SpecificCadastralBoundary> generateCadastralBoundaryRepresentation(
+	private static IFeatureCollection<ParcelBoundary> generateCadastralBoundaryRepresentation(
 			Environnement env) {
 
 		IFeatureCollection<CadastralParcel> sPF = env.getCadastralParcels();
-		IFeatureCollection<SpecificCadastralBoundary> featBordOut = new FT_FeatureCollection<SpecificCadastralBoundary>();
+		IFeatureCollection<ParcelBoundary> featBordOut = new FT_FeatureCollection<ParcelBoundary>();
 
 		for (CadastralParcel sp : sPF) {
 
-			IFeatureCollection<SpecificCadastralBoundary> featBord = sp.getSpecificCadastralBoundary();
+			List<ParcelBoundary> featBord = sp.getBoundaries();
 
-			for (SpecificCadastralBoundary b : featBord) {
-				SpecificCadastralBoundaryType type = b.getType();
+			for (ParcelBoundary b : featBord) {
+				ParcelBoundaryType type = b.getType();
 
 				Color c = null;
 
@@ -229,13 +229,13 @@ public class RepEnvironnement {
 
 	private static IFeatureCollection<? extends IFeature> generateWallRepresentation(Environnement env) {
 
-		IFeatureCollection<SpecificWallSurface> facadesOut = new FT_FeatureCollection<SpecificWallSurface>();
+		IFeatureCollection<WallSurface> facadesOut = new FT_FeatureCollection<WallSurface>();
 
 		for (AbstractBuilding b : env.getBuildings()) {
 
-			List<SpecificWallSurface> facades = b.getWallSurfaces();
+			List<WallSurface> facades = b.getWallSurfaces();
 
-			for (SpecificWallSurface f : facades) {
+			for (WallSurface f : facades) {
 				f.setRepresentation(new CartooMod2(f, COLOR_FACADE));
 				facadesOut.add(f);
 			}
@@ -332,7 +332,7 @@ public class RepEnvironnement {
 
 		for (AbstractBuilding b : env.getBuildings()) {
 
-			IMultiCurve<IOrientableCurve> geom = b.getRoof().setGable();
+			IMultiCurve<IOrientableCurve> geom = b.getRoof().getGable();
 
 			if (geom == null || geom.isEmpty()) {
 				continue;
@@ -436,9 +436,9 @@ public class RepEnvironnement {
 
 		for (AbstractBuilding b : env.getBuildings()) {
 
-			List<SpecificWallSurface> f = b.getWallSurfaces();
+			List<WallSurface> f = b.getWallSurfaces();
 
-			for (SpecificWallSurface sWS : f) {
+			for (WallSurface sWS : f) {
 
 				List<ITriangle> lST = FromPolygonToTriangle
 						.convertAndTriangle(FromGeomToSurface.convertGeom(sWS.getGeom()));

@@ -16,12 +16,12 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * 
@@ -33,67 +33,53 @@ import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
  * @author Brasebin Mickaël
  *
  */
+@Entity
 public class UrbaDocument {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id ;
+	
+	private String idUrba = "";
+	private String typeDoc = "";
+	private Date dateAppro = null;
+	private Date dateFin = null;
+	private String interCo = "";
+	private String siren = "";
+	private String etat = "";
+	private String nomReg = "";
+	private String urlReg = "";
+	private String nomPlan = "";
+	private String urlPlan = "";
+	private String siteWeb = "";
+	private String typeRef = "";
+	private Date dateRef = null;
+	
 	/**
 	 * Date d'approbation du document (DOC_URBA.DATAPPRO)
 	 */
-	public Date approvalDate;
+	private Date approvalDate;
 	/**
 	 * Date de fin de validité (DOC_URBA.DATEFIN)
 	 */
-	public Date endDate;
-
+	private Date endDate;
 	/**
-	 * Type de document d'urbanisme (DOC_URBA.TYPEDOC)
-	 * 
+	 * Type de document d'urbanisme
 	 */
-
-	public enum UrbaDocumentType {
-		PLU(0), POS(1), OTHER(99), PSMV(2);
-
-		private int value;
-
-		private UrbaDocumentType(int type) {
-			value = type;
-		}
-
-		public int getValueType() {
-			return value;
-		}
-
-		public static UrbaDocumentType getTypeFromInt(int type) {
-			UrbaDocumentType[] val = UrbaDocumentType.values();
-			for (int i = 0; i < val.length; i++) {
-				if (val[i].getValueType() == type) {
-					return val[i];
-				}
-			}
-
-			return null;
-		}
-
-	}
-
-	public UrbaDocumentType documentType;
-	/**
-	 * Liste des zones d'urbanismes
-	 */
-	public List<UrbaZone> urbaZones = new ArrayList<UrbaZone>();
+	private UrbaDocumentType documentType;
 
 	public UrbaDocument() {
 		super();
 	}
 
-	public UrbaDocument(Date approvalDate, Date endDate, UrbaDocumentType documentType) {
-		super();
-		this.approvalDate = approvalDate;
-		this.endDate = endDate;
-		this.documentType = documentType;
+	public int getId() {
+		return id;
 	}
 
-	public List<UrbaZone> getlUrbaZone() {
-		return urbaZones;
+	public void setId(int id) {
+		this.id = id;
 	}
+
 
 	public Date getApprovalDate() {
 		return approvalDate;
@@ -118,23 +104,6 @@ public class UrbaDocument {
 	public void setDocumentType(UrbaDocumentType documentType) {
 		this.documentType = documentType;
 	}
-
-	private IFeatureCollection<UrbaZone> urbaZone = new FT_FeatureCollection<UrbaZone>();
-
-	private String idUrba = "";
-	private String typeDoc = "";
-	private Date dateAppro = null;
-	private Date dateFin = null;
-	private String interCo = "";
-	private String siren = "";
-	private String etat = "";
-	private String nomReg = "";
-	private String urlReg = "";
-	private String nomPlan = "";
-	private String urlPlan = "";
-	private String siteWeb = "";
-	private String typeRef = "";
-	private Date dateRef = null;
 
 	public void setIdUrba(String idUrba) {
 		this.idUrba = idUrba;
@@ -248,12 +217,5 @@ public class UrbaDocument {
 		return dateRef;
 	}
 
-	// Pour les zones urba
-	public void setZoneUrba(IFeatureCollection<UrbaZone> urbaZone) {
-		this.urbaZone = urbaZone;
-	}
 
-	public IFeatureCollection<UrbaZone> getZoneUrba() {
-		return urbaZone;
-	}
 }
