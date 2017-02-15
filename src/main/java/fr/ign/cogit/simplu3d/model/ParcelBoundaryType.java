@@ -1,5 +1,7 @@
 package fr.ign.cogit.simplu3d.model;
 
+import java.util.logging.Logger;
+
 /**
  * 
  * Represents the kind of ParcelBoundary
@@ -20,6 +22,9 @@ public enum ParcelBoundaryType {
 	LATERAL_TEMP(98),
 	PUB(5);
 	
+	
+	private final static Logger logger = Logger.getLogger(ParcelBoundaryType.class.getName());
+	
 	private int value;
 	
 	private ParcelBoundaryType(int type){
@@ -37,7 +42,7 @@ public enum ParcelBoundaryType {
 				return val[i];
 			}
 		}
-		System.out.println("ParcelBoundaryType : VALUE NOT FOUND : value " + type);
+		logger.warning("ParcelBoundaryType : VALUE NOT FOUND : value " + type);
 		return null;
 	}
 	

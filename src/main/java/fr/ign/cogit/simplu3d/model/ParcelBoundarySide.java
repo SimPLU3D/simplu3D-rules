@@ -32,7 +32,7 @@ public enum ParcelBoundarySide {
 			}
 		}
 		
-		logger.
+		logger.warning("ParcelBoundarySide : value not found : " + type);
 
 		return null;
 	}
