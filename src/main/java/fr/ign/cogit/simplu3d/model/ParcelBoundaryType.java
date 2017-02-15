@@ -37,7 +37,7 @@ public enum ParcelBoundaryType {
 				return val[i];
 			}
 		}
-		
+		System.out.println("ParcelBoundaryType : VALUE NOT FOUND : value " + type);
 		return null;
 	}
 	

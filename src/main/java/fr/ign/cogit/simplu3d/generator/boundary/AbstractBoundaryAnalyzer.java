@@ -10,11 +10,11 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyzer {
 
 	private double thresholdIni;
-	
-	public AbstractBoundaryAnalyzer(){
+
+	public AbstractBoundaryAnalyzer() {
 		this.thresholdIni = 3.0;
 	}
-	
+
 	public double getThresholdIni() {
 		return thresholdIni;
 	}
@@ -22,8 +22,7 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 	public void setThresholdIni(double thresholdIni) {
 		this.thresholdIni = thresholdIni;
 	}
-	
-	
+
 	protected static double determineThreshold(Face f, double thresholdIni) {
 		IPolygon poly = SmallestSurroundingRectangleComputation.getSSR(f.getGeometrie());
 		double l1 = poly.coord().get(0).distance2D(poly.coord().get(1));
@@ -44,39 +43,42 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 		return thresholdIni;
 	}
 	
-	
-	
+
 	protected static void determineSide(Arc aTemp, Arc a, Face f) {
 
-		// C'est un arc direct
-		if (f.getArcsDirects().contains(aTemp)) {
 
-			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
+		// C'est un arc direct
+		if (f.equals(aTemp.getFaceGauche())) {
+
+			if (aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
 
-			} else {
+			}else if(aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
-			}
 
+			}
 			return;
 		}
 
-		if (f.getArcsIndirects().contains(aTemp)) {
+		
+		// C'est un arc direct
+		if (f.equals(aTemp.getFaceDroite())) {
 
-			if (aTemp.getNoeudFin().equals(a.getNoeudIni()) || aTemp.getNoeudFin().equals(a.getNoeudFin())) {
+			if (aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
+
+				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
+
+			} else if(aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
 
-			} else {
-
-				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
 			}
-
+			return;
 		}
+
 
 	}
 
-	
 }
