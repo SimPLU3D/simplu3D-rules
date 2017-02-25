@@ -72,7 +72,7 @@ public class SimpleBandProduction {
     }
 
     IGeometry geom2 = null;
-    if (iMSBande2 == null) {
+    if (iMSBande2 != null) {
       geom2 = Extrusion2DObject.convertFromMultiPolygon(iMSBande2, 0, 0);
     }
 

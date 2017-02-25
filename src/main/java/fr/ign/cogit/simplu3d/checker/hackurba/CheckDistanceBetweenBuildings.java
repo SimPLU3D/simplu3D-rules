@@ -90,7 +90,7 @@ public class CheckDistanceBetweenBuildings implements IRuleChecker {
     IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
 
     for (Building b : bPU.getBuildings()) {
-      ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint()));
+      ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint().buffer(r1.getArt_8())));
     }
 
     if (ims.isEmpty()) {

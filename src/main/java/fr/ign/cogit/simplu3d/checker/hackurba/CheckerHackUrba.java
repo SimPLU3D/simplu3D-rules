@@ -21,26 +21,37 @@ public class CheckerHackUrba {
 
     CompositeCheckerHackUrba compositeChecker = new CompositeCheckerHackUrba();
 
+    
     CheckDistanceToRoad checkDistance = new CheckDistanceToRoad();
     compositeChecker.addChild(checkDistance);
+    
+    CheckDistanceToBotLimit checkBotLimit = new CheckDistanceToBotLimit();
+    compositeChecker.addChild(checkBotLimit);
+    
 
+    CheckCES checkCES = new CheckCES();
+    compositeChecker.addChild(checkCES);
+
+    
+    CheckDistanceBetweenBuildings checkerBuildingBetweenBuildings = new CheckDistanceBetweenBuildings();
+    compositeChecker.addChild(checkerBuildingBetweenBuildings);
+   
+    
     CheckDistanceToLatLimit checkDistanceLat = new CheckDistanceToLatLimit();
     compositeChecker.addChild(checkDistanceLat);
 
-    CheckDistanceToBotLimit checkBotLimit = new CheckDistanceToBotLimit();
-    compositeChecker.addChild(checkBotLimit);
+
+
+
 
     CheckProspectToSeparativeBoundaries checkPRospectToExistingBuilding = new CheckProspectToSeparativeBoundaries();
     compositeChecker.addChild(checkPRospectToExistingBuilding);
 
-    CheckDistanceBetweenBuildings checkerBuildingBetweenBuildings = new CheckDistanceBetweenBuildings();
-    compositeChecker.addChild(checkerBuildingBetweenBuildings);
+
 
     CheckHeightMax checkHeightMax = new CheckHeightMax();
     compositeChecker.addChild(checkHeightMax);
 
-    CheckCES checkCES = new CheckCES();
-    compositeChecker.addChild(checkCES);
 
     CheckParking checkParking = new CheckParking();
     compositeChecker.addChild(checkParking);
