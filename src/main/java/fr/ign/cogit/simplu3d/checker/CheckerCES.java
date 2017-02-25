@@ -30,7 +30,9 @@ import fr.ign.cogit.simplu3d.model.WallSurface;
  *
  */
 public class CheckerCES implements IRuleChecker {
-	
+  
+
+ 
 	public final static String CODE_CES = "CES";
 	
 	private Rules rules ;
@@ -145,5 +147,12 @@ public class CheckerCES implements IRuleChecker {
 
 		return lUNR;
 	}
+
+
+  @Override
+  public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

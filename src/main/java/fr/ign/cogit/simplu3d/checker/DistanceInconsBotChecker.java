@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
+import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
+import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
+import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.checker.iauidf.Regulation;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -88,5 +93,65 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 
 		return img;
 	}
+	
+
+    @Override
+    public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+      List<GeometricConstraints>  geomConstraints = new ArrayList<>();
+      
+      IMultiCurve<IOrientableCurve>  iCurve = this.getBotLimit(bPU);
+      
+
+      Regulation r1 = bPU.getR1();
+      
+      
+      if(r1!=null && r1.getArt_6() !=99){
+        
+        GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU,r1,iCurve);
+        if(gc!=null){
+          geomConstraints.add(gc);
+        
+          
+        }
+        
+  
+      }
+      
+      Regulation r2 = bPU.getR2();
+      
+      
+      
+      if(r2!=null && r2.getArt_6() !=99){
+        
+        GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU,r2,iCurve);
+        if(gc!=null){
+          geomConstraints.add(gc);
+        
+          
+        }
+        
+  
+      }
+      
+      
+      
+      return geomConstraints;
+          
+    }
+    
+    private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r,IMultiCurve<IOrientableCurve>  iCurve ){
+      IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
+      IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);
+      
+      IGeometry finalGeom = iMS.intersection(r.getGeomBande());
+      IMultiSurface<IOrientableSurface> iMSFinale = FromGeomToSurface.convertMSGeom(finalGeom);
+      
+      if(iMSFinale != null && ! iMSFinale.isEmpty() && iMSFinale.area() > 0.5){
+        IGeometry returnedGeom = Extrusion2DObject.convertFromGeometry(iMSFinale, 0, 0);
+        GeometricConstraints gC = new GeometricConstraints("Recul d'une distance de " + r.getArt_6()+ " m par rapport à la voirie", returnedGeom, "Art 6");
+        return gC;
+      }
+       return null;
+    }
 
 }

@@ -369,4 +369,10 @@ public class BandsChecker implements IRuleChecker {
 		return img;
 	}
 
+  @Override
+  public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

@@ -17,5 +17,5 @@ public interface IRuleChecker {
 	public abstract List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context);
 
 	
-	
+	public abstract List<GeometricConstraints> generate(BasicPropertyUnit bPU);
 }

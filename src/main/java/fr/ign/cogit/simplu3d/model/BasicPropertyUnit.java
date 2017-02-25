@@ -26,6 +26,7 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
+import fr.ign.cogit.simplu3d.checker.iauidf.Regulation;
 
 /**
  * 
@@ -37,7 +38,29 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
  *
  */
 public class BasicPropertyUnit extends DefaultFeature {
-	/**
+  
+  private Regulation r1,r2;
+  
+  
+  
+	public Regulation getR1() {
+    return r1;
+  }
+
+  public void setR1(Regulation r1) {
+    this.r1 = r1;
+  }
+
+  public Regulation getR2() {
+    return r2;
+  }
+
+  public void setR2(Regulation r2) {
+    this.r2 = r2;
+  }
+
+
+  /**
 	 * Les parcelles cadastrales
 	 */
 	private List<CadastralParcel> cadastralParcels = new ArrayList<CadastralParcel>();

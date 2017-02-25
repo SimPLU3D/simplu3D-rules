@@ -40,4 +40,11 @@ public class CompositeChecker implements IRuleChecker {
 		return unrespectedRules;
 	}
 	
+
+    @Override
+    public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+	
 }
