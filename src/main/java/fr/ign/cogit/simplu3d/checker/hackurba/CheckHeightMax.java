@@ -44,7 +44,7 @@ public class CheckHeightMax  implements IRuleChecker {
 
     for (AbstractBuilding b : lBuilding) {
 
-     double height = b.height(0, 1);
+     double height = b.height(1, 1);
      
      if(r1 != null &&r1.getGeomBande() != null &&r1.getArt_10_top() != 88 &&  r1.getArt_10_top() != 99){
        if(b.getFootprint().intersects(r1.getGeomBande())){
