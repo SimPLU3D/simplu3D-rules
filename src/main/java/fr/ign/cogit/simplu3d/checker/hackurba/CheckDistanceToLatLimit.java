@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker;
+package fr.ign.cogit.simplu3d.checker.hackurba;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +11,22 @@ import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-import fr.ign.cogit.simplu3d.checker.iauidf.Regulation;
+import fr.ign.cogit.simplu3d.checker.GeometricConstraints;
+import fr.ign.cogit.simplu3d.checker.IRuleChecker;
+import fr.ign.cogit.simplu3d.checker.RuleContext;
+import fr.ign.cogit.simplu3d.checker.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
+import fr.ign.cogit.simplu3d.model.Regulation;
 
-public class CheckDistanceToRoad implements IRuleChecker {
+public class CheckDistanceToLatLimit implements IRuleChecker {
 
-  public final static String CODE_DISTANCE_VOIRIE = "RECUL_VOIRIE";
+  public final static String CODE_DISTANCE_LAT = "RECUL_LATERAL";
 
 
-  public CheckDistanceToRoad() {
+  public CheckDistanceToLatLimit() {
 
   }
 
@@ -44,7 +48,7 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     for (CadastralParcel cP : bPU.getCadastralParcels()) {
       for (ParcelBoundary sc : cP.getBoundaries()) {
-        if (sc.getType() == ParcelBoundaryType.ROAD) {
+        if (sc.getType() == ParcelBoundaryType.LAT) {
           img.addAll(FromGeomToLineString.convert(sc.getGeom()));
         }
       }
@@ -61,7 +65,7 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     Regulation r1 = bPU.getR1();
 
-    if (r1 != null && r1.getArt_6() != 99) {
+    if (r1 != null && r1.getArt_71() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, r1, iCurve);
@@ -74,7 +78,7 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     Regulation r2 = bPU.getR2();
 
-    if (r2 != null && r2.getArt_6() != 99) {
+    if (r2 != null && r2.getArt_71() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, r2, iCurve);
@@ -92,7 +96,19 @@ public class CheckDistanceToRoad implements IRuleChecker {
   private GeometricConstraints generateGEometricConstraintsForOneRegulation(
       BasicPropertyUnit bPU, Regulation r,
       IMultiCurve<IOrientableCurve> iCurve) {
-    IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
+    
+    
+    if(iCurve == null ||  iCurve.isEmpty()){
+      return null;
+    }
+    
+    if(r.getArt_71() != 0){
+      return new GeometricConstraints("Alignement contre une des limites latérales",          
+          iCurve.buffer(0.5), CODE_DISTANCE_LAT);
+      
+          
+    }
+    IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt_72()));
     IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface
         .convertMSGeom(geom);
 
@@ -102,9 +118,9 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
       GeometricConstraints gC = new GeometricConstraints(
-          "Recul d'une distance de " + r.getArt_6()
-              + " m par rapport à la voirie",
-          iMS, CODE_DISTANCE_VOIRIE);
+          "Recul par rapport aux limites latérales " + r.getArt_72()
+              + " m ",
+          iMS, CODE_DISTANCE_LAT);
       return gC;
     }
     return null;

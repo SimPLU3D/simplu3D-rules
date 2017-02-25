@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker.iauidf;
+package fr.ign.cogit.simplu3d.model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,6 +32,8 @@ public class Regulation {
 	private String libelle_zone, libelle_de_base, libelle_de_dul;
 
 	private double  art_5,art_72,art_73,  art_8, art_6, art_9, art_102, art_12, art_14, art_13, art_101;
+	
+	public Regulation(){}
 
 	public Regulation(int code_imu, String libelle_zone, int insee,
 			int date_approbation, String libelle_de_base,
