@@ -45,17 +45,24 @@ public class Regulation {
 	@GeneratedValue
 	private Long id ;
 	
+	
+	
+	private String insee;
+	   
+    private String libelle_zone;
+	
+	
 	// Les intitulés des colonnes
-	private int code_imu, insee, date_approbation, fonctions, top_zac,
+	private int code_imu,  date_approbation, fonctions, top_zac,
 			zonage_coherent, correction_zonage, typ_bande, bande,
 			art_71,  art_74, art_10_top ;
-	private String libelle_zone, libelle_de_base, libelle_de_dul;
+	private String  libelle_de_base, libelle_de_dul;
 
 	private double  art_5,art_72,art_73,  art_8, art_6, art_9, art_102, art_12, art_14, art_13, art_101;
 	
 	public Regulation(){}
 
-	public Regulation(int code_imu, String libelle_zone, int insee,
+	public Regulation(int code_imu, String libelle_zone, String insee,
 			int date_approbation, String libelle_de_base,
 			String libelle_de_dul, int fonctions, int top_zac,
 			int zonage_coherent, int correction_zonage, int typ_bande,
@@ -170,7 +177,7 @@ public class Regulation {
 	public Regulation(String[] split) {
 		this(Integer.parseInt(split[0]), 
 		        split[1], 
-		        Integer.parseInt(split[2]),
+		        split[2],
 				Integer.parseInt(split[3]), 
 				split[4], 
 				split[5], 
@@ -202,7 +209,7 @@ public class Regulation {
 	       public Regulation(Object[] split) {
 	                this(Integer.parseInt(split[0].toString()), 
 	                        split[1].toString(), 
-	                        Integer.parseInt(split[2].toString()),
+	                        split[2].toString(),
 	                        (int) Double.parseDouble(split[3].toString()),
 split[4].toString(), 
 split[5].toString(), 
@@ -291,7 +298,7 @@ Double.parseDouble(split[23].toString()),
 	}
 
 	// INSEE Code de la commune
-	public int getInsee() {
+	public String getInsee() {
 		return insee;
 	}
 
