@@ -65,7 +65,7 @@ public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
 
           if (b.getFootprint().intersects(r1.getGeomBande()) && coeff != 0) {
 
-            boolean respected = b.prospect(iMC, 1 / coeff, 0);
+            boolean respected = b.prospect(iMC, coeff, 0);
 
             if (!respected) {
               lUNR.add(new UnrespectedRule(
@@ -81,7 +81,7 @@ public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
 
           if (b.getFootprint().intersects(r2.getGeomBande()) && coeff != 0) {
 
-            boolean respected = b.prospect(iMC, 1 / coeff, 0);
+            boolean respected = b.prospect(iMC, coeff, 0);
 
             if (!respected) {
               lUNR.add(new UnrespectedRule(

@@ -144,7 +144,7 @@ public class Regulation {
                 feat.getAttribute("B1_ART_9"),
                 feat.getAttribute("B1_ART_10T"), 
                 feat.getAttribute("B1_ART_10"),
-                feat.getAttribute("B1_ART_10"), 
+                feat.getAttribute("B1_HAUT_MT"), 
                 feat.getAttribute("B1_ART_12"), 
                 feat.getAttribute("B1_ART_13"),
                 feat.getAttribute("B1_ART_14")};
@@ -177,7 +177,7 @@ public class Regulation {
            feat.getAttribute("B2_ART_9"),
            feat.getAttribute("B2_ART_10T"), 
            feat.getAttribute("B2_ART_10"),
-           feat.getAttribute("B2_ART_10"), 
+           feat.getAttribute("B2_HAUT_M"), 
            feat.getAttribute("B2_ART_12"), 
            feat.getAttribute("B2_ART_13"),
            feat.getAttribute("B2_ART_14")};

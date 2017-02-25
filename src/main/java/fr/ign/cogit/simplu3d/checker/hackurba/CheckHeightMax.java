@@ -48,14 +48,7 @@ public class CheckHeightMax  implements IRuleChecker {
      
      if(r1 != null &&r1.getGeomBande() != null &&r1.getArt_10_top() != 88 &&  r1.getArt_10_top() != 99){
        if(b.getFootprint().intersects(r1.getGeomBande())){
-         
-         double hauteurMax = 0;
-         if(r1.getArt_10_top() == 0){
-           hauteurMax = r1.getArt_101() * 3.0;
-         }else{
-           hauteurMax = r1.getArt_101();
-         }
-
+         double hauteurMax = r1.getArt_102();
          
          if(height > hauteurMax){
            
@@ -71,12 +64,7 @@ public class CheckHeightMax  implements IRuleChecker {
      if(r2 != null &&r2.getGeomBande() != null &&r2.getArt_10_top() != 88 &&  r2.getArt_10_top() != 99){
        if(b.getFootprint().intersects(r2.getGeomBande())){
          
-         double hauteurMax = 0;
-         if(r2.getArt_10_top() == 0){
-           hauteurMax = r2.getArt_101() * 3.0;
-         }else{
-           hauteurMax = r2.getArt_101();
-         }
+         double hauteurMax = r2.getArt_102();
 
          
          if(height > hauteurMax){
@@ -135,12 +123,7 @@ public class CheckHeightMax  implements IRuleChecker {
     if(r1.getGeomBande().isEmpty()){
       return null;
     }
-    double hauteurMax = 0;
-    if(r1.getArt_10_top() == 0){
-      hauteurMax = r1.getArt_101() * 3.0;
-    }else{
-      hauteurMax = r1.getArt_101();
-    }
+    double hauteurMax = r1.getArt_102();
 
  
     return new GeometricConstraints(
