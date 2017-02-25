@@ -45,9 +45,18 @@ public class Regulation {
 	@GeneratedValue
 	private Long id ;
 	
+	private int numBand;
 	
 	
-	private String insee;
+  	public int getNumBand() {
+      return numBand;
+    }
+  
+    public void setNumBand(int numBand) {
+      this.numBand = numBand;
+    }
+
+  private String insee;
 	   
     private String libelle_zone;
 	
