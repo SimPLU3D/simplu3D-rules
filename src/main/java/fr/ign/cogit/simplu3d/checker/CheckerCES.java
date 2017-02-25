@@ -34,12 +34,19 @@ public class CheckerCES implements IRuleChecker {
 
  
 	public final static String CODE_CES = "CES";
-	
-	private Rules rules ;
+
+private double values;
 
 	public CheckerCES(Rules rules) {
 		this.rules = rules;
 	}
+	
+	
+	
+	   public CheckerCES(value) {
+	        this.rules = rules;
+	    }
+	    
 	
 
 	@Override
