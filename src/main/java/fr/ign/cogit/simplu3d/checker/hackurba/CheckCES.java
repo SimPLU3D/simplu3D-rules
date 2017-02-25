@@ -12,7 +12,7 @@ import fr.ign.cogit.simplu3d.model.Regulation;
 
 public class CheckCES  implements IRuleChecker {
 
-  public final static String CODE_CES = "CES_MAX";
+  public final static String CODE_EMPTY_SPACE = "ESPACE_VIDE";
 
   public CheckCES() {
 
@@ -32,7 +32,7 @@ public class CheckCES  implements IRuleChecker {
 
     Regulation r1 = bPU.getR1();
 
-    if (r1 != null && r1.getArt_5() != 99) {
+    if (r1 != null && r1.getArt_12() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, r1);
@@ -54,9 +54,9 @@ public class CheckCES  implements IRuleChecker {
 
  
     return new GeometricConstraints(
-        "Coefficient d’emprise au sol maximum"
-            + r1.getArt_9(),
-        null, CODE_CES);
+        "Part minimale d'espaces libres de toute la surface de la parcelle"
+            + r1.getArt_12(),
+        bPU.getGeom(), CODE_EMPTY_SPACE);
   }
 
 }

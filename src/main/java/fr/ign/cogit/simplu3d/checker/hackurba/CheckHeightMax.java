@@ -63,7 +63,9 @@ public class CheckHeightMax  implements IRuleChecker {
 
   private GeometricConstraints generateGEometricConstraintsForOneRegulation(
       BasicPropertyUnit bPU, Regulation r1) {
-    
+    if(r1.getGeomBande().isEmpty()){
+      return null;
+    }
     double hauteurMax = 0;
     if(r1.getArt_10_top() == 0){
       hauteurMax = r1.getArt_101() * 3.0;
@@ -73,8 +75,8 @@ public class CheckHeightMax  implements IRuleChecker {
 
  
     return new GeometricConstraints(
-        "Coefficient d’emprise au sol maximum"
-            + r1.getArt_9(),
-        Extrusion2DObject.convertFromGeometry(r1.getGeomBande(), 0, hauteurMax), CODE_HEIGHT_MAX);
+        "La hauteur maximale est : "
+            + hauteurMax,
+        Extrusion2DObject.convertFromGeometry(r1.getGeomBande(), hauteurMax, hauteurMax), CODE_HEIGHT_MAX);
   }
 }

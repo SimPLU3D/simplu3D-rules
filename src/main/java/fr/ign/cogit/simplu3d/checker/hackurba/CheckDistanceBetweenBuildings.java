@@ -61,10 +61,14 @@ public class CheckDistanceBetweenBuildings implements IRuleChecker {
       ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint()));
     }
     
+    if(ims.isEmpty()){
+      return null;
+    }
+    
     GeometricConstraints gC = new GeometricConstraints("Distance entre bâtiments de " + r1.getArt_8() + " m", ims , CODE_DISTANCE_BULDINGS);
     
     
-    return null;
+    return gC;
   }
 
 }
