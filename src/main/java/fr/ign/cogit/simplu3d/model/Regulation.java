@@ -101,9 +101,16 @@ public class Regulation {
 	
 	public Regulation(IFeature feat){
 	   this(returnObjTab(feat));
-	
 	}
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public static Object[] returnObjTab(IFeature feat){
 	   Object[] caract =  {
 	           0, 
