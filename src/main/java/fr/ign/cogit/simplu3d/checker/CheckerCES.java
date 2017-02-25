@@ -37,16 +37,15 @@ public class CheckerCES implements IRuleChecker {
 
 private double values;
 
+private Rules rules;
+
 	public CheckerCES(Rules rules) {
 		this.rules = rules;
 	}
 	
 	
 	
-	   public CheckerCES(value) {
-	        this.rules = rules;
-	    }
-	    
+
 	
 
 	@Override
