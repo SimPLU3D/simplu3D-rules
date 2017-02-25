@@ -79,7 +79,7 @@ public class CheckCES  implements IRuleChecker {
     return new GeometricConstraints(
         "Part minimale d'espaces libres de toute la surface de la parcelle"
             + r1.getArt_12(),
-        bPU.getGeom(), CODE_EMPTY_SPACE);
+        bPU.getGeom(), CODE_CES);
   }
 
 }
