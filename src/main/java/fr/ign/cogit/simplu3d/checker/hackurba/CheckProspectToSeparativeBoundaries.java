@@ -14,6 +14,7 @@ import fr.ign.cogit.simplu3d.checker.IRuleChecker;
 import fr.ign.cogit.simplu3d.checker.RuleContext;
 import fr.ign.cogit.simplu3d.checker.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
@@ -22,7 +23,7 @@ import fr.ign.cogit.simplu3d.model.Regulation;
 
 public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
 
-  public final static String CODE_DISTANCE_PROSPECT_BUILINDG = "PROSPECT_EXISTING";
+  public final static String CODE_PROSPECT_LIMITE = "PROSPECT_EXISTING";
 
   public CheckProspectToSeparativeBoundaries() {
 
@@ -31,7 +32,67 @@ public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
   @Override
   public List<UnrespectedRule> check(BasicPropertyUnit bPU,
       RuleContext context) {
-    List<UnrespectedRule> lUNR = new ArrayList<>();
+
+    List<UnrespectedRule> lUNR = new ArrayList<UnrespectedRule>();
+
+    List<IMultiCurve<IOrientableCurve>> limits = getBotLimit(bPU);
+
+    Regulation r1 = bPU.getR1();
+    Regulation r2 = bPU.getR2();
+
+    if (limits.isEmpty()) {
+      return lUNR;
+    }
+
+    List<Building> buildingsTemp = bPU.getBuildings();
+    List<Building> buildings = new ArrayList<>();
+
+    for (Building b : buildingsTemp) {
+      if (b.isNew) {
+        buildings.add(b);
+      }
+    }
+
+    if (buildings.isEmpty()) {
+      return lUNR;
+    }
+
+    for (IMultiCurve<IOrientableCurve> iMC : limits) {
+      for (Building b : buildings) {
+        if (r1 != null && r1.getGeomBande() != null && r1.getArt_10_top() != 88
+            && r1.getArt_10_top() != 99) {
+          int coeff = r1.getArt_74();
+
+          if (b.getFootprint().intersects(r1.getGeomBande()) && coeff != 0) {
+
+            boolean respected = b.prospect(iMC, 1 / coeff, 0);
+
+            if (!respected) {
+              lUNR.add(new UnrespectedRule(
+                  "Prospect non respecté par rapport aux limites séparatives",
+                  bPU.getGeom(), CODE_PROSPECT_LIMITE));
+            }
+          }
+        }
+
+        if (r2 != null && r2.getGeomBande() != null && r2.getArt_10_top() != 88
+            && r2.getArt_10_top() != 99) {
+          int coeff = r2.getArt_74();
+
+          if (b.getFootprint().intersects(r2.getGeomBande()) && coeff != 0) {
+
+            boolean respected = b.prospect(iMC, 1 / coeff, 0);
+
+            if (!respected) {
+              lUNR.add(new UnrespectedRule(
+                  "Prospect non respecté par rapport aux limites séparatives",
+                  bPU.getGeom(), CODE_PROSPECT_LIMITE));
+            }
+          }
+        }
+      }
+
+    }
 
     return lUNR;
   }
@@ -70,30 +131,26 @@ public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
 
   }
 
-  private List<IMultiCurve<IOrientableCurve>> getBotLimit(BasicPropertyUnit bPU) {
+  private List<IMultiCurve<IOrientableCurve>> getBotLimit(
+      BasicPropertyUnit bPU) {
     List<IMultiCurve<IOrientableCurve>> img = new ArrayList<>();
     img.add(new GM_MultiCurve<>());
     img.add(new GM_MultiCurve<>());
     img.add(new GM_MultiCurve<>());
-    
-    
-    
 
     for (CadastralParcel cP : bPU.getCadastralParcels()) {
       for (ParcelBoundary sc : cP.getBoundaries()) {
-        if (sc.getType().equals(ParcelBoundaryType.BOT)){
+        if (sc.getType().equals(ParcelBoundaryType.BOT)) {
 
           img.get(0).addAll(FromGeomToLineString.convert(sc.getGeom()));
         }
-        
+
         if ((sc.getSide().equals(ParcelBoundarySide.LEFT))
             && (sc.getType().equals(ParcelBoundaryType.LAT))) {
 
           img.get(1).addAll(FromGeomToLineString.convert(sc.getGeom()));
         }
-        
-        
-        
+
         if ((sc.getSide().equals(ParcelBoundarySide.RIGHT))
             && (sc.getType().equals(ParcelBoundaryType.LAT))) {
 
@@ -113,30 +170,28 @@ public class CheckProspectToSeparativeBoundaries implements IRuleChecker {
     int coeff = r.getArt_74();
 
     List<GeometricConstraints> lGeom = new ArrayList<>();
-    
-    if(r.getGeomBande().isEmpty()){
+
+    if (r.getGeomBande().isEmpty() || coeff == 0) {
       return lGeom;
     }
-    
-    
-    for(IMultiCurve<IOrientableCurve> curveTemp : imc){
-      
-      if(! curveTemp.buffer(0.5).intersects(r.getGeomBande())){
+
+    for (IMultiCurve<IOrientableCurve> curveTemp : imc) {
+
+      if (!curveTemp.buffer(0.5).intersects(r.getGeomBande())) {
         continue;
       }
-      IGeometry geom = ProspectCalculation.calculate(r.getGeomBande(),curveTemp, 
-          1.0 / coeff, 0);
+      IGeometry geom = ProspectCalculation.calculate(r.getGeomBande(),
+          curveTemp, 1.0 / coeff, 0);
 
       if (geom != null) {
         lGeom.add(new GeometricConstraints(
             "Distance minimale des constructions par rapport aux limites séparatives relative à a hauteur du bâtiment. Retrait  1/"
                 + coeff,
-            geom, CODE_DISTANCE_PROSPECT_BUILINDG));
+            geom, CODE_PROSPECT_LIMITE));
 
       }
 
     }
-
 
     return lGeom;
   }

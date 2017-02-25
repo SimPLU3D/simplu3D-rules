@@ -59,8 +59,20 @@ public abstract class AbstractBuilding extends DefaultFeature {
 
 	private String destination;
 	private IOrientableSurface footprint;
+	
+	
+	public boolean isNew = false;
+	
 
-	/**
+	public boolean isNew() {
+    return isNew;
+  }
+
+  public void setNew(boolean isNew) {
+    this.isNew = isNew;
+  }
+
+  /**
 	 * TODO compute from BuildingParts?
 	 */
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();

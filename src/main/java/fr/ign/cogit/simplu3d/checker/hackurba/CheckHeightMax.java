@@ -8,7 +8,9 @@ import fr.ign.cogit.simplu3d.checker.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.IRuleChecker;
 import fr.ign.cogit.simplu3d.checker.RuleContext;
 import fr.ign.cogit.simplu3d.checker.UnrespectedRule;
+import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Regulation;
 
 public class CheckHeightMax  implements IRuleChecker {
@@ -22,7 +24,74 @@ public class CheckHeightMax  implements IRuleChecker {
   @Override
   public List<UnrespectedRule> check(BasicPropertyUnit bPU,
       RuleContext context) {
+    
     List<UnrespectedRule> lUNR = new ArrayList<>();
+    
+    Regulation r1 = bPU.getR1();
+    Regulation r2 = bPU.getR2();
+    
+    List<Building> lBuilding = new ArrayList<>();
+    for(Building b:bPU.getBuildings()){
+      if(b.isNew){
+        lBuilding.add(b);
+      }
+    }
+
+    if (lBuilding.isEmpty()) {
+        return lUNR;
+    }
+
+
+    for (AbstractBuilding b : lBuilding) {
+
+     double height = b.height(0, 1);
+     
+     if(r1 != null &&r1.getGeomBande() != null &&r1.getArt_10_top() != 88 &&  r1.getArt_10_top() != 99){
+       if(b.getFootprint().intersects(r1.getGeomBande())){
+         
+         double hauteurMax = 0;
+         if(r1.getArt_10_top() == 0){
+           hauteurMax = r1.getArt_101() * 3.0;
+         }else{
+           hauteurMax = r1.getArt_101();
+         }
+
+         
+         if(height > hauteurMax){
+           
+           lUNR.add(new UnrespectedRule("Hauteur non respectée. Hauteur mesurée : " + height + " - hauteur maximale " + hauteurMax, b.getGeom(), CODE_HEIGHT_MAX));
+           
+         }
+         
+         
+       }
+     }
+
+     
+     if(r2 != null &&r2.getGeomBande() != null &&r2.getArt_10_top() != 88 &&  r2.getArt_10_top() != 99){
+       if(b.getFootprint().intersects(r2.getGeomBande())){
+         
+         double hauteurMax = 0;
+         if(r2.getArt_10_top() == 0){
+           hauteurMax = r2.getArt_101() * 3.0;
+         }else{
+           hauteurMax = r2.getArt_101();
+         }
+
+         
+         if(height > hauteurMax){
+           
+           lUNR.add(new UnrespectedRule("Hauteur non respectée. Hauteur mesurée : " + height + " - hauteur maximale " + hauteurMax, b.getGeom(), CODE_HEIGHT_MAX));
+           
+         }
+         
+         
+       }
+     }
+
+          
+
+    }
 
     return lUNR;
   }

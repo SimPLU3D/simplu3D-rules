@@ -28,6 +28,38 @@ public class CheckDistanceBetweenBuildings implements IRuleChecker {
       RuleContext context) {
     List<UnrespectedRule> lUNR = new ArrayList<>();
 
+    List<Building> buildingsNew = new ArrayList<>();
+
+    Regulation r1 = bPU.getR1();
+
+    if (r1 != null && r1.getArt_8() != 99) {
+      return lUNR;
+    }
+
+    for (Building b : bPU.getBuildings()) {
+      if (b.isNew) {
+        buildingsNew.add(b);
+      }
+    }
+
+    for (Building b : bPU.getBuildings()) {
+      for (Building bNew : buildingsNew) {
+        if (b.equals(bNew)) {
+          continue;
+        }
+
+        double distanceMeasured = b.getFootprint()
+            .distance(bNew.getFootprint());
+        if (distanceMeasured < r1.getArt_8()) {
+          continue;
+        }
+
+        lUNR.add(new UnrespectedRule("Distance entre bâtiments non respectées",
+            null, CODE_DISTANCE_BULDINGS));
+
+      }
+    }
+
     return lUNR;
   }
 
@@ -60,14 +92,15 @@ public class CheckDistanceBetweenBuildings implements IRuleChecker {
     for (Building b : bPU.getBuildings()) {
       ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint()));
     }
-    
-    if(ims.isEmpty()){
+
+    if (ims.isEmpty()) {
       return null;
     }
-    
-    GeometricConstraints gC = new GeometricConstraints("Distance entre bâtiments de " + r1.getArt_8() + " m", ims , CODE_DISTANCE_BULDINGS);
-    
-    
+
+    GeometricConstraints gC = new GeometricConstraints(
+        "Distance entre bâtiments de " + r1.getArt_8() + " m", ims,
+        CODE_DISTANCE_BULDINGS);
+
     return gC;
   }
 
