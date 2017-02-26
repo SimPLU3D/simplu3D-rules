@@ -313,9 +313,12 @@ Double.parseDouble(split[23].toString()),
 		return libelle_zone;
 	}
 
-	// INSEE Code de la commune
 	public String getInsee() {
 		return insee;
+	}
+	
+	public void setInsee(String insee) {
+		this.insee = insee;
 	}
 
 	// DATE_DUL Date d'approbation du PLU
