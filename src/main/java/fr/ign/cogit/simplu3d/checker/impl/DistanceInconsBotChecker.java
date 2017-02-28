@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker;
+package fr.ign.cogit.simplu3d.checker.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,11 @@ import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
+import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
+import fr.ign.cogit.simplu3d.checker.model.RuleContext;
+import fr.ign.cogit.simplu3d.checker.model.Rules;
+import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -28,14 +33,12 @@ import fr.ign.cogit.simplu3d.model.SubParcel;
  * @author MBorne
  *
  */
-public class DistanceInconsBotChecker implements IRuleChecker {
+public class DistanceInconsBotChecker extends AbstractRuleChecker {
 
 	public final static String CODE_BANDE_FOND_PARCELLE = "BANDE_FOND_PARCELLE";
 
-	private Rules rules;
-
 	public DistanceInconsBotChecker(Rules rules) {
-		this.rules = rules;
+		super(rules);
 	}
 
 	@Override
@@ -53,13 +56,13 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 
 			for (SubParcel sP : cP.getSubParcels()) {
-
+				
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
 
 					// On vérifie si la distance est bonne
-					if (bP.getFootprint().distance(ims) < rules.getBandIncons()) {
+					if (bP.getFootprint().distance(ims) < this.getRules().getBandIncons()) {
 
-						IGeometry buffer = ims.buffer(rules.getBandIncons());
+						IGeometry buffer = ims.buffer(this.getRules().getBandIncons());
 
 						IGeometry geomError = cP.getGeom().intersection(buffer);
 
@@ -77,6 +80,7 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 
 	/**
 	 * TODO describe
+	 * 
 	 * @param bPU
 	 * @return
 	 */
@@ -93,65 +97,42 @@ public class DistanceInconsBotChecker implements IRuleChecker {
 
 		return img;
 	}
-	
 
-    @Override
-    public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
-      List<GeometricConstraints>  geomConstraints = new ArrayList<>();
-      
-      IMultiCurve<IOrientableCurve>  iCurve = this.getBotLimit(bPU);
-      
+	@Override
+	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
+		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-      Regulation r1 = bPU.getR1();
-      
-      
-      if(r1!=null && r1.getArt_6() !=99){
-        
-        GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU,r1,iCurve);
-        if(gc!=null){
-          geomConstraints.add(gc);
-        
-          
-        }
-        
-  
-      }
-      
-      Regulation r2 = bPU.getR2();
-      
-      
-      
-      if(r2!=null && r2.getArt_6() !=99){
-        
-        GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU,r2,iCurve);
-        if(gc!=null){
-          geomConstraints.add(gc);
-        
-          
-        }
-        
-  
-      }
-      
-      
-      
-      return geomConstraints;
-          
-    }
-    
-    private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r,IMultiCurve<IOrientableCurve>  iCurve ){
-      IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
-      IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);
-      
-      IGeometry finalGeom = iMS.intersection(r.getGeomBande());
-      IMultiSurface<IOrientableSurface> iMSFinale = FromGeomToSurface.convertMSGeom(finalGeom);
-      
-      if(iMSFinale != null && ! iMSFinale.isEmpty() && iMSFinale.area() > 0.5){
-        IGeometry returnedGeom = Extrusion2DObject.convertFromGeometry(iMSFinale, 0, 0);
-        GeometricConstraints gC = new GeometricConstraints("Recul d'une distance de " + r.getArt_6()+ " m par rapport à la voirie", returnedGeom, "Art 6");
-        return gC;
-      }
-       return null;
-    }
+		IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
+
+		if (this.getRules() == null && this.getRules().getArt_6() != 99) {
+
+			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules(), iCurve);
+			if (gc != null) {
+				geomConstraints.add(gc);
+
+			}
+
+		}
+
+		return geomConstraints;
+
+	}
+
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r,
+			IMultiCurve<IOrientableCurve> iCurve) {
+		IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
+		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);
+
+		IGeometry finalGeom = iMS.intersection(r.getGeomBande());
+		IMultiSurface<IOrientableSurface> iMSFinale = FromGeomToSurface.convertMSGeom(finalGeom);
+
+		if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
+			IGeometry returnedGeom = Extrusion2DObject.convertFromGeometry(iMSFinale, 0, 0);
+			GeometricConstraints gC = new GeometricConstraints(
+					"Recul d'une distance de " + r.getArt_6() + " m par rapport à la voirie", returnedGeom, "Art 6");
+			return gC;
+		}
+		return null;
+	}
 
 }

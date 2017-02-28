@@ -542,4 +542,122 @@ Double.parseDouble(split[23].toString()),
 		return jtsGeometry;
 	}
 
+	public static void setLog(Logger log) {
+		Regulation.log = log;
+	}
+
+	public void setLibelle_zone(String libelle_zone) {
+		this.libelle_zone = libelle_zone;
+	}
+
+	public void setCode_imu(int code_imu) {
+		this.code_imu = code_imu;
+	}
+
+	public void setDate_approbation(int date_approbation) {
+		this.date_approbation = date_approbation;
+	}
+
+	public void setFonctions(int fonctions) {
+		this.fonctions = fonctions;
+	}
+
+	public void setTop_zac(int top_zac) {
+		this.top_zac = top_zac;
+	}
+
+	public void setZonage_coherent(int zonage_coherent) {
+		this.zonage_coherent = zonage_coherent;
+	}
+
+	public void setCorrection_zonage(int correction_zonage) {
+		this.correction_zonage = correction_zonage;
+	}
+
+	public void setTyp_bande(int typ_bande) {
+		this.typ_bande = typ_bande;
+	}
+
+	public void setBande(int bande) {
+		this.bande = bande;
+	}
+
+	public void setArt_71(int art_71) {
+		this.art_71 = art_71;
+	}
+
+	public void setArt_74(int art_74) {
+		this.art_74 = art_74;
+	}
+
+	public void setArt_10_top(int art_10_top) {
+		this.art_10_top = art_10_top;
+	}
+
+	public void setLibelle_de_base(String libelle_de_base) {
+		this.libelle_de_base = libelle_de_base;
+	}
+
+	public void setLibelle_de_dul(String libelle_de_dul) {
+		this.libelle_de_dul = libelle_de_dul;
+	}
+
+	public void setArt_5(double art_5) {
+		this.art_5 = art_5;
+	}
+
+	public void setArt_72(double art_72) {
+		this.art_72 = art_72;
+	}
+
+	public void setArt_73(double art_73) {
+		this.art_73 = art_73;
+	}
+
+	public void setArt_8(double art_8) {
+		this.art_8 = art_8;
+	}
+
+	public void setArt_6(double art_6) {
+		this.art_6 = art_6;
+	}
+
+	public void setArt_9(double art_9) {
+		this.art_9 = art_9;
+	}
+
+	public void setArt_102(double art_102) {
+		this.art_102 = art_102;
+	}
+
+	public void setArt_12(double art_12) {
+		this.art_12 = art_12;
+	}
+
+	public void setArt_14(double art_14) {
+		this.art_14 = art_14;
+	}
+
+	public void setArt_13(double art_13) {
+		this.art_13 = art_13;
+	}
+
+	public void setArt_101(double art_101) {
+		this.art_101 = art_101;
+	}
+
+	public void setEpsilonBuffer(Geometry epsilonBuffer) {
+		this.epsilonBuffer = epsilonBuffer;
+	}
+
+	public void setJtsGeometry(Geometry jtsGeometry) {
+		this.jtsGeometry = jtsGeometry;
+	}
+
+	public static void setGf(GeometryFactory gf) {
+		Regulation.gf = gf;
+	}
+
+	
+	
 }

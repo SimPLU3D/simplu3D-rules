@@ -3,6 +3,10 @@ package fr.ign.cogit.simplu3d.checker;
 import java.io.File;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.checker.experiments.RennesChecker;
+import fr.ign.cogit.simplu3d.checker.model.RuleContext;
+import fr.ign.cogit.simplu3d.checker.model.Rules;
+import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
@@ -25,7 +29,7 @@ public class CheckerFunctionalTest extends TestCase {
 			Environnement env = LoaderSHP.loadNoDTM(path);
 			BasicPropertyUnit bPU = env.getBpU().get(20);
 			RuleContext context = new RuleContext();
-			List<UnrespectedRule> lSp = Checker.check(bPU, new Rules("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7"), context);
+			List<UnrespectedRule> lSp = RennesChecker.check(bPU, new Rules("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7"), context);
 			assertEquals(3, lSp.size());
 			//TODO complete test
 		} catch (Exception e) {

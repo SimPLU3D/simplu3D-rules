@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker.hackurba;
+package fr.ign.cogit.simplu3d.checker.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,11 @@ import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Cut3DGeomFrom2D;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-import fr.ign.cogit.simplu3d.checker.GeometricConstraints;
-import fr.ign.cogit.simplu3d.checker.IRuleChecker;
-import fr.ign.cogit.simplu3d.checker.RuleContext;
-import fr.ign.cogit.simplu3d.checker.UnrespectedRule;
+import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
+import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
+import fr.ign.cogit.simplu3d.checker.model.RuleContext;
+import fr.ign.cogit.simplu3d.checker.model.Rules;
+import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -25,12 +26,14 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Regulation;
 
-public class CheckDistanceToRoad implements IRuleChecker {
+public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
   public final static String CODE_DISTANCE_VOIRIE = "RECUL_VOIRIE";
+  
 
-  public CheckDistanceToRoad() {
 
+  public DistanceToRoadCheck(Rules rules) {
+	  super(rules);
   }
 
   @Override
@@ -41,23 +44,12 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-    Regulation r1 = bPU.getR1();
 
-    if (r1 != null && r1.getArt_6() != 99) {
+  
 
-      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, r1, iCurve);
-      if (gc != null) {
-        lUR.add(gc);
+    if (this.getRules() != null && this.getRules().getArt_6() != 99) {
 
-      }
-
-    }
-
-    Regulation r2 = bPU.getR2();
-
-    if (r2 != null && r2.getArt_6() != 99) {
-
-      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, r2, iCurve);
+      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, this.getRules(), iCurve);
       if (gc != null) {
         lUR.add(gc);
 
@@ -138,17 +130,17 @@ public class CheckDistanceToRoad implements IRuleChecker {
   }
 
   @Override
-  public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+  public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
     List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
     IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-    Regulation r1 = bPU.getR1();
 
-    if (r1 != null && r1.getArt_6() != 99) {
+
+    if (this.getRules()!= null && this.getRules().getArt_6() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
-          bPU, r1, iCurve);
+          bPU, this.getRules(), iCurve);
       if (gc != null) {
         geomConstraints.add(gc);
 
@@ -156,18 +148,7 @@ public class CheckDistanceToRoad implements IRuleChecker {
 
     }
 
-    Regulation r2 = bPU.getR2();
 
-    if (r2 != null && r2.getArt_6() != 99) {
-
-      GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
-          bPU, r2, iCurve);
-      if (gc != null) {
-        geomConstraints.add(gc);
-
-      }
-
-    }
 
     return geomConstraints;
 

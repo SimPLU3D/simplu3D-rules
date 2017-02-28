@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker;
+package fr.ign.cogit.simplu3d.checker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 
 /**
  * 
- * A composite checker 
+ * A composite checker
  * 
  * @author MBorne
  *
@@ -15,17 +15,14 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 public class CompositeChecker implements IRuleChecker {
 
 	private List<IRuleChecker> children = new ArrayList<>();
-	
-	
-	
+
 	public List<IRuleChecker> getChildren(){
 		return children;
 	}
-	
-	public void addChild(IRuleChecker child){
+
+	public void addChild(IRuleChecker child) {
 		this.children.add(child);
 	}
-
 
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
@@ -33,18 +30,24 @@ public class CompositeChecker implements IRuleChecker {
 		for (IRuleChecker child : children) {
 			unrespectedRules.addAll(child.check(bPU, context));
 			// optional processing stop on failure
-			if ( context.isStopOnFailure() && ! unrespectedRules.isEmpty() ){
+			if (context.isStopOnFailure() && !unrespectedRules.isEmpty()) {
 				return unrespectedRules;
 			}
 		}
 		return unrespectedRules;
 	}
-	
 
-    @Override
-    public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-	
+	@Override
+	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext context) {
+		List<GeometricConstraints> unrespectedRules = new ArrayList<>();
+		for (IRuleChecker child : children) {
+			unrespectedRules.addAll(child.generate(bPU, context));
+			// optional processing stop on failure
+			if (context.isStopOnFailure() && !unrespectedRules.isEmpty()) {
+				return unrespectedRules;
+			}
+		}
+		return unrespectedRules;
+	}
+
 }

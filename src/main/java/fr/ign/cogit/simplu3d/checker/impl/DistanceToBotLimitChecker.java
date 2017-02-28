@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker.hackurba;
+package fr.ign.cogit.simplu3d.checker.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,11 @@ import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.calculation.Cut3DGeomFrom2D;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-import fr.ign.cogit.simplu3d.checker.GeometricConstraints;
-import fr.ign.cogit.simplu3d.checker.IRuleChecker;
-import fr.ign.cogit.simplu3d.checker.RuleContext;
-import fr.ign.cogit.simplu3d.checker.UnrespectedRule;
+import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
+import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
+import fr.ign.cogit.simplu3d.checker.model.RuleContext;
+import fr.ign.cogit.simplu3d.checker.model.Rules;
+import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -25,14 +26,20 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Regulation;
 
-public class CheckDistanceToLatLimit implements IRuleChecker {
+public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
-  public final static String CODE_DISTANCE_LAT = "RECUL_LATERAL";
+  public final static String CODE_DISTANCE_BOT = "RECUL_FOND";
 
-
-  public CheckDistanceToLatLimit() {
+  
+  public DistanceToBotLimitChecker() {
 
   }
+  
+
+  public DistanceToBotLimitChecker(Rules rules){
+	 super(rules);
+  }
+
 
   @Override
   public List<UnrespectedRule> check(BasicPropertyUnit bPU,
@@ -42,11 +49,11 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
     IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-    Regulation r1 = bPU.getR1();
 
-    if (r1 != null && r1.getArt_6() != 99) {
 
-      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, r1, iCurve);
+    if (this.getRules() != null && this.getRules().getArt_73() != 99) {
+
+      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, this.getRules(), iCurve);
       if (gc != null) {
         lUR.add(gc);
 
@@ -54,17 +61,6 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
     }
 
-    Regulation r2 = bPU.getR2();
-
-    if (r2 != null && r2.getArt_6() != 99) {
-
-      UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, r2, iCurve);
-      if (gc != null) {
-        lUR.add(gc);
-
-      }
-
-    }
 
     return lUR;
   }
@@ -89,7 +85,7 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
           .convertGeom(gc.getGeometry());
       
       double distance = b.getFootprint().distance(iCurve);
-      if (distance > r.getArt_72()) {
+      if (distance > r.getArt_73()) {
 
         continue;
 
@@ -106,9 +102,9 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
         IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>(lOS);
 
         UnrespectedRule uRout = new UnrespectedRule(
-            "Recul par rapport aux limites séparatives latérales non respectées " + distance
-                + " m au lieu de " + r.getArt_72() + " m",
-            ims, CODE_DISTANCE_LAT);
+            "Recul par rapport aux limites séparatives de fond non respectées " + distance
+                + " m au lieu de " + r.getArt_73() + " m",
+            ims, CODE_DISTANCE_BOT);
         
         return uRout;
 
@@ -120,6 +116,8 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
   }
 
+
+
   /**
    * TODO describe
    * @param bPU
@@ -130,7 +128,7 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
     for (CadastralParcel cP : bPU.getCadastralParcels()) {
       for (ParcelBoundary sc : cP.getBoundaries()) {
-        if (sc.getType() == ParcelBoundaryType.LAT) {
+        if (sc.getType() == ParcelBoundaryType.BOT) {
           img.addAll(FromGeomToLineString.convert(sc.getGeom()));
         }
       }
@@ -140,14 +138,14 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
   }
 
   @Override
-  public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
+  public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
     List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
     IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-    Regulation r1 = bPU.getR1();
+    Regulation r1 = this.getRules();
 
-    if (r1 != null && r1.getArt_71() != 99) {
+    if (r1 != null && r1.getArt_73() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, r1, iCurve);
@@ -158,18 +156,7 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
     }
 
-    Regulation r2 = bPU.getR2();
 
-    if (r2 != null && r2.getArt_71() != 99) {
-
-      GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
-          bPU, r2, iCurve);
-      if (gc != null) {
-        geomConstraints.add(gc);
-
-      }
-
-    }
 
     return geomConstraints;
 
@@ -184,13 +171,8 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
       return null;
     }
     
-    if(r.getArt_71() != 0){
-      return new GeometricConstraints("Alignement contre une des limites latérales",          
-          iCurve.buffer(0.5), CODE_DISTANCE_LAT);
-      
-          
-    }
-    IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt_72()));
+
+    IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt_73()));
     IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface
         .convertMSGeom(geom);
 
@@ -200,9 +182,9 @@ public class CheckDistanceToLatLimit implements IRuleChecker {
 
     if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
       GeometricConstraints gC = new GeometricConstraints(
-          "Recul par rapport aux limites latérales " + r.getArt_72()
+          "Recul par rapport aux limites de fond de parcelle " + r.getArt_73()
               + " m ",
-          iMS, CODE_DISTANCE_LAT);
+          iMS, CODE_DISTANCE_BOT);
       return gC;
     }
     return null;

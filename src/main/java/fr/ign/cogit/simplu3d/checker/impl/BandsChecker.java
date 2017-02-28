@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker;
+package fr.ign.cogit.simplu3d.checker.impl;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -10,6 +10,11 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
+import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
+import fr.ign.cogit.simplu3d.checker.model.RuleContext;
+import fr.ign.cogit.simplu3d.checker.model.Rules;
+import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -28,7 +33,7 @@ import fr.ign.cogit.simplu3d.model.SubParcel;
  * @author MBorne
  *
  */
-public class BandsChecker implements IRuleChecker {
+public class BandsChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PROSPECT_VOIRIE = "PROSPECT_VOIRIE";
 	public final static String CODE_PROSPECT_LAT = "PROSPECT_LAT";
@@ -36,33 +41,37 @@ public class BandsChecker implements IRuleChecker {
 	public final static String CODE_ALIGNEMENT_LAT = "ALIGNEMENT_LAT";
 	public static final String CODE_HMAX_BAND2 = "HMAX_BAND2";
 
-	private Rules rules;
 
-	public BandsChecker(Rules rules) {
-		this.rules = rules;
+	
+	public BandsChecker(){
+		super();
 	}
 
+	public BandsChecker(Rules rules){
+		super(rules);
+	}
+	
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère les bâtiments par bande :
-		Map<Integer, List<AbstractBuilding>> mapB = getBuildingByBand(bPU, rules);
+		Map<Integer, List<AbstractBuilding>> mapB = getBuildingByBand(bPU, this.getRules());
 
 		// On traite la bande 1 : le prospect en fonction de la largeur de la
 		// voirie
-		lUNR.addAll(checkProspectBand1(mapB.get(1), bPU, rules));
+		lUNR.addAll(checkProspectBand1(mapB.get(1), bPU,  this.getRules()));
 
 		// On traite la bande 1 : le recul par rapport aux limites latérales et
 		// à l'alignement
-		lUNR.addAll(checkLateralFront(mapB.get(1), bPU, rules));
+		lUNR.addAll(checkLateralFront(mapB.get(1), bPU,  this.getRules()));
 
 		// On traite la bande 2 avec les valeurs ules.getSlopeProspectLat(),
 		// rules.gethIniProspectLat()
-		lUNR.addAll(checkProspectBand2(mapB.get(2), bPU, rules));
+		lUNR.addAll(checkProspectBand2(mapB.get(2), bPU,  this.getRules()));
 
 		// On vérifie la hauteur par rapport à getHauteurMax2
-		lUNR.addAll(checkHeightDistanceBand2(mapB.get(2), bPU, rules));
+		lUNR.addAll(checkHeightDistanceBand2(mapB.get(2), bPU,  this.getRules()));
 
 		return lUNR;
 	}
@@ -93,7 +102,7 @@ public class BandsChecker implements IRuleChecker {
 
 		for (ParcelBoundary sc : lFronLimit) {
 			Road road = sc.getRoad();
-			
+
 			// On récupère la route adjance
 			if (road != null) {
 
@@ -239,7 +248,6 @@ public class BandsChecker implements IRuleChecker {
 		return lUNR;
 	}
 
-
 	/**
 	 * On récupère les bâtiments en 2 bandes (avec priorité pour la première)
 	 * 
@@ -369,10 +377,10 @@ public class BandsChecker implements IRuleChecker {
 		return img;
 	}
 
-  @Override
-  public List<GeometricConstraints> generate(BasicPropertyUnit bPU) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -42,17 +42,12 @@ public class BasicPropertyUnit extends DefaultFeature {
   
   
   
-	public Regulation getR1() {
-    return r1;
-  }
+
 
   public void setR1(Regulation r1) {
     this.r1 = r1;
   }
 
-  public Regulation getR2() {
-    return r2;
-  }
 
   public void setR2(Regulation r2) {
     this.r2 = r2;
