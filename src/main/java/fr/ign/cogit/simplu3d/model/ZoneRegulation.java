@@ -30,14 +30,6 @@ public class ZoneRegulation {
 
 	private int numBand;
 
-	public int getNumBand() {
-		return numBand;
-	}
-
-	public void setNumBand(int numBand) {
-		this.numBand = numBand;
-	}
-
 	private String insee;
 
 	private String libelleZone;
@@ -197,6 +189,15 @@ public class ZoneRegulation {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public int getNumBand() {
+		return numBand;
+	}
+
+	public void setNumBand(int numBand) {
+		this.numBand = numBand;
+	}
+	
 
 	public int getCode_imu() {
 		return codeImu;
@@ -438,6 +439,11 @@ public class ZoneRegulation {
 	
 	public void setEpsilonBuffer(Geometry epsilonBuffer) {
 		this.epsilonBuffer = epsilonBuffer;
+	}
+	
+	@JsonIgnore
+	public Geometry getJtsGeometry() {
+		return jtsGeometry;
 	}
 
 	public void setJtsGeometry(Geometry jtsGeometry) {
