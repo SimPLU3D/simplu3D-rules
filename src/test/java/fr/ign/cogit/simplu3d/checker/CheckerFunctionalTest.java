@@ -12,7 +12,7 @@ import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.io.regulation.RennesRegulationReader;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import junit.framework.TestCase;
 
 public class CheckerFunctionalTest extends TestCase {
@@ -28,7 +28,7 @@ public class CheckerFunctionalTest extends TestCase {
 			Environnement env = LoaderSHP.loadNoDTM(path);
 			BasicPropertyUnit bPU = env.getBpU().get(20);
 			RuleContext context = new RuleContext();
-			Rules r = RennesRegulationReader
+			ZoneRegulation r = RennesRegulationReader
 					.regulationFromLine("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7");
 			List<UnrespectedRule> lSp = RennesChecker.check(bPU, r, context);
 			assertEquals(3, lSp.size());

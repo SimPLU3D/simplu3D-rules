@@ -16,12 +16,12 @@ import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import fr.ign.cogit.simplu3d.util.SimpleBandProduction;
 
 public class HackUrbaChecker {
 
-	private static CompositeChecker prepareChecker(BasicPropertyUnit bPU, Rules r1, Rules r2, RuleContext context) {
+	private static CompositeChecker prepareChecker(BasicPropertyUnit bPU, ZoneRegulation r1, ZoneRegulation r2, RuleContext context) {
 
 		new SimpleBandProduction(bPU, r1, r2);
 
@@ -73,13 +73,13 @@ public class HackUrbaChecker {
 
 	}
 
-	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules r1, Rules r2, RuleContext context) {
+	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, ZoneRegulation r1, ZoneRegulation r2, RuleContext context) {
 
 		return prepareChecker(bPU, r1, r2, context).check(bPU, context);
 
 	}
 
-	public static List<GeometricConstraints> generateConstraints(BasicPropertyUnit bPU, Rules r1, Rules r2,
+	public static List<GeometricConstraints> generateConstraints(BasicPropertyUnit bPU, ZoneRegulation r1, ZoneRegulation r2,
 			RuleContext context) {
 
 		return prepareChecker(bPU, r1, r2, context).generate(bPU, context);

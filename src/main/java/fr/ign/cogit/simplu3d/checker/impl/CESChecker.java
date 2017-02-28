@@ -9,13 +9,13 @@ import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class CESChecker extends AbstractRuleChecker {
 
 	public final static String CODE_CES = "CES_MAX";
 
-	public CESChecker(Rules r) {
+	public CESChecker(ZoneRegulation r) {
 		super(r);
 	}
 
@@ -75,7 +75,7 @@ public class CESChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-		Rules r1 = this.getRules();
+		ZoneRegulation r1 = this.getRules();
 
 		if (r1 != null && r1.getArt12() != 99) {
 
@@ -91,7 +91,7 @@ public class CESChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
 
 		double ces = determineCES(bPU);
 

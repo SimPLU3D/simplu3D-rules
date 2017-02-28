@@ -22,7 +22,7 @@ import fr.ign.cogit.geoxygene.util.conversion.AdapterFactory;
  */
 @Entity
 @Table(name = "simplu_regulation")
-public class Rules {
+public class ZoneRegulation {
 
 	@Id
 	@GeneratedValue
@@ -99,10 +99,10 @@ public class Rules {
 
 	private Double art5, art72, art73, art8, art6, art9, art102, art12, art14, art13, art101;
 
-	public Rules() {
+	public ZoneRegulation() {
 	}
 
-	public Rules(int code_imu, String libelle_zone, String insee, int date_approbation, String libelle_de_base,
+	public ZoneRegulation(int code_imu, String libelle_zone, String insee, int date_approbation, String libelle_de_base,
 			String libelle_de_dul, int fonctions, int top_zac, int zonage_coherent, int correction_zonage,
 			int typ_bande, int bande, Double art_5, Double art_6, int art_71, Double art_72, Double art_73, int art_74,
 			Double art_8, Double art_9, int art_10_top, Double art_101, Double art_102, Double art_12, Double art_13,
@@ -161,7 +161,7 @@ public class Rules {
 	 * @param hIniProspectLat
 	 * @param hauteurMax2
 	 */
-	public Rules(String nom_zone, Double bandIncons, Double empriseSol, Double empriseSurface, Double empLargeurMin,
+	public ZoneRegulation(String nom_zone, Double bandIncons, Double empriseSol, Double empriseSurface, Double empLargeurMin,
 			Double empriseSolAlt, Double band1, Double alignement, Double reculLatMin, Double reculLatMax,
 			Double prospectVoirie1Slope, Double prospectVoirie1Hini, Double largMaxProspect1,
 			Double prospectVoirie2Slope, Double prospectVoirie2Hini, Double hauteurMaxFacade, Double band2,
@@ -445,7 +445,7 @@ public class Rules {
 	}
 
 	public static void setGf(GeometryFactory gf) {
-		Rules.gf = gf;
+		ZoneRegulation.gf = gf;
 	}
 
 	public String getNomZone() {

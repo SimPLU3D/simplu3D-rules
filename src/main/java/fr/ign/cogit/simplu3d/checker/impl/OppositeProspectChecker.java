@@ -17,7 +17,7 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class OppositeProspectChecker extends AbstractRuleChecker {
 
@@ -25,7 +25,7 @@ public class OppositeProspectChecker extends AbstractRuleChecker {
 
 	private IMultiCurve<IOrientableCurve> ims;
 
-	public OppositeProspectChecker(Rules rules) {
+	public OppositeProspectChecker(ZoneRegulation rules) {
 		super(rules);
 
 	}

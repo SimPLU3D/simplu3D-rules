@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class IAUIDFRegulationReader {
 
@@ -19,11 +19,11 @@ public class IAUIDFRegulationReader {
 	}
 
 	
-	public List<Rules> transformFeatureToRules(IFeature feature){
+	public List<ZoneRegulation> transformFeatureToRules(IFeature feature){
 
 		System.out.println("*************************************************");
 
-		List<Rules> lRegulation = new ArrayList<>();
+		List<ZoneRegulation> lRegulation = new ArrayList<>();
 		
 
 		int code_imu = 0;
@@ -55,7 +55,7 @@ public class IAUIDFRegulationReader {
 		Double art_13 = Double.parseDouble(feature.getAttribute("B1_ART_13").toString());
 		Double art_14 = Double.parseDouble(feature.getAttribute("B1_ART_14").toString());
 
-		Rules r = new Rules(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
+		ZoneRegulation r = new ZoneRegulation(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
 				libelle_de_dul, fonctions, top_zac, zonage_coherent, correction_zonage, typ_bande, bande, art_5,
 				art_6, art_71, art_72, art_73, art_74, art_8, art_9, art_10_top, art_101, art_102, art_12, art_13,
 				art_14);
@@ -85,7 +85,7 @@ public class IAUIDFRegulationReader {
 			Double art_14_2 = Double.parseDouble(feature.getAttribute("B2_ART_14").toString());
 			
 
-			Rules r2 = new Rules(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
+			ZoneRegulation r2 = new ZoneRegulation(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
 					libelle_de_dul, fonctions_2, top_zac, zonage_coherent, correction_zonage, typ_bande, bande,
 					art_5_2, art_6_2, art_71_2, art_72_2, art_73_2, art_74_2, art_8_2, art_9_2, art_10_top_2,
 					art_101_2, art_102_2, art_12_2, art_13_2, art_14_2);
@@ -102,11 +102,11 @@ public class IAUIDFRegulationReader {
 	
 	
 	
-	public List<Rules> readRegulationFromCSV(String path) throws IOException {
+	public List<ZoneRegulation> readRegulationFromCSV(String path) throws IOException {
 
 		File f = new File(path);
 
-		List<Rules> lRegulation = new ArrayList<>();
+		List<ZoneRegulation> lRegulation = new ArrayList<>();
 
 		// On lit le fichier
 		BufferedReader in = new BufferedReader(new FileReader(f));
@@ -158,7 +158,7 @@ public class IAUIDFRegulationReader {
 			Double art_13 = Double.parseDouble(newmap.get("B1_ART_13").toString());
 			Double art_14 = Double.parseDouble(newmap.get("B1_ART_14").toString());
 
-			Rules r = new Rules(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
+			ZoneRegulation r = new ZoneRegulation(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
 					libelle_de_dul, fonctions, top_zac, zonage_coherent, correction_zonage, typ_bande, bande, art_5,
 					art_6, art_71, art_72, art_73, art_74, art_8, art_9, art_10_top, art_101, art_102, art_12, art_13,
 					art_14);
@@ -188,7 +188,7 @@ public class IAUIDFRegulationReader {
 				Double art_14_2 = Double.parseDouble(newmap.get("B2_ART_14").toString());
 				
 
-				Rules r2 = new Rules(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
+				ZoneRegulation r2 = new ZoneRegulation(code_imu, libelle_zone, insee, date_approbation, libelle_de_base,
 						libelle_de_dul, fonctions_2, top_zac, zonage_coherent, correction_zonage, typ_bande, bande,
 						art_5_2, art_6_2, art_71_2, art_72_2, art_73_2, art_74_2, art_8_2, art_9_2, art_10_top_2,
 						art_101_2, art_102_2, art_12_2, art_13_2, art_14_2);

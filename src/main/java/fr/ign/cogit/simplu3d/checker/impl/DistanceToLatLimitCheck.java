@@ -23,7 +23,7 @@ import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
@@ -33,7 +33,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
 	}
 
-	public DistanceToLatLimitCheck(Rules rules) {
+	public DistanceToLatLimitCheck(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -57,7 +57,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 		return lUR;
 	}
 
-	public UnrespectedRule generateUnrespectedRulesOneReg(BasicPropertyUnit bPU, Rules r,
+	public UnrespectedRule generateUnrespectedRulesOneReg(BasicPropertyUnit bPU, ZoneRegulation r,
 			IMultiCurve<IOrientableCurve> iCurve) {
 
 		for (Building b : bPU.getBuildings()) {
@@ -142,7 +142,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r,
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r,
 			IMultiCurve<IOrientableCurve> iCurve) {
 
 		if (iCurve == null || iCurve.isEmpty()) {

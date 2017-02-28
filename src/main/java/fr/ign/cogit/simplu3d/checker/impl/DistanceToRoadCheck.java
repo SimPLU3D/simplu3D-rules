@@ -23,7 +23,7 @@ import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
@@ -31,7 +31,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
   
 
 
-  public DistanceToRoadCheck(Rules rules) {
+  public DistanceToRoadCheck(ZoneRegulation rules) {
 	  super(rules);
   }
 
@@ -60,7 +60,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
   }
 
   public UnrespectedRule generateUnrespectedRulesOneReg(BasicPropertyUnit bPU,
-      Rules r, IMultiCurve<IOrientableCurve> iCurve) {
+      ZoneRegulation r, IMultiCurve<IOrientableCurve> iCurve) {
 
     for (Building b : bPU.getBuildings()) {
       if (!b.isNew) {
@@ -154,7 +154,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
   }
 
   private GeometricConstraints generateGEometricConstraintsForOneRegulation(
-      BasicPropertyUnit bPU, Rules r,
+      BasicPropertyUnit bPU, ZoneRegulation r,
       IMultiCurve<IOrientableCurve> iCurve) {
     IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt6()));
     IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface

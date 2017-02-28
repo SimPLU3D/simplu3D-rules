@@ -13,13 +13,13 @@ import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 	public final static String CODE_DISTANCE_BULDINGS = "RECUL_BATIMENT";
 
-	public DistanceBetweenBuildingsChecker(Rules rules) {
+	public DistanceBetweenBuildingsChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -62,7 +62,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-		Rules r1 = this.getRules();
+		ZoneRegulation r1 = this.getRules();
 
 		if (r1 != null && r1.getArt8() != 99) {
 
@@ -78,7 +78,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
 
 		IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
 

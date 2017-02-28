@@ -19,13 +19,13 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PROSPECT_LIMITE = "PROSPECT_EXISTING";
 
-	public ProspectToLatLimitChecker(Rules rules) {
+	public ProspectToLatLimitChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -53,7 +53,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 			return lUNR;
 		}
 
-		Rules r = this.getRules();
+		ZoneRegulation r = this.getRules();
 		
 		for (IMultiCurve<IOrientableCurve> iMC : limits) {
 			for (Building b : buildings) {
@@ -80,7 +80,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 		
-		Rules r = this.getRules();
+		ZoneRegulation r = this.getRules();
 		
 
 		if (r != null && r.getArt74() != 99 && r.getArt74() != 0) {
@@ -126,7 +126,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 	}
 
 	private List<GeometricConstraints> generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU,
-			Rules r) {
+			ZoneRegulation r) {
 
 		List<IMultiCurve<IOrientableCurve>> imc = getBotLimit(bPU);
 

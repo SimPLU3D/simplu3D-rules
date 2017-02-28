@@ -2,7 +2,7 @@ package fr.ign.cogit.simplu3d.checker.model;
 
 import java.util.logging.Logger;
 
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 /**
  * 
@@ -19,17 +19,17 @@ public abstract class AbstractRuleChecker implements IRuleChecker {
 
 	}
 
-	public AbstractRuleChecker(Rules rules) {
+	public AbstractRuleChecker(ZoneRegulation rules) {
 		this.setRules(rules);
 	}
 
-	private Rules rules;
+	private ZoneRegulation rules;
 
-	public Rules getRules() {
+	public ZoneRegulation getRules() {
 		return rules;
 	}
 
-	public void setRules(Rules rules) {
+	public void setRules(ZoneRegulation rules) {
 		this.rules = rules;
 	}
 

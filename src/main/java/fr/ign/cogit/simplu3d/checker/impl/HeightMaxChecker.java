@@ -11,13 +11,13 @@ import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class HeightMaxChecker extends AbstractRuleChecker {
 
 	public final static String CODE_HEIGHT_MAX = "HAUTEUR_MAX";
 
-	public HeightMaxChecker(Rules rules) {
+	public HeightMaxChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -79,7 +79,7 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules rules) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation rules) {
 		if (rules.getGeomBande().isEmpty()) {
 			return null;
 		}

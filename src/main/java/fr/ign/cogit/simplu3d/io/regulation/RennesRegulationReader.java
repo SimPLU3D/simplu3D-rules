@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class RennesRegulationReader {
 
-	public static Map<String, Rules> loadRules(String path) throws IOException {
+	public static Map<String, ZoneRegulation> loadRules(String path) throws IOException {
 
 		// On initialise la map
-		Map<String, Rules> table = new Hashtable<>();
+		Map<String, ZoneRegulation> table = new Hashtable<>();
 
 		// On charge le fichier CSV avec modèle-Rennes
 		File f = new File(path);
@@ -30,7 +30,7 @@ public class RennesRegulationReader {
 		while ((line = in.readLine()) != null) {
 
 			// On instancier la réglementation
-			Rules r = regulationFromLine(line);
+			ZoneRegulation r = regulationFromLine(line);
 			// On regarde si le code imu a été rencontré auparavant
 			String nom_Zone = r.getNomZone();
 			table.put(nom_Zone, r);
@@ -42,12 +42,12 @@ public class RennesRegulationReader {
 		return table;
 	}
 
-	public static Rules regulationFromLine(String str) {
+	public static ZoneRegulation regulationFromLine(String str) {
 		return regulationFromTable(str.split(","));
 	}
 
-	public static Rules regulationFromTable(String[] tabS) {
-		return new Rules(
+	public static ZoneRegulation regulationFromTable(String[] tabS) {
+		return new ZoneRegulation(
 
 				tabS[0], // nomZone
 				Double.parseDouble(tabS[1]), Double.parseDouble(tabS[2]), Double.parseDouble(tabS[3]),

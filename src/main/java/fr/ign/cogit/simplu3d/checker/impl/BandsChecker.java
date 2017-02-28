@@ -20,7 +20,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -47,7 +47,7 @@ public class BandsChecker extends AbstractRuleChecker {
 		super();
 	}
 
-	public BandsChecker(Rules rules){
+	public BandsChecker(ZoneRegulation rules){
 		super(rules);
 	}
 	
@@ -93,7 +93,7 @@ public class BandsChecker extends AbstractRuleChecker {
 	 *            des règles
 	 * @return une liste de règles non respectées
 	 */
-	private List<UnrespectedRule> checkProspectBand1(List<AbstractBuilding> list, BasicPropertyUnit bPU, Rules rules) {
+	private List<UnrespectedRule> checkProspectBand1(List<AbstractBuilding> list, BasicPropertyUnit bPU, ZoneRegulation rules) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
@@ -149,7 +149,7 @@ public class BandsChecker extends AbstractRuleChecker {
 	 *            des règles
 	 * @return une liste de règles non respectées
 	 */
-	private List<UnrespectedRule> checkLateralFront(List<AbstractBuilding> list, BasicPropertyUnit bPU, Rules rules) {
+	private List<UnrespectedRule> checkLateralFront(List<AbstractBuilding> list, BasicPropertyUnit bPU, ZoneRegulation rules) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		IMultiCurve<IOrientableCurve> iMSFront = getFrontLimitGeom(bPU);
@@ -193,7 +193,7 @@ public class BandsChecker extends AbstractRuleChecker {
 	 *            des règles
 	 * @return une liste de règles non respectées
 	 */
-	private List<UnrespectedRule> checkProspectBand2(List<AbstractBuilding> list, BasicPropertyUnit bPU, Rules rules) {
+	private List<UnrespectedRule> checkProspectBand2(List<AbstractBuilding> list, BasicPropertyUnit bPU, ZoneRegulation rules) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On récupère les limites de fronts de parcelles (celles qui peuvent
@@ -231,7 +231,7 @@ public class BandsChecker extends AbstractRuleChecker {
 	 * @return une liste de règles non respectées
 	 */
 	private static List<UnrespectedRule> checkHeightDistanceBand2(List<AbstractBuilding> list, BasicPropertyUnit bPU,
-			Rules rules) {
+			ZoneRegulation rules) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
 		// On vérifie la hauteur
@@ -262,7 +262,7 @@ public class BandsChecker extends AbstractRuleChecker {
 	 *            des règles
 	 * @return une Map<Integer, List<AbstractBuilding>>
 	 */
-	private Map<Integer, List<AbstractBuilding>> getBuildingByBand(BasicPropertyUnit bPU, Rules r) {
+	private Map<Integer, List<AbstractBuilding>> getBuildingByBand(BasicPropertyUnit bPU, ZoneRegulation r) {
 
 		IGeometry getFrontLimit = getFrontLimitGeom(bPU);
 

@@ -23,7 +23,7 @@ import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
@@ -35,7 +35,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
   }
   
 
-  public DistanceToBotLimitChecker(Rules rules){
+  public DistanceToBotLimitChecker(ZoneRegulation rules){
 	 super(rules);
   }
 
@@ -66,7 +66,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
   
 
   public UnrespectedRule generateUnrespectedRulesOneReg(BasicPropertyUnit bPU,
-      Rules r, IMultiCurve<IOrientableCurve> iCurve) {
+      ZoneRegulation r, IMultiCurve<IOrientableCurve> iCurve) {
 
     for (Building b : bPU.getBuildings()) {
       if (!b.isNew) {
@@ -142,7 +142,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
     IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-    Rules r1 = this.getRules();
+    ZoneRegulation r1 = this.getRules();
 
     if (r1 != null && r1.getArt73() != 99) {
 
@@ -162,7 +162,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
   }
 
   private GeometricConstraints generateGEometricConstraintsForOneRegulation(
-      BasicPropertyUnit bPU, Rules r,
+      BasicPropertyUnit bPU, ZoneRegulation r,
       IMultiCurve<IOrientableCurve> iCurve) {
     
     

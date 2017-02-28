@@ -9,13 +9,13 @@ import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class EmptySpaceChecker extends AbstractRuleChecker {
 
 	public final static String CODE_EMPTY_SPACE = "ESPACE LIBRE";
 
-	public  EmptySpaceChecker(Rules rules) {
+	public  EmptySpaceChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -63,7 +63,7 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
 
 		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt12(), bPU.getGeom(),
 				CODE_EMPTY_SPACE);

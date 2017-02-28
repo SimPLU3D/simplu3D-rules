@@ -10,7 +10,7 @@ import fr.ign.cogit.simplu3d.checker.model.CompositeChecker;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class RennesChecker {
 	 *            Les règles d'urbanisme
 	 * @return une liste de règles non respectées
 	 */
-	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, Rules rules, RuleContext context) {
+	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, ZoneRegulation rules, RuleContext context) {
 		CompositeChecker checker = new CompositeChecker();
 		checker.addChild(new CESChecker(rules));
 		checker.addChild(new BuildingInParcelChecker());

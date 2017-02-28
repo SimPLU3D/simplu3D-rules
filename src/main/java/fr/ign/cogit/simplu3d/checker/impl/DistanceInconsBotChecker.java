@@ -21,7 +21,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -36,7 +36,7 @@ public class DistanceInconsBotChecker extends AbstractRuleChecker {
 
 	public final static String CODE_BANDE_FOND_PARCELLE = "BANDE_FOND_PARCELLE";
 
-	public DistanceInconsBotChecker(Rules rules) {
+	public DistanceInconsBotChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -117,7 +117,7 @@ public class DistanceInconsBotChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r,
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r,
 			IMultiCurve<IOrientableCurve> iCurve) {
 		IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt6()));
 		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);

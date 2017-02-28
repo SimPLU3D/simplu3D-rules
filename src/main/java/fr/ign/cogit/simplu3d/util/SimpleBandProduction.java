@@ -18,7 +18,7 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class SimpleBandProduction {
 
@@ -27,8 +27,8 @@ public class SimpleBandProduction {
   private IMultiCurve<IOrientableCurve> lineRoad = null;
 
   @SuppressWarnings("unchecked")
-  public SimpleBandProduction(BasicPropertyUnit bPU, Rules r1,
-      Rules r2) {
+  public SimpleBandProduction(BasicPropertyUnit bPU, ZoneRegulation r1,
+      ZoneRegulation r2) {
 
     // On récupère le polygone surlequel on va faire la découpe
     IPolygon pol_BPU = bPU.getpol2D();

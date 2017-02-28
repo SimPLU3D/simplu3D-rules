@@ -8,13 +8,13 @@ import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 public class ParkingChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PARKING = "PLACE_PARKINGS";
 
-	public ParkingChecker(Rules rules) {
+	public ParkingChecker(ZoneRegulation rules) {
 		super(rules);
 	}
 
@@ -43,7 +43,7 @@ public class ParkingChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
 
 		return new GeometricConstraints("Nombre de places de stationnement par logement : " + r1.getArt12(),
 				bPU.getGeom(), CODE_PARKING);
