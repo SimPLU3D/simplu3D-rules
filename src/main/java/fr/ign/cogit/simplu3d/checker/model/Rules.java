@@ -241,6 +241,94 @@ public class Rules extends Regulation {
 	
 	
 	
+	public void setNom_zone(String nom_zone) {
+		this.nom_zone = nom_zone;
+	}
+
+	public void setBandIncons(double bandIncons) {
+		this.bandIncons = bandIncons;
+	}
+
+	public void setEmpriseSol(double empriseSol) {
+		this.empriseSol = empriseSol;
+	}
+
+	public void setEmpriseSurface(double empriseSurface) {
+		this.empriseSurface = empriseSurface;
+	}
+
+	public void setEmpLargeurMin(double empLargeurMin) {
+		this.empLargeurMin = empLargeurMin;
+	}
+
+	public void setEmpriseSolAlt(double empriseSolAlt) {
+		this.empriseSolAlt = empriseSolAlt;
+	}
+
+	public void setBand1(double band1) {
+		this.band1 = band1;
+	}
+
+	public void setAlignement(double alignement) {
+		this.alignement = alignement;
+	}
+
+	public void setReculLatMin(double reculLatMin) {
+		this.reculLatMin = reculLatMin;
+	}
+
+	public void setReculLatMax(double reculLatMax) {
+		this.reculLatMax = reculLatMax;
+	}
+
+	public void setProspectVoirie1Slope(double prospectVoirie1Slope) {
+		this.prospectVoirie1Slope = prospectVoirie1Slope;
+	}
+
+	public void setProspectVoirie1Hini(double prospectVoirie1Hini) {
+		this.prospectVoirie1Hini = prospectVoirie1Hini;
+	}
+
+	public void setLargMaxProspect1(double largMaxProspect1) {
+		this.largMaxProspect1 = largMaxProspect1;
+	}
+
+	public void setProspectVoirie2Slope(double prospectVoirie2Slope) {
+		this.prospectVoirie2Slope = prospectVoirie2Slope;
+	}
+
+	public void setProspectVoirie2Hini(double prospectVoirie2Hini) {
+		this.prospectVoirie2Hini = prospectVoirie2Hini;
+	}
+
+	public void setHauteurMaxFacade(double hauteurMaxFacade) {
+		this.hauteurMaxFacade = hauteurMaxFacade;
+	}
+
+	public void setBand2(double band2) {
+		this.band2 = band2;
+	}
+
+	public void setSlopeProspectLat(double slopeProspectLat) {
+		this.slopeProspectLat = slopeProspectLat;
+	}
+
+	public void sethIniProspectLat(double hIniProspectLat) {
+		this.hIniProspectLat = hIniProspectLat;
+	}
+
+	public void setHauteurMax2(double hauteurMax2) {
+		this.hauteurMax2 = hauteurMax2;
+	}
+
+	public void sethIniOppositeProspect(double hIniOppositeProspect) {
+		this.hIniOppositeProspect = hIniOppositeProspect;
+	}
+
+	public void setSlopeOppositeProspect(double slopeOppositeProspect) {
+		this.slopeOppositeProspect = slopeOppositeProspect;
+	}
+
 	public String toString() {
 		return "Nom zone " + this.getNomZone() + " - bandIncons " + this.getBandIncons() + " - EmpriseSol "
 				+ this.getEmpriseSol() + " - EmpSurfaceMin " + this.getEmpriseSurface() + " - EmpLargeurMin "
