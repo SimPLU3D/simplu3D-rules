@@ -5,6 +5,7 @@
 	<persistence-unit name="simplu3d" transaction-type="RESOURCE_LOCAL">
 		<class>fr.ign.cogit.simplu3d.model.UrbaDocument</class>
 		<class>fr.ign.cogit.simplu3d.model.UrbaZone</class>
+		<class>fr.ign.cogit.simplu3d.model.Regulation</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
