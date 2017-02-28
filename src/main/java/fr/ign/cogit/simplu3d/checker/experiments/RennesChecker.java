@@ -8,9 +8,9 @@ import fr.ign.cogit.simplu3d.checker.impl.CESChecker;
 import fr.ign.cogit.simplu3d.checker.impl.DistanceInconsBotChecker;
 import fr.ign.cogit.simplu3d.checker.model.CompositeChecker;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 /**
  * 

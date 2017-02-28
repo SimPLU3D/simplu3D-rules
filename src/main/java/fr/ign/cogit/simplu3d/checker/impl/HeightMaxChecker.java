@@ -7,12 +7,12 @@ import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 public class HeightMaxChecker extends AbstractRuleChecker {
 
@@ -80,7 +80,7 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation rules) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules rules) {
 		if (rules.getGeomBande().isEmpty()) {
 			return null;
 		}

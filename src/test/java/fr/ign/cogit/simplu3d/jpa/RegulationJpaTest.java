@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
@@ -26,7 +26,7 @@ public class RegulationJpaTest extends TestCase {
 	
 	public void testFindAll(){
 		EntityManager entityManager = emf.createEntityManager();
-		List<Regulation> items = entityManager.createQuery("SELECT u FROM Regulation u", Regulation.class).getResultList();
+		List<Rules> items = entityManager.createQuery("SELECT u FROM Regulation u", Rules.class).getResultList();
 		assertEquals(0,items.size());
 		entityManager.close();
 	}

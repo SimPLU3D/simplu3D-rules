@@ -2,6 +2,8 @@ package fr.ign.cogit.simplu3d.checker.model;
 
 import java.util.logging.Logger;
 
+import fr.ign.cogit.simplu3d.model.Rules;
+
 /**
  * 
  * Abstract checker with rules attribute

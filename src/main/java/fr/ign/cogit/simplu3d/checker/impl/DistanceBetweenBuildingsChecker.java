@@ -10,11 +10,11 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
@@ -63,7 +63,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-		Regulation r1 = this.getRules();
+		Rules r1 = this.getRules();
 
 		if (r1 != null && r1.getArt_8() != 99) {
 
@@ -79,7 +79,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
 
 		IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
 

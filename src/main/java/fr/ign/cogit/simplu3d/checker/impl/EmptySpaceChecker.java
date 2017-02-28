@@ -6,11 +6,11 @@ import java.util.List;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 public class EmptySpaceChecker extends AbstractRuleChecker {
 
@@ -64,7 +64,7 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
 
 		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt_12(), bPU.getGeom(),
 				CODE_EMPTY_SPACE);

@@ -6,10 +6,10 @@ import java.util.List;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 public class ParkingChecker extends AbstractRuleChecker {
 
@@ -44,7 +44,7 @@ public class ParkingChecker extends AbstractRuleChecker {
 
 	}
 
-	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Regulation r1) {
+	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
 
 		return new GeometricConstraints("Nombre de places de stationnement par logement : " + r1.getArt_12(),
 				bPU.getGeom(), CODE_PARKING);

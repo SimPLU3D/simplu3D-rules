@@ -13,7 +13,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -21,6 +20,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Road;
+import fr.ign.cogit.simplu3d.model.Rules;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**

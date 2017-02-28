@@ -12,7 +12,6 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
@@ -20,7 +19,8 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 
 public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 
@@ -127,7 +127,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 	}
 
 	private List<GeometricConstraints> generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU,
-			Regulation r) {
+			Rules r) {
 
 		List<IMultiCurve<IOrientableCurve>> imc = getBotLimit(bPU);
 

@@ -14,10 +14,10 @@ import fr.ign.cogit.simplu3d.checker.impl.ProspectToLatLimitChecker;
 import fr.ign.cogit.simplu3d.checker.model.CompositeChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
-import fr.ign.cogit.simplu3d.checker.model.Rules;
 import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Regulation;
+import fr.ign.cogit.simplu3d.model.Rules;
+import fr.ign.cogit.simplu3d.model.Rules;
 import fr.ign.cogit.simplu3d.util.SimpleBandProduction;
 
 public class HackUrbaChecker  {
