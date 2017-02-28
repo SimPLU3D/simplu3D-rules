@@ -10,7 +10,6 @@ import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class EmptySpaceChecker extends AbstractRuleChecker {
 
@@ -24,7 +23,7 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
-		if (this.getRules().getArt_12() == 99 || this.getRules().getArt_12() == 88) {
+		if (this.getRules().getArt12() == 99 || this.getRules().getArt12() == 88) {
 			return lUNR;
 		}
 
@@ -38,9 +37,9 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 
 		double calculateEmptySpace = 1 - totalArea / aireParcelle;
 
-		if (calculateEmptySpace < this.getRules().getArt_12()) {
+		if (calculateEmptySpace < this.getRules().getArt12()) {
 			lUNR.add(new UnrespectedRule("Le taux d'espace vide n'est pas respecté. Mesurée : " + calculateEmptySpace
-					+ "   attendu " + this.getRules().getArt_12(), bPU.getGeom(), CODE_EMPTY_SPACE));
+					+ "   attendu " + this.getRules().getArt12(), bPU.getGeom(), CODE_EMPTY_SPACE));
 		}
 
 		return lUNR;
@@ -50,7 +49,7 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-		if (this.getRules() != null && this.getRules().getArt_12() != 99) {
+		if (this.getRules() != null && this.getRules().getArt12() != 99) {
 
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules());
 			if (gc != null) {
@@ -66,7 +65,7 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r1) {
 
-		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt_12(), bPU.getGeom(),
+		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt12(), bPU.getGeom(),
 				CODE_EMPTY_SPACE);
 	}
 

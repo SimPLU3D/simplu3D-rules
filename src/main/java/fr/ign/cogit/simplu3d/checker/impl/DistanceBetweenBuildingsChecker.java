@@ -14,7 +14,6 @@ import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
@@ -30,7 +29,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 		List<Building> buildingsNew = new ArrayList<>();
 
-		if (this.getRules() != null && this.getRules().getArt_8() != 99) {
+		if (this.getRules() != null && this.getRules().getArt8() != 99) {
 			return lUNR;
 		}
 
@@ -47,7 +46,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 				}
 
 				double distanceMeasured = b.getFootprint().distance(bNew.getFootprint());
-				if (distanceMeasured < this.getRules().getArt_8()) {
+				if (distanceMeasured < this.getRules().getArt8()) {
 					continue;
 				}
 
@@ -65,7 +64,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 		Rules r1 = this.getRules();
 
-		if (r1 != null && r1.getArt_8() != 99) {
+		if (r1 != null && r1.getArt8() != 99) {
 
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, r1);
 			if (gc != null) {
@@ -84,14 +83,14 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 		IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
 
 		for (Building b : bPU.getBuildings()) {
-			ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint().buffer(r1.getArt_8())));
+			ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint().buffer(r1.getArt8())));
 		}
 
 		if (ims.isEmpty()) {
 			return null;
 		}
 
-		GeometricConstraints gC = new GeometricConstraints("Distance entre bâtiments de " + r1.getArt_8() + " m", ims,
+		GeometricConstraints gC = new GeometricConstraints("Distance entre bâtiments de " + r1.getArt8() + " m", ims,
 				CODE_DISTANCE_BULDINGS);
 
 		return gC;

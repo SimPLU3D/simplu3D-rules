@@ -20,7 +20,6 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 
@@ -58,8 +57,8 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 		
 		for (IMultiCurve<IOrientableCurve> iMC : limits) {
 			for (Building b : buildings) {
-				if (r != null && r.getGeomBande() != null && r.getArt_10_top() != 88 && r.getArt_10_top() != 99) {
-					int coeff = r.getArt_74();
+				if (r != null && r.getGeomBande() != null && r.getArt10top() != 88 && r.getArt10top() != 99) {
+					int coeff = r.getArt74();
 
 					if (b.getFootprint().intersects(r.getGeomBande()) && coeff != 0) {
 
@@ -84,7 +83,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 		Rules r = this.getRules();
 		
 
-		if (r != null && r.getArt_74() != 99 && r.getArt_74() != 0) {
+		if (r != null && r.getArt74() != 99 && r.getArt74() != 0) {
 
 			List<GeometricConstraints> gc = generateGEometricConstraintsForOneRegulation(bPU, r);
 			if (gc != null) {
@@ -131,7 +130,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 
 		List<IMultiCurve<IOrientableCurve>> imc = getBotLimit(bPU);
 
-		int coeff = r.getArt_74();
+		int coeff = r.getArt74();
 
 		List<GeometricConstraints> lGeom = new ArrayList<>();
 

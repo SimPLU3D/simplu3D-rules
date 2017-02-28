@@ -22,7 +22,6 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 
 /**
@@ -104,7 +103,7 @@ public class DistanceInconsBotChecker extends AbstractRuleChecker {
 
 		IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-		if (this.getRules() == null && this.getRules().getArt_6() != 99) {
+		if (this.getRules() == null && this.getRules().getArt6() != 99) {
 
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules(), iCurve);
 			if (gc != null) {
@@ -120,7 +119,7 @@ public class DistanceInconsBotChecker extends AbstractRuleChecker {
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, Rules r,
 			IMultiCurve<IOrientableCurve> iCurve) {
-		IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
+		IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt6()));
 		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);
 
 		IGeometry finalGeom = iMS.intersection(r.getGeomBande());
@@ -129,7 +128,7 @@ public class DistanceInconsBotChecker extends AbstractRuleChecker {
 		if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
 			IGeometry returnedGeom = Extrusion2DObject.convertFromGeometry(iMSFinale, 0, 0);
 			GeometricConstraints gC = new GeometricConstraints(
-					"Recul d'une distance de " + r.getArt_6() + " m par rapport à la voirie", returnedGeom, "Art 6");
+					"Recul d'une distance de " + r.getArt6() + " m par rapport à la voirie", returnedGeom, "Art 6");
 			return gC;
 		}
 		return null;

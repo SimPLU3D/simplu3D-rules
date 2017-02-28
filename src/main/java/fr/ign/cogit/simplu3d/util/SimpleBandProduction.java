@@ -83,7 +83,7 @@ public class SimpleBandProduction {
     r1.setGeomBande(iMSBande1);
 
     // Si l'article 6 demande qu'un alignementsoit respecté, on l'active
-    double rArt6 = r1.getArt_6();
+    double rArt6 = r1.getArt6();
     if (rArt6 != 99.0 && rArt6 != 88.0) {
 
       if (rArt6 == 0) {

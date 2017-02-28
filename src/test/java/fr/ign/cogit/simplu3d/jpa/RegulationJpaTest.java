@@ -7,7 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
 public class RegulationJpaTest extends TestCase {

@@ -23,7 +23,7 @@ public class CESChecker extends AbstractRuleChecker {
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
 
-		if (this.getRules().getArt_9() == 99 || this.getRules().getArt_9() == 88) {
+		if (this.getRules().getArt9() == 99 || this.getRules().getArt9() == 88) {
 			return lUNR;
 		}
 
@@ -61,7 +61,7 @@ public class CESChecker extends AbstractRuleChecker {
 		}
 
 		// Si les 2 conditions sont vérifiées c'est
-		double ces = this.getRules().getArt_9();
+		double ces = this.getRules().getArt9();
 		// Si une des deux n'est pas vérifiée, c'est l'autre
 		if (!conditionchecked) {
 			ces = this.getRules().getEmpriseSolAlt();
@@ -77,7 +77,7 @@ public class CESChecker extends AbstractRuleChecker {
 
 		Rules r1 = this.getRules();
 
-		if (r1 != null && r1.getArt_12() != 99) {
+		if (r1 != null && r1.getArt12() != 99) {
 
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, r1);
 			if (gc != null) {

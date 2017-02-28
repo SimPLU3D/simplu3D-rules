@@ -24,7 +24,6 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
@@ -45,7 +44,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
 		IMultiCurve<IOrientableCurve> iCurve = this.getBotLimit(bPU);
 
-		if (this.getRules() != null && this.getRules().getArt_6() != 99) {
+		if (this.getRules() != null && this.getRules().getArt6() != 99) {
 
 			UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, this.getRules(), iCurve);
 			if (gc != null) {
@@ -75,7 +74,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 			List<IOrientableSurface> os = FromGeomToSurface.convertGeom(gc.getGeometry());
 
 			double distance = b.getFootprint().distance(iCurve);
-			if (distance > r.getArt_72()) {
+			if (distance > r.getArt72()) {
 
 				continue;
 
@@ -90,7 +89,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
 				UnrespectedRule uRout = new UnrespectedRule(
 						"Recul par rapport aux limites séparatives latérales non respectées " + distance
-								+ " m au lieu de " + r.getArt_72() + " m",
+								+ " m au lieu de " + r.getArt72() + " m",
 						ims, CODE_DISTANCE_LAT);
 
 				return uRout;
@@ -155,7 +154,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 					CODE_DISTANCE_LAT);
 
 		}
-		IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt_72()));
+		IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt72()));
 		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(geom);
 
 		IGeometry finalGeom = iMS.intersection(r.getGeomBande());
@@ -163,7 +162,7 @@ public class DistanceToLatLimitCheck extends AbstractRuleChecker {
 
 		if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
 			GeometricConstraints gC = new GeometricConstraints(
-					"Recul par rapport aux limites latérales " + r.getArt_72() + " m ", iMS, CODE_DISTANCE_LAT);
+					"Recul par rapport aux limites latérales " + r.getArt72() + " m ", iMS, CODE_DISTANCE_LAT);
 			return gC;
 		}
 		return null;

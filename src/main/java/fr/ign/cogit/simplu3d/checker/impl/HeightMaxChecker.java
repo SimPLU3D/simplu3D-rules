@@ -12,7 +12,6 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class HeightMaxChecker extends AbstractRuleChecker {
 
@@ -43,9 +42,9 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 			double height = b.height(1, 1);
 
 			if (this.getRules() != null && this.getRules().getGeomBande() != null
-					&& this.getRules().getArt_10_top() != 88 && this.getRules().getArt_10_top() != 99) {
+					&& this.getRules().getArt10top() != 88 && this.getRules().getArt10top() != 99) {
 				if (b.getFootprint().intersects(this.getRules().getGeomBande())) {
-					double hauteurMax = this.getRules().getArt_102();
+					double hauteurMax = this.getRules().getArt102();
 
 					if (height > hauteurMax) {
 
@@ -66,7 +65,7 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
 
-		if (this.getRules() != null && this.getRules().getArt_10_top() != 88 && this.getRules().getArt_10_top() != 99) {
+		if (this.getRules() != null && this.getRules().getArt10top() != 88 && this.getRules().getArt10top() != 99) {
 
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules());
 			if (gc != null) {
@@ -84,7 +83,7 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 		if (rules.getGeomBande().isEmpty()) {
 			return null;
 		}
-		double hauteurMax = rules.getArt_102();
+		double hauteurMax = rules.getArt102();
 
 		return new GeometricConstraints("La hauteur maximale est : " + hauteurMax,
 				Extrusion2DObject.convertFromGeometry(rules.getGeomBande(), hauteurMax, hauteurMax), CODE_HEIGHT_MAX);

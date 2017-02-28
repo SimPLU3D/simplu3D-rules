@@ -40,9 +40,9 @@ public class Rules {
 
 	private String insee;
 
-	private String libelle_zone;
+	private String libelleZone;
 
-	private String nom_zone;
+	private String nomZone;
 	private Double bandIncons; // Largeur de la bande non constructible (6 m)
 	private Double empriseSol; // CES de base (0.5)
 	private Double empriseSurface; // condition de surface du terrain pour le
@@ -93,11 +93,11 @@ public class Rules {
 	private Double slopeOppositeProspect; //
 
 	// Les intitulés des colonnes
-	private int code_imu, date_approbation, fonctions, top_zac, zonage_coherent, correction_zonage, typ_bande, bande,
-			art_71, art_74, art_10_top;
-	private String libelle_de_base, libelle_de_dul;
+	private int codeImu, dateApprobation, fonctions, topZac, zonageCoherent, correctionZonage, typBande, bande,
+			art71, art74, art10top;
+	private String libelleDeBase, libelleDeDul;
 
-	private Double art_5, art_72, art_73, art_8, art_6, art_9, art_102, art_12, art_14, art_13, art_101;
+	private Double art5, art72, art73, art8, art6, art9, art102, art12, art14, art13, art101;
 
 	public Rules() {
 	}
@@ -108,32 +108,32 @@ public class Rules {
 			Double art_8, Double art_9, int art_10_top, Double art_101, Double art_102, Double art_12, Double art_13,
 			Double art_14) {
 		super();
-		this.code_imu = code_imu;
-		this.libelle_zone = libelle_zone;
+		this.codeImu = code_imu;
+		this.libelleZone = libelle_zone;
 		this.insee = insee;
-		this.date_approbation = date_approbation;
-		this.libelle_de_base = libelle_de_base;
-		this.libelle_de_dul = libelle_de_dul;
+		this.dateApprobation = date_approbation;
+		this.libelleDeBase = libelle_de_base;
+		this.libelleDeDul = libelle_de_dul;
 		this.fonctions = fonctions;
-		this.top_zac = top_zac;
-		this.zonage_coherent = zonage_coherent;
-		this.correction_zonage = correction_zonage;
-		this.typ_bande = typ_bande;
+		this.topZac = top_zac;
+		this.zonageCoherent = zonage_coherent;
+		this.correctionZonage = correction_zonage;
+		this.typBande = typ_bande;
 		this.bande = bande;
-		this.art_5 = art_5;
-		this.art_6 = art_6;
-		this.art_71 = art_71;
-		this.art_72 = art_72;
-		this.art_73 = art_73;
-		this.art_74 = art_74;
-		this.art_8 = art_8;
-		this.art_9 = art_9;
-		this.art_10_top = art_10_top;
-		this.art_101 = art_101;
-		this.art_102 = art_102;
-		this.art_12 = art_12;
-		this.art_13 = art_13;
-		this.art_14 = art_14;
+		this.art5 = art_5;
+		this.art6 = art_6;
+		this.art71 = art_71;
+		this.art72 = art_72;
+		this.art73 = art_73;
+		this.art74 = art_74;
+		this.art8 = art_8;
+		this.art9 = art_9;
+		this.art10top = art_10_top;
+		this.art101 = art_101;
+		this.art102 = art_102;
+		this.art12 = art_12;
+		this.art13 = art_13;
+		this.art14 = art_14;
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Rules {
 			Double prospectVoirie2Slope, Double prospectVoirie2Hini, Double hauteurMaxFacade, Double band2,
 			Double slopeProspectLat, Double hIniProspectLat, Double hauteurMax2) {
 		super();
-		this.nom_zone = nom_zone;
+		this.nomZone = nom_zone;
 		this.bandIncons = bandIncons;
 		this.empriseSol = empriseSol;
 		this.empriseSurface = empriseSurface;
@@ -175,7 +175,7 @@ public class Rules {
 		this.empriseSolAlt = empriseSolAlt;
 		this.band1 = band1;
 		this.alignement = alignement;
-		this.art_9 = empriseSol;
+		this.art9 = empriseSol;
 		this.reculLatMin = reculLatMin;
 		this.reculLatMax = reculLatMax;
 		this.prospectVoirie1Slope = prospectVoirie1Slope;
@@ -199,11 +199,11 @@ public class Rules {
 	}
 
 	public int getCode_imu() {
-		return code_imu;
+		return codeImu;
 	}
 
 	public String getLibelle_zone() {
-		return libelle_zone;
+		return libelleZone;
 	}
 
 	public String getInsee() {
@@ -215,18 +215,18 @@ public class Rules {
 	}
 
 	// DATE_DUL Date d'approbation du PLU
-	public int getDate_approbation() {
-		return date_approbation;
+	public int getDateApprobation() {
+		return dateApprobation;
 	}
 
 	// LIBELLE_DE_BASE Type de zone
-	public String getLibelle_de_base() {
-		return libelle_de_base;
+	public String getLibelleDeBase() {
+		return libelleDeBase;
 	}
 
 	// LIBELLE_DE_DUL Type de zone
-	public String getLibelle_de_dul() {
-		return libelle_de_dul;
+	public String getLibelledeDul() {
+		return libelleDeDul;
 	}
 
 	// FONCTIONS Fonction de la zone 0 : logements uniquement ; 1 : activité
@@ -236,27 +236,27 @@ public class Rules {
 	}
 
 	// TOP_ZAC Présence d'une ZAC 0 : NON // 1 : OUI
-	public int getTop_zac() {
-		return top_zac;
+	public int getTopZac() {
+		return topZac;
 	}
 
 	// ZONAGE_COHERENT Zonage cohérent entre la base et le plan de zonage du DUL
 	// 0 : NON // 1 : OUI
-	public int getZonage_coherent() {
-		return zonage_coherent;
+	public int getZonageCoherent() {
+		return zonageCoherent;
 	}
 
 	// CORRECTION_ZONAGE Indicateur du zonage à faire prévaloir en cas
 	// d'incohérence des zonages 0 : Conserver le dessin de zonage de Carto PLU
 	// 1 : Numeriser le zonage du PLU analysé
-	public int getCorrection_zonage() {
-		return correction_zonage;
+	public int getCorrectionZonage() {
+		return correctionZonage;
 	}
 
 	// TYP_BANDE Information concernant l'existence d'une bande principale ou
 	// secondaire 0 : pas de bande // 1 : principale // 2 : secondaire
-	public int getTyp_bande() {
-		return typ_bande;
+	public int getTypBande() {
+		return typBande;
 	}
 
 	// BANDE Profondeur de la bande principale x > 0 profondeur de la bande par
@@ -267,32 +267,32 @@ public class Rules {
 
 	// ART_5 Superficie minimale 88= non renseignable, 99= non réglementé
 
-	public Double getArt_5() {
-		return art_5;
+	public Double getArt5() {
+		return art5;
 	}
 
 	// ART_6 Distance minimale des constructions par rapport à la voirie imposée
 	// en mètre 88= non renseignable, 99= non réglementé
-	public Double getArt_6() {
-		return art_6;
+	public Double getArt6() {
+		return art6;
 	}
 
 	// ART_71 Implantation en limite séparative 0 : non, retrait imposé (cf.72)
 	// // 1 : Oui // 2 : Oui, mais sur un côté seulement
 	public int getArt_71() {
-		return art_71;
+		return art71;
 	}
 
 	// ART_72 Distance minimale des constructions par rapport aux limites
 	// séparatives imposée en mètre 88= non renseignable, 99= non réglementé
-	public Double getArt_72() {
-		return art_72;
+	public Double getArt72() {
+		return art72;
 	}
 
 	// ART_73 Distance minimale des constructions par rapport à la limte
 	// séparative de fond de parcelle 88= non renseignable, 99= non réglementé
-	public Double getArt_73() {
-		return art_73;
+	public Double getArt73() {
+		return art73;
 	}
 
 	// ART_74 Distance minimum des constructions par rapport aux limites
@@ -305,72 +305,68 @@ public class Rules {
 	// par deux // 8 : retrait égal à la hauteur divisé par deux moins un mètre
 	// // 9 : retrait égal aux deux tiers de la hauteur // 10 : retrait égal aux
 	// trois quarts de la hauteur
-	public int getArt_74() {
-		return art_74;
+	public int getArt74() {
+		return art74;
 	}
 
 	// ART_8 Distance minimale des constructions par rapport aux autres sur une
 	// même propriété imposée en mètre 88= non renseignable, 99= non réglementé
-	public Double getArt_8() {
-		return art_8;
+	public Double getArt8() {
+		return art8;
 	}
 
 	// ART_9 Pourcentage d'emprise au sol maximum autorisé Valeur comprise de 0
 	// à 1, 88= non renseignable, 99= non réglementé
-	public Double getArt_9() {
-		return art_9;
+	public Double getArt9() {
+		return art9;
 	}
 
 	// ART_10_TOP Indicateur de l'unité de mesure de la hauteur du batiment
 	// 1_niveaux ; 2_metres du sol au point le plus haut du batiment ; 3_hauteur
 	// plafond ; 4_ point le plus haut ; 5_Hauteur de façade à l'égout, 88= non
 	// renseignable ; 99= non règlementé
-	public int getArt_10_top() {
-		return art_10_top;
+	public int getArt10top() {
+		return art10top;
 	}
 
 	// ART_101 Hauteur maximum autorisée 88= non renseignable, 99= non
 	// réglementé
-	public Double getArt_101() {
-		return art_101;
+	public Double getArt101() {
+		return art101;
 	}
 
 	// ART_102 Hauteur maximum autorisée En mètres
-	public Double getArt_102() {
-		return art_102;
+	public Double getArt102() {
+		return art102;
 	}
 
 	// ART_12 Nombre de places par logement 88= non renseignable, 99= non
 	// réglementé
-	public Double getArt_12() {
-		return art_12;
+	public Double getArt12() {
+		return art12;
 	}
 
 	// ART_13 Part minimale d'espaces libre de toute construction exprimée par
 	// rapport à la surface totale de la parcelle Valeur comprise de 0 à 1, 88
 	// si non renseignable, 99 si non règlementé
-	public Double getArt_13() {
-		return art_13;
+	public Double getArt13() {
+		return art13;
 	}
 
 	// ART_14 Coefficient d'occupation du sol 88= non renseignable, 99= non
 	// réglementé
-	public Double getArt_14() {
-		return art_14;
+	public Double getArt14() {
+		return art14;
 	}
 
 	@Transient
 	IMultiSurface<IOrientableSurface> geomBande = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+	
 	@Override
 	public String toString() {
-		return "Regulation [id=" + id + ", numBand=" + numBand + ", insee=" + insee + ", libelle_zone=" + libelle_zone
-				+ ", nom_zone=" + nom_zone + ", bandIncons=" + bandIncons + ", empriseSol=" + empriseSol
+		return "Rules [id=" + id + ", numBand=" + numBand + ", insee=" + insee + ", libelleZone=" + libelleZone
+				+ ", nomZone=" + nomZone + ", bandIncons=" + bandIncons + ", empriseSol=" + empriseSol
 				+ ", empriseSurface=" + empriseSurface + ", empLargeurMin=" + empLargeurMin + ", empriseSolAlt="
 				+ empriseSolAlt + ", band1=" + band1 + ", alignement=" + alignement + ", reculLatMin=" + reculLatMin
 				+ ", reculLatMax=" + reculLatMax + ", prospectVoirie1Slope=" + prospectVoirie1Slope
@@ -379,15 +375,14 @@ public class Rules {
 				+ ", hauteurMaxFacade=" + hauteurMaxFacade + ", band2=" + band2 + ", slopeProspectLat="
 				+ slopeProspectLat + ", hIniProspectLat=" + hIniProspectLat + ", hauteurMax2=" + hauteurMax2
 				+ ", hIniOppositeProspect=" + hIniOppositeProspect + ", slopeOppositeProspect=" + slopeOppositeProspect
-				+ ", code_imu=" + code_imu + ", date_approbation=" + date_approbation + ", fonctions=" + fonctions
-				+ ", top_zac=" + top_zac + ", zonage_coherent=" + zonage_coherent + ", correction_zonage="
-				+ correction_zonage + ", typ_bande=" + typ_bande + ", bande=" + bande + ", art_71=" + art_71
-				+ ", art_74=" + art_74 + ", art_10_top=" + art_10_top + ", libelle_de_base=" + libelle_de_base
-				+ ", libelle_de_dul=" + libelle_de_dul + ", art_5=" + art_5 + ", art_72=" + art_72 + ", art_73="
-				+ art_73 + ", art_8=" + art_8 + ", art_6=" + art_6 + ", art_9=" + art_9 + ", art_102=" + art_102
-				+ ", art_12=" + art_12 + ", art_14=" + art_14 + ", art_13=" + art_13 + ", art_101=" + art_101
-				+ ", geomBande=" + geomBande + ", epsilonBuffer=" + epsilonBuffer + ", jtsGeometry=" + jtsGeometry
-				+ "]";
+				+ ", codeImu=" + codeImu + ", dateApprobation=" + dateApprobation + ", fonctions=" + fonctions
+				+ ", topZac=" + topZac + ", zonageCoherent=" + zonageCoherent + ", correctionZonage=" + correctionZonage
+				+ ", typBande=" + typBande + ", bande=" + bande + ", art71=" + art71 + ", art74=" + art74
+				+ ", art10top=" + art10top + ", libelleDeBase=" + libelleDeBase + ", libelleDeDul=" + libelleDeDul
+				+ ", art5=" + art5 + ", art72=" + art72 + ", art73=" + art73 + ", art8=" + art8 + ", art6=" + art6
+				+ ", art9=" + art9 + ", art102=" + art102 + ", art12=" + art12 + ", art14=" + art14 + ", art13=" + art13
+				+ ", art101=" + art101 + ", geomBande=" + geomBande + ", epsilonBuffer=" + epsilonBuffer
+				+ ", jtsGeometry=" + jtsGeometry + "]";
 	}
 
 	/**
@@ -440,106 +435,7 @@ public class Rules {
 		return jtsGeometry;
 	}
 
-	public void setLibelle_zone(String libelle_zone) {
-		this.libelle_zone = libelle_zone;
-	}
-
-	public void setCode_imu(int code_imu) {
-		this.code_imu = code_imu;
-	}
-
-	public void setDate_approbation(int date_approbation) {
-		this.date_approbation = date_approbation;
-	}
-
-	public void setFonctions(int fonctions) {
-		this.fonctions = fonctions;
-	}
-
-	public void setTop_zac(int top_zac) {
-		this.top_zac = top_zac;
-	}
-
-	public void setZonage_coherent(int zonage_coherent) {
-		this.zonage_coherent = zonage_coherent;
-	}
-
-	public void setCorrection_zonage(int correction_zonage) {
-		this.correction_zonage = correction_zonage;
-	}
-
-	public void setTyp_bande(int typ_bande) {
-		this.typ_bande = typ_bande;
-	}
-
-	public void setBande(int bande) {
-		this.bande = bande;
-	}
-
-	public void setArt_71(int art_71) {
-		this.art_71 = art_71;
-	}
-
-	public void setArt_74(int art_74) {
-		this.art_74 = art_74;
-	}
-
-	public void setArt_10_top(int art_10_top) {
-		this.art_10_top = art_10_top;
-	}
-
-	public void setLibelle_de_base(String libelle_de_base) {
-		this.libelle_de_base = libelle_de_base;
-	}
-
-	public void setLibelle_de_dul(String libelle_de_dul) {
-		this.libelle_de_dul = libelle_de_dul;
-	}
-
-	public void setArt_5(Double art_5) {
-		this.art_5 = art_5;
-	}
-
-	public void setArt_72(Double art_72) {
-		this.art_72 = art_72;
-	}
-
-	public void setArt_73(Double art_73) {
-		this.art_73 = art_73;
-	}
-
-	public void setArt_8(Double art_8) {
-		this.art_8 = art_8;
-	}
-
-	public void setArt_6(Double art_6) {
-		this.art_6 = art_6;
-	}
-
-	public void setArt_9(Double art_9) {
-		this.art_9 = art_9;
-	}
-
-	public void setArt_102(Double art_102) {
-		this.art_102 = art_102;
-	}
-
-	public void setArt_12(Double art_12) {
-		this.art_12 = art_12;
-	}
-
-	public void setArt_14(Double art_14) {
-		this.art_14 = art_14;
-	}
-
-	public void setArt_13(Double art_13) {
-		this.art_13 = art_13;
-	}
-
-	public void setArt_101(Double art_101) {
-		this.art_101 = art_101;
-	}
-
+	
 	public void setEpsilonBuffer(Geometry epsilonBuffer) {
 		this.epsilonBuffer = epsilonBuffer;
 	}
@@ -553,7 +449,7 @@ public class Rules {
 	}
 
 	public String getNomZone() {
-		return nom_zone;
+		return nomZone;
 	}
 
 	public Double getBandIncons() {
@@ -633,7 +529,7 @@ public class Rules {
 	}
 
 	public String getNom_zone() {
-		return nom_zone;
+		return nomZone;
 	}
 
 	public Double gethIniOppositeProspect() {
@@ -645,7 +541,7 @@ public class Rules {
 	}
 
 	public void setNom_zone(String nom_zone) {
-		this.nom_zone = nom_zone;
+		this.nomZone = nom_zone;
 	}
 
 	public void setBandIncons(Double bandIncons) {
@@ -731,5 +627,111 @@ public class Rules {
 	public void setSlopeOppositeProspect(Double slopeOppositeProspect) {
 		this.slopeOppositeProspect = slopeOppositeProspect;
 	}
+
+	public void setLibelleZone(String libelleZone) {
+		this.libelleZone = libelleZone;
+	}
+
+	public void setNomZone(String nomZone) {
+		this.nomZone = nomZone;
+	}
+
+	public void setCodeImu(int codeImu) {
+		this.codeImu = codeImu;
+	}
+
+	public void setDateApprobation(int dateApprobation) {
+		this.dateApprobation = dateApprobation;
+	}
+
+	public void setFonctions(int fonctions) {
+		this.fonctions = fonctions;
+	}
+
+	public void setTopZac(int topZac) {
+		this.topZac = topZac;
+	}
+
+	public void setZonageCoherent(int zonageCoherent) {
+		this.zonageCoherent = zonageCoherent;
+	}
+
+	public void setCorrectionZonage(int correctionZonage) {
+		this.correctionZonage = correctionZonage;
+	}
+
+	public void setTypBande(int typBande) {
+		this.typBande = typBande;
+	}
+
+	public void setBande(int bande) {
+		this.bande = bande;
+	}
+
+	public void setArt71(int art71) {
+		this.art71 = art71;
+	}
+
+	public void setArt74(int art74) {
+		this.art74 = art74;
+	}
+
+	public void setArt10top(int art10top) {
+		this.art10top = art10top;
+	}
+
+	public void setLibelleDeBase(String libelleDeBase) {
+		this.libelleDeBase = libelleDeBase;
+	}
+
+	public void setLibelleDeDul(String libelleDeDul) {
+		this.libelleDeDul = libelleDeDul;
+	}
+
+	public void setArt5(Double art5) {
+		this.art5 = art5;
+	}
+
+	public void setArt72(Double art72) {
+		this.art72 = art72;
+	}
+
+	public void setArt73(Double art73) {
+		this.art73 = art73;
+	}
+
+	public void setArt8(Double art8) {
+		this.art8 = art8;
+	}
+
+	public void setArt6(Double art6) {
+		this.art6 = art6;
+	}
+
+	public void setArt9(Double art9) {
+		this.art9 = art9;
+	}
+
+	public void setArt102(Double art102) {
+		this.art102 = art102;
+	}
+
+	public void setArt12(Double art12) {
+		this.art12 = art12;
+	}
+
+	public void setArt14(Double art14) {
+		this.art14 = art14;
+	}
+
+	public void setArt13(Double art13) {
+		this.art13 = art13;
+	}
+
+	public void setArt101(Double art101) {
+		this.art101 = art101;
+	}
+	
+	
 
 }

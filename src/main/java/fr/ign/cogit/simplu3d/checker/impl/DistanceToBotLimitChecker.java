@@ -24,7 +24,6 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
@@ -51,7 +50,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
 
 
-    if (this.getRules() != null && this.getRules().getArt_73() != 99) {
+    if (this.getRules() != null && this.getRules().getArt73() != 99) {
 
       UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, this.getRules(), iCurve);
       if (gc != null) {
@@ -85,7 +84,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
           .convertGeom(gc.getGeometry());
       
       double distance = b.getFootprint().distance(iCurve);
-      if (distance > r.getArt_73()) {
+      if (distance > r.getArt73()) {
 
         continue;
 
@@ -103,7 +102,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
         UnrespectedRule uRout = new UnrespectedRule(
             "Recul par rapport aux limites séparatives de fond non respectées " + distance
-                + " m au lieu de " + r.getArt_73() + " m",
+                + " m au lieu de " + r.getArt73() + " m",
             ims, CODE_DISTANCE_BOT);
         
         return uRout;
@@ -145,7 +144,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
     Rules r1 = this.getRules();
 
-    if (r1 != null && r1.getArt_73() != 99) {
+    if (r1 != null && r1.getArt73() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, r1, iCurve);
@@ -172,7 +171,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
     }
     
 
-    IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt_73()));
+    IGeometry geom = r.getGeomBande().intersection(iCurve.buffer(r.getArt73()));
     IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface
         .convertMSGeom(geom);
 
@@ -182,7 +181,7 @@ public class DistanceToBotLimitChecker extends AbstractRuleChecker {
 
     if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
       GeometricConstraints gC = new GeometricConstraints(
-          "Recul par rapport aux limites de fond de parcelle " + r.getArt_73()
+          "Recul par rapport aux limites de fond de parcelle " + r.getArt73()
               + " m ",
           iMS, CODE_DISTANCE_BOT);
       return gC;

@@ -24,7 +24,6 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.Rules;
-import fr.ign.cogit.simplu3d.model.Rules;
 
 public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
@@ -47,7 +46,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
   
 
-    if (this.getRules() != null && this.getRules().getArt_6() != 99) {
+    if (this.getRules() != null && this.getRules().getArt6() != 99) {
 
       UnrespectedRule gc = generateUnrespectedRulesOneReg(bPU, this.getRules(), iCurve);
       if (gc != null) {
@@ -79,7 +78,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
           .convertGeom(gc.getGeometry());
       
       double distance = b.getFootprint().distance(iCurve);
-      if (distance > r.getArt_6()) {
+      if (distance > r.getArt6()) {
 
         continue;
 
@@ -97,7 +96,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
         UnrespectedRule uRout = new UnrespectedRule(
             "Recul par rapport à la voirie non respectée " + distance
-                + " m au lieu de " + r.getArt_6() + " m",
+                + " m au lieu de " + r.getArt6() + " m",
             ims, CODE_DISTANCE_VOIRIE);
         
         return uRout;
@@ -137,7 +136,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
 
 
-    if (this.getRules()!= null && this.getRules().getArt_6() != 99) {
+    if (this.getRules()!= null && this.getRules().getArt6() != 99) {
 
       GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(
           bPU, this.getRules(), iCurve);
@@ -157,7 +156,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
   private GeometricConstraints generateGEometricConstraintsForOneRegulation(
       BasicPropertyUnit bPU, Rules r,
       IMultiCurve<IOrientableCurve> iCurve) {
-    IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt_6()));
+    IGeometry geom = bPU.getGeom().intersection(iCurve.buffer(r.getArt6()));
     IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface
         .convertMSGeom(geom);
 
@@ -167,7 +166,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
     if (iMSFinale != null && !iMSFinale.isEmpty() && iMSFinale.area() > 0.5) {
       GeometricConstraints gC = new GeometricConstraints(
-          "Recul d'une distance de " + r.getArt_6()
+          "Recul d'une distance de " + r.getArt6()
               + " m par rapport à la voirie",
           iMS, CODE_DISTANCE_VOIRIE);
       return gC;
