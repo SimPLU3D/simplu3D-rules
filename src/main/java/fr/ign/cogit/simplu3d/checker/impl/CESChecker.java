@@ -50,6 +50,7 @@ public class CESChecker extends AbstractRuleChecker {
 	}
 
 	private double determineCES(BasicPropertyUnit bPU) {
+		
 
 		boolean conditionchecked = true;
 
