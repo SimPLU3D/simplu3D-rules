@@ -76,7 +76,7 @@ public class BasicPropertyUnitGenerator {
 			bpU.setId(cadastralParcel.getId());
 			
 			// TODO check if it's possible to use a single setter
-			bpU.setpol2D((IPolygon) FromGeomToSurface.convertGeom(cadastralParcel.getGeom()).get(0));
+			bpU.setPol2D((IPolygon) FromGeomToSurface.convertGeom(cadastralParcel.getGeom()).get(0));
 
 			IMultiSurface<IOrientableSurface> geom = new GM_MultiSurface<>();
 			geom.addAll(FromGeomToSurface.convertGeom(cadastralParcel.getGeom()));

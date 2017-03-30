@@ -123,18 +123,18 @@ public class BasicPropertyUnit extends DefaultFeature {
 	}
 
 
-	public IPolygon getpol2D() {
+	public IPolygon getPol2D() {
 		return pol2D;
 	}
 
-	public void setpol2D(IPolygon pol) {
+	public void setPol2D(IPolygon pol) {
 		pol2D = pol;
 	}
 
 
 	public double getArea() {
 		if (area == -1) {
-			area = this.getpol2D().area();
+			area = this.getPol2D().area();
 		}
 		return area;
 	}
