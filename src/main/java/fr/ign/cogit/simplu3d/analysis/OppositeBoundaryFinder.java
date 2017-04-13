@@ -76,7 +76,7 @@ public class OppositeBoundaryFinder {
 		IDirectPositionList dplBound = geom.coord();
 
 		if (dplBound.size() != 2) {
-			logger.warning(OppositeBoundaryFinder.class + " POSITION SIZE FOR A BOUNDARY IS DIFFERENT THAN 2");
+			logger.warning(OppositeBoundaryFinder.class + " POSITION SIZE FOR A BOUNDARY IS DIFFERENT THAN 2 " + parcel.getCode());
 		}
 
 		IDirectPosition dp1 = dplBound.get(0);
@@ -99,11 +99,11 @@ public class OppositeBoundaryFinder {
 		boolean isInPolygonDepNeg = parcel.getGeom().contains(new GM_Point(dpDepNeg));
 
 		if (isInPolygonDep && isInPolygonDepNeg) {
-			logger.warning(OppositeBoundaryFinder.class + " TRANSLATION IS IN PARCEL IN BOTH DIRECTION");
+			logger.warning(OppositeBoundaryFinder.class + " TRANSLATION IS IN PARCEL IN BOTH DIRECTION " + parcel.getCode());
 		}
 
 		if ((!isInPolygonDep) && (!isInPolygonDepNeg)) {
-			logger.warning(OppositeBoundaryFinder.class + " TRANSLATION IS IN PARCEL IN NO DIRECTION");
+			logger.warning(OppositeBoundaryFinder.class + " TRANSLATION IS IN PARCEL IN NO DIRECTION "+ parcel.getCode());
 		}
 
 		Vecteur rightVector = null;
