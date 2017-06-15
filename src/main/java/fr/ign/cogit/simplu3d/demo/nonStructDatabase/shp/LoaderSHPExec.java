@@ -16,6 +16,7 @@ import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
+import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.shp.LoaderSHP;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
@@ -66,9 +67,13 @@ public class LoaderSHPExec {
 
 		AssignBuildingPartToSubParcel.RATIO_MIN = 0.5;
 		AssignBuildingPartToSubParcel.ASSIGN_METHOD = 1;
+
+		CadastralParcelLoader.TYPE_ANNOTATION = 1;
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
+
 		String folder = "/home/mcolomb/informatique/workspace/simplu3d/simplu3D/src/main/resources/fr/ign/cogit/simplu3d/data/";
+
 		String folderOut = folder + "out/";
 
 		File fOut = new File(folderOut);

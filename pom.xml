@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ign.cogit</groupId>
 	<artifactId>simplu3d-rules</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>simplu3d-rules</name>
 
@@ -17,8 +17,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<geoxygene.version>1.9-SNAPSHOT</geoxygene.version>
-		<jackson.version>2.7.2</jackson.version>
-		<jackson.datatype.jts.version>2.2</jackson.datatype.jts.version>
+		<jackson.version>RELEASE</jackson.version>
+		<jackson.datatype.jts.version>2.4</jackson.datatype.jts.version>
 		<junit.version>4.12</junit.version>
 	</properties>
 
@@ -305,7 +305,7 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>cogit-snapshots</id>
+			<id>ign-snapshots</id>
 			<name>Cogit Snapshots Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
 			<snapshots>
@@ -316,7 +316,7 @@
 			</releases>
 		</repository>
 		<repository>
-			<id>cogit-releases</id>
+			<id>ign-releases</id>
 			<name>Cogit Releases Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases/</url>
 			<snapshots>
@@ -426,12 +426,12 @@
 	</dependencies>
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
+			<id>ign-releases</id>
 			<name>Nexus Releases Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots</id>
+			<id>ign-snapshots</id>
 			<name>Nexus Snapshots Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>

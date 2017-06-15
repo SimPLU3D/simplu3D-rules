@@ -1,4 +1,4 @@
-package fr.ign.cogit.simplu3d.checker;
+package fr.ign.cogit.simplu3d.checker.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -7,27 +7,29 @@ import fr.ign.cogit.simplu3d.serializer.IGeometrySerializer;
 
 /**
  * 
- * Represents a non respected rule
+ * GeometricConstraints represent geometric zones where buildings cannot be
+ * built according to Regulation
  * 
  * @author MBrabesin
  *
  */
-public class UnrespectedRule {
+public class GeometricConstraints {
+
 	String message;
 	@JsonSerialize(using = IGeometrySerializer.class)
 	IGeometry geometry;
 	String code;
 
-	public UnrespectedRule() {
-	
+	public GeometricConstraints() {
+
 	}
-	
-	public UnrespectedRule(String message, IGeometry geom, String code) {
+
+	public GeometricConstraints(String message, IGeometry geom, String code) {
 		this.message = message;
 		this.geometry = geom;
 		this.code = code;
 	}
-	
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -35,12 +37,12 @@ public class UnrespectedRule {
 	public String getMessage() {
 		return message;
 	}
-	
-	public void setCode(String code){
-		this.code = code ;
+
+	public void setCode(String code) {
+		this.code = code;
 	}
-	
-	public String getCode(){
+
+	public String getCode() {
 		return code;
 	}
 
@@ -48,8 +50,8 @@ public class UnrespectedRule {
 		return geometry;
 	}
 
-	public void setGeometry(IGeometry geometry){
+	public void setGeometry(IGeometry geometry) {
 		this.geometry = geometry;
 	}
-	
+
 }

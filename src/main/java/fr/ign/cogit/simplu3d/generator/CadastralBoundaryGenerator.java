@@ -62,6 +62,8 @@ public class CadastralBoundaryGenerator {
 
 	public Collection<ParcelBoundary> createParcelBoundaries(CadastralParcel cadastralParcel){
 		buildCarteTopoAndAnalyzeFaces();
+		
+		List<ParcelBoundary> result = new ArrayList<>();
 			
 		/*
 		 * retrieve face for cadastralParcel
@@ -74,7 +76,9 @@ public class CadastralBoundaryGenerator {
 		IDirectPosition centroid = PointInPolygon.get((IPolygon) cadastralParcel.getGeom());
 		Collection<Face> candidateFaces = allFaces.select(centroid, 0);
 		if ( candidateFaces.isEmpty() ){
-			throw new RuntimeException("Face not found for parcel "+cadastralParcel.getCode());
+			logger.error("Face not found for parcel "+cadastralParcel.getCode());
+			logger.error("No boundaries set for the parcel "+cadastralParcel.getCode());
+			return result;
 		}
 		//TODO blindage (contrôle topologique en amont, cas des polygones mal modélisé (trou ~ contour))
 		if ( candidateFaces.size() != 1 ){
@@ -83,7 +87,7 @@ public class CadastralBoundaryGenerator {
 
 		Face face = candidateFaces.iterator().next();
 
-		List<ParcelBoundary> result = new ArrayList<>();
+	
 		for (Arc arc : face.arcs()) {
 			ParcelBoundary boundary = new ParcelBoundary();
 			boundary.setCadastralParcel(cadastralParcel);

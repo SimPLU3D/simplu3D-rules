@@ -47,10 +47,8 @@ public class CadastralParcelLoader {
 		 */
 		IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 		CadastralParcelReader adapter = new CadastralParcelReader();
-		for (IFeature feature : parcelCollection) {
-			CadastralParcel cadastralParcel = adapter.read(feature);
-			cadastralParcels.add(cadastralParcel);
-		}
+		
+		cadastralParcels.addAll(adapter.readAll(parcelCollection));
 		
 		CadastralBoundaryGenerator boundaryGenerator = new CadastralBoundaryGenerator(cadastralParcels);
 		if ( TYPE_ANNOTATION == 1 ){

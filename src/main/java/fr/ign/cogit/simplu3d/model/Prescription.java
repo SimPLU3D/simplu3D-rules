@@ -31,9 +31,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  *
  */
 public class Prescription extends DefaultFeature {
-	
 
-	
 	/**
 	 * Type of the prescription according to CNIG standard (TYPEPSC2)
 	 */
@@ -61,6 +59,16 @@ public class Prescription extends DefaultFeature {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	double value;
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
 	}
 
 }

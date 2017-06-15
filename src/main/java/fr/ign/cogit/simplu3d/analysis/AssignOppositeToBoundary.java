@@ -8,7 +8,7 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 public class AssignOppositeToBoundary {
 
 	public static void process(IFeatureCollection<CadastralParcel> cadastralParcels) {
-		OppositeBoundaryFinder finder = new OppositeBoundaryFinder(cadastralParcels);
+		OppositeBoundaryFinder  finder = new OppositeBoundaryFinder(cadastralParcels);
 		
 		for (CadastralParcel parcel : cadastralParcels) {
 			for (ParcelBoundary bound : parcel.getBoundariesByType(ParcelBoundaryType.ROAD)) {

@@ -12,6 +12,7 @@ import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
 import fr.ign.cogit.geoxygene.sig3d.equation.LineEquation;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 
 public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
@@ -42,6 +43,8 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 				a.setOrientation(ParcelBoundaryType.UNKNOWN.getValueType());
 
 			}
+			
+			a.setPoids(ParcelBoundarySide.UNKNOWN.getValueType());
 
 		}
 
@@ -244,6 +247,30 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 			}
 
 		}
+		
+		
+		
+		
+		List<Arc> aCloned = new ArrayList<>();
+		
+		for(Arc a : arcsParcelles){
+			aCloned.add(this.cloneArc(a));
+		}
+		
+		f.getArcsDirects().clear();
+		f.getArcsIndirects().clear();
+		f.getArcsIndirects().addAll(aCloned);
+		
+	}
+	
+	private Arc cloneArc(Arc a){
+		Arc aclone = new Arc();
+		aclone.setGeom(a.getGeom());
+		aclone.setGeometrie(a.getGeometrie());
+		aclone.setPoids(a.getPoids());
+		aclone.setOrientation(a.getOrientation());
+
+		return aclone;
 	}
 
 }

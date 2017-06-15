@@ -13,7 +13,7 @@ This research library is developed as part of [COGIT laboratory](http://recherch
 
 It provides 3D geographic models in order to automatically check morphological rules from local urban regulation (i.e. maximal height, distances between objects) expressed in proposed formalizations. These functionalities allow many possible applications such as generation of building layout to test several regulation scenarios, assisting architect in building design or simplify construction permit inspection.
 
-The project is developed over 3D GIS Open-Source library [GeOxygene](http://oxygene-project.sourceforge.net) concerning geometric operators and 3D visualization.
+The project is developed over 3D GIS Open-Source library [GeOxygene](http://ignf.github.io/geoxygene) concerning geometric operators and 3D visualization.
 
 Conditions for use
 ---------------------
@@ -23,7 +23,7 @@ Furthermore, we are interested in every feedbacks about this library if you find
 
 Library installation
 ---------------------
-The project is build with Maven and is coded in Java (JDK 1.7 is required), it has been tested in most common OS. If you are not familiar with Maven, we suggest installing developer tools and versions as described in [GeOxygene install guide](http://oxygene-project.sourceforge.net/documentation/developer/install.html).
+The project is build with Maven and is coded in Java (JDK 1.8 is required), it has been tested in most common OS. If you are not familiar with Maven, we suggest installing developer tools and versions as described in [GeOxygene install guide](http://ignf.github.io/geoxygene/documentation/developer/install.html).
 
 
 
