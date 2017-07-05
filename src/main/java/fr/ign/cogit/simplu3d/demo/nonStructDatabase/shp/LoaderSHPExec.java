@@ -71,7 +71,9 @@ public class LoaderSHPExec {
 		CadastralParcelLoader.TYPE_ANNOTATION = 1;
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
-		String folder = "//home/mickael/data/mbrasebin/donnees/IAUIDF/Nouveaux_tests_comparatifs/Eval_EPF_2/91009675/";
+
+		String folder = "/home/mcolomb/informatique/workspace/simplu3d/simplu3D/src/main/resources/fr/ign/cogit/simplu3d/data/";
+
 		String folderOut = folder + "out/";
 
 		File fOut = new File(folderOut);

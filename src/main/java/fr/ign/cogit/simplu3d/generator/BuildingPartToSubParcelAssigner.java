@@ -57,6 +57,10 @@ public class BuildingPartToSubParcelAssigner {
 		}else{
 			BuildingPart buildingPart = building.getBuildingParts().get(0);
 			// TODO find best SubParcel
+			if(building.getbPU() == null){
+				return;
+			}	
+			
 			SubParcel subParcel = building.getbPU().getSubParcels().get(0);
 			buildingPart.setSubParcel(subParcel);
 			subParcel.getBuildingsParts().add(buildingPart);
