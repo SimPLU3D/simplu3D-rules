@@ -71,8 +71,7 @@ public class LoaderSHP {
 	}
 
 	public static Environnement load(File folder, InputStream dtmStream) throws Exception {
-		Environnement env = Environnement.createEnvironnement();
-		env.folder = folder.getAbsolutePath();
+
 		// Chargement des fichiers
 		IFeatureCollection<IFeature> pluColl = readShapefile(folder, NOM_FICHIER_PLU);
 		IFeature featPLU = null;
@@ -94,8 +93,12 @@ public class LoaderSHP {
 			dtm = new DTMArea(dtmStream, "Terrain", true, 1, ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
 		}
 
-		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions,
-				folder.getAbsolutePath(), dtm);
+		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
+				prescriptions, folder.getAbsolutePath(), dtm);
+		env.setFolder(folder.getAbsolutePath());
+		
+		
+		return env;
 	}
 
 	/**

@@ -153,4 +153,14 @@ public class Environnement {
 		this.urbaDoc = plu;
 	}
 
+	public String getFolder() {
+		return folder;
+	}
+
+	public void setFolder(String folder) {
+		this.folder = folder;
+	}
+	
+	
+
 }
