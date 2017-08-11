@@ -58,6 +58,35 @@ public class LoaderSHP {
 	public static final String NOM_FICHIER_PRESC_SURFACIQUE = "prescription_surf.shp";
 	public static final String NOM_FICHIER_PLU = "doc_urba.shp";
 
+	public static Environnement load(File simuFile , File fileDoc ,File fileZonage, File fileParcels, File fileVoirie,  File fileBuild, File filePrescPonct,File filePrescLin,File filePrescSurf, InputStream dtmStream) throws Exception{
+		IFeatureCollection<IFeature> pluColl = readShapefile(fileDoc);
+		IFeatureCollection<IFeature> zoneColl = readShapefile(fileZonage);
+		IFeatureCollection<IFeature> parcelleColl = readShapefile(fileParcels);
+		IFeatureCollection<IFeature> voirieColl = readShapefile(fileVoirie);
+		IFeatureCollection<IFeature> batiColl = readShapefile(fileBuild);
+		IFeatureCollection<IFeature> prescriptions = readShapefile(filePrescLin);
+		prescriptions.addAll(readShapefile(filePrescLin));
+		prescriptions.addAll(readShapefile(filePrescPonct));
+		prescriptions.addAll(readShapefile(filePrescSurf));
+		IFeature featPLU = null;
+		if (!pluColl.isEmpty()) {
+			featPLU = pluColl.get(0);
+		}
+		
+		DTMArea dtm = null;
+
+		if (dtmStream != null) {
+			dtm = new DTMArea(dtmStream, "Terrain", true, 1, ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
+		}
+		
+		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
+				prescriptions, simuFile.toString(), dtm);
+		env.setFolder(simuFile.toString());
+		
+	
+		return env;
+	}
+	
 	public static Environnement load(File folder) throws Exception {
 		File terrainFile = FileLocator.findFile(folder, NOM_FICHIER_TERRAIN);
 		if (terrainFile == null) {
@@ -101,6 +130,12 @@ public class LoaderSHP {
 		return env;
 	}
 
+	private static IFeatureCollection<IFeature> readShapefile(File folder) {
+		String fileName = folder.getName();
+		return readShapefile(folder.getParentFile(), fileName);
+	}
+	
+	
 	/**
 	 * helper to read a shapefile with case insensitive name
 	 * 
