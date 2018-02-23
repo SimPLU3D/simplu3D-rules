@@ -78,11 +78,12 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
   private String tablename = "";
   private String user = "";
   private String pw = "";
+  private String schema="";
 
   double[][] tabAlt = null;
 
   public DTMPostGISNoJava3D(String host, String port, String base,
-      String tablename, String user, String pw)
+      String schema, String tablename, String user, String pw)
       throws SQLException {
 
     super();
@@ -94,7 +95,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 
     this.pw = pw;
     this.user = user;
-
+    this.schema = schema;
     this.host = host;
     this.base = base;
     this.tablename = tablename;
@@ -129,7 +130,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
     conn = DriverManager.getConnection(url, user, pw);
 
     String requestSelect = "SELECT ST_Height(rast), ST_width(rast), ST_UpperLeftX(rast), ST_UpperLeftY(rast), ST_PixelHeight(rast), ST_PixelWidth(rast) from "
-        + tablename;
+        + schema+"."+ tablename;
 
     // System.out.println(requestSelect);
     logger.debug(requestSelect);
@@ -160,7 +161,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
     String str_upLeftY = rMeta.getString(4);
     shiftY = Double.parseDouble(str_upLeftY) - cellesizeY * nrows;
 
-    String sum = "select ST_SummaryStats(rast) from " + tablename;
+    String sum = "select ST_SummaryStats(rast) from " + schema+"."+ tablename;
     Statement s1 = conn.createStatement();
 
     ResultSet rStats = s1.executeQuery(sum);
