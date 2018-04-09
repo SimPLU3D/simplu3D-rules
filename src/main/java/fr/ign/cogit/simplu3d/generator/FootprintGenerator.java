@@ -134,7 +134,7 @@ public class FootprintGenerator {
 
 	}
 
-	private static CarteTopo newCarteTopo(String name, List<ILineString> lLLS, double threshold) {
+	public static CarteTopo newCarteTopo(String name, List<ILineString> lLLS, double threshold) {
 
 		try {
 			// Initialisation d'une nouvelle CarteTopo
