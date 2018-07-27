@@ -278,7 +278,7 @@ public class RepEnvironnement {
 	/*
 	 * ------------------------ Style Sous - Parcelle
 	 */
-	private static final Color COLOR_SOUS_PARCELLE = new Color(162, 205, 90);
+	private static final Color COLOR_SOUS_PARCELLE = new Color(255,255,255);
 
 	private static IFeatureCollection<? extends IFeature> generateSubParcelRepresentation(Environnement env) {
 
