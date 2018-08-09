@@ -21,7 +21,15 @@ public class BasicPropertyUnitFinder {
 	
 	
 	public BasicPropertyUnit findBestIntersections(IGeometry polyBat){
+		
+		if(polyBat == null) {
+			return null;
+		}
 		double area = polyBat.area();
+		
+		if(area == 0) {
+			return null;
+		}
 		
 		Collection<BasicPropertyUnit> candidates = basicPropertyUnits.select(polyBat);
 		
