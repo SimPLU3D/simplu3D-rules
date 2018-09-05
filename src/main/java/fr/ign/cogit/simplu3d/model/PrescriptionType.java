@@ -68,12 +68,15 @@ d'intérêt général, espaces verts (L123-2c et R123-12
  */
 public enum PrescriptionType {
 	ESPACE_BOISE(1, "Espace boisé classé (R123-11 a)"), 
-	LIMITATION_BRUIT(2, "Limitation de la constructibilité pour des raisons de nuisances"),
+	NUISSANCES_RISQUE(2, "secteur avec limitation de la constructibilité ou de l’occupation pour des raisons de nuisances ou de risques"),
+	ZONE_DEMOLITION(3,"Zone de démolition préalable"),
 	EMPLACEMENT_RESERVE(5, "Emplacement réservé"),
 	ELEMENT_PAYSAGE(7, "Elément de paysage (bâti et espaces), à mettre en valeur"), 
+	JARDIN(8,"Protection de jardins à cultiver"),
 	RECOIL(	11, "Limitations particulières d'implantation des constructions"), 
 	SECTEUR_MIXITE(17, "secteur à programme de logements mixité sociale "),
 	FACADE_ALIGNMENT(12, "Alignement de façade"), 
+	TVB(25,"Espaces et secteurs contribuant aux continuités écologiques et à la trame verte et bleue: Bois, haie, bosquet, à mettre en valeur au titre de l'article R 123-11-i"),
 	UNKNOWN(99, "Inconnu");
 
 	private String text = "";

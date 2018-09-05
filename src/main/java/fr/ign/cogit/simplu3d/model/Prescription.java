@@ -71,4 +71,11 @@ public class Prescription extends DefaultFeature {
 		this.value = value;
 	}
 
+	@Override
+	public String toString() {
+		return "Prescription [type=" + type + ", label=" + label + ", value=" + value + ", geom" + this.getGeom()+  "]";
+	}
+	
+	
+
 }

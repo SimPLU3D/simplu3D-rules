@@ -19,7 +19,13 @@ public class ForbiddenZoneGenerator {
 	private final static double DISTANCERECOILEVEGETATION = 3;
 	private final static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;
 	private final static double DISTANCERECOILPAYSAGE= 3;
+	private final static double DISTANCERENUISANCERISQUE= 1;
+	private static double DISTANCETVB= 3;
 	
+	
+	public void setDistanceTVB(double distance){
+		DISTANCETVB = distance;
+	}
 
 	public IGeometry generateUnionGeometry(IFeatureCollection<Prescription> prescriptions, BasicPropertyUnit bPU) {
 
@@ -29,24 +35,26 @@ public class ForbiddenZoneGenerator {
 
 		Collection<Prescription> selected = prescriptions.select(bPU.getGeom().buffer(radiusOfInfluence));
 
+
 		List<IGeometry> geometries = new ArrayList<IGeometry>();
 
 		for (Prescription pres : selected) {
 			IGeometry geom = generateWithCheckedGeom(pres, bPU);
-
 			if (geom != null && !geom.isEmpty()) {
 				geometries.add(geom);
 			}
 
 		}
+		
+
 
 		if (geometries.isEmpty())
 			return null;
 
-		IGeometry geom = bPU.getGeom();
+		IGeometry geom = geometries.remove(0);
 
 		for (IGeometry geomTemp : geometries) {
-			geom = geom.difference(geomTemp);
+			geom = geom.union(geomTemp);
 		}
 		return geom;
 	}
@@ -76,18 +84,34 @@ public class ForbiddenZoneGenerator {
 			return generateEspaceBoise(p, bPU);
 		case FACADE_ALIGNMENT:
 			break;
-		case LIMITATION_BRUIT:
-			break;
+		case NUISSANCES_RISQUE:
+			return generateNuisanceRisque(p,bPU);
+
 		case RECOIL:
 			return generateReculFacade(p, bPU);
 		case SECTEUR_MIXITE:
 			break;
 		case UNKNOWN:
 			break;
+		case TVB:
+			return generateTVB(p,bPU);		
 		default:
 			break;
 
 		}
+		return null;
+	}
+
+	private IGeometry generateTVB(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+		case 1:
+			return p.getGeom().buffer(DISTANCETVB);
+		case 2:
+			return p.getGeom();
+		}
+		
 		return null;
 	}
 
@@ -130,11 +154,27 @@ public class ForbiddenZoneGenerator {
 		
 		return null;
 	}
+	
+	
+	private IGeometry generateNuisanceRisque(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+			return p.getGeom().buffer(DISTANCERENUISANCERISQUE);
+		case 1:
+			return p.getGeom().buffer(DISTANCERENUISANCERISQUE);
+		case 2:
+			return p.getGeom();
+		}		
+		
+		return null;
+	}
 
 	private IGeometry generateGeometryElementPaysage(Prescription p, BasicPropertyUnit bPU) {
 		switch (p.getGeom().dimension()) {
 
 		case 0:
+			return p.getGeom().buffer(DISTANCERECOILPAYSAGE);
 		case 1:
 			return p.getGeom().buffer(DISTANCERECOILPAYSAGE);
 		case 2:

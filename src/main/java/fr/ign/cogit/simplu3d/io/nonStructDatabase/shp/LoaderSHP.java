@@ -65,7 +65,6 @@ public class LoaderSHP {
 		IFeatureCollection<IFeature> voirieColl = readShapefile(fileVoirie);
 		IFeatureCollection<IFeature> batiColl = readShapefile(fileBuild);
 		IFeatureCollection<IFeature> prescriptions = readShapefile(filePrescLin);
-		prescriptions.addAll(readShapefile(filePrescLin));
 		prescriptions.addAll(readShapefile(filePrescPonct));
 		prescriptions.addAll(readShapefile(filePrescSurf));
 		IFeature featPLU = null;
