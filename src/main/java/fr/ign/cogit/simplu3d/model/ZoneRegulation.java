@@ -22,7 +22,7 @@ import fr.ign.cogit.geoxygene.util.conversion.AdapterFactory;
  */
 @Entity
 @Table(name = "simplu_regulation")
-public class ZoneRegulation {
+public class ZoneRegulation implements IZoneRegulation {
 
 	@Id
 	@GeneratedValue
@@ -736,6 +736,47 @@ public class ZoneRegulation {
 
 	public void setArt101(Double art101) {
 		this.art101 = art101;
+	}
+
+	
+	private UrbaZone urbaZone = null;
+	
+	@Override
+	public UrbaZone getUrbaZone() {
+		// TODO Auto-generated method stub
+		return urbaZone;
+	}
+	
+	
+
+	public String getLibelleZone() {
+		return libelleZone;
+	}
+
+	public int getCodeImu() {
+		return codeImu;
+	}
+
+	public int getArt71() {
+		return art71;
+	}
+
+	public String getLibelleDeDul() {
+		return libelleDeDul;
+	}
+
+	public static GeometryFactory getGf() {
+		return gf;
+	}
+
+	public void setUrbaZone(UrbaZone urbaZone) {
+		this.urbaZone = urbaZone;
+	}
+
+	@Override
+	public String toText() {
+		// TODO Auto-generated method stub
+		return this.toString();
 	}
 	
 	
