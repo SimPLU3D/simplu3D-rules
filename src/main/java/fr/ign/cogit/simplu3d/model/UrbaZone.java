@@ -61,6 +61,8 @@ public class UrbaZone extends DefaultFeature {
 	// TODO rename DATVALID
 	private Date dateFin = null;
 	private String text = "";
+	private IZoneRegulation zoneRegulation = null;
+
 
 	// Pour la zone urba
 	public UrbaZone() {
@@ -177,6 +179,15 @@ public class UrbaZone extends DefaultFeature {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+
+	public IZoneRegulation getZoneRegulation() {
+		return zoneRegulation;
+	}
+
+	public void setZoneRegulation(IZoneRegulation zoneRegulation) {
+		this.zoneRegulation = zoneRegulation;
 	}
 
 }
