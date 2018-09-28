@@ -251,7 +251,8 @@ public abstract class AbstractBuilding extends DefaultFeature {
 			List<IGeometry> geom = new ArrayList<>();
 			List<SubParcel> lSubParcels = this.getSubParcels();
 			if(lSubParcels.isEmpty()) {
-				System.out.println("AbstractBuilding : No subParcels ?");
+				zBas = HauteurCalculation.calculateZBasPBB(this);
+				break;
 			}
 			for (ParcelBoundary bP : lSubParcels.get(0).getBoundaries()) {
 				geom.add(bP.getGeom());
