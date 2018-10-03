@@ -6,12 +6,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
 import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.util.algo.PointInPolygon;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
@@ -105,7 +108,13 @@ public class CadastralBoundaryGenerator {
 		if ( carteTopo != null ){
 			return ;
 		}
-		carteTopo = CarteTopoParcelBoundaryBuilder.newCarteTopo("parcelle", cadastralParcels, 0.2);
+		
+		IFeatureCollection<IFeature> parcellesTemp = new FT_FeatureCollection<>();
+		parcellesTemp.addAll(cadastralParcels);
+		if(! parcellesTemp.hasSpatialIndex()) {
+			parcellesTemp.initSpatialIndex(Tiling.class, false);
+		}
+		carteTopo = CarteTopoParcelBoundaryBuilder.newCarteTopo("parcelle", parcellesTemp, 0.2);
 		for ( Face f : carteTopo.getPopFaces() ){
 			getBoundaryAnalyzer().analyze(f);
 		}

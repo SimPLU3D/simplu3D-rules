@@ -72,7 +72,7 @@ public class LoaderSHPExec {
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
 
-		String folder = "/home/mcolomb/informatique/workspace/simplu3d/simplu3D/src/main/resources/fr/ign/cogit/simplu3d/data/";
+		String folder = "/tmp/tmp/";
 
 		String folderOut = folder + "out/";
 

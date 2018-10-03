@@ -84,7 +84,7 @@ public class ForbiddenZoneGenerator {
 			return generateEspaceBoise(p, bPU);
 		case FACADE_ALIGNMENT:
 			break;
-		case NUISSANCES_RISQUE:
+		case NUISANCES_RISQUES:
 			return generateNuisanceRisque(p,bPU);
 
 		case RECOIL:
