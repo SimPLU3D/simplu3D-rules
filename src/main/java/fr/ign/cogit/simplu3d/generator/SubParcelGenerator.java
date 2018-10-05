@@ -38,79 +38,88 @@ public class SubParcelGenerator {
 
 	/**
 	 * Create SubParcels for an UrbaZone
+	 * 
 	 * @param urbaZone
 	 * @return
 	 */
 	public Collection<SubParcel> createSubParcels(CadastralParcel cadastralParcel) {
-		
+
 		Collection<SubParcel> subParcels = new ArrayList<>();
-		
+
 		/*
 		 * create SubParcel as the intersection with UrbaZone
 		 */
 		for (UrbaZone urbaZone : urbaZones) {
 			IGeometry intersection = urbaZone.getGeom().intersection(cadastralParcel.getGeom());
-			if ( intersection == null || intersection.isEmpty() ){
-			
+			if (intersection == null || intersection.isEmpty()) {
+
 				continue;
 			}
-			
+
 			SubParcel subParcel = createSubParcel(intersection);
+			if (subParcel == null) {
+				continue;
+			}
 
 			// CadastralParcel / SubParcel
 			subParcel.setCadastralParcel(cadastralParcel);
 			cadastralParcel.getSubParcels().add(subParcel);
-			
+
 			// UrbaZone / SubParcel
 			subParcel.setZoneUrba(urbaZone);
 			urbaZone.getSubParcels().add(subParcel);
-			
+
 			subParcels.add(subParcel);
 		}
-		
+
 		/*
-		 * Compute SubParcel's union to create a SubParcel with a null UrbaZone
-		 * to ensure that the union of SubParcels is equal to CadastralParcel
+		 * Compute SubParcel's union to create a SubParcel with a null UrbaZone to
+		 * ensure that the union of SubParcels is equal to CadastralParcel
 		 */
 		IGeometry union = unionAll(subParcels);
-		if ( union == null || union.isEmpty() ){
-			IGeometry nonSharedGeometry = (IGeometry)cadastralParcel.getGeom().clone();
+		if (union == null || union.isEmpty()) {
+			IGeometry nonSharedGeometry = (IGeometry) cadastralParcel.getGeom().clone();
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
-			
-			// CadastralParcel / SubParcel
-			subParcelWithoutZone.setCadastralParcel(cadastralParcel);
-			cadastralParcel.getSubParcels().add(subParcelWithoutZone);
-			
-			subParcels.add(subParcelWithoutZone);
-		} else if ( ! (Math.abs(union.area() - cadastralParcel.getGeom().area()) < 0.001 * cadastralParcel.getGeom().area()) ){
+
+			if (subParcelWithoutZone != null) {
+				// CadastralParcel / SubParcel
+				subParcelWithoutZone.setCadastralParcel(cadastralParcel);
+				cadastralParcel.getSubParcels().add(subParcelWithoutZone);
+				subParcels.add(subParcelWithoutZone);
+			}
+
+		} else if (!(Math.abs(union.area() - cadastralParcel.getGeom().area()) < 0.001
+				* cadastralParcel.getGeom().area())) {
 			// part(s) of CadastralParcel belong to UrbaZone
 			IGeometry nonSharedGeometry = cadastralParcel.getGeom().difference(union);
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
-			
-			// CadastralParcel / SubParcel
-			subParcelWithoutZone.setCadastralParcel(cadastralParcel);
-			cadastralParcel.getSubParcels().add(subParcelWithoutZone);
-			
-			subParcels.add(subParcelWithoutZone);
+			if (subParcelWithoutZone != null) {
+				// CadastralParcel / SubParcel
+				subParcelWithoutZone.setCadastralParcel(cadastralParcel);
+				cadastralParcel.getSubParcels().add(subParcelWithoutZone);
+
+				subParcels.add(subParcelWithoutZone);
+			}
 		}
-		
+
 		return subParcels;
 	}
-	
-	private IGeometry unionAll(Collection<SubParcel> subParcels){
+
+	private IGeometry unionAll(Collection<SubParcel> subParcels) {
 		IGeometry result = null;
 		for (SubParcel subParcel : subParcels) {
-			if ( result == null ){
+			if (result == null) {
 				result = subParcel.getGeom();
-			}else{
+			} else {
 				result = result.union(subParcel.getGeom());
 			}
 		}
 		return result;
 	}
-		
+
 	/**
 	 * Create SubParcel from intersection's geometry
+	 * 
 	 * @param intersection
 	 * @return
 	 */
@@ -119,7 +128,7 @@ public class SubParcelGenerator {
 
 		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(intersection);
 
-		//TODO check this code (create a copy would be better?)
+		// TODO check this code (create a copy would be better?)
 		int nbContrib = iMS.size();
 		for (int i = 0; i < nbContrib; i++) {
 			IOrientableSurface os = iMS.get(i);
@@ -129,10 +138,13 @@ public class SubParcelGenerator {
 				i--;
 				nbContrib--;
 			}
-		} 
+		}
 
+		if (iMS == null || iMS.isEmpty()) {
+			return null;
+		}
 		subParcel.setGeom(iMS);
-		
+
 		return subParcel;
 	}
 }
