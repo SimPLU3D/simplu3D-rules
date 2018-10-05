@@ -130,6 +130,10 @@ public class LoaderSHP {
 	}
 
 	private static IFeatureCollection<IFeature> readShapefile(File folder) {
+		if(folder == null) {
+			logger.warn("LoaderSHP : File  not found  " + folder);
+			return new FT_FeatureCollection<>();
+		}
 		String fileName = folder.getName();
 		return readShapefile(folder.getParentFile(), fileName);
 	}
