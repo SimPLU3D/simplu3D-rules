@@ -147,6 +147,10 @@ public class LoaderSHP {
 	 * @return
 	 */
 	private static IFeatureCollection<IFeature> readShapefile(File folder, String filename) {
+		if(! folder.exists()) {
+			logger.warn("File " + filename + " not found in " + folder);
+			return new FT_FeatureCollection<>();
+		}
 		File file = FileLocator.findFile(folder, filename);
 		if (null == file) {
 			logger.warn("File " + filename + " not found in " + folder);
