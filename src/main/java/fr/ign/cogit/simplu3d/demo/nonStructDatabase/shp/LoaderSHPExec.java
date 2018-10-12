@@ -72,9 +72,11 @@ public class LoaderSHPExec {
 		// String folder =
 		// "C:/Users/mbrasebin/Desktop/Ilots_test/COGIT78/78020432/";
 
-		String folder = "/tmp/tmp/";
+		String folder = "/home/mbrasebin/Documents/Donnees/ArtiScales/ArtiScalesTest/Donnees/";
 
-		String folderOut = folder + "out/";
+		String folderOut = "/tmp/tmp/";
+		
+		(new File(folderOut)).mkdirs();
 
 		File fOut = new File(folderOut);
 		fOut.mkdir();
