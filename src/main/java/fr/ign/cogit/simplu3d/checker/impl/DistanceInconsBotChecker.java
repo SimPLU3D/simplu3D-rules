@@ -21,8 +21,8 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
-import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
 /**
  * Une bande de getBandIncons() m (par rapport au fond de la parcelle) est
