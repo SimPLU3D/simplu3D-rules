@@ -35,12 +35,15 @@ public class Environnement {
 
 	private static Environnement env = null;
 
+	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 	private IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
+	
 	private IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
+	
 	private IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
 	private IFeatureCollection<Prescription> prescriptions = new FT_FeatureCollection<>();
-	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
+
 
 	private AbstractDTM terrain;
 	private IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
