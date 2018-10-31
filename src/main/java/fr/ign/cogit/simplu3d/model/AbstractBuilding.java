@@ -76,10 +76,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	 * TODO compute from BuildingParts?
 	 */
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
-	/**
-	 * TODO compute from the first subParcel?
-	 */
-	private BasicPropertyUnit bPU;
 
 	private int storeysAboveGround = -1;
 
@@ -138,13 +134,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.subParcels = subParcels;
 	}
 
-	public BasicPropertyUnit getbPU() {
-		return bPU;
-	}
-
-	public void setbPU(BasicPropertyUnit bPU) {
-		this.bPU = bPU;
-	}
 
 	public RoofSurface getRoof() {
 		return roofSurface;

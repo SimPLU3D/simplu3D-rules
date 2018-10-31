@@ -51,4 +51,14 @@ public class Building extends AbstractBuilding {
 		return b;
 	}
 
+	private BasicPropertyUnit bPU;
+	
+
+	public BasicPropertyUnit getbPU() {
+		return bPU;
+	}
+
+	public void setbPU(BasicPropertyUnit bPU) {
+		this.bPU = bPU;
+	}
 }
