@@ -16,7 +16,9 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +56,9 @@ public class UrbaDocument {
 	private String siteWeb = "";
 	private String typeRef = "";
 	private Date dateRef = null;
-	
+	private List<UrbaZone> zones = new ArrayList<>();
+
+
 	/**
 	 * Date d'approbation du document (DOC_URBA.DATAPPRO)
 	 */
@@ -215,6 +219,15 @@ public class UrbaDocument {
 
 	public Date getDateRef() {
 		return dateRef;
+	}
+	
+	
+	public List<UrbaZone> getZones() {
+		return zones;
+	}
+
+	public void setZones(List<UrbaZone> zones) {
+		this.zones = zones;
 	}
 
 

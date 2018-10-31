@@ -4,8 +4,8 @@
   <class id="1" language="java" name="fr.ign.cogit.simplu3d.model.CadastralParcel" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/CadastralParcel.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="507" y="246"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="664" y="584"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -14,8 +14,8 @@
   <class id="2" language="java" name="fr.ign.cogit.simplu3d.model.ParcelBoundary" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/ParcelBoundary.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="744" y="473"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="977" y="531"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -24,8 +24,8 @@
   <enumeration id="3" language="java" name="fr.ign.cogit.simplu3d.model.PrescriptionType" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/PrescriptionType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1008" y="643"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1167" y="393"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -34,8 +34,8 @@
   <class id="4" language="java" name="fr.ign.cogit.simplu3d.model.PublicSpace" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/PublicSpace.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1196" y="586"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1222" y="610"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -44,8 +44,8 @@
   <enumeration id="5" language="java" name="fr.ign.cogit.simplu3d.model.UrbaDocumentType" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/UrbaDocumentType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="570" y="588"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="695" y="226"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -53,8 +53,8 @@
   </enumeration>  
   <class id="6" language="java" name="fr.ign.cogit.simplu3d.model.Building" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/Building.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="204" y="262"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="414" y="692"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -63,8 +63,8 @@
   <enumeration id="7" language="java" name="fr.ign.cogit.simplu3d.model.WallSurfaceType" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/WallSurfaceType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1463" y="398"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="233" y="576"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -73,8 +73,8 @@
   <class id="8" language="java" name="fr.ign.cogit.simplu3d.model.RoofSurface" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/RoofSurface.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1275" y="277"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="71" y="487"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -83,8 +83,8 @@
   <class id="9" language="java" name="fr.ign.cogit.simplu3d.model.BuildingPart" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/BuildingPart.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="372" y="194"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="416" y="484"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -93,8 +93,8 @@
   <class id="10" language="java" name="fr.ign.cogit.simplu3d.model.BasicPropertyUnit" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/BasicPropertyUnit.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="295" y="385"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="664" y="692"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -102,8 +102,8 @@
   </class>  
   <class id="11" language="java" name="fr.ign.cogit.simplu3d.model.SubParcel" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/SubParcel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="528" y="401"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="664" y="484"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -111,8 +111,8 @@
   </class>  
   <class id="12" language="java" name="fr.ign.cogit.simplu3d.model.UrbaZone" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/UrbaZone.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="289" y="466"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="885" y="326"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -121,8 +121,8 @@
   <class id="13" language="java" name="fr.ign.cogit.simplu3d.model.UrbaDocument" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/UrbaDocument.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="570" y="505"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="695" y="326"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -131,8 +131,8 @@
   <enumeration id="14" language="java" name="fr.ign.cogit.simplu3d.model.ParcelBoundarySide" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/ParcelBoundarySide.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="946" y="395"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="843" y="624"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -141,8 +141,8 @@
   <class id="15" language="java" name="fr.ign.cogit.simplu3d.model.WallSurface" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/WallSurface.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1414" y="212"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="233" y="487"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -150,8 +150,8 @@
   </class>  
   <class id="16" language="java" name="fr.ign.cogit.simplu3d.model.Road" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/Road.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1252" y="381"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1222" y="531"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -160,8 +160,8 @@
   <class id="17" language="java" name="fr.ign.cogit.simplu3d.model.AbstractBuilding" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/AbstractBuilding.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="35" width="391" x="101" y="27"/>    
-    <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="49" width="425" x="11" y="319"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -170,8 +170,8 @@
   <interface id="18" language="java" name="fr.ign.cogit.simplu3d.model.IZoneRegulation" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/IZoneRegulation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="295" y="588"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1109" y="326"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -180,8 +180,8 @@
   <enumeration id="19" language="java" name="fr.ign.cogit.simplu3d.model.ParcelBoundaryType" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/ParcelBoundaryType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="835" y="568"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="976" y="683"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -189,8 +189,8 @@
   </enumeration>  
   <class id="20" language="java" name="fr.ign.cogit.simplu3d.model.Materiau" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/Materiau.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1287" y="513"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="71" y="576"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
@@ -199,251 +199,242 @@
   <class id="21" language="java" name="fr.ign.cogit.simplu3d.model.Prescription" project="simplu3d-rules" 
     file="/simplu3d-rules/src/main/java/fr/ign/cogit/simplu3d/model/Prescription.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1008" y="568"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="980" y="393"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
   <association id="22">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="23" name="subParcels"/>      
-      <multiplicity id="24" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="25">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="26" name="documentType"/>      
-      <multiplicity id="27" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="28">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="29" name="prescription"/>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="32" name="cadastralParcel">        
-        <position height="16" width="84" x="423" y="270"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="34">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="35" name="material"/>      
-      <multiplicity id="36" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="37">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="38" name="material"/>      
-      <multiplicity id="39" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="40">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="41" name="wallSurfaces"/>      
-      <multiplicity id="42" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="43">    
-    <bendpoint x="927" y="316"/>    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <association id="44">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="45" name="buildings"/>      
-      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="47">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="48" name="subParcel"/>      
-      <multiplicity id="49" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="51" name="buildingParts"/>      
-      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="54" name="type"/>      
-      <multiplicity id="55" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="56">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="57" name="urbaZone">        
-        <position height="16" width="55" x="352" y="768"/>      
-      </attribute>      
-      <multiplicity id="58" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="59">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="60" name="side"/>      
-      <multiplicity id="61" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="62">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="63" name="boundaries"/>      
-      <multiplicity id="64" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="66" name="road"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="68">    
     <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="69" name="type"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
+      <attribute id="23" name="type"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="72" name="roofSurface"/>      
-      <multiplicity id="73" minimum="0" maximum="1"/>    
+  <association id="25">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="26" name="prescription"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="75" name="zoneRegulation"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="77">    
-    <bendpoint x="885" y="316"/>    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="78" name="subParcels"/>      
-      <multiplicity id="79" minimum="0" maximum="2147483647"/>    
+  <association id="28">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="29" name="subParcel"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="80">    
-    <bendpoint x="906" y="316"/>    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="81" name="buildings"/>      
-      <multiplicity id="82" minimum="0" maximum="2147483647"/>    
+  <association id="31">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="32" name="buildingParts">        
+        <position height="16" width="70" x="321" y="415"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="83">    
-    <bendpoint x="1160" y="466"/>    
-    <bendpoint x="1160" y="391"/>    
+  <association id="34">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="35" name="spacePublic"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="84" name="bPU"/>      
-      <multiplicity id="85" minimum="0" maximum="1"/>    
+      <attribute id="38" name="bPU"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="86">    
-    <bendpoint x="987" y="466"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="87" name="subParcels"/>      
-      <multiplicity id="88" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="89">    
-    <bendpoint x="1118" y="391"/>    
-    <bendpoint x="1118" y="466"/>    
+  <association id="40">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="90" name="cadastralParcels">        
-        <position height="16" width="90" x="410" y="287"/>      
-      </attribute>      
-      <multiplicity id="91" minimum="0" maximum="2147483647"/>    
+      <attribute id="41" name="cadastralParcels"/>      
+      <multiplicity id="42" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="92">    
+  <association id="43">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="44" name="type"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="47" name="zoneRegulation"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="50" name="material"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="53" name="documentType"/>      
+      <multiplicity id="54" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="55">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <association id="56">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="93" name="type"/>      
-      <multiplicity id="94" minimum="0" maximum="1"/>    
+      <attribute id="57" name="type"/>      
+      <multiplicity id="58" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="95">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="96" name="boundaries"/>      
-      <multiplicity id="97" minimum="0" maximum="2147483647"/>    
+  <association id="59">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="60" name="zones"/>      
+      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="98">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="99" name="oppositeBoundary"/>      
-      <multiplicity id="100" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="101">    
-    <bendpoint x="966" y="466"/>    
+  <generalization id="62">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <association id="63">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="102" name="cadastralParcel">        
-        <position height="16" width="84" x="458" y="303"/>      
+      <attribute id="64" name="boundaries">        
+        <position height="16" width="64" x="835" y="472"/>      
       </attribute>      
-      <multiplicity id="103" minimum="0" maximum="1"/>    
+      <multiplicity id="65" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="67" name="material"/>      
+      <multiplicity id="68" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="70" name="cadastralParcel"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <classifier-display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+  <association id="72">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="73" name="road"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="76" name="roofSurface"/>      
+      <multiplicity id="77" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="79" name="boundaries">        
+        <position height="16" width="62" x="822" y="541"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="81">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="82" name="side">        
+        <position height="16" width="28" x="837" y="575"/>      
+      </attribute>      
+      <multiplicity id="83" minimum="0" maximum="1">        
+        <position height="14" width="23" x="876" y="573"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="84">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="85" name="subParcels"/>      
+      <multiplicity id="86" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="88" name="subParcels"/>      
+      <multiplicity id="89" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="91" name="buildings"/>      
+      <multiplicity id="92" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="93">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="94" name="wallSurfaces"/>      
+      <multiplicity id="95" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="97" name="urbaZone"/>      
+      <multiplicity id="98" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="100" name="bPU">        
+        <position height="16" width="29" x="548" y="697"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    
     <operations public="false" package="false" protected="false" private="false" static="false"/>  

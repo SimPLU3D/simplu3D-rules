@@ -51,6 +51,12 @@ public class ParcelBoundary extends DefaultFeature {
 	
 	
 	/**
+	 * Optional PublicSpace linked to the boundary
+	 */
+	private PublicSpace spacePublic = null ;
+	
+	
+	/**
 	 * Optional oppositBoundary
 	 */
 	private ParcelBoundary oppositeBoundary;
@@ -134,5 +140,14 @@ public class ParcelBoundary extends DefaultFeature {
 			return this.cadastralParcel;
 		}
 	}
+
+	public PublicSpace getSpacePublic() {
+		return spacePublic;
+	}
+
+	public void setSpacePublic(PublicSpace spacePublic) {
+		this.spacePublic = spacePublic;
+	}
+	
 	
 }
