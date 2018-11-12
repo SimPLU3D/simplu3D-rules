@@ -19,8 +19,6 @@ package fr.ign.cogit.simplu3d.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.citygml4j.model.citygml.CityGML;
-
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
@@ -43,9 +41,8 @@ import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
  * Un bâtiment abstrait (AbstractBuilding) qui est soit un Building soit un
  * BuildingPart et qui est composé de BuildingParts.
  * 
- * @see CityGML
- *      http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams
- *      .pdf#page=11&zoom=150,1,706
+ * see CityGML
+ * http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams .pdf
  * 
  * @author Brasebin Mickaël
  *
@@ -59,20 +56,18 @@ public abstract class AbstractBuilding extends DefaultFeature {
 
 	private String destination;
 	private IOrientableSurface footprint;
-	
-	
+
 	public boolean isNew = false;
-	
 
 	public boolean isNew() {
-    return isNew;
-  }
+		return isNew;
+	}
 
-  public void setNew(boolean isNew) {
-    this.isNew = isNew;
-  }
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
 
-  /**
+	/**
 	 * TODO compute from BuildingParts?
 	 */
 	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
@@ -133,7 +128,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	public void setSubParcels(List<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
-
 
 	public RoofSurface getRoof() {
 		return roofSurface;
@@ -239,7 +233,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		case 0:
 			List<IGeometry> geom = new ArrayList<>();
 			List<SubParcel> lSubParcels = this.getSubParcels();
-			if(lSubParcels.isEmpty()) {
+			if (lSubParcels.isEmpty()) {
 				zBas = HauteurCalculation.calculateZBasPBB(this);
 				break;
 			}
@@ -268,11 +262,12 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	}
 
 	/**
-	 *
-	 * @param geom
-	 * @param slope
-	 * @param hIni
-	 * @return
+	 * Calculate a prospect constraints
+	 * 
+	 * @param geom  the geometry from which the constraint is assessed
+	 * @param slope the slope of the constraints
+	 * @param hIni  the initial hight
+	 * @return true if the constraint is respected if not false
 	 */
 	public boolean prospect(IGeometry geom, double slope, double hIni) {
 		double zMin = 0;

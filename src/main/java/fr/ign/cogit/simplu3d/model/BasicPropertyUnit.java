@@ -31,7 +31,7 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
  * 
  * Adjacent CadastralParcels with common owner
  * 
- * @see http://inspire.ec.europa.eu/featureconcept/BasicPropertyUnit
+ * see http://inspire.ec.europa.eu/featureconcept/BasicPropertyUnit
  * 
  * @author Brasebin Mickaël
  *
@@ -76,7 +76,7 @@ public class BasicPropertyUnit extends DefaultFeature {
 
 	/**
 	 * Helper to get all SubParcels
-	 * @return
+	 * @return the sub parcels of the parcels that belong to this basic property unit
 	 */
 	public List<SubParcel> getSubParcels(){
 		List<SubParcel> subParcels = new ArrayList<>();
@@ -101,7 +101,7 @@ public class BasicPropertyUnit extends DefaultFeature {
 	 * 
 	 * TODO remove and define geometry in BasicPropertyUnitGenerator
 	 * 
-	 * @return
+	 * @return generate a geometry from the cadastral parcels that belong to the basicproperty unit
 	 */
 	public IMultiSurface<IOrientableSurface> generateGeom() {
 		if (geometryFromChildren == null) {

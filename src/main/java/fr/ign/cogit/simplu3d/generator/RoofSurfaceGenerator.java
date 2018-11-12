@@ -50,11 +50,11 @@ public class RoofSurfaceGenerator {
 	 * 
 	 * Create a RoofSurface from polygons corresponding to the Roof
 	 * 
-	 * @see RoofDetection.detectRoof to extract roof polygons from building geometry
+	 * RoofDetection.detectRoof to extract roof polygons from building geometry
 	 * 
-	 * @param surfaceRoof
-	 * @param emprise
-	 * @return
+	 * @param surfaceRoof a 3D MultiSurface 
+	 * @param emprise the 2D footprint of the building
+	 * @return a new RoofSurface object
 	 */
 	@SuppressWarnings("unchecked")
 	public static RoofSurface create(IMultiSurface<IOrientableSurface> surfaceRoof, IPolygon emprise) {

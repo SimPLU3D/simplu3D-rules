@@ -130,7 +130,7 @@ public class ParcelBoundary extends DefaultFeature {
 
 	/**
 	 * Returns the Road if defined, else the CadastralParcel
-	 * @return
+	 * @return the adjacent feature may be a cadastral parcel or a road
 	 */
 	@Deprecated
 	public IFeature getFeatAdj(){

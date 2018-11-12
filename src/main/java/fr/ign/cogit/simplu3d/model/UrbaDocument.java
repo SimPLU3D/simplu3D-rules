@@ -29,7 +29,7 @@ import javax.persistence.Id;
  * 
  * Un document d'urbanisme porteur d'une liste de zone d'urbanisme.
  * 
- * @see DOC_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
+ * see DOC_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
  *      141002_Standard_CNIG_PLU_diffusion.pdf
  * 
  * @author Brasebin Mickaël

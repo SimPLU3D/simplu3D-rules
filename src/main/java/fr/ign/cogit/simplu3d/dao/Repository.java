@@ -6,13 +6,13 @@ public interface Repository<T> {
 
 	/**
 	 * Count items
-	 * @return
+	 * @return the number of item
 	 */
 	public int count();
 	
 	/**
 	 * Read all items from repository
-	 * @return
+	 * @return a collection of objects from the class T
 	 */
 	public Collection<T> findAll();
 

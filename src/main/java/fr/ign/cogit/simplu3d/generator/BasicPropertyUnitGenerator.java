@@ -33,7 +33,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * Create BasicPropertyUnit as an aggregation of adjacent CadastralParcel's with
  * the same owner
  *  
- * @warning aggregation is not yet implemented. A BasicPropertyUnit is
+ * warning aggregation is not yet implemented. A BasicPropertyUnit is
  *          associated to a CadastralParcel
  * 
  * 
@@ -50,7 +50,7 @@ public class BasicPropertyUnitGenerator {
 
 	/**
 	 * TODO Constructor with a CadastralParcel iterator?
-	 * @param cadastralParcels
+	 * @param cadastralParcels the cadastral parcels used to generate basicproperty unit
 	 */
 	public BasicPropertyUnitGenerator(Collection<CadastralParcel> cadastralParcels){
 		this.cadastralParcels = cadastralParcels ;
@@ -58,8 +58,7 @@ public class BasicPropertyUnitGenerator {
 
 	/**
 	 * TODO implement aggregation based on a "owerId"
-	 * @param cadastralParcels
-	 * @return
+	 * @return a collection of basic property units
 	 */
 	public IFeatureCollection<BasicPropertyUnit> createPropertyUnits() {
 

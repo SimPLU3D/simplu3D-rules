@@ -33,11 +33,11 @@ import fr.ign.cogit.geoxygene.spatial.geomroot.GM_Object;
  * 
  *        see LICENSE.TXT
  * 
- *        see <http://www.cecill.info/ http://www.cecill.info/
+ *        see http://www.cecill.info/
  * 
  * 
  * 
- * @copyright IGN
+ * copyright IGN
  * 
  * @author Brasebin Mickaël
  * 
@@ -242,8 +242,8 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
    * Cette fonction permet d'extraire en géométrie géoxygene les triangles du
    * MNT compris dans le rectangle formé par dpMin et dpMax en 2D
    * 
-   * @param dpMin point inférieur gauche du rectangle
-   * @param dpMax point supérieur droit du rectangle
+   * @param xmin, ymin point inférieur gauche du rectangle
+   * @param xmax, ymax point supérieur droit du rectangle
    * @return une liste de polygones décrivant les géométries du MNT compris dans
    *         le rectangle formé par les 2 points en 2D
    */
@@ -320,8 +320,8 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
    * Cette fonction renvoie les lignes comprises dans le rectangles ayant dpMin
    * et dpMax comme points extrémités
    * 
-   * @param dpMin point inférieur gauche
-   * @param dpMax point supérieur droit
+   * @param xmin, ymin point inférieur gauche
+   * @param xmax, ymax point supérieur droit
    * @return une liste de points correspondant aux lignes des mailles comprises
    *         entre ces 2 points
    */
@@ -470,7 +470,6 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
    * altitude offsetting
    * 
    * @param x ,y le point à projeter
-   * @param offsetting l'altitude que l'on rajoute au point final
    * @return un point 3D ayant comme altitude Z du MNT + offesting
    */
   @Override

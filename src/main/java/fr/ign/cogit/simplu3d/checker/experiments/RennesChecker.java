@@ -23,13 +23,11 @@ import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 public class RennesChecker {
 
 	/**
-	 * Permet de vérifier les règles sur une BPU à partir d'un ensemble de
-	 * règles
+	 * Permet de vérifier les règles sur une BPU à partir d'un ensemble de règles
 	 * 
-	 * @param bPU
-	 *            Une Basic Property Unit
-	 * @param rules
-	 *            Les règles d'urbanisme
+	 * @param bPU     Une Basic Property Unit
+	 * @param rules   Les règles d'urbanisme
+	 * @param context Le contexte utilisé pour vérifier le respect des règles
 	 * @return une liste de règles non respectées
 	 */
 	public static List<UnrespectedRule> check(BasicPropertyUnit bPU, ZoneRegulation rules, RuleContext context) {

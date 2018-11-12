@@ -46,7 +46,7 @@ public class NearestRoadFinder {
 	/**
 	 * Find the best road for
 	 * 
-	 * @param geometry
+	 * @param geometry the geometry used to find the nearest road
 	 * @return the best Road, null if no Road found
 	 */
 	public Road findNearestRoad(IGeometry geometry) {

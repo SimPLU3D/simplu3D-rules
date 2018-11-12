@@ -58,17 +58,17 @@ public class Environnement {
 	
 	/**
 	 * Create a new environment instance
-	 * @return
+	 * @return a new environnement and erase the existing one if necesesary
 	 */
 	public static Environnement createEnvironnement(){
-		return new Environnement();
+		env = new Environnement();
+		return env;
 	}
 	
 	/**
 	 * TODO remove and replace usage by demo.DefaultEnvironnement.getInstance()
-	 * @return
+	 * @return the current environnement a new one is created if there is no existing
 	 */
-	@Deprecated
 	public static Environnement getInstance() {
 		if (env == null) {
 			env = new Environnement();

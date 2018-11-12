@@ -34,7 +34,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * 
  * Une zone d'urbanisme servant de support à la définition de règles.
  * 
- * @see ZONE_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
+ * see ZONE_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
  *      141002_Standard_CNIG_PLU_diffusion.pdf
  * 
  * @author Brasebin Mickaël

@@ -15,7 +15,7 @@ public enum ParcelBoundaryType {
 	UNKNOWN(99),
 	/**
 	 * Represent a boundary between SubParcel in a CadastralParcel
-	 * @warning unused (boundaries are computed on CadastralParcels)
+	 * warning unused (boundaries are computed on CadastralParcels)
 	 */
 	INTRA(3),
 	ROAD(4),

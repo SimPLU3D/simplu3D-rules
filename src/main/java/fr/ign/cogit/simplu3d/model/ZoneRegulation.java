@@ -128,31 +128,11 @@ public class ZoneRegulation implements IZoneRegulation {
 		this.art14 = art_14;
 	}
 
-	/**
+	/*
 	 * Constructeur de Regulation conçu pour l'expérimentation de Rennes
 	 * Métropole
 	 * 
-	 * @param nom_zone
-	 * @param bandIncons
-	 * @param empriseSol
-	 * @param empriseSurface
-	 * @param empLargeurMin
-	 * @param empriseSolAlt
-	 * @param band1
-	 * @param alignement
-	 * @param reculLatMin
-	 * @param reculLatMax
-	 * @param prospectVoirie1Slope
-	 * @param prospectVoirie1Hini
-	 * @param largMaxProspect1
-	 * @param prospectVoirie2Slope
-	 * @param prospectVoirie2Hini
-	 * @param hauteurMaxFacade
-	 * @param band2
-	 * @param slopeProspectLat
-	 * @param hIniProspectLat
-	 * @param hauteurMax2
-	 */
+     */
 	public ZoneRegulation(String nom_zone, Double bandIncons, Double empriseSol, Double empriseSurface, Double empLargeurMin,
 			Double empriseSolAlt, Double band1, Double alignement, Double reculLatMin, Double reculLatMax,
 			Double prospectVoirie1Slope, Double prospectVoirie1Hini, Double largMaxProspect1,

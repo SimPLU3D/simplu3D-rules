@@ -14,21 +14,21 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
  * 
  * @author MBorne
  *
- * @param <T>
+ * @param <T> the class of read features
  */
 public interface IFeatureReader<T> {
 	
 	/**
 	 * Converts a feature to a model
-	 * @param feature
-	 * @return
+	 * @param feature feature with undefined class to read
+	 * @return a feature of the given class
 	 */
 	public T read(IFeature feature);
 	
 	/**
 	 * Converts a collection of features to a collection of models
-	 * @param features
-	 * @return
+	 * @param features features with undefined class to read
+	 * @return a collection of read features
 	 */
 	public Collection<T> readAll(IFeatureCollection<IFeature> features);
 

@@ -44,8 +44,8 @@ public class FootprintGenerator {
 
 	/**
 	 * Create footprint from MultiSurface
-	 * @param geomIni
-	 * @return
+	 * @param geomIni an intial geometry
+	 * @return the footprint as a Polygon
 	 */
 	public static IPolygon convert(IGeometry geomIni) {
 

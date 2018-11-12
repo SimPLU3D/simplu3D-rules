@@ -20,7 +20,7 @@ import fr.ign.cogit.simplu3d.io.feature.IFeatureReader;
  * 
  * @author MBorne
  *
- * @param <T>
+ * @param <T> The feature class that will be read
  */
 public class AbstractRepositoryGeoxygene<T> {
 	/**
@@ -62,8 +62,8 @@ public class AbstractRepositoryGeoxygene<T> {
 	
 	/**
 	 * 
-	 * @param bbox
-	 * @return
+	 * @param bbox the bounding box in which features will be selected
+	 * @return a collection of entity from class T
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<T> findByEnvelope(Envelope bbox){

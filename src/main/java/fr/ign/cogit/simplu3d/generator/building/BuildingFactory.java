@@ -26,10 +26,10 @@ public class BuildingFactory {
 	/**
 	 * Create a building from a IMultiSurface.
 	 * 
-	 * @warning wall, roof, etc. are computed
+	 * warning wall, roof, etc. are computed
 	 * 
-	 * @param geom
-	 * @return
+	 * @param geom a new 3D building
+	 * @return a MultiSurface geometry that is used to create a building
 	 */
 	public static Building createBuildingFromMultiSurface(IGeometry geom){
 		Building building = new Building();

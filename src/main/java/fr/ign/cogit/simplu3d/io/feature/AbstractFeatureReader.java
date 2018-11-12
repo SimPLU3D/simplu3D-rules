@@ -16,7 +16,7 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
  * 
  * @author MBorne
  *
- * @param <T>
+ * @param <T> the class of feature to read
  */
 public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 
@@ -30,9 +30,9 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	}
 
 	/**
-	 * Read a string 
-	 * @param feature
-	 * @param attributeName
+	 * Return the string value from an attribute 
+	 * @param feature a feature
+	 * @param attributeName an attribute name
 	 * @return a string or null
 	 */
 	protected String readStringAttribute(IFeature feature, String attributeName) {

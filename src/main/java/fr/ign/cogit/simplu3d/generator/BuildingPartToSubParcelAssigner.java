@@ -30,7 +30,6 @@ public class BuildingPartToSubParcelAssigner {
 
 	private boolean cutBuildingOnSubParcels = false;
 
-	
 	public boolean isCutBuildingOnSubParcels() {
 		return cutBuildingOnSubParcels;
 	}
@@ -39,35 +38,34 @@ public class BuildingPartToSubParcelAssigner {
 		this.cutBuildingOnSubParcels = cutBuildingOnSubParcels;
 	}
 
-
 	/**
+	 * Create a link between buildings and the different subparcels. Building part
+	 * may be created according to the method for buildings that lay one more than
+	 * one subparcel
 	 * 
-	 * @param building
-	 * @param bPU
-	 * @return
+	 * @param building a building to assign to sub parcels
 	 */
 	public void assignBuildingToSubParcels(Building building) {
-		if ( cutBuildingOnSubParcels ){
+		if (cutBuildingOnSubParcels) {
 			Collection<SubParcel> subParcels = building.getbPU().getSubParcels();
 			assert !subParcels.isEmpty();
 			if (subParcels.size() == 1) {
 				return;
 			}
-			assignCompleteMethod(building,subParcels);
-		}else{
+			assignCompleteMethod(building, subParcels);
+		} else {
 			BuildingPart buildingPart = building.getBuildingParts().get(0);
 			// TODO find best SubParcel
-			if(building.getbPU() == null){
+			if (building.getbPU() == null) {
 				return;
-			}	
-			
+			}
+
 			SubParcel subParcel = building.getbPU().getSubParcels().get(0);
 			buildingPart.setSubParcel(subParcel);
 			subParcel.getBuildingsParts().add(buildingPart);
 		}
 	}
 
-	
 	private void assignCompleteMethod(Building building, Collection<SubParcel> subParcels) {
 		List<BuildingPart> buildingParts = new ArrayList<>();
 
@@ -79,7 +77,7 @@ public class BuildingPartToSubParcelAssigner {
 		for (SubParcel subParcel : subParcels) {
 			IPolygon polySP = (IPolygon) subParcel.getGeom();
 
-			if ( ! polySP.intersects(polyBat) ) {
+			if (!polySP.intersects(polyBat)) {
 				continue;
 			}
 
@@ -103,7 +101,7 @@ public class BuildingPartToSubParcelAssigner {
 			}
 
 		}
-		
+
 		// replace existing building parts
 		building.setBuildingParts(buildingParts);
 	}

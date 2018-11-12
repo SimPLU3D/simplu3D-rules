@@ -30,7 +30,7 @@ public class SubParcelGenerator {
 
 	/**
 	 * 
-	 * @param cadastralParcels
+	 * @param urbaZones the regulation urban zone used to split parcels
 	 */
 	public SubParcelGenerator(Collection<UrbaZone> urbaZones) {
 		this.urbaZones = urbaZones;
@@ -39,8 +39,8 @@ public class SubParcelGenerator {
 	/**
 	 * Create SubParcels for an UrbaZone
 	 * 
-	 * @param urbaZone
-	 * @return
+	 * @param cadastralParcel the cadastral parcels used to create sub parcels
+	 * @return a collection of SubParcel
 	 */
 	public Collection<SubParcel> createSubParcels(CadastralParcel cadastralParcel) {
 
