@@ -52,12 +52,12 @@ public class SubParcel extends DefaultFeature {
 	 */
 	private double avgSlope;
 
-	private List<AbstractBuilding> buildings;
+	private List<AbstractBuilding> buildings = new ArrayList<>();
 
 	/**
 	 * Boundaries TODO check construction / remove if useless?
 	 */
-	private List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
+	private List<ParcelBoundary> boundaries = new ArrayList<>();
 
 	/**
 	 * cached area
