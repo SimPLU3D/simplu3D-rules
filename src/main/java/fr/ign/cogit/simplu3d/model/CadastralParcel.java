@@ -76,7 +76,7 @@ public class CadastralParcel extends DefaultFeature {
 	/**
 	 * Cached area
 	 */
-	public double area = Double.NaN;
+	private double area = Double.NaN;
 
 	public CadastralParcel() {
 		super();

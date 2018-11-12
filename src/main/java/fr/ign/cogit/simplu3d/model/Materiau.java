@@ -25,9 +25,9 @@ package fr.ign.cogit.simplu3d.model;
  */
 public class Materiau {
 
-	public String nomMateriau;
-	public String textRep = null;
-	public double textH = Double.NaN, textL = Double.NaN;
+	private String nomMateriau;
+	private String textRep = null;
+	private double textH = Double.NaN, textL = Double.NaN;
 
 	public Materiau(String nomMateriau, String textRep, double textH, double textL) {
 		this.nomMateriau = nomMateriau;

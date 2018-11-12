@@ -34,7 +34,7 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 		}
 
 		for (Building b : bPU.getBuildings()) {
-			if (b.isNew) {
+			if (b.isNew()) {
 				buildingsNew.add(b);
 			}
 		}

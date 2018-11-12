@@ -33,7 +33,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  */
 public class PublicSpace extends DefaultFeature {
 
-	public String type;
+	private String type;
 
 	public String getType() {
 		return type;

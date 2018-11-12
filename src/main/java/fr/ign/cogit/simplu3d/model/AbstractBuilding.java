@@ -57,7 +57,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	private String destination;
 	private IOrientableSurface footprint;
 
-	public boolean isNew = false;
+	private boolean isNew = false;
 
 	public boolean isNew() {
 		return isNew;
@@ -77,11 +77,6 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	// TODO check default value for CityGML (was not restored for
 	// storeysAboveGround)
 	private double storeyHeightsAboveGround;
-
-	/**
-	 * TODO go private
-	 */
-	protected boolean generated = false;
 
 	protected AbstractBuilding() {
 		super();
@@ -107,7 +102,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 
 		List<WallSurface> lF = new ArrayList<WallSurface>();
 		lF.add(f);
-		this.setFacade(lF);
+		this.setWallSurfaces(lF);
 
 		// Etape 2 : on créé l'emprise du bâtiment
 		footprint = FootprintGenerator.convert(surfaceRoof);
@@ -190,18 +185,11 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		return wallSurfaces;
 	}
 
-	public void setFacade(List<? extends WallSurface> facades) {
+	public void setWallSurfaces(List<? extends WallSurface> facades) {
 		this.wallSurfaces = new ArrayList<WallSurface>();
 		this.wallSurfaces.addAll(facades);
 	}
 
-	public void setGenerated(boolean generated) {
-		this.generated = generated;
-	}
-
-	public boolean isGenerated() {
-		return generated;
-	}
 
 	public IOrientableSurface getFootprint() {
 		return footprint;

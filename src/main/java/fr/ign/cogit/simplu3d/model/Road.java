@@ -34,8 +34,8 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 public class Road extends DefaultFeature {
 
 	private IMultiCurve<ILineString> axis;
-	public String name;
-	public String type;
+	private String name;
+	private String type;
 	private double width;
 	private List<String> usages;
 

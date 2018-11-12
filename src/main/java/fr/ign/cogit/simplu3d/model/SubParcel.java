@@ -19,8 +19,6 @@ package fr.ign.cogit.simplu3d.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
@@ -43,9 +41,7 @@ public class SubParcel extends DefaultFeature {
 	 */
 	private UrbaZone urbaZone = null;
 
-	public List<AbstractBuilding> getBuildings() {
-		return buildings;
-	}
+
 
 	public List<ParcelBoundary> getBoundaries() {
 		return boundaries;
@@ -56,18 +52,12 @@ public class SubParcel extends DefaultFeature {
 	 */
 	private double avgSlope;
 
-	/**
-	 * BuildingParts associated to the SubParcel
-	 * 
-	 * Note that an original input building can be split to match the SubParcel
-	 * 
-	 */
-	public List<AbstractBuilding> buildings = new ArrayList<AbstractBuilding>();
+	private List<AbstractBuilding> buildings;
 
 	/**
 	 * Boundaries TODO check construction / remove if useless?
 	 */
-	public List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
+	private List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
 
 	/**
 	 * cached area
@@ -107,6 +97,9 @@ public class SubParcel extends DefaultFeature {
 		this.avgSlope = avgSlope;
 	}
 
+	
+	
+	
 	public List<AbstractBuilding> getBuildingsParts() {
 		return buildings;
 	}
@@ -123,11 +116,6 @@ public class SubParcel extends DefaultFeature {
 		return area;
 	}
 
-	@SuppressWarnings("unchecked")
-	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return (IMultiSurface<IOrientableSurface>) this.getGeom();
-	}
-	
 	
 
 }

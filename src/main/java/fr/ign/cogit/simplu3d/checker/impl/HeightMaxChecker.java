@@ -28,7 +28,7 @@ public class HeightMaxChecker extends AbstractRuleChecker {
 
 		List<Building> lBuilding = new ArrayList<>();
 		for (Building b : bPU.getBuildings()) {
-			if (b.isNew) {
+			if (b.isNew()) {
 				lBuilding.add(b);
 			}
 		}

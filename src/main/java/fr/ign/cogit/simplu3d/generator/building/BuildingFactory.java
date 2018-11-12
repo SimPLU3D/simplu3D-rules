@@ -51,7 +51,7 @@ public class BuildingFactory {
 
 		List<WallSurface> lF = new ArrayList<WallSurface>();
 		lF.add(f);
-		building.setFacade(lF);
+		building.setWallSurfaces(lF);
 
 		// Etape 2 : on créé l'emprise du bâtiment
 		IOrientableSurface footprint = FootprintGenerator.convert(surfaceRoof);

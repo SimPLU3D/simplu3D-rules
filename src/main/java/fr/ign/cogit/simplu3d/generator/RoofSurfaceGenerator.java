@@ -28,7 +28,6 @@ import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.ClassifyRoof;
 import fr.ign.cogit.geoxygene.sig3d.analysis.roof.DetectPignon;
-import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
 import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;

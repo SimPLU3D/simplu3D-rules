@@ -63,7 +63,7 @@ public class DistanceToRoadCheck extends AbstractRuleChecker  {
       ZoneRegulation r, IMultiCurve<IOrientableCurve> iCurve) {
 
     for (Building b : bPU.getBuildings()) {
-      if (!b.isNew) {
+      if (!b.isNew()) {
         continue;
       }
 

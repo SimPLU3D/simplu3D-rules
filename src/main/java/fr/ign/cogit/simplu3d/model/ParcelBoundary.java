@@ -62,11 +62,6 @@ public class ParcelBoundary extends DefaultFeature {
 	private ParcelBoundary oppositeBoundary;
 	
 
-	/**
-	 * TODO see if a list is required
-	 */
-	private Prescription prescription = null;
-
 
 	public ParcelBoundary(){
 		
@@ -111,13 +106,7 @@ public class ParcelBoundary extends DefaultFeature {
 		this.road = road;
 	}
 
-	public Prescription getPrescription() {
-		return prescription;
-	}
 
-	public void setAlignement(Prescription prescription) {
-		this.prescription = prescription;
-	}
 
 	
 	public ParcelBoundary getOppositeBoundary() {
@@ -136,6 +125,8 @@ public class ParcelBoundary extends DefaultFeature {
 	public IFeature getFeatAdj(){
 		if ( this.road != null ){
 			return this.road ;
+		}	else 		if ( this.spacePublic != null ){
+				return this.spacePublic ;
 		}else{
 			return this.cadastralParcel;
 		}

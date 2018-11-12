@@ -44,7 +44,7 @@ public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 		List<Building> buildings = new ArrayList<>();
 
 		for (Building b : buildingsTemp) {
-			if (b.isNew) {
+			if (b.isNew()) {
 				buildings.add(b);
 			}
 		}
