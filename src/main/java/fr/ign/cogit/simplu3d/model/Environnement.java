@@ -30,44 +30,52 @@ import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
  *
  */
 public class Environnement {
-	public String folder;
-	public UrbaDocument urbaDoc;
+
+	/**
+	 * Indicate if the global environnement is translated (may be done to avoid
+	 * problem due to big coordinates effect)
+	 */
+	public static boolean TRANSLATE_TO_ZERO = false;
+	/**
+	 * Indicate if activated the translation vector
+	 */
+	public static IDirectPosition dpTranslate = null;
 
 	private static Environnement env = null;
+
+	private UrbaDocument urbaDoc;
 
 	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
 	private IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
 	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
-	
+
 	private IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
-	
+
 	private IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
 	private IFeatureCollection<Prescription> prescriptions = new FT_FeatureCollection<>();
-
 
 	private AbstractDTM terrain;
 	private IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
 
-	public static IDirectPosition dpTranslate = null;
-
-	public static boolean TRANSLATE_TO_ZERO = false;
-
 	protected Environnement() {
 
 	}
-	
+
 	/**
 	 * Create a new environment instance
+	 * 
 	 * @return a new environnement and erase the existing one if necesesary
 	 */
-	public static Environnement createEnvironnement(){
+	public static Environnement createEnvironnement() {
 		env = new Environnement();
 		return env;
 	}
-	
+
 	/**
 	 * TODO remove and replace usage by demo.DefaultEnvironnement.getInstance()
-	 * @return the current environnement a new one is created if there is no existing
+	 * 
+	 * @return the current environnement a new one is created if there is no
+	 *         existing
 	 */
 	public static Environnement getInstance() {
 		if (env == null) {
@@ -155,15 +163,5 @@ public class Environnement {
 	public void setUrbaDocument(UrbaDocument plu) {
 		this.urbaDoc = plu;
 	}
-
-	public String getFolder() {
-		return folder;
-	}
-
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
-	
-	
 
 }
