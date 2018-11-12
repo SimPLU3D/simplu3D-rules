@@ -48,7 +48,7 @@ public class PostGISLoaderDemo {
     LoadPostGIS lP = new LoadPostGIS("localhost", "5432", "gtru", "postgres",
         "postgres");
 
-    Environnement env = lP.load(folder);
+    Environnement env = lP.load();
 
     UrbaDocument plu = env.getUrbaDocument();
 

@@ -79,7 +79,7 @@ public class LoaderSHP {
 		}
 		
 		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
-				prescriptions, simuFile.toString(), dtm);
+				prescriptions, dtm);
 
 		
 	
@@ -122,7 +122,7 @@ public class LoaderSHP {
 		}
 
 		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
-				prescriptions, folder.getAbsolutePath(), dtm);
+				prescriptions, dtm);
 	
 		
 		

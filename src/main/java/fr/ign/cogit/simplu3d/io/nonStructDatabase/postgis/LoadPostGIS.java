@@ -57,14 +57,9 @@ public class LoadPostGIS {
 		this.schema = schema;
 	}
 
-	public Environnement loadNoOCLRules() throws Exception {
-		return load(null);
-	}
 
-	public Environnement load(String folder) throws Exception {
-		Environnement env = Environnement.createEnvironnement();
+	public Environnement load() throws Exception {
 	
-
 		IFeatureCollection<IFeature> pluColl = PostgisManager.loadGeometricTable(host, port, database, schema,
 				NOM_TABLE_ZONAGE, user, pw);
 		IFeature featPLU = null;
@@ -85,7 +80,7 @@ public class LoadPostGIS {
 
 		DTMPostGISNoJava3D dtm = new DTMPostGISNoJava3D(host, port, database, schema, NOM_TABLE_TERRAIN, user, pw);
 
-		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, folder,
+		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, 
 				dtm);
 
 	}
