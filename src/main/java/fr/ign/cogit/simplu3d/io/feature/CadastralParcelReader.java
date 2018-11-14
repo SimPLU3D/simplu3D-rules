@@ -17,8 +17,7 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
  * 
  * CadastralParcel reader
  * 
- * TODO cleanup "code" management. Currently either "CODE" or
- * CODE_DEP+CODE_COM+COM_ABS+SECTION+NUMERO
+ * TODO cleanup "code" management. Currently either "CODE" or CODE_DEP+CODE_COM+COM_ABS+SECTION+NUMERO
  * 
  * @author MBorne
  *
@@ -102,7 +101,19 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 		 */
 		Object o = findAttribute(feature, ATT_HAS_TO_BE_SIMULATED);
 		if (o != null) {
-			cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
+
+			try {
+				cadastralParcel.setHasToBeSimulated(1 == Integer.parseInt(o.toString()));
+			} catch (Exception e) {
+				try {
+					cadastralParcel.setHasToBeSimulated(Boolean.parseBoolean(o.toString()));
+
+				} catch (Exception e2) {
+					e2.printStackTrace();
+					System.out.println("Attribute : " + ATT_HAS_TO_BE_SIMULATED+ " from parcel is not Integer or Boolean. Value : " + o);
+				}
+			}
+
 		}
 
 		IGeometry geometry = feature.getGeom();
@@ -114,8 +125,7 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 			IPolygon polygon = (IPolygon) polygons.get(0);
 			cadastralParcel.setGeom(polygon);
 		} else if (polygons.size() > 1) {
-			throw new RuntimeException("CadastralParcel should be either Polygon or MultiPolygon with 1 polygon ("
-					+ polygons.size() + " found) - ID : " + code);
+			throw new RuntimeException("CadastralParcel should be either Polygon or MultiPolygon with 1 polygon (" + polygons.size() + " found) - ID : " + code);
 		}
 		return cadastralParcel;
 	}
