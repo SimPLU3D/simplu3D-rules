@@ -8,7 +8,6 @@ public class AttribNames {
   private static String ATT_BDP_COM_ABS = "COM_ABS";
   private static String ATT_BDP_SECTION = "SECTION";
   private static String ATT_BDP_NUMERO = "NUMERO";
-
   private static String ATT_HAS_TO_BE_SIMULATED = "SIMUL";
 
   // PrescriptionReader

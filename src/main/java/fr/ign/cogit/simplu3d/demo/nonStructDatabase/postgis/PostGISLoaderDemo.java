@@ -9,7 +9,7 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
 import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
-import fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis.LoadPostGIS;
+import fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis.LoaderPostGIS;
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
@@ -45,7 +45,7 @@ public class PostGISLoaderDemo {
 
     double valShiftB = 1.5;
 
-    LoadPostGIS lP = new LoadPostGIS("localhost", "5432", "gtru", "postgres",
+    LoaderPostGIS lP = new LoaderPostGIS("localhost", "5432", "gtru", "postgres",
         "postgres");
 
     Environnement env = lP.load();

@@ -23,17 +23,17 @@ import fr.ign.cogit.simplu3d.model.Environnement;
  * 
  * @version 1.0
  **/
-public class LoadPostGIS {
+public class LoaderPostGIS {
 
 	// Default table as input of the integration process
-	public static String NOM_TABLE_PLU = "PLU";
-	public static String NOM_TABLE_ZONAGE = "zonage";
-	public static String NOM_TABLE_PARCELLE = "parcelle";
-	public static String NOM_TABLE_VOIRIE = "route";
-	public static String NOM_TABLE_BATIMENTS = "bati";
-	public static String NOM_TABLE_PRESC_LINEAIRE = "prescription_lin";
-	public static String NOM_TABLE_PRESC_SURF = "prescription_lin";
-	public static String NOM_TABLE_PRESC_PCT = "prescription_lin";
+	public final static String NOM_TABLE_PLU = "plu";
+	public final static String NOM_TABLE_ZONAGE = "zonage";
+	public final static String NOM_TABLE_PARCELLE = "parcelle";
+	public final static String NOM_TABLE_VOIRIE = "route";
+	public final static String NOM_TABLE_BATIMENTS = "batiment";
+	public final static String NOM_TABLE_PRESC_LINEAIRE = "prescriptionlin";
+	public final static String NOM_TABLE_PRESC_SURF = "prescriptionsurf";
+	public final static String NOM_TABLE_PRESC_PCT = "prescriptionpct";
 
 	public final static String NOM_TABLE_TERRAIN = "mnt";
 
@@ -44,11 +44,11 @@ public class LoadPostGIS {
 	String pw = "";
 	String schema = "";
 
-	public LoadPostGIS(String host, String port, String database, String user, String pw) {
+	public LoaderPostGIS(String host, String port, String database, String user, String pw) {
 		this(host, port, database, "public", user, pw);
 	}
 
-	public LoadPostGIS(String host, String port, String database, String schema, String user, String pw) {
+	public LoaderPostGIS(String host, String port, String database, String schema, String user, String pw) {
 		super();
 		this.host = host;
 		this.port = port;

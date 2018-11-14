@@ -15,16 +15,16 @@ import fr.ign.cogit.simplu3d.model.PrescriptionType;
  */
 public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
   public final static String ATT_TYPE;// = "TYPEPSC";
-  public static final String ATT_LABEL;// = "LIBELLE";
-
+  public final static String ATT_LABEL;// = "LIBELLE";
+  public final static String ATT_RECOIL;
+  
   static {
     ATT_TYPE = AttribNames.getATT_TYPE_PRESCRIPTION();
+    ATT_RECOIL = AttribNames.getATT_RECOIL();
     ATT_LABEL = AttribNames.getATT_LABEL();
+ 
   }
-  /**
-   * Valeur de l'attribut de recul s'il existe
-   */
-  public final static String ATT_RECOIL = "RECUL";
+
 
   @Override
   public Prescription read(IFeature feature) {
