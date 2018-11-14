@@ -2,6 +2,7 @@ package fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
 import fr.ign.cogit.simplu3d.io.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.Environnement;
@@ -12,7 +13,7 @@ import fr.ign.cogit.simplu3d.model.Environnement;
  * 
  * see LICENSE.TXT
  * 
- * see  http://www.cecill.info/
+ * see http://www.cecill.info/
  * 
  * 
  * 
@@ -24,15 +25,15 @@ import fr.ign.cogit.simplu3d.model.Environnement;
  **/
 public class LoadPostGIS {
 
-	/*
-	 * Nom des fichiers en entrée
-	 */
-	public final static String NOM_TABLE_ZONAGE = "zonage";
-	public final static String NOM_TABLE_PARCELLE = "parcelle";
-	public final static String NOM_TABLE_VOIRIE = "route";
-	public final static String NOM_TABLE_BATIMENTS = "bati";
-	public final static String NOM_TABLE_PRESC_LINEAIRE = "prescription_lin";
-	public final static String NOM_TABLE_PLU = "PLU";
+	// Default table as input of the integration process
+	public static String NOM_TABLE_PLU = "PLU";
+	public static String NOM_TABLE_ZONAGE = "zonage";
+	public static String NOM_TABLE_PARCELLE = "parcelle";
+	public static String NOM_TABLE_VOIRIE = "route";
+	public static String NOM_TABLE_BATIMENTS = "bati";
+	public static String NOM_TABLE_PRESC_LINEAIRE = "prescription_lin";
+	public static String NOM_TABLE_PRESC_SURF = "prescription_lin";
+	public static String NOM_TABLE_PRESC_PCT = "prescription_lin";
 
 	public final static String NOM_TABLE_TERRAIN = "mnt";
 
@@ -57,31 +58,42 @@ public class LoadPostGIS {
 		this.schema = schema;
 	}
 
-
 	public Environnement load() throws Exception {
 	
-		IFeatureCollection<IFeature> pluColl = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_ZONAGE, user, pw);
+		IFeatureCollection<IFeature> pluColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PLU);
 		IFeature featPLU = null;
 		if (!pluColl.isEmpty()) {
 			featPLU = pluColl.get(0);
 		}
 
-		IFeatureCollection<IFeature> zoneColl = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_ZONAGE, user, pw);
-		IFeatureCollection<IFeature> parcelleColl = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_PARCELLE, user, pw);
-		IFeatureCollection<IFeature> voirieColl = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_VOIRIE, user, pw);
-		IFeatureCollection<IFeature> batiColl = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_BATIMENTS, user, pw);
-		IFeatureCollection<IFeature> prescriptions = PostgisManager.loadGeometricTable(host, port, database, schema,
-				NOM_TABLE_PRESC_LINEAIRE, user, pw);
-
+		IFeatureCollection<IFeature> zoneColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_ZONAGE);
+		IFeatureCollection<IFeature> parcelleColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PARCELLE);
+		IFeatureCollection<IFeature> voirieColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_VOIRIE);
+		IFeatureCollection<IFeature> batiColl =loadGeometricTableOrEmptyCollection(	NOM_TABLE_BATIMENTS);
+		IFeatureCollection<IFeature> prescriptions = loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_LINEAIRE);
+		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_PCT));
+		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_SURF));
+		
 		DTMPostGISNoJava3D dtm = new DTMPostGISNoJava3D(host, port, database, schema, NOM_TABLE_TERRAIN, user, pw);
+		
+		
+		//If the DTM is not well loaded, we set it to null for the next step and do not consider the DTP
+		if(! dtm.isWellLoaded()) {
+			dtm = null;
+		}
 
 		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, 
 				dtm);
 
 	}
+
+	private IFeatureCollection<IFeature> loadGeometricTableOrEmptyCollection(String tableName) throws Exception {
+		IFeatureCollection<IFeature> featColl = PostgisManager.loadGeometricTable(host, port, database, schema,
+				tableName, user, pw);
+		if (featColl == null) {
+			return new FT_FeatureCollection<>();
+		}
+		return featColl;
+	}
+
 }
