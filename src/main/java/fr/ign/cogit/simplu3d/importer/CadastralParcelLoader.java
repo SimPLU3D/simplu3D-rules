@@ -32,7 +32,6 @@ import fr.ign.cogit.simplu3d.io.feature.CadastralParcelReader;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 
-@Deprecated
 public class CadastralParcelLoader {
 
 	public static int TYPE_ANNOTATION = 1;
