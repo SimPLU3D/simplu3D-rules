@@ -25,6 +25,10 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 
 	protected static double determineThreshold(Face f, double thresholdIni) {
 		IPolygon poly = SmallestSurroundingRectangleComputation.getSSR(f.getGeometrie());
+		
+		if(poly == null) {
+			poly = f.getGeometrie().envelope().getGeom();
+		}
 		double l1 = poly.coord().get(0).distance2D(poly.coord().get(1));
 		double l2 = poly.coord().get(1).distance2D(poly.coord().get(2));
 
