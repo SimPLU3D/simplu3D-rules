@@ -34,7 +34,7 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 
 public class CadastralParcelLoader {
 
-	public static int TYPE_ANNOTATION = 1;
+	public static int TYPE_ANNOTATION = 2;
 	
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
 		IFeatureCollection<IFeature> parcelCollection
