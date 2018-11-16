@@ -54,9 +54,9 @@ import fr.ign.cogit.simplu3d.model.WallSurface;
 public class RepEnvironnement {
 
 	public enum Theme {
-		BORDURE("Bordure"), TOIT_BATIMENT("Toit"), FACADE_BATIMENT("Facade"), VOIRIE("Voirie"), ZONE("Zone"), PARCELLE(
-				"Parcelle"), SOUS_PARCELLE("SousParcelle"), FAITAGE("FAITAGE"), PIGNON("Pignon"), GOUTTIERE(
-						"GOUTIERRE"), PAN("PAN"), PAN_MUR("PAN_MUR");
+		BORDURE("Bordure"), TOIT_BATIMENT("Toit"), FACADE_BATIMENT("Facade"), VOIRIE("Voirie"), ZONE("Zone"),
+		PARCELLE("Parcelle"), SOUS_PARCELLE("SousParcelle"), FAITAGE("FAITAGE"), PIGNON("Pignon"),
+		GOUTTIERE("GOUTIERRE"), PAN("PAN"), PAN_MUR("PAN_MUR");
 
 		private String nomCouche;
 
@@ -74,6 +74,12 @@ public class RepEnvironnement {
 
 		return represent(env, Theme.values());
 
+	}
+
+	public static List<VectorLayer> represent(Environnement env, List<Theme> lTheme) {
+
+		Theme[] tab = lTheme.toArray(new Theme[0]);
+		return represent(env, tab);
 	}
 
 	public static List<VectorLayer> represent(Environnement env, Theme[] lTheme) {
@@ -141,12 +147,11 @@ public class RepEnvironnement {
 	}
 
 	private static final Color BORDURE_FICTIVE = new Color(204, 0, 204);
-	private static final Color BORDURE_FOND = new Color(0, 0, 189);
+	private static final Color BORDURE_FOND = new Color(189, 0, 0);
 	private static final Color BORDURE_LATERAL = new Color(189, 189, 189);
-	private static final Color BORDURE_VOIE = new Color(51, 153, 153);
+	private static final Color BORDURE_VOIE = new Color(0, 153, 0);
 
-	private static IFeatureCollection<ParcelBoundary> generateCadastralBoundaryRepresentation(
-			Environnement env) {
+	private static IFeatureCollection<ParcelBoundary> generateCadastralBoundaryRepresentation(Environnement env) {
 
 		IFeatureCollection<CadastralParcel> sPF = env.getCadastralParcels();
 		IFeatureCollection<ParcelBoundary> featBordOut = new FT_FeatureCollection<ParcelBoundary>();
@@ -278,7 +283,7 @@ public class RepEnvironnement {
 	/*
 	 * ------------------------ Style Sous - Parcelle
 	 */
-	private static final Color COLOR_SOUS_PARCELLE = new Color(255,255,255);
+	private static final Color COLOR_SOUS_PARCELLE = new Color(255, 255, 255);
 
 	private static IFeatureCollection<? extends IFeature> generateSubParcelRepresentation(Environnement env) {
 

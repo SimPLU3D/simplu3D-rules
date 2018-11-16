@@ -25,7 +25,7 @@ public class NearestRoadFinder {
 
 	private IFeatureCollection<Road> roads;
 
-	private double maximumDistance = 10.0;
+	private static double maximumDistance = 10.0;
 
 	public NearestRoadFinder(IFeatureCollection<Road> roads) {
 		this.roads = roads;
@@ -35,12 +35,12 @@ public class NearestRoadFinder {
 		}
 	}
 
-	public double getMaximumDistance() {
+	public  static double getMaximumDistance() {
 		return maximumDistance;
 	}
 
-	public void setMaximumDistance(double maximumDistance) {
-		this.maximumDistance = maximumDistance;
+	public static void setMaximumDistance(double maximumDistance) {
+		NearestRoadFinder.maximumDistance = maximumDistance;
 	}
 
 	/**

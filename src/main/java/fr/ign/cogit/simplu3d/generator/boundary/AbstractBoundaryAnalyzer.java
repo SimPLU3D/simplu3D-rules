@@ -9,18 +9,18 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 
 public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyzer {
 
-	private double thresholdIni;
+	private static double THRESHOLDINI = 3.0;
 
 	public AbstractBoundaryAnalyzer() {
-		this.thresholdIni = 3.0;
+	
 	}
 
 	public double getThresholdIni() {
-		return thresholdIni;
+		return THRESHOLDINI;
 	}
 
-	public void setThresholdIni(double thresholdIni) {
-		this.thresholdIni = thresholdIni;
+	public static void setThresholdIni(double thresholdIni) {
+		AbstractBoundaryAnalyzer.THRESHOLDINI = thresholdIni;
 	}
 
 	protected static double determineThreshold(Face f, double thresholdIni) {

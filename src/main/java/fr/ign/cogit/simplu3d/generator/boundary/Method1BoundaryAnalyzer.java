@@ -197,9 +197,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 				LineEquation lE = new LineEquation(somInitial, somFinal);
 
-				/* double dist1 = */lE.distance(aCandidat.getNoeudIni().getCoord());
 
-				/* double dist2 = */lE.distance(aCandidat.getNoeudFin().getCoord());
 
 				largeur = Double.NEGATIVE_INFINITY;
 
@@ -215,7 +213,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 				dpl.add(lE.valueAt(0));
 				dpl.add(lE.valueAt(1));
 
-				// }
+		
 
 				if (largeur < threshold) {
 

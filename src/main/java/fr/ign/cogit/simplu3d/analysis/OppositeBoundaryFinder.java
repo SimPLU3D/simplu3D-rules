@@ -16,7 +16,15 @@ public class OppositeBoundaryFinder {
 
 	private IFeatureCollection<ParcelBoundary> boundaries;
 
-	public static double maximalValue = 50;
+	private static double maximalValue = 50;
+
+	public static double getMaximalValue() {
+		return maximalValue;
+	}
+
+	public static void setMaximalValue(double maximalValue) {
+		OppositeBoundaryFinder.maximalValue = maximalValue;
+	}
 
 	public OppositeBoundaryFinder(IFeatureCollection<CadastralParcel> parcelles) {
 		boundaries = new FT_FeatureCollection<>();
