@@ -271,25 +271,12 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		}
 
 		
-		if(true) {
-			return;
-		}
-		List<Arc> aCloned = new ArrayList<>();
-
-		for (Arc a : arcsParcelles) {
-			aCloned.add(this.cloneArc(a));
-		}
-
-	
-			
-		f.getArcsDirects().clear();
-		f.getArcsIndirects().clear();
-		f.getArcsIndirects().addAll(aCloned);
 
 		
 		
 	}
 
+	/*
 	private Arc cloneArc(Arc a) {
 		Arc aclone = new Arc();
 		aclone.setGeom(a.getGeom());
@@ -300,7 +287,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		aclone.setFaceGauche(a.getFaceGauche());
 
 		return aclone;
-	}
+	}*/
 
 	private static void annoteBotCandidate(Arc bestCandidate, Face f) {
 

@@ -248,7 +248,7 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		
 		
 	}
-	
+	/*
 	private Arc cloneArc(Arc a){
 		Arc aclone = new Arc();
 		aclone.setGeom(a.getGeom());
@@ -258,6 +258,6 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		aclone.setFaceDroite(a.getFaceDroite());
 		aclone.setFaceGauche(a.getFaceGauche());
 		return aclone;
-	}
+	}*/
 
 }
