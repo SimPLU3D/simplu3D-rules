@@ -57,13 +57,13 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 			if (aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
-
+				return;
 			}else if(aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
-
+				return;
 			}
-			return;
+			
 		}
 
 		
@@ -73,15 +73,15 @@ public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyze
 			if (aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
-
+				return;
 			} else if(aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
 
 				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
-
+				return;
 			}
-			return;
+		
 		}
-
+		aTemp.setPoids(ParcelBoundarySide.UNKNOWN.getValueType());
 
 	}
 

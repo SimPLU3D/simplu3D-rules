@@ -30,6 +30,7 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		// On parcourt les arcs (futures limites de parcelles)
 		List<Arc> arcsParcelles = f.arcs();
 
+		
 		// Type voirie : elles n'ont qu'un voisin
 		for (Arc a : arcsParcelles) {
 
@@ -231,8 +232,6 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 
 				LineEquation lE = new LineEquation(somInitial, somFinal);
 
-			
-
 				largeur = Double.NEGATIVE_INFINITY;
 
 				iMC.add(aCandidat.getGeometrie());
@@ -271,28 +270,35 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 			}
 		}
 
-	
 		
+		if(true) {
+			return;
+		}
 		List<Arc> aCloned = new ArrayList<>();
-		
-		for(Arc a : arcsParcelles){
+
+		for (Arc a : arcsParcelles) {
 			aCloned.add(this.cloneArc(a));
 		}
-		
+
+	
+			
 		f.getArcsDirects().clear();
 		f.getArcsIndirects().clear();
 		f.getArcsIndirects().addAll(aCloned);
+
+		
 		
 	}
-	
-	private Arc cloneArc(Arc a){
+
+	private Arc cloneArc(Arc a) {
 		Arc aclone = new Arc();
 		aclone.setGeom(a.getGeom());
 		aclone.setGeometrie(a.getGeometrie());
 		aclone.setPoids(a.getPoids());
 		aclone.setOrientation(a.getOrientation());
-		
-		
+		aclone.setFaceDroite(a.getFaceDroite());
+		aclone.setFaceGauche(a.getFaceGauche());
+
 		return aclone;
 	}
 
@@ -308,11 +314,16 @@ public class Method2BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 			a.setOrientation(ParcelBoundaryType.BOT.getValueType());
 
 			List<Arc> laTemp = new ArrayList<>();
-			laTemp.addAll(a.getNoeudFin().arcs());
-			laTemp.addAll(a.getNoeudIni().arcs());
+			Vecteur v = null;
+			if (a.getNoeudIni() != null && a.getNoeudFin() != null) {
+				laTemp.addAll(a.getNoeudIni().arcs());
+				laTemp.addAll(a.getNoeudFin().arcs());
+				
+				v = new Vecteur(a.getNoeudIni().getCoord(), a.getNoeudFin().getCoord());
+				v.normalise();
+			}
 
-			Vecteur v = new Vecteur(a.getNoeudIni().getCoord(), a.getNoeudFin().getCoord());
-			v.normalise();
+	
 			for (Arc aTemp : laTemp) {
 
 				if (aTemp.getOrientation() != ParcelBoundaryType.UNKNOWN.getValueType()) {

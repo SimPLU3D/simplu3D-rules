@@ -49,6 +49,10 @@ public class ParcelBoundary extends DefaultFeature {
 	 */
 	private Road road = null ;
 	
+	/**
+	 * Adjacent cadastralParcel owning the boundary
+	 */
+	private CadastralParcel adjacentCadastralParcel;
 	
 	/**
 	 * Optional PublicSpace linked to the boundary
@@ -128,9 +132,19 @@ public class ParcelBoundary extends DefaultFeature {
 		}	else 		if ( this.spacePublic != null ){
 				return this.spacePublic ;
 		}else{
-			return this.cadastralParcel;
+			return this.getAdjacentCadastralParcel();
 		}
 	}
+	
+	public CadastralParcel getAdjacentCadastralParcel() {
+		return adjacentCadastralParcel;
+	}
+
+	public void setAdjacentCadastralParcel(CadastralParcel adjacentCadastralParcel) {
+		this.adjacentCadastralParcel = adjacentCadastralParcel;
+	}
+
+
 
 	public PublicSpace getSpacePublic() {
 		return spacePublic;

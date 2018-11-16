@@ -89,23 +89,23 @@ public class ExportInstance {
 						lOppositeBoundary.add(feat);
 					}
 
-					AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
+		
 					AttributeManager.addAttribute(b, "Type", b.getType().getValueType(), "Integer");
-					AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");
-					AttributeManager.addAttribute(b, "Type", b.getSide().getValueType(), "Integer");
+					AttributeManager.addAttribute(b, "IDPar", sp.getCode(), "Integer");
+					AttributeManager.addAttribute(b, "Side", b.getSide().getValueType(), "Integer");
 
 					if (b.getFeatAdj() != null) {
 
 						if (b.getFeatAdj() instanceof CadastralParcel) {
 
-							AttributeManager.addAttribute(b, "Adj", ((CadastralParcel) b.getFeatAdj()).getId(),
-									"Integer");
+							AttributeManager.addAttribute(b, "Adj", ((CadastralParcel) b.getFeatAdj()).getCode(),
+									"String");
 						} else if (b.getFeatAdj() instanceof Road) {
-							AttributeManager.addAttribute(b, "Adj", ((Road) b.getFeatAdj()).getId(), "Integer");
+							AttributeManager.addAttribute(b, "Adj", ((Road) b.getFeatAdj()).getName(), "String");
 						}
 
 					} else {
-						AttributeManager.addAttribute(b, "Adj", 0, "Integer");
+						AttributeManager.addAttribute(b, "Adj", 0, "String");
 
 					}
 

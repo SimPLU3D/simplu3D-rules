@@ -36,7 +36,7 @@ public class CadastralBoundaryGenerator {
 	/**
 	 * Context cadastral parcels
 	 */
-	private Collection<CadastralParcel> cadastralParcels ;
+	private IFeatureCollection<CadastralParcel> cadastralParcels ;
 	
 	/**
 	 * cached carteTopo
@@ -49,7 +49,10 @@ public class CadastralBoundaryGenerator {
 	private IParcelBoundaryAnalyzer boundaryAnalyzer;
 	
 	public CadastralBoundaryGenerator(Collection<CadastralParcel> cadastralParcels){
-		this.cadastralParcels = cadastralParcels;
+		this.cadastralParcels = new FT_FeatureCollection<>();
+		
+		this.cadastralParcels.addAll(cadastralParcels);
+		
 		this.boundaryAnalyzer = new NullParcelBoundaryAnalyzer();
 	}
 	
@@ -94,6 +97,10 @@ public class CadastralBoundaryGenerator {
 		for (Arc arc : face.arcs()) {
 			ParcelBoundary boundary = new ParcelBoundary();
 			boundary.setCadastralParcel(cadastralParcel);
+			CadastralParcel parcelAdjacente = determineAdjacentCadastralParcel(arc, face);
+			if(parcelAdjacente != null ) {
+				boundary.setAdjacentCadastralParcel(parcelAdjacente);
+			}
 			//TODO custom arc attribute
 			boundary.setType(ParcelBoundaryType.getTypeFromInt(arc.getOrientation()));
 			boundary.setSide(ParcelBoundarySide.getTypeFromInt((int)arc.getPoids()));
@@ -104,6 +111,31 @@ public class CadastralBoundaryGenerator {
 		return result;
 	}
 
+	public CadastralParcel determineAdjacentCadastralParcel(Arc a, Face currentFace) {
+		
+		
+		//It only concerns arc with two adjacent faces
+		if(a.getFaceDroite() == null ||a.getFaceGauche() == null) {
+			return null;
+		}
+		
+		Face adjacentFace = (a.getFaceDroite() == currentFace) ?a.getFaceGauche()  : a.getFaceDroite();
+		
+		IDirectPosition centroid = PointInPolygon.get((IPolygon) adjacentFace.getGeom());
+		Collection<CadastralParcel> candidateFaces =  cadastralParcels.select(centroid,0);
+		if ( candidateFaces.isEmpty() ){
+			logger.error("Face not found for parcel neighbour of "+currentFace);
+		}
+		
+		//TODO blindage (contrôle topologique en amont, cas des polygones mal modélisé (trou ~ contour))
+		if ( candidateFaces.size() != 1 ){
+			logger.error(candidateFaces.size()+" faces found for parcel "+adjacentFace);
+		}
+		
+		return candidateFaces.iterator().next();
+	}
+	
+	
 	private void buildCarteTopoAndAnalyzeFaces() {
 		if ( carteTopo != null ){
 			return ;

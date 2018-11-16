@@ -247,18 +247,6 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		}
 		
 		
-		
-		
-		List<Arc> aCloned = new ArrayList<>();
-		
-		for(Arc a : arcsParcelles){
-			aCloned.add(this.cloneArc(a));
-		}
-		
-		f.getArcsDirects().clear();
-		f.getArcsIndirects().clear();
-		f.getArcsIndirects().addAll(aCloned);
-		
 	}
 	
 	private Arc cloneArc(Arc a){
@@ -267,7 +255,8 @@ public class Method1BoundaryAnalyzer extends AbstractBoundaryAnalyzer {
 		aclone.setGeometrie(a.getGeometrie());
 		aclone.setPoids(a.getPoids());
 		aclone.setOrientation(a.getOrientation());
-
+		aclone.setFaceDroite(a.getFaceDroite());
+		aclone.setFaceGauche(a.getFaceGauche());
 		return aclone;
 	}
 
