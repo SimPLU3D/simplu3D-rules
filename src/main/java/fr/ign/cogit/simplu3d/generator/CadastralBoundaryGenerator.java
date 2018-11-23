@@ -130,6 +130,7 @@ public class CadastralBoundaryGenerator {
 		//TODO blindage (contrôle topologique en amont, cas des polygones mal modélisé (trou ~ contour))
 		if ( candidateFaces.size() != 1 ){
 			logger.error(candidateFaces.size()+" faces found for parcel "+adjacentFace);
+			return null;
 		}
 		
 		return candidateFaces.iterator().next();
