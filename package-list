@@ -14,6 +14,7 @@ fr.ign.cogit.simplu3d.generator.building
 fr.ign.cogit.simplu3d.importer
 fr.ign.cogit.simplu3d.indicator
 fr.ign.cogit.simplu3d.io
+fr.ign.cogit.simplu3d.io.export
 fr.ign.cogit.simplu3d.io.feature
 fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis
 fr.ign.cogit.simplu3d.io.nonStructDatabase.shp
