@@ -235,7 +235,7 @@ public class ExportInstance {
 	 * 
 	 * @param folderIn  folder where the shapefile are stored
 	 * @param folderOut folder where the instances will be written
-	 * @throws Exception
+	 * @throws Exception exception
 	 */
 	public static void export(String folderIn, String folderOut) throws Exception {
 
