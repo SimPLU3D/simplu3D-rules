@@ -16,14 +16,35 @@ public class ForbiddenZoneGenerator {
 
 	private double radiusOfInfluence = 20;
 
-	private final static double DISTANCERECOILEVEGETATION = 3;
-	private final static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;
-	private final static double DISTANCERECOILPAYSAGE = 3;
-	private final static double DISTANCERENUISANCERISQUE = 1;
+	private static double DISTANCERECOILEVEGETATION = 3;
+	private static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;
+	private static double DISTANCERECOILPAYSAGE = 3;
+	private static double DISTANCERENUISANCERISQUE = 1;
 	private static double DISTANCETVB = 3;
+	private static double DISTANCEALIGNMENT = 1;
 
+	public void setDistanceAlignment(double distance) {
+		DISTANCEALIGNMENT = distance;
+	}
+	
 	public void setDistanceTVB(double distance) {
 		DISTANCETVB = distance;
+	}
+
+	public void setDistanceRecoilVegetation(double distance) {
+		DISTANCERECOILEVEGETATION = distance;
+	}
+
+	public void setDistanceRecoilReservedEmplacement(double distance) {
+		DISTANCERECOILERESERVEDEMPLACEMENT = distance;
+	}
+
+	public void setDistanceRecoilPaysage(double distance) {
+		DISTANCERECOILPAYSAGE = distance;
+	}
+
+	public void setDistancenNuisanceRisque(double distance) {
+		DISTANCERENUISANCERISQUE = distance;
 	}
 
 	public IGeometry generateUnionGeometry(IFeatureCollection<Prescription> prescriptions, BasicPropertyUnit bPU) {
@@ -81,13 +102,12 @@ public class ForbiddenZoneGenerator {
 		case NUISANCES_RISQUES:
 			return generateNuisanceRisque(p, bPU);
 		case RECOIL:
-			return generateReculFacade(p, bPU);
+			return generateRecul(p, bPU);
 		case TVB:
 			return generateTVB(p, bPU);
 		default:
 			System.out.println("Cas non traité : " + type);
 			break;
-
 		}
 		return null;
 	}
@@ -96,6 +116,7 @@ public class ForbiddenZoneGenerator {
 		switch (p.getGeom().dimension()) {
 
 		case 0:
+			return p.getGeom().buffer(DISTANCETVB);
 		case 1:
 			return p.getGeom().buffer(DISTANCETVB);
 		case 2:
@@ -105,15 +126,34 @@ public class ForbiddenZoneGenerator {
 		return null;
 	}
 
+	private IGeometry generateRecul(Prescription p, BasicPropertyUnit bPU) {
+		switch (p.getGeom().dimension()) {
+
+		case 0:
+			return generateReculFacade( p, bPU);
+		case 1:
+			return generateReculFacade( p, bPU);
+		case 2:
+			return p.getGeom();
+		}
+
+		return null;
+	}
+	
 	private IGeometry generateReculFacade(Prescription p, BasicPropertyUnit bPU) {
 
 		Object recul = p.getAttribute(PrescriptionReader.ATT_RECOIL);
+		double valRecul =0.0;
+		if (recul == null) {
+			valRecul = DISTANCEALIGNMENT;
+		}
+		else {
+			 valRecul = Double.parseDouble(recul.toString());	
+		}
+		return generateReculFacade(p, bPU, valRecul);
+	}
 
-		if (recul == null)
-			return null;
-
-		double valRecul = Double.parseDouble(recul.toString());
-
+	private IGeometry generateReculFacade(Prescription p, BasicPropertyUnit bPU, double valRecul) {
 		if (valRecul <= 0)
 			return null;
 
@@ -124,6 +164,7 @@ public class ForbiddenZoneGenerator {
 		switch (p.getGeom().dimension()) {
 
 		case 0:
+			return p.getGeom().buffer(DISTANCERECOILEVEGETATION);
 		case 1:
 
 			return p.getGeom().buffer(DISTANCERECOILEVEGETATION);
@@ -138,6 +179,7 @@ public class ForbiddenZoneGenerator {
 		switch (p.getGeom().dimension()) {
 
 		case 0:
+			return p.getGeom().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
 		case 1:
 			return p.getGeom().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
 		case 2:
