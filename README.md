@@ -13,7 +13,9 @@ This research library is developed as part of [COGIT laboratory](http://recherch
 
 It provides 3D geographic models in order to automatically check morphological rules from local urban regulation (i.e. maximal height, distances between objects) expressed in proposed formalizations. These functionalities allow many possible applications such as generation of building layout to test several regulation scenarios, assisting architect in building design or simplify construction permit inspection.
 
-The project is developed over 3D GIS Open-Source library [GeOxygene](http://ignf.github.io/geoxygene) concerning geometric operators and 3D visualization. The javadoc is deployed [in the gh-pages branch](https://simplu3d.github.io/simplu3D-rules/).
+The project is developed over 3D GIS Open-Source library [GeOxygene](http://ignf.github.io/geoxygene) concerning geometric operators and 3D visualization. 
+
+The [official website is hosted on GitHub](https://simplu3d.github.io) and the javadoc is deployed [in the gh-pages branch](https://simplu3d.github.io/simplu3D-rules/).
 
 
 
@@ -45,6 +47,7 @@ Contact for feedbacks
 ---------------------
 [Mickaël Brasebin](https://mbrasebin.github.io) & [Julien Perret](http://recherche.ign.fr/labos/cogit/cv.php?prenom=Julien&nom=Perret)
 [Cogit Laboratory](http://recherche.ign.fr/labos/cogit/accueilCOGIT.php)
+({surname.name} (AT) {gmail} (POINT) {com})
 
 Users
 --------------------
