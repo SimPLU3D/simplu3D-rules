@@ -101,7 +101,6 @@ public enum PrescriptionType {
 		int length = pTArray.length;
 		for (int i = 0; i < length; i++) {
 			PrescriptionType pTTemp = pTArray[i];
-
 			if (pTTemp.getId() == id) {
 				return pTTemp;
 			}
