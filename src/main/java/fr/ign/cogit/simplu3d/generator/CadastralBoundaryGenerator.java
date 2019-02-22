@@ -19,6 +19,7 @@ import fr.ign.cogit.geoxygene.util.algo.PointInPolygon;
 import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
+import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
@@ -92,7 +93,10 @@ public class CadastralBoundaryGenerator {
 		}
 
 		Face face = candidateFaces.iterator().next();
-
+		
+		if(CadastralParcelLoader.REAFFECT_GEOM_TOPOLOGICAL_MAP) {
+			cadastralParcel.setGeom(face.getGeom());
+		}
 	
 		for (Arc arc : face.arcs()) {
 			ParcelBoundary boundary = new ParcelBoundary();

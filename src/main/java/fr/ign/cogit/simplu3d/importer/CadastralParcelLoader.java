@@ -36,6 +36,9 @@ public class CadastralParcelLoader {
 
 	public static int TYPE_ANNOTATION = 2;
 	
+	//We assign the result of the topologic map to the parcel geometry
+	public static boolean REAFFECT_GEOM_TOPOLOGICAL_MAP = false;
+	
 	public static IFeatureCollection<CadastralParcel> assignBordureToParcelleWithOrientation(
 		IFeatureCollection<IFeature> parcelCollection
 	) {
