@@ -1,6 +1,6 @@
 package fr.ign.cogit.simplu3d.util;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IPoint;
 import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;

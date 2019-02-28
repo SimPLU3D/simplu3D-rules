@@ -25,7 +25,7 @@ public class IGeometrySerializer extends JsonSerializer<IGeometry>{
 	@Override
 	public void serialize(IGeometry value, JsonGenerator gen, SerializerProvider serializers)
 			throws IOException, JsonProcessingException {
-		jtsSerializer.serialize(JTS.toJTS(value), gen, serializers);
+		jtsSerializer.serialize(JTS.toOldJTS(value), gen, serializers);
 	}
 
 }
