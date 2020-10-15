@@ -21,7 +21,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -43,7 +44,7 @@ import fr.ign.cogit.simplu3d.util.FileLocator;
  *
  */
 public class LoaderSHP {
-	private static Logger logger = Logger.getLogger(LoaderSHP.class);
+	private static Logger logger = LogManager.getLogger(LoaderSHP.class);
 
 	/*
 	 * Nom des fichiers en entrée
@@ -105,9 +106,13 @@ public class LoaderSHP {
 		IFeature featPLU = null;
 		if (!pluColl.isEmpty()) {
 			featPLU = pluColl.get(0);
+		} else {
+		  logger.warn("No PLU file found");
 		}
 		IFeatureCollection<IFeature> zoneColl = readShapefile(folder, NOM_FICHIER_ZONAGE);
+		logger.warn(zoneColl.size() + " zones found");
 		IFeatureCollection<IFeature> parcelleColl = readShapefile(folder, NOM_FICHIER_PARCELLE);
+		logger.warn(parcelleColl.size() + " parcels found");
 		IFeatureCollection<IFeature> voirieColl = readShapefile(folder, NOM_FICHIER_VOIRIE);
 		IFeatureCollection<IFeature> batiColl = readShapefile(folder, NOM_FICHIER_BATIMENTS);
 		IFeatureCollection<IFeature> prescriptions = readShapefile(folder, NOM_FICHIER_PRESC_LINEAIRE);

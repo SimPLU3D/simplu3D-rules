@@ -2,19 +2,20 @@ package fr.ign.cogit.simplu3d.indicator;
 
 import java.io.FileNotFoundException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 
 import fr.ign.cogit.geoxygene.sig3d.indicator.COSCalculation;
 import fr.ign.cogit.geoxygene.sig3d.indicator.COSCalculation.METHOD;
 import fr.ign.cogit.simplu3d.demo.DemoEnvironmentProvider;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class COSHONTest extends TestCase {
 
-	private static Logger logger = Logger.getLogger(COSHONTest.class);
+	private static Logger logger = LogManager.getLogger(COSHONTest.class);
 	
 	@Test
 	public void testCOS() throws FileNotFoundException {

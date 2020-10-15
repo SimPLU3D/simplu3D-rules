@@ -3,7 +3,8 @@ package fr.ign.cogit.simplu3d.generator.boundary;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IPopulation;
@@ -23,7 +24,7 @@ import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
  */
 public class CarteTopoParcelBoundaryBuilder {
 	
-	private static Logger logger = Logger.getLogger(CarteTopoParcelBoundaryBuilder.class);
+	private static Logger logger = LogManager.getLogger(CarteTopoParcelBoundaryBuilder.class);
 	
 	
 	public static CarteTopo newCarteTopo(

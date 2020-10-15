@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
@@ -32,7 +33,7 @@ import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
  */
 public class CadastralBoundaryGenerator {
 	
-	private static Logger logger = Logger.getLogger(CadastralBoundaryGenerator.class);
+	private static Logger logger = LogManager.getLogger(CadastralBoundaryGenerator.class);
 	
 	/**
 	 * Context cadastral parcels

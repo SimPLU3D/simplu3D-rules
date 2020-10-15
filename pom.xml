@@ -19,7 +19,7 @@
 		<geoxygene.version>1.10-SNAPSHOT</geoxygene.version>
 		<jackson.version>2.9.8</jackson.version>
 		<jackson.datatype.jts.version>2.4</jackson.datatype.jts.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<developers>

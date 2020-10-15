@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -68,7 +69,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 	protected int nY;
 	protected double noDataValue;
 
-	private final static Logger logger = Logger.getLogger(DTMPostGISNoJava3D.class.getCanonicalName());
+	private final static Logger logger = LogManager.getLogger(DTMPostGISNoJava3D.class.getCanonicalName());
 
 	private String host = "";
 	private String port = "";
