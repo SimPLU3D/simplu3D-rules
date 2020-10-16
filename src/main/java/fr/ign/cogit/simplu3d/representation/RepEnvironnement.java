@@ -218,8 +218,10 @@ public class RepEnvironnement {
 
 			RoofSurface t = b.getRoof();
 
-			t.setRepresentation(new ObjectCartoon(t, COLOR_TOIT));
-			toitOut.add(t);
+			if (t != null) {
+  			t.setRepresentation(new ObjectCartoon(t, COLOR_TOIT));
+  			toitOut.add(t);
+			}
 
 		}
 
