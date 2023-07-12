@@ -440,7 +440,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub IGNF simplu3D-rules Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/IGNF/simplu3D-rules</url>
+			<url>https://maven.pkg.github.com/SimPLU3D/simplu3D-rules</url>
 		</repository>
 	</distributionManagement>
 </project>
