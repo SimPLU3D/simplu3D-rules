@@ -19,7 +19,7 @@ import fr.ign.cogit.geoxygene.util.conversion.WktGeOxygene;
 /**
  * Conversions entre les GM_Object GeOxygene et les Geometry JTS.
  * 
- * @author Thierry Badard, Arnaud Braun & Christophe Pele & Julien Perret
+ * @author Thierry Badard, Arnaud Braun &amp; Christophe Pele &amp; Julien Perret
  * @version 1.2 2008/07/31 (Julien Perret) : ajout de la factory {@link AdapterFactory}
  * @version 1.3 2008/07/31 (Julien Perret) : commentaires javadoc
  */
@@ -48,8 +48,6 @@ public class OldJtsGeOxygene {
    * 
    * @param geOxyGeom
    *          une géométrie GeOxygene
-   * @param adapter
-   *          si adapter est vrai, on utiliser la factory {@link AdapterFactory}, sinon, on passe par WKT
    * @return une géométrie JTS équivalente
    * @throws Exception
    *           Exception renvoie une exception si la géométrie en entrée n'est pas valide
