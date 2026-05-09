@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.ignf</groupId>
 	<artifactId>simplu3d-rules</artifactId>
-	<version>1.4</version>
+	<version>1.4.1</version>
 	<packaging>jar</packaging>
 	<name>simplu3d-rules</name>
 	<url>https://github.com/SimPLU3D/simplu3d-rules</url>
@@ -100,9 +100,8 @@
 				<version>2.4</version>
 				<configuration>
 					<compilerVersion>1.8</compilerVersion>
-					<source>1.8</source>
-					<complianceLevel>1.8</complianceLevel>
-					<target>1.8</target>
+					<source>16</source>
+					<target>16</target>
 					<includes>
 						<include>**/*</include>
 					</includes>
@@ -178,9 +177,11 @@
 				<version>${maven.javadoc.plugin}</version>
 				<configuration>
 					<doclint>all,-missing</doclint>
+<!--
 					<additionalparam>-header &apos;&lt;script
 						type=&quot;text/javascript&quot;
 						src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;&apos;</additionalparam>
+-->
 				</configuration>
 				<executions>
 					<execution>
@@ -204,7 +205,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
+				<version>3.2.8</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -213,7 +214,9 @@
 							<goal>sign</goal>
 						</goals>
 						<configuration>
+							<!--suppress UnresolvedMavenProperty -->
 							<keyname>${my.gpg.keyname}</keyname>
+							<!--suppress UnresolvedMavenProperty -->
 							<passphraseServerId>${my.gpg.keyname}</passphraseServerId>
 						</configuration>
 					</execution>
