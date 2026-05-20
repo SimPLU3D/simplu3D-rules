@@ -26,7 +26,7 @@ public class CheckerFunctionalTest extends TestCase {
 		try {
 			URL url = getClass().getClassLoader().getResource("demo-01");
 			Environnement env = LoaderSHP.loadNoDTM(url);
-			BasicPropertyUnit bPU = env.getBpU().toArray(new BasicPropertyUnit[0])[20];//FIXME
+			BasicPropertyUnit bPU = env.getBpU().findAll().toArray(new BasicPropertyUnit[0])[20];//FIXME
 			RuleContext context = new RuleContext();
 			ZoneRegulation r = RennesRegulationReader.regulationFromLine("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7");
 			List<UnrespectedRule> lSp = RennesChecker.check(bPU, r, context);

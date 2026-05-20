@@ -1,5 +1,6 @@
 package fr.ign.cogit.simplu3d.analysis;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import junit.framework.TestCase;
 import org.locationtech.jts.geom.Coordinate;
@@ -12,13 +13,14 @@ import java.util.Collection;
 
 public class BasicPropertyUnitFinderTest extends TestCase {
 	
-	private Collection<BasicPropertyUnit> basicPropertyUnits = new ArrayList<>();
+	private SpatialRepository<BasicPropertyUnit> basicPropertyUnits;
 	
 	@Override
 	public void setUp() throws Exception {
-		basicPropertyUnits = new ArrayList<>();
-		basicPropertyUnits.add(createBpU("0",0,0,1.0));
-		basicPropertyUnits.add(createBpU("1",2,2,1.0));
+		Collection<BasicPropertyUnit> list = new ArrayList<>();
+		list.add(createBpU("0",0,0,1.0));
+		list.add(createBpU("1",2,2,1.0));
+		basicPropertyUnits = new SpatialRepository<>(list);
 	}
 	
 	private BasicPropertyUnit createBpU(String id,double x, double y, double r){

@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,13 +16,7 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-*/
-
+import fr.ign.cogit.simplu3d.dao.*;
 import fr.ign.common.dtm.AbstractDTM;
 import org.locationtech.jts.geom.Coordinate;
 
@@ -48,21 +42,19 @@ public class Environnement {
 	 */
 	public static Coordinate dpTranslate = null;
 
-	private static Environnement env = null;
+    private UrbaDocument urbaDoc;
 
-	private UrbaDocument urbaDoc;
+	private SpatialRepository<BasicPropertyUnit> bpU = null;//TODO
+	private SpatialRepository<CadastralParcel> cadastralParcels = null;//TODO
+	private SpatialRepository<SubParcel> subParcels = null;//TODO
 
-	private Collection<BasicPropertyUnit> bpU = null;//TODO
-	private Collection<CadastralParcel> cadastralParcels = null;//TODO
-	private Collection<SubParcel> subParcels = null;//TODO
+	private SpatialRepository<Building> buildings = null;//TODO
 
-	private Collection<Building> buildings = null;//TODO
-
-	private Collection<UrbaZone> urbaZones = null;//TODO
-	private Collection<Prescription> prescriptions = null;//TODO
+	private AbstractRepository<UrbaZone> urbaZones = null;//TODO
+	private SpatialRepository<Prescription> prescriptions = null;//TODO
 
 	private AbstractDTM terrain;
-	private Collection<Road> roads = null;//TODO
+	private SpatialRepository<Road> roads = null;//TODO
 
 	protected Environnement() {
 
@@ -74,60 +66,46 @@ public class Environnement {
 	 * @return a new environnement and erase the existing one if necesesary
 	 */
 	public static Environnement createEnvironnement() {
-		env = new Environnement();
-		return env;
+        return new Environnement();
 	}
 
-	/**
-	 * TODO remove and replace usage by demo.DefaultEnvironnement.getInstance()
-	 * 
-	 * @return the current environnement a new one is created if there is no
-	 *         existing
-	 */
-	public static Environnement getInstance() {
-		if (env == null) {
-			env = new Environnement();
-		}
-		return env;
-	}
-
-	public Collection<CadastralParcel> getCadastralParcels() {
+	public SpatialRepository<CadastralParcel> getCadastralParcels() {
 		return cadastralParcels;
 	}
 
-	public void setCadastralParcels(Collection<CadastralParcel> cadastralParcels) {
+	public void setCadastralParcels(SpatialRepository<CadastralParcel> cadastralParcels) {
 		this.cadastralParcels = cadastralParcels;
 	}
 
-	public Collection<SubParcel> getSubParcels() {
+	public SpatialRepository<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 
-	public void setSubParcels(Collection<SubParcel> subParcels) {
+	public void setSubParcels(SpatialRepository<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
 
-	public Collection<Building> getBuildings() {
+	public SpatialRepository<Building> getBuildings() {
 		return buildings;
 	}
 
-	public void setBuildings(Collection<Building> buildings) {
+	public void setBuildings(SpatialRepository<Building> buildings) {
 		this.buildings = buildings;
 	}
 
-	public Collection<UrbaZone> getUrbaZones() {
+	public AbstractRepository<UrbaZone> getUrbaZones() {
 		return urbaZones;
 	}
 
-	public void setUrbaZones(Collection<UrbaZone> urbaZones) {
+	public void setUrbaZones(AbstractRepository<UrbaZone> urbaZones) {
 		this.urbaZones = urbaZones;
 	}
 
-	public Collection<Prescription> getPrescriptions() {
+	public SpatialRepository<Prescription> getPrescriptions() {
 		return prescriptions;
 	}
 
-	public void setPrescriptions(Collection<Prescription> prescriptions) {
+	public void setPrescriptions(SpatialRepository<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
 	}
 
@@ -147,19 +125,19 @@ public class Environnement {
 		Environnement.dpTranslate = dpTranslate;
 	}
 
-	public Collection<Road> getRoads() {
+	public SpatialRepository<Road> getRoads() {
 		return roads;
 	}
 
-	public void setRoads(Collection<Road> roads) {
+	public void setRoads(SpatialRepository<Road> roads) {
 		this.roads = roads;
 	}
 
-	public Collection<BasicPropertyUnit> getBpU() {
+	public SpatialRepository<BasicPropertyUnit> getBpU() {
 		return bpU;
 	}
 
-	public void setBpU(Collection<BasicPropertyUnit> bpU) {
+	public void setBpU(SpatialRepository<BasicPropertyUnit> bpU) {
 		this.bpU = bpU;
 	}
 
@@ -170,5 +148,4 @@ public class Environnement {
 	public void setUrbaDocument(UrbaDocument plu) {
 		this.urbaDoc = plu;
 	}
-
 }

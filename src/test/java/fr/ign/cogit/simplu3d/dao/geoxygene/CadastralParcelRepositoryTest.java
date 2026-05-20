@@ -3,22 +3,23 @@ package fr.ign.cogit.simplu3d.dao.geoxygene;
 import java.net.URL;
 import java.util.Collection;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.CadastralParcelReader;
 import fr.ign.common.io.ShapefileReader;
 import org.geotools.feature.DefaultFeatureCollection;
 
-import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import junit.framework.TestCase;
 
 public class CadastralParcelRepositoryTest extends TestCase {
-	
-	CadastralParcelRepository repository ;
+
+	SpatialRepository<CadastralParcel> repository ;
 	
 	@Override
 	public void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/PARCELLE.shp");
 		DefaultFeatureCollection features = ShapefileReader.read(url);
-		this.repository = new CadastralParcelRepositoryGeoxygene(features);
+		this.repository = new SpatialRepository<>(new CadastralParcelReader().readAll(features));
 	}
 	
 	public void testDemo01(){

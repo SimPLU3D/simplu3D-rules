@@ -3,22 +3,23 @@ package fr.ign.cogit.simplu3d.dao.geoxygene;
 import java.net.URL;
 import java.util.Collection;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.RoadReader;
 import fr.ign.common.io.ShapefileReader;
 import org.geotools.feature.DefaultFeatureCollection;
 
-import fr.ign.cogit.simplu3d.dao.RoadRepository;
 import fr.ign.cogit.simplu3d.model.Road;
 import junit.framework.TestCase;
 
 public class RoadRepositoryTest extends TestCase {
-	
-	RoadRepository repository ;
+
+	SpatialRepository<Road> repository ;
 
 	@Override
 	public void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/TRONCON_ROUTE.shp");
 		DefaultFeatureCollection features = ShapefileReader.read(url);
-		this.repository = new RoadRepositoryGeoxygene(features);
+		this.repository = new SpatialRepository<>(new RoadReader().readAll(features));
 	}
 
 	public void testDemo01(){

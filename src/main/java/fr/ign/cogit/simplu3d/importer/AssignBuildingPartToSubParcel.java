@@ -19,6 +19,7 @@ package fr.ign.cogit.simplu3d.importer;
 import java.util.Collection;
 
 import fr.ign.cogit.simplu3d.analysis.BasicPropertyUnitFinder;
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.generator.BuildingPartToSubParcelAssigner;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
@@ -44,15 +45,15 @@ public class AssignBuildingPartToSubParcel {
 	public static int ASSIGN_METHOD = 0;
 
 	public static void assign(
-            Collection<Building> buildings,
-            Collection<BasicPropertyUnit> basicPropertyUnits
+			SpatialRepository<Building> buildings,
+			SpatialRepository<BasicPropertyUnit> basicPropertyUnits
 	) {
 		/*
 		 * assignation des buildings aux BpU
 		 */
 		{
 			BasicPropertyUnitFinder finder = new BasicPropertyUnitFinder(basicPropertyUnits);
-			for (Building building : buildings) {
+			for (Building building : buildings.findAll()) {
 				BasicPropertyUnit bPU = finder.findBestIntersections(building.getFootprint());
 				if (bPU != null) {
 					bPU.getBuildings().add(building);
@@ -60,15 +61,13 @@ public class AssignBuildingPartToSubParcel {
 				}
 			}
 		}
-
 		/*
 		 * Si METHODE 2, on découpe les bâtiments, sinon, on assigne à la Sub
 		 */
 		BuildingPartToSubParcelAssigner assigner = new BuildingPartToSubParcelAssigner();
 		assigner.setCutBuildingOnSubParcels(ASSIGN_METHOD == 2);
-		for (Building building : buildings) {
+		for (Building building : buildings.findAll()) {
 			assigner.assignBuildingToSubParcels(building);
 		}
 	}
-
 }

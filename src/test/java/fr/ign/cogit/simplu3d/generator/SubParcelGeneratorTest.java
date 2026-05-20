@@ -3,10 +3,10 @@ package fr.ign.cogit.simplu3d.generator;
 import java.net.URL;
 import java.util.Collection;
 
-import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
-import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
-import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
-import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.dao.AbstractRepository;
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.CadastralParcelReader;
+import fr.ign.cogit.simplu3d.io.feature.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 public class SubParcelGeneratorTest extends TestCase {
 	
-	private Collection<UrbaZone> urbaZones ;
+	private AbstractRepository<UrbaZone> urbaZones ;
 	
 	private Collection<CadastralParcel> cadastralParcels ;
 	
@@ -24,13 +24,12 @@ public class SubParcelGeneratorTest extends TestCase {
 		// load urbaZones
 		{
 			URL url = getClass().getClassLoader().getResource("demo-02/ZONE_URBA.shp");
-			UrbaZoneRepository repository = new UrbaZoneRepositoryGeoxygene(ShapefileReader.read(url));
-			urbaZones = repository.findAll();
+            urbaZones = new AbstractRepository<>(new UrbaZoneReader().readAll(ShapefileReader.read(url)));
 		}
 		// load cadastralParcels
 		{
 			URL url = getClass().getClassLoader().getResource("demo-02/PARCELLE.SHP");
-			CadastralParcelRepository repository = new CadastralParcelRepositoryGeoxygene(ShapefileReader.read(url));
+			SpatialRepository<CadastralParcel> repository = new SpatialRepository<>(new CadastralParcelReader().readAll(ShapefileReader.read(url)));
 			cadastralParcels = repository.findAll();
 		}
 	}

@@ -47,14 +47,14 @@ public class PostGISLoaderDemo {
 
     UrbaDocument plu = env.getUrbaDocument();
 
-    logger.info("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
+    logger.info("Nombre de zones dans le PLU : " + env.getUrbaZones().count());
 
     Collection<ParcelBoundary> bordures_translated = new ArrayList<>();
     Collection<ParcelBoundary> bordures = new ArrayList<>();
 
     int count = 0;
-    logger.info("nb Parcelles : " + env.getCadastralParcels().size());
-    for (BasicPropertyUnit bPU : env.getBpU()) {
+    logger.info("nb Parcelles : " + env.getCadastralParcels().count());
+    for (BasicPropertyUnit bPU : env.getBpU().findAll()) {
       for (CadastralParcel sp : bPU.getCadastralParcels()) {
         count = count + sp.getBoundaries().size();
         Coordinate centroidParcel = sp.getGeometry().getCentroid().getCoordinate();
@@ -102,11 +102,16 @@ public class PostGISLoaderDemo {
     logger.info("Nombre de bordures" + count);
     // Export des parcelles
     ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
+//TODO should we write these?
+/*
     ShapefileWriter.write(bordures, folderOut + "bordures.shp");
     ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
+*/
     //ShapefileWriter.write(featC, folderOut + "buffer.shp");
-    logger.info("Nombre de bpu : " + env.getBpU().size());
-    ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
+    logger.info("Nombre de bpu : " + env.getBpU().count());
+
+    //TODO do we need to write these?
+    //ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
     /*
      * IFeatureCollection<Alignement> featAL = new
      * FT_FeatureCollection<Alignement>();
@@ -119,40 +124,42 @@ public class PostGISLoaderDemo {
      * 
      * AttributeManager.addAttribute(a, "ID", a.getId(), "Integer"); }
      */
-    logger.info("Sous Parcelles  " + env.getSubParcels().size());
-    for (SubParcel sp : env.getSubParcels()) {
+    logger.info("Sous Parcelles  " + env.getSubParcels().count());
+    for (SubParcel sp : env.getSubParcels().findAll()) {
       AttributeManager.addAttribute(sp, "Test", 0, "Integer");
       AttributeManager.addAttribute(sp, "NB Bat", sp.getBuildingsParts().size(), "Integer");
     }
-    ShapefileWriter.write(env.getSubParcels(), folderOut + "sousParcelles.shp");
+    //TODO do we need to write these?
+    //ShapefileWriter.write(env.getSubParcels(), folderOut + "sousParcelles.shp");
     Collection<BuildingPart> featToits = new ArrayList<>();
-    logger.info("NB emprise " + env.getBuildings().size());
-    for (Building b : env.getBuildings()) {
+    logger.info("NB emprise " + env.getBuildings().count());
+    for (Building b : env.getBuildings().findAll()) {
       BuildingPart roof = new BuildingPart();
       roof.setGeometry(b.getFootprint());
       featToits.add(roof);//TODO better class?
     }
-    ShapefileWriter.write(featToits, folderOut + "emprise.shp");
+    //TODO do we need to write these?
+    //ShapefileWriter.write(featToits, folderOut + "emprise.shp");
     Collection<BuildingPart> featFaitage = new ArrayList<>();
-    for (Building b : env.getBuildings()) {
+    for (Building b : env.getBuildings().findAll()) {
       BuildingPart faitage = new BuildingPart();
       faitage.setGeometry(b.getRoof().getRoofing());
       featFaitage.add(faitage);//TODO better class?
     }
     logger.info("Faitages : " + featFaitage.size());
-    ShapefileWriter.write(featFaitage, folderOut + "pignon.shp");
-    Collection<Road> featRoute = new ArrayList<>();
-    for (Road r : env.getRoads()) {
+    //TODO do we need to write these?
+    //ShapefileWriter.write(featFaitage, folderOut + "pignon.shp");
+    for (Road r : env.getRoads().findAll()) {
       AttributeManager.addAttribute(r, "Nom", r.getRoadName(), "String");
-      featRoute.add(r);
     }
-    ShapefileWriter.write(featRoute, folderOut + "roads.shp");
+    ShapefileWriter.write(env.getRoads(), folderOut + "roads.shp");
     Collection<CadastralParcel> featOutTestCons = new ArrayList<>();
-    for (CadastralParcel sp : env.getCadastralParcels()) {
+    for (CadastralParcel sp : env.getCadastralParcels().findAll()) {
       featOutTestCons.add(new CadastralParcel((MultiPolygon) sp.getConsLine()));//FIXME
       logger.info("Boundaries " + sp.getBoundaries().size());
     }
-    ShapefileWriter.write(featOutTestCons, folderOut + "featConsF.shp");
+    //TODO do we need to write these?
+    //ShapefileWriter.write(featOutTestCons, folderOut + "featConsF.shp");
     logger.info("Chat qui râle");
   }
   /*

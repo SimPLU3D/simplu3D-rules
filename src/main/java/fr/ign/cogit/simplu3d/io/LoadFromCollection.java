@@ -17,23 +17,17 @@
 package fr.ign.cogit.simplu3d.io;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import fr.ign.cogit.simplu3d.analysis.AssignOppositeToBoundary;
 import fr.ign.cogit.simplu3d.analysis.AssignRoadToParcelBoundary;
-import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
-import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
+import fr.ign.cogit.simplu3d.dao.*;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
-import fr.ign.cogit.simplu3d.io.feature.BuildingReader;
-import fr.ign.cogit.simplu3d.io.feature.PrescriptionReader;
-import fr.ign.cogit.simplu3d.io.feature.RoadReader;
-import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
-import fr.ign.cogit.simplu3d.io.feature.UrbaZoneReader;
+import fr.ign.cogit.simplu3d.io.feature.*;
 import fr.ign.cogit.simplu3d.model.*;
 import fr.ign.cogit.simplu3d.util.AssignZ;
 
@@ -117,18 +111,17 @@ public class LoadFromCollection {
 
 		// Etape 2 : création des zones et assignation des règles aux zones
 		logger.fine("Loading UrbaZone...");
-		UrbaZoneReader urbaZoneReader = new UrbaZoneReader();
-        Collection<UrbaZone> zones = urbaZoneReader.readAll(zoneColl);
+		AbstractRepository<UrbaZone> urbaZoneRepository = new AbstractRepository<>(new UrbaZoneReader().readAll(zoneColl));
 
 		// Etape 3 : assignement des zonages au PLU
-		env.setUrbaZones(zones);
+		env.setUrbaZones(urbaZoneRepository);
 
 		logger.fine("Loading CadastralParcel and compute ParcelBoundary...");
 		// Etape 4 : chargement des parcelles et créations des bordures
-		Collection<CadastralParcel> parcelles = CadastralParcelLoader.assignBordureToParcelleWithOrientation(parcelleColl);
+		SpatialRepository<CadastralParcel> parcelles = CadastralParcelLoader.assignBordureToParcelleWithOrientation(parcelleColl);
 		env.setCadastralParcels(parcelles);
 		logger.fine("Parcels...");
-		parcelles.forEach(parcelle -> {
+		parcelles.findAll().forEach(parcelle -> {
 			logger.finer(parcelle.toString());
 			logger.finer("Parcel boundaries: " + parcelle.getBoundaries().size());
 		});
@@ -137,23 +130,22 @@ public class LoadFromCollection {
 		logger.fine("Loading SubParcels...");
 		{
 			Collection<SubParcel> sousParcelles = new ArrayList<>();
-			SubParcelGenerator subParcelGenerator = new SubParcelGenerator(zones);
-			for (CadastralParcel cadastralParcel : parcelles) {
+			SubParcelGenerator subParcelGenerator = new SubParcelGenerator(urbaZoneRepository);
+			for (CadastralParcel cadastralParcel : parcelles.findAll()) {
 				sousParcelles.addAll(subParcelGenerator.createSubParcels(cadastralParcel));
 			}
-			env.setSubParcels(sousParcelles);
+			env.setSubParcels(new SpatialRepository<>(sousParcelles));
 		}
 
 		// Etape 6 : création des unités foncirèes
 		logger.fine("Loading BasicPropertyUnits...");
 		BasicPropertyUnitGenerator bpuBuilder = new BasicPropertyUnitGenerator(parcelles);
-		Collection<BasicPropertyUnit> collBPU = bpuBuilder.createPropertyUnits();
+		SpatialRepository<BasicPropertyUnit> collBPU = bpuBuilder.createPropertyUnits();
 		env.setBpU(collBPU);
 
 		// Etape 7 : import des bâtiments
 		logger.fine("Loading Buildings...");
-		BuildingReader buildingReader = new BuildingReader();
-		Collection<Building> buildings = buildingReader.readAll(batiColl);
+		SpatialRepository<Building> buildings = new SpatialRepository<>(new BuildingReader().readAll(batiColl));
 		env.setBuildings(buildings);
 
 		// Etape 7.1 : assignation des batiments aux BpU
@@ -162,8 +154,7 @@ public class LoadFromCollection {
 
 		// Etape 8 : chargement des voiries
 		logger.fine("Loading Roads...");
-		RoadReader roadReader = new RoadReader();
-        Collection<Road> roads = new ArrayList<>(roadReader.readAll(voirieColl));
+		SpatialRepository<Road> roads = new SpatialRepository<>(new RoadReader().readAll(voirieColl));
 		env.setRoads(roads);
 
 		// Etape 9 : on affecte les liens entre une bordure et ses objets
@@ -179,8 +170,7 @@ public class LoadFromCollection {
 		// Etape 11 : on importe les alignements
 		logger.fine("Loading Prescriptions...");
 		{
-			PrescriptionReader prescriptionReader = new PrescriptionReader();
-			Collection<Prescription> prescriptionsRead = prescriptionReader.readAll(prescriptions);
+			SpatialRepository<Prescription> prescriptionsRead = new SpatialRepository<>(new PrescriptionReader().readAll(prescriptions));
 			env.setPrescriptions(prescriptionsRead);
 		}
 

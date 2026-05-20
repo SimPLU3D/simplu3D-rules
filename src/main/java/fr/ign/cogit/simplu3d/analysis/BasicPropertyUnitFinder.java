@@ -1,8 +1,8 @@
 package fr.ign.cogit.simplu3d.analysis;
 
-import java.util.Collection;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 
 import org.locationtech.jts.geom.Geometry;
@@ -11,9 +11,9 @@ import org.locationtech.jts.index.strtree.STRtree;
 
 public class BasicPropertyUnitFinder {
     private final SpatialIndex index;
-	public BasicPropertyUnitFinder(Collection<BasicPropertyUnit> basicPropertyUnits){
+	public BasicPropertyUnitFinder(SpatialRepository<BasicPropertyUnit> basicPropertyUnits){
         this.index = new STRtree();
-		for (BasicPropertyUnit unit : basicPropertyUnits){
+		for (BasicPropertyUnit unit : basicPropertyUnits.findAll()){
 			index.insert(unit.getGeometry().getEnvelopeInternal(), unit);
 		}
 	}

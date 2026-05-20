@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.dao.AbstractRepository;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
@@ -23,14 +24,14 @@ public class SubParcelGenerator {
 	/**
 	 * 
 	 */
-	private final Collection<UrbaZone> urbaZones;
+	private final AbstractRepository<UrbaZone> urbaZones;
 	// removed : not the place to fix topology (snap geometries to each other)
 	// private double minArea;
 	/**
 	 * 
 	 * @param urbaZones the regulation urban zone used to split parcels
 	 */
-	public SubParcelGenerator(Collection<UrbaZone> urbaZones) {
+	public SubParcelGenerator(AbstractRepository<UrbaZone> urbaZones) {
 		this.urbaZones = urbaZones;
 	}
 
@@ -47,7 +48,7 @@ public class SubParcelGenerator {
 		/*
 		 * create SubParcel as the intersection with UrbaZone
 		 */
-		for (UrbaZone urbaZone : urbaZones) {
+		for (UrbaZone urbaZone : urbaZones.findAll()) {
 			Geometry intersection = urbaZone.getGeometry().intersection(cadastralParcel.getGeometry());
 			if (intersection == null || intersection.isEmpty()) {
 				continue;

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.common.conversion.FromGeomToSurface;
@@ -45,23 +46,23 @@ public class BasicPropertyUnitGenerator {
 	/**
 	 * 
 	 */
-	private final Collection<CadastralParcel> cadastralParcels;
+	private final SpatialRepository<CadastralParcel> cadastralParcels;
 	private final GeometryFactory geometryFactory = new GeometryFactory();
 	/**
 	 * TODO Constructor with a CadastralParcel iterator?
 	 * @param cadastralParcels the cadastral parcels used to generate basicproperty unit
 	 */
-	public BasicPropertyUnitGenerator(Collection<CadastralParcel> cadastralParcels){
+	public BasicPropertyUnitGenerator(SpatialRepository<CadastralParcel> cadastralParcels){
 		this.cadastralParcels = cadastralParcels ;
 	}
 
 	/**
-	 * TODO implement aggregation based on a "owerId"
+	 * TODO implement aggregation based on a "ownerId"
 	 * @return a collection of basic property units
 	 */
-	public Collection<BasicPropertyUnit> createPropertyUnits() {
-		Collection<BasicPropertyUnit> result = new ArrayList<>();
-		for (CadastralParcel cadastralParcel : cadastralParcels) {
+	public SpatialRepository<BasicPropertyUnit> createPropertyUnits() {
+		Collection<BasicPropertyUnit> collection = new ArrayList<>();
+		for (CadastralParcel cadastralParcel : cadastralParcels.findAll()) {
 			BasicPropertyUnit bpU = new BasicPropertyUnit();
 			// relation with CadastralParcel
 			bpU.getCadastralParcels().add(cadastralParcel);
@@ -73,8 +74,8 @@ public class BasicPropertyUnitGenerator {
             List<Polygon> polys = new ArrayList<>(FromGeomToSurface.convertGeom(cadastralParcel.getGeometry()));
 			MultiPolygon geom = geometryFactory.createMultiPolygon(polys.toArray(new Polygon[0]));
 			bpU.setGeometry(geom);
-			result.add(bpU);
+			collection.add(bpU);
 		}
-		return result;
+		return new SpatialRepository<>(collection);
 	}
 }

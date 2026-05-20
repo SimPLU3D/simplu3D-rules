@@ -1,5 +1,6 @@
 package fr.ign.common.io;
 
+import fr.ign.cogit.simplu3d.dao.Repository;
 import fr.ign.cogit.simplu3d.model.UrbanFeature;
 import org.geotools.api.data.*;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -12,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class ShapefileWriter {
-    public static void write(Collection<? extends UrbanFeature> features, String fileName) {
+    public static void write(Repository<? extends UrbanFeature> features, String fileName) {
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
         File file = new File(fileName);
         try {

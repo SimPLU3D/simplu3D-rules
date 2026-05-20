@@ -16,7 +16,7 @@ public class COSHONTest extends TestCase {
 	private static final Logger logger = Logger.getLogger(COSHONTest.class.getName());
 	
 	public void testCOS() throws FileNotFoundException {
-		BasicPropertyUnit sp = DemoEnvironmentProvider.getDefaultEnvironment().getBpU().iterator().next();
+		BasicPropertyUnit sp = DemoEnvironmentProvider.getDefaultEnvironment().getBpU().findAll().iterator().next();
 		logger.fine("BPU=\n" + sp.getGeometry());
 		double cos1 = COSCalculation.assess(sp.getBuildings(), SHONCalculation.METHOD.SIMPLE, sp.getArea());
 		double cos2 = COSCalculation.assess(sp.getBuildings(), SHONCalculation.METHOD.FLOOR_CUT, sp.getArea());

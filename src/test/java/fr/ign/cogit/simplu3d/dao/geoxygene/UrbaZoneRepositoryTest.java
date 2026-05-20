@@ -4,9 +4,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+import fr.ign.cogit.simplu3d.dao.AbstractRepository;
 import fr.ign.common.io.ShapefileReader;
 
-import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
 import fr.ign.cogit.simplu3d.io.feature.UrbaZoneReader;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 import junit.framework.TestCase;
@@ -15,7 +15,7 @@ public class UrbaZoneRepositoryTest extends TestCase {
 	
 	public void testReadShapefile(){
 		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/ZONE_URBA.shp");
-		UrbaZoneRepository repository = new UrbaZoneRepositoryGeoxygene(ShapefileReader.read(url));
+		AbstractRepository<UrbaZone> repository = new AbstractRepository<>(new UrbaZoneReader().readAll(ShapefileReader.read(url)));
 		Collection<UrbaZone> urbaZones = repository.findAll();
 		assertEquals(124, urbaZones.size());
 		UrbaZone first = urbaZones.iterator().next();

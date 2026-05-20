@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.generator.boundary.CarteTopoParcelBoundaryBuilder;
 import fr.ign.cogit.simplu3d.generator.boundary.NullParcelBoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.importer.CadastralParcelLoader;
@@ -32,7 +33,7 @@ public class CadastralBoundaryGenerator {
 	/**
 	 * Context cadastral parcels
 	 */
-	private final Collection<CadastralParcel> cadastralParcels ;
+	private final SpatialRepository<CadastralParcel> cadastralParcels ;
 	/**
 	 * cached carteTopo
 	 */
@@ -44,7 +45,7 @@ public class CadastralBoundaryGenerator {
 	 * 
 	 */
 	private IParcelBoundaryAnalyzer boundaryAnalyzer;
-	public CadastralBoundaryGenerator(Collection<CadastralParcel> cadastralParcels){
+	public CadastralBoundaryGenerator(SpatialRepository<CadastralParcel> cadastralParcels){
 		this.cadastralParcels = cadastralParcels;
 		this.boundaryAnalyzer = new NullParcelBoundaryAnalyzer();
 	}
@@ -109,15 +110,8 @@ public class CadastralBoundaryGenerator {
 		}
 		Face adjacentFace = (a.getFaceDroite() == currentFace) ?a.getFaceGauche()  : a.getFaceDroite();
 		Coordinate centroid = InteriorPoint.getInteriorPoint(adjacentFace.getGeometrie());
-		SpatialIndex index = new STRtree();
-		for (CadastralParcel p : cadastralParcels) {
-			index.insert(p.getGeometry().getEnvelopeInternal(), p);
-		}
 		Point point = new GeometryFactory().createPoint(centroid);
-		@SuppressWarnings("unchecked")
-		Collection<CadastralParcel> candidateFaces = index.query(point.getEnvelopeInternal());
-		candidateFaces = candidateFaces.stream().filter(cadastralParcel -> cadastralParcel.getGeometry().contains(point)).toList();
-		//cadastralParcels.select(centroid,0);
+		Collection<CadastralParcel> candidateFaces = cadastralParcels.findIntersects(point);
 		if ( candidateFaces.isEmpty() ){
 			logger.severe("Face not found for parcel neighbour of "+currentFace);
 		}
@@ -133,7 +127,7 @@ public class CadastralBoundaryGenerator {
 		if ( carteTopo != null ){
 			return;
 		}
-        Collection<CadastralParcel> parcellesTemp = new ArrayList<>(cadastralParcels);
+        Collection<CadastralParcel> parcellesTemp = new ArrayList<>(cadastralParcels.findAll());
 		carteTopo = CarteTopoParcelBoundaryBuilder.newCarteTopo(parcellesTemp, 0.2);
 		for ( Face f : carteTopo.getPopFaces() ) {
 			getBoundaryAnalyzer().analyze(carteTopo, f);

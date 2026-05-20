@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -19,12 +19,8 @@
  */
 package fr.ign.cogit.simplu3d.util;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-*/
+import fr.ign.cogit.simplu3d.dao.AbstractRepository;
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.Prescription;
@@ -34,8 +30,6 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
 import fr.ign.common.dtm.AbstractDTM;
 import fr.ign.common.extrusion.Extrusion2DObject;
 import org.locationtech.jts.geom.Geometry;
-
-import java.util.Collection;
 
 /**
  * 
@@ -48,9 +42,9 @@ public class AssignZ {
   // IF no DTM is used a default Z can be set
   public static double DEFAULT_Z = 0;
 
-  public static void toParcelle(Collection<CadastralParcel> parcelles, AbstractDTM dtm, boolean sursampled) throws Exception {
+  public static void toParcelle(SpatialRepository<CadastralParcel> parcelles, AbstractDTM dtm, boolean sursampled) {
     boolean isZSet = (dtm != null);
-    for (CadastralParcel p : parcelles) {
+    for (CadastralParcel p : parcelles.findAll()) {
       if (isZSet) {
         Geometry geom = dtm.mapGeom(p.getGeometry(), 0, true, sursampled);
         p.setGeometry(geom);
@@ -71,12 +65,12 @@ public class AssignZ {
     }
   }
 
-  public static void toSousParcelle(Collection<SubParcel> parcelles,
-      AbstractDTM dtm, boolean sursampled) throws Exception {
+  public static void toSousParcelle(SpatialRepository<SubParcel> parcelles,
+      AbstractDTM dtm, boolean sursampled) {
 
     boolean isZSet = (dtm != null);
 
-    for (SubParcel p : parcelles) {
+    for (SubParcel p : parcelles.findAll()) {
 
       if (isZSet) {
         Geometry geom = dtm.mapGeom(p.getGeometry(), 0, true, sursampled);
@@ -91,55 +85,43 @@ public class AssignZ {
 
   }
 
-  public static void toVoirie(Collection<Road> voiries,
-      AbstractDTM dtm, boolean sursampled) throws Exception {
-
+  public static void toVoirie(
+          SpatialRepository<Road> voiries,
+          AbstractDTM dtm,
+          boolean sursampled) {
     boolean isZSet = (dtm != null);
-
-    for (Road z : voiries) {
-
+    for (Road z : voiries.findAll()) {
       if (isZSet) {
-
         Geometry geom = dtm.mapGeom(z.getGeometry(), 0, true, sursampled);
         z.setGeometry(geom);
       } else {
         z.setGeometry(Extrusion2DObject.convertFromGeometry(z.getGeometry(), DEFAULT_Z,
             DEFAULT_Z));
-
       }
-
     }
-
   }
 
-  public static void toZone(Collection<UrbaZone> zones,
-      AbstractDTM dtm, boolean sursampled) throws Exception {
-
-    for (UrbaZone z : zones) {
-
-      z.setGeometry(Extrusion2DObject.convertFromGeometry(z.getGeometry(), DEFAULT_Z,
-          DEFAULT_Z));
-
+  public static void toZone(
+          AbstractRepository<UrbaZone> zones,
+          AbstractDTM dtm,//TODO should we use the dtm?
+          boolean sursampled) {
+    for (UrbaZone z : zones.findAll()) {
+      z.setGeometry(Extrusion2DObject.convertFromGeometry(z.getGeometry(), DEFAULT_Z, DEFAULT_Z));
     }
-
   }
 
   public static void toPrescriptions(
-      Collection<Prescription> prescriptions, AbstractDTM dtm,
-      boolean sursampled) throws Exception {
-
+          SpatialRepository<Prescription> prescriptions,
+          AbstractDTM dtm,
+          boolean sursampled) {
     boolean isZSet = (dtm != null);
-
-    for (Prescription a : prescriptions) {
+    for (Prescription a : prescriptions.findAll()) {
       if (isZSet) {
-
         Geometry geom = dtm.mapGeom(a.getGeometry(), 0, true, sursampled);
         a.setGeometry(geom);
       } else {
-        a.setGeometry(Extrusion2DObject.convertFromGeometry(a.getGeometry(), DEFAULT_Z,
-            DEFAULT_Z));
+        a.setGeometry(Extrusion2DObject.convertFromGeometry(a.getGeometry(), DEFAULT_Z, DEFAULT_Z));
       }
     }
-
   }
 }

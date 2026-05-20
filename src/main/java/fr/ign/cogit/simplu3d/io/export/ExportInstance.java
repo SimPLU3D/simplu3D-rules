@@ -40,14 +40,14 @@ public class ExportInstance {
 	public static void export(Environnement env, String folderOut) {
 		// Creating the output folder
 		boolean mkdirs = (new File(folderOut)).mkdirs();
-		logger.info("Number of zones ni zoning : " + env.getUrbaZones().size());
+		logger.info("Number of zones ni zoning : " + env.getUrbaZones().count());
 		Collection<ParcelBoundary> bordures_translated = new ArrayList<>();
 		Collection<ParcelBoundary> bordures = new ArrayList<>();
 		int count = 0;
 		Collection<ParcelBoundary> lTotArc = new ArrayList<>();
 		Collection<ParcelBoundary> lOppositeBoundary = new ArrayList<>();
-		logger.info("Number of parcels : " + env.getCadastralParcels().size());
-		for (BasicPropertyUnit bPU : env.getBpU()) {
+		logger.info("Number of parcels : " + env.getCadastralParcels().count());
+		for (BasicPropertyUnit bPU : env.getBpU().findAll()) {
 			for (CadastralParcel sp : bPU.getCadastralParcels()) {
 				count = count + sp.getBoundaries().size();
 				Coordinate centroidParcel = sp.getGeometry().getCentroid().getCoordinate();
@@ -106,30 +106,35 @@ public class ExportInstance {
 		}
 		logger.info("Number of borders" + count);
 		// Export des parcelles
-		ShapefileWriter.write(lOppositeBoundary, folderOut + "opposites.shp");
+		//TODO do we need to write these?
+		//ShapefileWriter.write(lOppositeBoundary, folderOut + "opposites.shp");
 		ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
-		ShapefileWriter.write(bordures, folderOut + "bordures.shp");
-		ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
-		ShapefileWriter.write(lTotArc, folderOut + "arcs.shp");
-		logger.info("Nombre de bpu : " + env.getBpU().size());
-		ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
-		logger.info("Sous Parcelles  " + env.getSubParcels().size());
-		for (SubParcel sp : env.getSubParcels()) {
+		//TODO do we need to write these?
+		//ShapefileWriter.write(bordures, folderOut + "bordures.shp");
+		//ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
+		//ShapefileWriter.write(lTotArc, folderOut + "arcs.shp");
+		logger.info("Nombre de bpu : " + env.getBpU().count());
+		//TODO do we need to write these?
+		//ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
+		logger.info("Sous Parcelles  " + env.getSubParcels().count());
+		for (SubParcel sp : env.getSubParcels().findAll()) {
 			AttributeManager.addAttribute(sp, "Test", 0, "Integer");
 			AttributeManager.addAttribute(sp, "NB Bat", sp.getBuildingsParts().size(), "Integer");
 		}
-		ShapefileWriter.write(env.getSubParcels(), folderOut + "subParcels.shp");
+		//TODO do we need to write these?
+		//ShapefileWriter.write(env.getSubParcels(), folderOut + "subParcels.shp");
 		Collection<BuildingPart> featToits = new ArrayList<>();
-		logger.info("NB emprise " + env.getBuildings().size());
-		for (Building b : env.getBuildings()) {
+		logger.info("NB emprise " + env.getBuildings().count());
+		for (Building b : env.getBuildings().findAll()) {
 			BuildingPart roof = new BuildingPart();
 			roof.setGeometry(b.getFootprint());
 			featToits.add(roof);//TODO better class?
 		}
-		ShapefileWriter.write(featToits, folderOut + "footprints.shp");
+		//TODO do we need to write these?
+		//ShapefileWriter.write(featToits, folderOut + "footprints.shp");
 		Collection<BuildingPart> featFaitage = new ArrayList<>();
 		Collection<BuildingPart> featPignon = new ArrayList<>();
-		for (AbstractBuilding b : env.getBuildings()) {
+		for (AbstractBuilding b : env.getBuildings().findAll()) {
 			RoofSurface r = b.getRoof();
 			if (r != null) {
 				if (r.getRoofing() != null && !r.getRoofing().isEmpty()) {
@@ -145,15 +150,15 @@ public class ExportInstance {
 			}
 		}
 		logger.info("Faitage : " + featFaitage.size());
-		ShapefileWriter.write(featFaitage, folderOut + "faitage.shp");
+		//TODO do we need to write these?
+		//ShapefileWriter.write(featFaitage, folderOut + "faitage.shp");
 		logger.info("Pignon : " + featPignon.size());
-		ShapefileWriter.write(featPignon, folderOut + "pignon.shp");
-		Collection<Road> featRoute = new ArrayList<>();
-		for (Road r : env.getRoads()) {
+		//TODO do we need to write these?
+		//ShapefileWriter.write(featPignon, folderOut + "pignon.shp");
+		for (Road r : env.getRoads().findAll()) {
 			AttributeManager.addAttribute(r, "Nom", r.getRoadName(), "String");
-			featRoute.add(r);
 		}
-		ShapefileWriter.write(featRoute, folderOut + "roads.shp");
+		ShapefileWriter.write(env.getRoads(), folderOut + "roads.shp");
 	}
 
 	/**

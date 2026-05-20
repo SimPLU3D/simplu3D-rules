@@ -16,8 +16,7 @@
  **/
 package fr.ign.cogit.simplu3d.analysis;
 
-import java.util.Collection;
-
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
@@ -31,9 +30,9 @@ import fr.ign.cogit.simplu3d.model.Road;
  *
  */
 public class AssignRoadToParcelBoundary {
-	public static void process(Collection<CadastralParcel> cadastralParcels, Collection<Road> roads) {
+	public static void process(SpatialRepository<CadastralParcel> cadastralParcels, SpatialRepository<Road> roads) {
 		NearestRoadFinder roadFinder = new NearestRoadFinder(roads);
-		for (CadastralParcel cadastralParcel : cadastralParcels) {
+		for (CadastralParcel cadastralParcel : cadastralParcels.findAll()) {
 			for (ParcelBoundary boundary : cadastralParcel.getBoundariesByType(ParcelBoundaryType.ROAD)) {
 				boundary.setRoad(roadFinder.findNearestRoad(boundary.getGeometry()));
 			}

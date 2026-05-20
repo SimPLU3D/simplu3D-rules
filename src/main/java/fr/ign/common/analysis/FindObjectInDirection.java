@@ -1,5 +1,6 @@
 package fr.ign.common.analysis;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.UrbanFeature;
 import fr.ign.common.conversion.FromGeomToLineString;
 import fr.ign.common.util.MathConstant;
@@ -21,16 +22,16 @@ public class FindObjectInDirection {
     public static <T extends UrbanFeature> T find(
             UrbanFeature feature,
             UrbanFeature oppositeFeature,
-            Collection<T> collection,
+            SpatialRepository<T> collection,
             double maximalValue) {
         return find(feature.getGeometry(), oppositeFeature.getGeometry(), collection, maximalValue);
     }
     public static <T extends UrbanFeature> T find(
             Geometry linestring,
             Geometry oppositeDirection,
-            Collection<T> collectionToSelect,
+            SpatialRepository<T> collectionToSelect,
             double maximumDistance) {
-        if (collectionToSelect.isEmpty()) {
+        if (collectionToSelect.count() == 0) {
             return null;
         }
         LineString ls = generateLineOfSight(linestring, oppositeDirection, maximumDistance);
@@ -40,11 +41,7 @@ public class FindObjectInDirection {
         double distance = Double.POSITIVE_INFINITY;
         T bestcandidateParcel = null;
         // use spatialIndex
-        SpatialIndex index = new STRtree();
-        collectionToSelect.forEach(c -> index.insert(c.getGeometry().getEnvelopeInternal(), c));
-        @SuppressWarnings("unchecked")
-        Collection<T> features = index.query(ls.getEnvelopeInternal());
-        features = features.stream().filter(f->f.getGeometry().intersects(ls)).toList();
+        Collection<T> features = collectionToSelect.findIntersects(ls);
         for (T boundaryTemp : features) {
             double distTemp = boundaryTemp.getGeometry().distance(oppositeDirection);
             if (oppositeDirection.buffer(0.5).contains(boundaryTemp.getGeometry())) {

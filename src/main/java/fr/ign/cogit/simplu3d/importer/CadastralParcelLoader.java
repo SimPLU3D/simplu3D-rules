@@ -20,10 +20,10 @@
  */
 package fr.ign.cogit.simplu3d.importer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.generator.CadastralBoundaryGenerator;
 import fr.ign.cogit.simplu3d.generator.boundary.Method1BoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.generator.boundary.Method2BoundaryAnalyzer;
@@ -40,16 +40,15 @@ public class CadastralParcelLoader {
 	//We assign the result of the topologic map to the parcel geometry
 	public static boolean REAFFECT_GEOM_TOPOLOGICAL_MAP = false;
 	
-	public static Collection<CadastralParcel> assignBordureToParcelleWithOrientation(
+	public static SpatialRepository<CadastralParcel> assignBordureToParcelleWithOrientation(
 			DefaultFeatureCollection parcelCollection
 	) {
 		/*
 		 * converts feature to CadastralParcel
 		 */
-        CadastralParcelReader adapter = new CadastralParcelReader();
-        Collection<CadastralParcel> cadastralParcels = new ArrayList<>(adapter.readAll(parcelCollection));
+		SpatialRepository<CadastralParcel> cadastralParcels = new SpatialRepository<>(new CadastralParcelReader().readAll(parcelCollection));
 		CadastralBoundaryGenerator boundaryGenerator = new CadastralBoundaryGenerator(cadastralParcels);
-		logger.fine("CadastralBoundaryGenerator with " + cadastralParcels.size() + " parcels");
+		logger.fine("CadastralBoundaryGenerator with " + cadastralParcels.count() + " parcels");
 		if ( TYPE_ANNOTATION == 1 ){
 			boundaryGenerator.setBoundaryAnalyzer(new Method1BoundaryAnalyzer());
 		}else if ( TYPE_ANNOTATION == 2 ){
@@ -57,7 +56,7 @@ public class CadastralParcelLoader {
 		}
 		boundaryGenerator.buildCarteTopoAndAnalyzeFaces();
 		logger.fine("boundaryGenerator with " + boundaryGenerator.getCarteTopo().getPopFaces().size() + " faces");
-		for (CadastralParcel cadastralParcel : cadastralParcels) {
+		for (CadastralParcel cadastralParcel : cadastralParcels.findAll()) {
 			Collection<ParcelBoundary> boundaries = boundaryGenerator.createParcelBoundaries(cadastralParcel);
 			cadastralParcel.getBoundaries().addAll(boundaries);
 		}

@@ -52,7 +52,7 @@ public class OppositeBoundaryFinderTest extends TestCase {
 					new DefaultFeatureCollection(),
 					new DefaultFeatureCollection(),
 					null);
-			for (CadastralParcel cP : env.getCadastralParcels()) {
+			for (CadastralParcel cP : env.getCadastralParcels().findAll()) {
 				for (ParcelBoundary pB : cP.getBoundaries()) {
 					FindObjectInDirection.find(pB, cP, env.getCadastralParcels(), maximumDistance);
 				}
