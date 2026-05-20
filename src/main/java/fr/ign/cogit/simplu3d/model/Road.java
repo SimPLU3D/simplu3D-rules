@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -18,11 +18,8 @@ package fr.ign.cogit.simplu3d.model;
 
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * 
@@ -31,9 +28,22 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * @author Brasebin Mickaël
  *
  */
-public class Road extends DefaultFeature {
-
-	private IMultiCurve<ILineString> axis;
+public class Road implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
+	private MultiLineString axis;
 	private String name;
 	private String type;
 	private double width;
@@ -43,23 +53,23 @@ public class Road extends DefaultFeature {
 		super();
 	}
 
-	public Road(IMultiSurface<IOrientableSurface> surfVoie) {
-		this.setGeom(surfVoie);
+	public Road(MultiLineString surfVoie) {
+		this.setGeometry(surfVoie);
 	}
 
-	public IMultiCurve<ILineString> getAxis() {
+	public MultiLineString getAxis() {
 		return axis;
 	}
 
-	public void setAxis(IMultiCurve<ILineString> axis) {
+	public void setAxis(MultiLineString axis) {
 		this.axis = axis;
 	}
 
-	public String getName() {
+	public String getRoadName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setRoadName(String name) {
 		this.name = name;
 	}
 
@@ -71,11 +81,11 @@ public class Road extends DefaultFeature {
 		this.width = width;
 	}
 
-	public String getType() {
+	public String getRoadType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setRoadType(String type) {
 		this.type = type;
 	}
 

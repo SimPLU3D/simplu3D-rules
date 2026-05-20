@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,15 +16,15 @@
  **/
 package fr.ign.cogit.simplu3d.io;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
 import fr.ign.cogit.simplu3d.analysis.AssignOppositeToBoundary;
 import fr.ign.cogit.simplu3d.analysis.AssignRoadToParcelBoundary;
+import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
+import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.generator.BasicPropertyUnitGenerator;
 import fr.ign.cogit.simplu3d.generator.SubParcelGenerator;
 import fr.ign.cogit.simplu3d.importer.AssignBuildingPartToSubParcel;
@@ -34,16 +34,15 @@ import fr.ign.cogit.simplu3d.io.feature.PrescriptionReader;
 import fr.ign.cogit.simplu3d.io.feature.RoadReader;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.io.feature.UrbaZoneReader;
-import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.Building;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.Prescription;
-import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
-import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.cogit.simplu3d.model.*;
 import fr.ign.cogit.simplu3d.util.AssignZ;
+
+import fr.ign.common.dtm.AbstractDTM;
+import fr.ign.common.util.GeomUtils;
+
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
@@ -58,51 +57,55 @@ public class LoadFromCollection {
 
 	public final static boolean SURSAMPLED = true;
 
-	private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getCanonicalName());
+	private final static Logger logger = Logger.getLogger(LoadFromCollection.class.getName());
 
-	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
-			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
-			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions, 
-			AbstractDTM dtm) throws Exception {
+	public static Environnement load(SimpleFeature featPLU,
+                                     DefaultFeatureCollection zoneColl,
+                                     DefaultFeatureCollection parcelleColl,
+                                     DefaultFeatureCollection voirieColl,
+                                     DefaultFeatureCollection batiColl,
+                                     DefaultFeatureCollection prescriptions,
+                                     AbstractDTM dtm) throws Exception {
 		Environnement env = Environnement.createEnvironnement();
-
 		return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, 
 				dtm, env);
 	}
 
-	public static Environnement load(IFeature featPLU, IFeatureCollection<IFeature> zoneColl,
-			IFeatureCollection<IFeature> parcelleColl, IFeatureCollection<IFeature> voirieColl,
-			IFeatureCollection<IFeature> batiColl, IFeatureCollection<IFeature> prescriptions,
-			AbstractDTM dtm, Environnement env) throws Exception {
+	public static Environnement load(SimpleFeature featPLU,
+									 DefaultFeatureCollection zoneColl,
+									 DefaultFeatureCollection parcelleColl,
+									 DefaultFeatureCollection voirieColl,
+									 DefaultFeatureCollection batiColl,
+									 DefaultFeatureCollection prescriptions,
+									 AbstractDTM dtm,
+									 Environnement env) throws Exception {
 
-		// Etape 0 : doit on translater tous les objets ?
-
+		// Step 0: should we translate all objects?
 		if (Environnement.TRANSLATE_TO_ZERO) {
-			Environnement.dpTranslate = zoneColl.envelope().center();
-			for (IFeature feat : zoneColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
+			Environnement.dpTranslate = zoneColl.getBounds().centre();
+			for (SimpleFeature feat : zoneColl) {
+				feat.setDefaultGeometry(GeomUtils.translate((Geometry) feat.getDefaultGeometry(),-Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
-			for (IFeature feat : parcelleColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
+			for (SimpleFeature feat : parcelleColl) {
+				feat.setDefaultGeometry(GeomUtils.translate((Geometry) feat.getDefaultGeometry(), -Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
-			for (IFeature feat : voirieColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
+			for (SimpleFeature feat : voirieColl) {
+				feat.setDefaultGeometry(GeomUtils.translate((Geometry) feat.getDefaultGeometry(), -Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
-			for (IFeature feat : batiColl) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
+			for (SimpleFeature feat : batiColl) {
+				feat.setDefaultGeometry(GeomUtils.translate((Geometry) feat.getDefaultGeometry(), -Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
-			for (IFeature feat : prescriptions) {
-				feat.setGeom(feat.getGeom().translate(-Environnement.dpTranslate.getX(),
+			for (SimpleFeature feat : prescriptions) {
+				feat.setDefaultGeometry(GeomUtils.translate((Geometry) feat.getDefaultGeometry(), -Environnement.dpTranslate.getX(),
 						-Environnement.dpTranslate.getY(), 0));
 			}
 		}
-
-		// Etape 1 : création de l'objet PLU
-		logger.info("Read UrbaDocument...");
+		// Step 1: create PLU object
+		logger.fine("Read UrbaDocument...");
 		UrbaDocument plu;
 		if (featPLU == null) {
 			plu = new UrbaDocument();
@@ -113,24 +116,27 @@ public class LoadFromCollection {
 		env.setUrbaDocument(plu);
 
 		// Etape 2 : création des zones et assignation des règles aux zones
-		logger.info("Loading UrbaZone...");
+		logger.fine("Loading UrbaZone...");
 		UrbaZoneReader urbaZoneReader = new UrbaZoneReader();
-		IFeatureCollection<UrbaZone> zones = new FT_FeatureCollection<>();
-		zones.addAll(urbaZoneReader.readAll(zoneColl));
+        Collection<UrbaZone> zones = urbaZoneReader.readAll(zoneColl);
 
 		// Etape 3 : assignement des zonages au PLU
 		env.setUrbaZones(zones);
 
-		logger.info("Loading CadastralParcel and compute ParcelBoundary...");
+		logger.fine("Loading CadastralParcel and compute ParcelBoundary...");
 		// Etape 4 : chargement des parcelles et créations des bordures
-		IFeatureCollection<CadastralParcel> parcelles = CadastralParcelLoader
-				.assignBordureToParcelleWithOrientation(parcelleColl);
+		Collection<CadastralParcel> parcelles = CadastralParcelLoader.assignBordureToParcelleWithOrientation(parcelleColl);
 		env.setCadastralParcels(parcelles);
+		logger.fine("Parcels...");
+		parcelles.forEach(parcelle -> {
+			logger.finer(parcelle.toString());
+			logger.finer("Parcel boundaries: " + parcelle.getBoundaries().size());
+		});
 
 		// Etape 5 : import des sous parcelles
-		logger.info("Loading SubParcels...");
+		logger.fine("Loading SubParcels...");
 		{
-			IFeatureCollection<SubParcel> sousParcelles = new FT_FeatureCollection<>();
+			Collection<SubParcel> sousParcelles = new ArrayList<>();
 			SubParcelGenerator subParcelGenerator = new SubParcelGenerator(zones);
 			for (CadastralParcel cadastralParcel : parcelles) {
 				sousParcelles.addAll(subParcelGenerator.createSubParcels(cadastralParcel));
@@ -139,49 +145,48 @@ public class LoadFromCollection {
 		}
 
 		// Etape 6 : création des unités foncirèes
-		logger.info("Loading BasicPropertyUnits...");
+		logger.fine("Loading BasicPropertyUnits...");
 		BasicPropertyUnitGenerator bpuBuilder = new BasicPropertyUnitGenerator(parcelles);
-		IFeatureCollection<BasicPropertyUnit> collBPU = bpuBuilder.createPropertyUnits();
+		Collection<BasicPropertyUnit> collBPU = bpuBuilder.createPropertyUnits();
 		env.setBpU(collBPU);
 
 		// Etape 7 : import des bâtiments
-		logger.info("Loading Buildings...");
+		logger.fine("Loading Buildings...");
 		BuildingReader buildingReader = new BuildingReader();
 		Collection<Building> buildings = buildingReader.readAll(batiColl);
-		env.getBuildings().addAll(buildings);
+		env.setBuildings(buildings);
 
 		// Etape 7.1 : assignation des batiments aux BpU
-		logger.info("Assigning building to SubParcels...");
+		logger.fine("Assigning building to SubParcels...");
 		AssignBuildingPartToSubParcel.assign(buildings, collBPU);
 
 		// Etape 8 : chargement des voiries
-		logger.info("Loading Roads...");
+		logger.fine("Loading Roads...");
 		RoadReader roadReader = new RoadReader();
-		IFeatureCollection<Road> roads = new FT_FeatureCollection<>();
-		roads.addAll(roadReader.readAll(voirieColl));
+        Collection<Road> roads = new ArrayList<>(roadReader.readAll(voirieColl));
 		env.setRoads(roads);
 
-		// Etape 9 : on affecte les liens entres une bordure et ses objets
-		// adjacents (bordure sur route => route + relation entre les limites de
+		// Etape 9 : on affecte les liens entre une bordure et ses objets
+		// adjacents (bordure sur route -> route + relation entre les limites de
 		// parcelles)
-		logger.info("Assigning Roads to ParcelBoundaries...");
+		logger.fine("Assigning Roads to ParcelBoundaries...");
 		AssignRoadToParcelBoundary.process(parcelles, roads);
 
 		// Etape 10 : on détecte les limites séparatives opposées
-		logger.info("Assigning opposite boundaries to parcel boundaries...");
+		logger.fine("Assigning opposite boundaries to parcel boundaries...");
 		AssignOppositeToBoundary.process(parcelles);
 
 		// Etape 11 : on importe les alignements
-		logger.info("Loading Prescriptions...");
+		logger.fine("Loading Prescriptions...");
 		{
 			PrescriptionReader prescriptionReader = new PrescriptionReader();
 			Collection<Prescription> prescriptionsRead = prescriptionReader.readAll(prescriptions);
-			env.getPrescriptions().addAll(prescriptionsRead);
+			env.setPrescriptions(prescriptionsRead);
 		}
 
-		logger.info("Assign Z to features...");
+		logger.fine("Assign Z to features...");
 		// Etape 12 : on affecte des z à tout ce bon monde // - parcelles,
-		// sous-parcelles route sans z, zonage, les bordures etc...
+		// sous-parcelles route sans z, zonage, les bordures, etc.
 		env.setTerrain(dtm);
 		try {
 			AssignZ.toParcelle(env.getCadastralParcels(), dtm, SURSAMPLED);
@@ -190,12 +195,10 @@ public class LoadFromCollection {
 			AssignZ.toPrescriptions(env.getPrescriptions(), dtm, SURSAMPLED);
 			AssignZ.toZone(env.getUrbaZones(), dtm, false);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe(e.getMessage());
 		}
 
-		logger.info("Loading complete");
-
+		logger.fine("Loading complete");
 		return env;
 	}
-
 }

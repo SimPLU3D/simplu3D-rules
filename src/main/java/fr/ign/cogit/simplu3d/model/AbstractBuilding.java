@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p></p>
  * see LICENSE.TXT
- * 
+ * <p></p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -19,43 +19,79 @@ package fr.ign.cogit.simplu3d.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.sig3d.analysis.roof.RoofDetection;
-import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
-import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.indicator.HauteurCalculation;
-import fr.ign.cogit.geoxygene.sig3d.indicator.StoreyCalculation;
-import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.simplu3d.generator.FootprintGenerator;
 import fr.ign.cogit.simplu3d.generator.RoofSurfaceGenerator;
+import fr.ign.common.analysis.building.HauteurCalculation;
+import fr.ign.common.analysis.building.StoreyCalculation;
+import fr.ign.common.analysis.roof.RoofDetection;
+import fr.ign.common.conversion.FromGeomToSurface;
+import fr.ign.common.util.Box3D;
+import fr.ign.common.util.Util;
+import org.locationtech.jts.geom.*;
 
 /**
- * 
+ *
  * Un bâtiment abstrait (AbstractBuilding) qui est soit un Building soit un
  * BuildingPart et qui est composé de BuildingParts.
- * 
+ * <p></p>
  * see CityGML
- * http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams .pdf
- * 
+ * <a href="http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams.pdf">...</a>
+ *
  * @author Brasebin Mickaël
  *
  */
-public abstract class AbstractBuilding extends DefaultFeature {
+public abstract class AbstractBuilding implements UrbanFeature {
 
-	private List<BuildingPart> buildingParts = new ArrayList<BuildingPart>();
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+		// Etape 1 : détection du toit et des façades
+		List<Polygon> lOS = FromGeomToSurface.convertGeom(geom);
+		MultiPolygon surfaceRoof = RoofDetection.detectRoof(this, 0.2);
+		// Util.detectRoof(lOS, 0.2);
+		MultiPolygon surfaceWall = Util.detectVertical(lOS, 0.2);
+		// Création facade
+		WallSurface f = new WallSurface();
+		f.setGeometry(surfaceWall);
+		List<WallSurface> lF = new ArrayList<>();
+		lF.add(f);
+		this.setWallSurfaces(lF);
+		// Etape 2 : on créé l'emprise du bâtiment
+		// FIXME ???
+		//footprint = FootprintGenerator.convert(surfaceRoof);
+		Geometry union = (surfaceRoof != null) ? surfaceRoof.union() : geom.union();
+		if (union instanceof MultiPolygon) {
+			union = union.buffer(1).union().buffer(-1);
+		}
+		if (union instanceof Polygon) {
+			footprint = (Polygon) union;
+		} else {
+			footprint = null;
+		}
+		if (footprint != null) {
+			// Création toit
+			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (Polygon) footprint.copy());
+			// Affectation
+			this.setRoofSurface(t);
+		}
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
+
+	private List<BuildingPart> buildingParts = new ArrayList<>();
 	private RoofSurface roofSurface = null;
 
 	private List<WallSurface> wallSurfaces;
 
 	private String destination;
-	private IOrientableSurface footprint;
+	private Polygon footprint;
 
 	private boolean isNew = false;
 
@@ -70,51 +106,51 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	/**
 	 * TODO compute from BuildingParts?
 	 */
-	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	private List<SubParcel> subParcels = new ArrayList<>();
 
 	private int storeysAboveGround = -1;
 
-	// TODO check default value for CityGML (was not restored for
-	// storeysAboveGround)
+	// TODO check default value for CityGML (was not restored for storeysAboveGround)
 	private double storeyHeightsAboveGround;
 
 	protected AbstractBuilding() {
-		super();
 	}
 
+/*
 	@Deprecated
-	public AbstractBuilding(IGeometry geom) {
-		this.setGeom(geom);
-
+	public AbstractBuilding(Geometry geom) {
+        this.setGeometry(geom);
 		// Etape 1 : détection du toit et des façades
-		List<IOrientableSurface> lOS = FromGeomToSurface.convertGeom(geom);
-		@SuppressWarnings("unchecked")
-		IMultiSurface<IOrientableSurface> surfaceRoof = (IMultiSurface<IOrientableSurface>) RoofDetection
-				.detectRoof(this, 0.2, true);
-
-		// Util.detectRoof(lOS,
-		// 0.2);
-		IMultiSurface<IOrientableSurface> surfaceWall = Util.detectVertical(lOS, 0.2);
-
+		List<Polygon> lOS = FromGeomToSurface.convertGeom(geom);
+		MultiPolygon surfaceRoof = RoofDetection.detectRoof(this, 0.2);
+		// Util.detectRoof(lOS, 0.2);
+		MultiPolygon surfaceWall = Util.detectVertical(lOS, 0.2);
 		// Création facade
 		WallSurface f = new WallSurface();
-		f.setGeom(surfaceWall);
-
-		List<WallSurface> lF = new ArrayList<WallSurface>();
+		f.setGeometry(surfaceWall);
+		List<WallSurface> lF = new ArrayList<>();
 		lF.add(f);
 		this.setWallSurfaces(lF);
-
 		// Etape 2 : on créé l'emprise du bâtiment
-		footprint = FootprintGenerator.convert(surfaceRoof);
-
+		// FIXME ???
+		//footprint = FootprintGenerator.convert(surfaceRoof);
+		Geometry union = (surfaceRoof != null) ? surfaceRoof.union() : geom.union();
+		if (union instanceof MultiPolygon) {
+			union = union.buffer(1).union().buffer(-1);
+		}
+		if (union instanceof Polygon) {
+			footprint = (Polygon) union;
+		} else {
+			footprint = null;
+		}
 		if (footprint != null) {
 			// Création toit
-			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (IPolygon) footprint.clone());
-
+			RoofSurface t = RoofSurfaceGenerator.create(surfaceRoof, (Polygon) footprint.copy());
 			// Affectation
 			this.setRoofSurface(t);
 		}
 	}
+*/
 
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
@@ -132,9 +168,8 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.roofSurface = roof;
 	}
 
-	@SuppressWarnings("unchecked")
-	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return (IMultiSurface<IOrientableSurface>) getGeom();
+	public MultiPolygon getLod2MultiSurface() {
+		return (MultiPolygon) getGeometry();
 	}
 
 	public void setStoreysAboveGround(int storeysAboveGround) {
@@ -157,7 +192,7 @@ public abstract class AbstractBuilding extends DefaultFeature {
 		this.destination = destination;
 	}
 
-	public void setFootprint(IOrientableSurface footprint) {
+	public void setFootprint(Polygon footprint) {
 		this.footprint = footprint;
 	}
 
@@ -186,12 +221,12 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	}
 
 	public void setWallSurfaces(List<? extends WallSurface> facades) {
-		this.wallSurfaces = new ArrayList<WallSurface>();
+		this.wallSurfaces = new ArrayList<>();
 		this.wallSurfaces.addAll(facades);
 	}
 
 
-	public IOrientableSurface getFootprint() {
+	public Polygon getFootprint() {
 		return footprint;
 	}
 
@@ -200,52 +235,41 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	public abstract AbstractBuilding clone();
 
 	public double height(int pB, int pH) {
-
 		double zHaut = Double.NaN;
-
-		switch (pH) {
-		case 0:
-			zHaut = HauteurCalculation.calculateZHautPPE(this);
-			break;
-		case 1:
-			zHaut = HauteurCalculation.calculateZhautMinRoof(this);
-			break;
-		case 2:
-			zHaut = HauteurCalculation.calculateZHautPHF(this);
-			break;
-
-		}
+        zHaut = switch (pH) {
+            case 0 -> HauteurCalculation.calculateZHautPPE(this);
+            case 1 -> HauteurCalculation.calculateZhautMinRoof(this);
+            case 2 -> HauteurCalculation.calculateZHautPHF(this);
+            default -> zHaut;
+        };
 		double zBas = Double.NaN;
-
 		switch (pB) {
-		case 0:
-			List<IGeometry> geom = new ArrayList<>();
-			List<SubParcel> lSubParcels = this.getSubParcels();
-			if (lSubParcels.isEmpty()) {
+			case 0:
+				List<Geometry> geom = new ArrayList<>();
+				List<SubParcel> lSubParcels = this.getSubParcels();
+				if (lSubParcels.isEmpty()) {
+					zBas = HauteurCalculation.calculateZBasPBB(this);
+					break;
+				}
+				for (ParcelBoundary bP : lSubParcels.get(0).getBoundaries()) {
+					geom.add(bP.getGeometry());
+				}
+				zBas = HauteurCalculation.calculateZBasEP(this, geom);
+				break;
+			case 1:
 				zBas = HauteurCalculation.calculateZBasPBB(this);
 				break;
-			}
-			for (ParcelBoundary bP : lSubParcels.get(0).getBoundaries()) {
-				geom.add(bP.getGeom());
-			}
-			zBas = HauteurCalculation.calculateZBasEP(this, geom);
-			break;
-		case 1:
-			zBas = HauteurCalculation.calculateZBasPBB(this);
-			break;
-		case 2:
-			List<IGeometry> geometriesParcel = new ArrayList<>();
-			geometriesParcel.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
-			zBas = HauteurCalculation.calculateZBasPBT(geometriesParcel);
-			break;
-		case 3:
-			List<IGeometry> geometriesParcel2 = new ArrayList<>();
-			geometriesParcel2.add(this.getSubParcels().get(0).getCadastralParcel().getGeom());
-			zBas = HauteurCalculation.calculateZBasPHT(geometriesParcel2);
-			break;
-
+			case 2:
+				List<Geometry> geometriesParcel = new ArrayList<>();
+				geometriesParcel.add(this.getSubParcels().get(0).getCadastralParcel().getGeometry());
+				zBas = HauteurCalculation.calculateZBasPBT(geometriesParcel);
+				break;
+			case 3:
+				List<Geometry> geometriesParcel2 = new ArrayList<>();
+				geometriesParcel2.add(this.getSubParcels().get(0).getCadastralParcel().getGeometry());
+				zBas = HauteurCalculation.calculateZBasPHT(geometriesParcel2);
+				break;
 		}
-
 		return zHaut - zBas;
 	}
 
@@ -257,15 +281,13 @@ public abstract class AbstractBuilding extends DefaultFeature {
 	 * @param hIni  the initial hight
 	 * @return true if the constraint is respected if not false
 	 */
-	public boolean prospect(IGeometry geom, double slope, double hIni) {
-		double zMin = 0;
-		IDirectPositionList dpl = null;
+	public boolean prospect(Geometry geom, double slope, double hIni) {
 		double shift = 0;
-		Box3D box = new Box3D(this.getGeom());
-		dpl = this.getRoof().getGeom().coord();
-		zMin = box.getLLDP().getZ();
-		for (IDirectPosition dp : dpl) {
-			if (geom.distance(new GM_Point(dp)) * slope + hIni < shift + dp.getZ() - zMin) {
+		Box3D box = new Box3D(this.getGeometry());
+		Coordinate[] dpl = this.getRoof().getGeometry().getCoordinates();
+		double zMin = box.getLLDP().getZ();
+		for (Coordinate dp : dpl) {
+			if (geom.distance(new GeometryFactory().createPoint(dp)) * slope + hIni < shift + dp.getZ() - zMin) {
 				return false;
 			}
 		}

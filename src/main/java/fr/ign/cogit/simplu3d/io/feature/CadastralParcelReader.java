@@ -5,18 +5,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
+*/
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygonal;
 
 /**
  * 
  * CadastralParcel reader
- * 
+ * <p>
  * TODO cleanup "code" management. Currently either "CODE" or CODE_DEP+CODE_COM+COM_ABS+SECTION+NUMERO
  * 
  * @author MBorne
@@ -47,38 +58,33 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 	}
 
 	@Override
-	public Collection<CadastralParcel> readAll(IFeatureCollection<IFeature> features) {
-		List<CadastralParcel> result = new ArrayList<>(features.size());
-		for (IFeature feature : features) {
-			// We split parcel with multi geometries into several parcels
-			List<IOrientableSurface> lSurfaces = FromGeomToSurface.convertGeom(feature.getGeom());
-			int nbSurfaces = lSurfaces.size();
-			if (nbSurfaces == 1) {
-				result.add(read(feature));
-			} else if (nbSurfaces > 1) {
-				for (IOrientableSurface surf : lSurfaces) {
-
-					try {
-						IFeature featTemp = feature.cloneGeom();
-						featTemp.setGeom(surf);
-						result.add(read(featTemp));
-					} catch (CloneNotSupportedException e) {
-
-						e.printStackTrace();
-					}
-
-				}
-			}
-
-		}
+	public Collection<CadastralParcel> readAll(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
+		List<CadastralParcel> result = new ArrayList<>(collection.size());
+        try (FeatureIterator<SimpleFeature> iterator = collection.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                // We split parcel with multi geometries into several parcels
+                List<Polygon> lSurfaces = FromGeomToSurface.convertGeom((Geometry) feature.getDefaultGeometry());
+                int nbSurfaces = lSurfaces.size();
+                if (nbSurfaces == 1) {
+                    result.add(read(feature));
+                } else if (nbSurfaces > 1) {
+                    for (Polygonal surf : lSurfaces) {
+                        //FIXME no idea if that works
+                        SimpleFeature featTemp = new SimpleFeatureImpl(feature.getAttributes(), feature.getFeatureType(), feature.getIdentifier());
+                        featTemp.setDefaultGeometry(surf);
+                        result.add(read(featTemp));
+                    }
+                }
+            }
+        }
 		return result;
 	}
 
 	@Override
-	public CadastralParcel read(IFeature feature) {
+	public CadastralParcel read(SimpleFeature feature) {
 		CadastralParcel cadastralParcel = new CadastralParcel();
-		cadastralParcel.setId(feature.getId());
-
+		cadastralParcel.setId(feature.getID());
 		/*
 		 * read code attribute
 		 */
@@ -109,25 +115,21 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 					cadastralParcel.setHasToBeSimulated(Boolean.parseBoolean(o.toString()));
 
 				} catch (Exception e2) {
-					e2.printStackTrace();
-					System.out.println("Attribute : " + ATT_HAS_TO_BE_SIMULATED+ " from parcel is not Integer or Boolean. Value : " + o);
+					logger.severe(e2.getMessage());
+					logger.severe("Attribute : " + ATT_HAS_TO_BE_SIMULATED+ " from parcel is not Integer or Boolean. Value : " + o);
 				}
 			}
 
 		}
 
-		IGeometry geometry = feature.getGeom();
-		if (!geometry.isSimple()) {
-			logger.warning("Geometry is not simple for CadastralParcel " + code + "!");
-		}
-		List<IOrientableSurface> polygons = FromGeomToSurface.convertGeom(geometry);
+		Geometry geometry = (Geometry) feature.getDefaultGeometry();
+		List<Polygon> polygons = FromGeomToSurface.convertGeom(geometry);
 		if (polygons.size() == 1) {
-			IPolygon polygon = (IPolygon) polygons.get(0);
-			cadastralParcel.setGeom(polygon);
+			Polygon polygon = polygons.get(0);
+			cadastralParcel.setGeometry(polygon);
 		} else if (polygons.size() > 1) {
 			throw new RuntimeException("CadastralParcel should be either Polygon or MultiPolygon with 1 polygon (" + polygons.size() + " found) - ID : " + code);
 		}
 		return cadastralParcel;
 	}
-
 }

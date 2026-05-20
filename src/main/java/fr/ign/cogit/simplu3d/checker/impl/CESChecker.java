@@ -22,81 +22,54 @@ public class CESChecker extends AbstractRuleChecker {
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
-
 		if (this.getRules().getArt9() == 99 || this.getRules().getArt9() == 88) {
 			return lUNR;
 		}
-
 		double totalArea = 0;
 		for (Building b : bPU.getBuildings()) {
-			totalArea = totalArea + b.getFootprint().area();
-
+			totalArea = totalArea + b.getFootprint().getArea();
 		}
-
-		double aireParcelle = bPU.getGeom().area();
-
+		double aireParcelle = bPU.getGeometry().getArea();
 		double calculateCES = totalArea / aireParcelle;
-
 		double ces = determineCES(bPU);
-
 		if (calculateCES > ces) {
 			lUNR.add(new UnrespectedRule(
-					"Le CES n'est pas respecté - CES mesuré : " + calculateCES + "  CES attendu " + ces, bPU.getGeom(),
+					"Le CES n'est pas respecté - CES mesuré : " + calculateCES + "  CES attendu " + ces, bPU.getGeometry(),
 					CODE_CES));
-
 		}
-
 		return lUNR;
 	}
 
 	private double determineCES(BasicPropertyUnit bPU) {
-		
-
 		boolean conditionchecked = true;
-
 		// Est-ce que la superficie du terrain est inférieure ou égale à
 		// getEmpriseSurface()
-		double area = bPU.getGeom().area();
+		double area = bPU.getGeometry().getArea();
 		if (area < this.getRules().getEmpriseSurface()) {
 			conditionchecked = false;
 		}
-
 		// Si les 2 conditions sont vérifiées c'est
 		double ces = this.getRules().getArt9();
 		// Si une des deux n'est pas vérifiée, c'est l'autre
 		if (!conditionchecked) {
 			ces = this.getRules().getEmpriseSolAlt();
 		}
-
 		return ces;
-
 	}
 
 	@Override
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
-
 		ZoneRegulation r1 = this.getRules();
-
 		if (r1 != null && r1.getArt12() != 99) {
-
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, r1);
-			if (gc != null) {
-				geomConstraints.add(gc);
-
-			}
-
-		}
-
+            geomConstraints.add(gc);
+        }
 		return geomConstraints;
-
 	}
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
-
 		double ces = determineCES(bPU);
-
-		return new GeometricConstraints("Coefficient d'emprise au sol maximum  : " + ces, bPU.getGeom(), CODE_CES);
+		return new GeometricConstraints("Coefficient d'emprise au sol maximum  : " + ces, bPU.getGeometry(), CODE_CES);
 	}
-
 }

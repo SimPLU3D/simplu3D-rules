@@ -1,5 +1,10 @@
 package fr.ign.cogit.simplu3d.io.feature;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -7,8 +12,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
+*/
 
 /**
  * 
@@ -21,11 +28,14 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 
 	@Override
-	public Collection<T> readAll(IFeatureCollection<IFeature> features) {
-		List<T> result = new ArrayList<>(features.size());
-		for (IFeature feature : features) {
-			result.add(read(feature));
-		}
+	public Collection<T> readAll(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
+		List<T> result = new ArrayList<>(collection.size());
+        try (FeatureIterator<SimpleFeature> iterator = collection.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                result.add(read(feature));
+            }
+        }
 		return result;
 	}
 
@@ -35,7 +45,7 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	 * @param attributeName an attribute name
 	 * @return a string or null
 	 */
-	protected String readStringAttribute(IFeature feature, String attributeName) {
+	protected String readStringAttribute(SimpleFeature feature, String attributeName) {
 		Object object = findAttribute(feature,attributeName);
 		if ( object == null ){
 			return null;
@@ -50,7 +60,7 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	 * @param attributeName
 	 * @return
 	 */
-	protected Integer readIntegerAttribute(IFeature feature, String attributeName) {
+	protected Integer readIntegerAttribute(SimpleFeature feature, String attributeName) {
 		Object object = findAttribute(feature,attributeName);
 		if ( object == null ){
 			return null;
@@ -65,7 +75,7 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	 * @param attributeName
 	 * @return a string or null
 	 */
-	protected Double readDoubleAttribute(IFeature feature, String attributeName) {
+	protected Double readDoubleAttribute(SimpleFeature feature, String attributeName) {
 		Object object = findAttribute(feature,attributeName);
 		if ( object == null ){
 			return null;
@@ -82,7 +92,7 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	 * @param dateFormat
 	 * @return
 	 */
-	protected Date readDateAttribute(IFeature feature, String attributeName, DateFormat dateFormat) {
+	protected Date readDateAttribute(SimpleFeature feature, String attributeName, DateFormat dateFormat) {
 		Object object = findAttribute(feature,attributeName);
 		if ( object == null ){
 			return null;
@@ -105,7 +115,7 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	 * @param attributeName upper case attribute name
 	 * @return
 	 */
-	protected Object findAttribute(IFeature feature, String attributeName){
+	protected Object findAttribute(SimpleFeature feature, String attributeName){
 		Object result = feature.getAttribute(attributeName);
 		if ( result != null ){
 			return result;

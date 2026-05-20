@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.util.index.Tiling;
-import fr.ign.cogit.simplu3d.io.feature.PrescriptionReader;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.PrescriptionType;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
+import org.locationtech.jts.index.strtree.STRtree;
 
 public class ForbiddenZoneGenerator {
-
-	private double radiusOfInfluence = 20;
-
-	private static double DISTANCERECOILEVEGETATION = 3;
+    private static double DISTANCERECOILEVEGETATION = 3;
 	private static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;
 	private static double DISTANCERECOILPAYSAGE = 3;
 	private static double DISTANCERENUISANCERISQUE = 1;
@@ -47,173 +43,115 @@ public class ForbiddenZoneGenerator {
 		DISTANCERENUISANCERISQUE = distance;
 	}
 
-	public IGeometry generateUnionGeometry(IFeatureCollection<Prescription> prescriptions, BasicPropertyUnit bPU) {
-
-		if (!prescriptions.hasSpatialIndex()) {
-			prescriptions.initSpatialIndex(Tiling.class, false);
+	public Geometry generateUnionGeometry(Collection<Prescription> prescriptions, BasicPropertyUnit bPU) {
+		SpatialIndex index = new STRtree();
+		for (Prescription p : prescriptions) {
+			index.insert(p.getGeometry().getEnvelopeInternal(), p);
 		}
-
-		Collection<Prescription> selected = prescriptions.select(bPU.getGeom().buffer(radiusOfInfluence));
-
-		List<IGeometry> geometries = new ArrayList<IGeometry>();
-
+        double radiusOfInfluence = 20;
+        Geometry selectionGeom = bPU.getGeometry().buffer(radiusOfInfluence);
+		@SuppressWarnings("unchecked")
+		Collection<Prescription> selected = index.query(selectionGeom.getEnvelopeInternal());
+		selected = selected.stream().filter(p->p.getGeometry().intersects(selectionGeom)).toList();
+		List<Geometry> geometries = new ArrayList<>();
 		for (Prescription pres : selected) {
-			IGeometry geom = generateWithCheckedGeom(pres, bPU);
+			Geometry geom = generateWithCheckedGeom(pres, bPU);
 			if (geom != null && !geom.isEmpty()) {
 				geometries.add(geom);
 			}
-
 		}
-
 		if (geometries.isEmpty())
 			return null;
-
-		IGeometry geom = geometries.remove(0);
-
-		for (IGeometry geomTemp : geometries) {
+		Geometry geom = geometries.remove(0);
+		for (Geometry geomTemp : geometries) {
 			geom = geom.union(geomTemp);
 		}
 		return geom;
 	}
 
-	public IGeometry generate(Prescription p, BasicPropertyUnit bPU) {
-		if (!bPU.getGeom().intersects(p.getGeom()))
+	public Geometry generate(Prescription p, BasicPropertyUnit bPU) {
+		if (!bPU.getGeometry().intersects(p.getGeometry()))
 			return null;
-
 		return generateWithCheckedGeom(p, bPU);
 	}
 
-	/**
-	 * @TODO
-	 * @param p
-	 * @param bPU
-	 * @return
-	 */
-	private IGeometry generateWithCheckedGeom(Prescription p, BasicPropertyUnit bPU) {
+	private Geometry generateWithCheckedGeom(Prescription p, BasicPropertyUnit bPU) {
 		PrescriptionType type = p.getType();
+        return switch (type) {
+            case ELEMENT_PAYSAGE -> generateGeometryElementPaysage(p, bPU);
+            case EMPLACEMENT_RESERVE -> generateEmplacementReserve(p, bPU);
+            case ESPACE_BOISE -> generateEspaceBoise(p, bPU);
+            case NUISANCES_RISQUES -> generateNuisanceRisque(p, bPU);
+            case RECOIL -> generateRecul(p, bPU);
+            case TVB -> generateTVB(p, bPU);
+            default -> null;
+        };
+    }
 
-		switch (type) {
-		case ELEMENT_PAYSAGE:
-			return generateGeometryElementPaysage(p, bPU);
-		case EMPLACEMENT_RESERVE:
-			return generateEmplacementReserve(p, bPU);
-		case ESPACE_BOISE:
-			return generateEspaceBoise(p, bPU);
-		case NUISANCES_RISQUES:
-			return generateNuisanceRisque(p, bPU);
-		case RECOIL:
-			return generateRecul(p, bPU);
-		case TVB:
-			return generateTVB(p, bPU);
-		default:
-			System.out.println("Cas non traité : " + type);
-			break;
-		}
-		return null;
-	}
+	private Geometry generateTVB(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> p.getGeometry().buffer(DISTANCETVB);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 
-	private IGeometry generateTVB(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
-
-		case 0:
-			return p.getGeom().buffer(DISTANCETVB);
-		case 1:
-			return p.getGeom().buffer(DISTANCETVB);
-		case 2:
-			return p.getGeom();
-		}
-
-		return null;
-	}
-
-	private IGeometry generateRecul(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
-
-		case 0:
-			return generateReculFacade( p, bPU);
-		case 1:
-			return generateReculFacade( p, bPU);
-		case 2:
-			return p.getGeom();
-		}
-
-		return null;
-	}
+	private Geometry generateRecul(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> generateReculFacade(p, bPU);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 	
-	private IGeometry generateReculFacade(Prescription p, BasicPropertyUnit bPU) {
-
-		Object recul = p.getAttribute(PrescriptionReader.ATT_RECOIL);
+	private Geometry generateReculFacade(Prescription p, BasicPropertyUnit bPU) {
+		//Object recul = p.getAttribute(PrescriptionReader.ATT_RECOIL);
+		Double recul = p.getPrescriptionValue();//FIXME
 		double valRecul =0.0;
 		if (recul == null) {
 			valRecul = DISTANCEALIGNMENT;
 		}
 		else {
-			 valRecul = Double.parseDouble(recul.toString());	
+			 valRecul = recul;//Double.parseDouble(recul.toString());
 		}
 		return generateReculFacade(p, bPU, valRecul);
 	}
 
-	private IGeometry generateReculFacade(Prescription p, BasicPropertyUnit bPU, double valRecul) {
+	private Geometry generateReculFacade(Prescription p, BasicPropertyUnit bPU, double valRecul) {
 		if (valRecul <= 0)
 			return null;
-
-		return p.getGeom().buffer(valRecul);
+		return p.getGeometry().buffer(valRecul);
 	}
 
-	private IGeometry generateEspaceBoise(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
+	private Geometry generateEspaceBoise(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> p.getGeometry().buffer(DISTANCERECOILEVEGETATION);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 
-		case 0:
-			return p.getGeom().buffer(DISTANCERECOILEVEGETATION);
-		case 1:
+	private Geometry generateEmplacementReserve(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> p.getGeometry().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 
-			return p.getGeom().buffer(DISTANCERECOILEVEGETATION);
-		case 2:
-			return p.getGeom();
-		}
+	private Geometry generateNuisanceRisque(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> p.getGeometry().buffer(DISTANCERENUISANCERISQUE);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 
-		return null;
-	}
-
-	private IGeometry generateEmplacementReserve(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
-
-		case 0:
-			return p.getGeom().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
-		case 1:
-			return p.getGeom().buffer(DISTANCERECOILERESERVEDEMPLACEMENT);
-		case 2:
-			return p.getGeom();
-		}
-
-		return null;
-	}
-
-	private IGeometry generateNuisanceRisque(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
-
-		case 0:
-			return p.getGeom().buffer(DISTANCERENUISANCERISQUE);
-		case 1:
-			return p.getGeom().buffer(DISTANCERENUISANCERISQUE);
-		case 2:
-			return p.getGeom();
-		}
-
-		return null;
-	}
-
-	private IGeometry generateGeometryElementPaysage(Prescription p, BasicPropertyUnit bPU) {
-		switch (p.getGeom().dimension()) {
-
-		case 0:
-			return p.getGeom().buffer(DISTANCERECOILPAYSAGE);
-		case 1:
-			return p.getGeom().buffer(DISTANCERECOILPAYSAGE);
-		case 2:
-			return p.getGeom();
-		}
-
-		return null;
-	}
+	private Geometry generateGeometryElementPaysage(Prescription p, BasicPropertyUnit bPU) {
+        return switch (p.getGeometry().getDimension()) {
+            case 0, 1 -> p.getGeometry().buffer(DISTANCERECOILPAYSAGE);
+            case 2 -> p.getGeometry();
+            default -> null;
+        };
+    }
 }

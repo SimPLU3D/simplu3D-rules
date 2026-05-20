@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.sig3d.calculation.Cut3DGeomFrom2D;
-import fr.ign.cogit.geoxygene.sig3d.calculation.Util;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToTriangle;
-import fr.ign.cogit.geoxygene.sig3d.equation.PlanEquation;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.BuildingPart;
 import fr.ign.cogit.simplu3d.model.SubParcel;
+import fr.ign.cogit.simplu3d.model.UrbanFeature;
+import fr.ign.common.analysis.Cut3DGeomFrom2D;
+import fr.ign.common.conversion.FromGeomToSurface;
+import fr.ign.common.conversion.FromPolygonToTriangle;
+import fr.ign.common.equation.PlanEquation;
+import fr.ign.common.util.GeomUtils;
+import fr.ign.common.util.Util;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * 
@@ -70,28 +70,25 @@ public class BuildingPartToSubParcelAssigner {
 		List<BuildingPart> buildingParts = new ArrayList<>();
 
 		// On récupère l'emprise du bâtiment
-		IPolygon polyBat = (IPolygon) building.getFootprint();
+		Polygon polyBat = building.getFootprint();
 
 		// On peut avoir plusieurs objets qui intersectent la géométrie du
 		// bâtiment
 		for (SubParcel subParcel : subParcels) {
-			IPolygon polySP = (IPolygon) subParcel.getGeom();
-
+			Polygon polySP = (Polygon) subParcel.getGeometry();
 			if (!polySP.intersects(polyBat)) {
 				continue;
 			}
-
 			BuildingPart bP = null;
-
 			// 2 cas : le bâtiment est triangulé, si c'est le cas on appelle une
 			// première méthode sinon
 			// on en appelle une autre moins fiable
-			if (FromPolygonToTriangle.isConvertible(FromGeomToSurface.convertGeom(building.getGeom()))) {
-				List<IOrientableSurface> listCut = Cut3DGeomFrom2D.cutFeatureFromPolygon(building,
-						(IPolygon) polySP.clone());
-				bP = new BuildingPart(new GM_MultiSurface<>(listCut));
+			if (FromPolygonToTriangle.isConvertible(FromGeomToSurface.convertGeom(building.getGeometry()))) {
+				List<Polygon> listCut = Cut3DGeomFrom2D.cutFeatureFromPolygon(building, (Polygon) polySP.copy());
+				bP = new BuildingPart();
+				bP.setGeometry(new GeometryFactory().createMultiPolygon(listCut.toArray(new Polygon[0])));
 			} else {
-				bP = cutNonTriangulatedFeature(building, (IPolygon) polySP.clone());
+				bP = cutNonTriangulatedFeature(building, (Polygon) polySP.copy());
 			}
 
 			if (bP != null) {
@@ -107,40 +104,32 @@ public class BuildingPartToSubParcelAssigner {
 	}
 
 	/**
-	 * Découpe un multisurface 3D non triangulé par rapport à un polygone 2D
-	 * 
-	 * @param feat
-	 * @param polyCut
-	 * @return
+	 * Découpe un multisurface 3D non triangulé par rapport à un polygone 2D.
 	 */
-	private static BuildingPart cutNonTriangulatedFeature(IFeature feat, IPolygon polyCut) {
+	private static BuildingPart cutNonTriangulatedFeature(UrbanFeature feat, Polygon polyCut) {
 		// On récupère la liste des faces de la multisurface
-		List<IOrientableSurface> lIOS = FromGeomToSurface.convertGeom(feat.getGeom());
+		List<Polygon> lIOS = FromGeomToSurface.convertGeom(feat.getGeometry());
 
-		IMultiSurface<IOrientableSurface> polVert = Util.detectVertical(lIOS, 0.2);
+		MultiPolygon polVert = Util.detectVertical(lIOS, 0.2);
 
-		IMultiSurface<IOrientableSurface> polHorz = Util.detectNonVertical(lIOS, 0.2);
+		MultiPolygon polHorz = Util.detectNonVertical(lIOS, 0.2);
 
-		List<IOrientableSurface> lOS = Cut3DGeomFrom2D.cutListSurfaceFromPolygon(polVert.getList(), polyCut);
+        assert polVert != null;
+        List<Polygon> lOS = Cut3DGeomFrom2D.cutListSurfaceFromPolygon(GeomUtils.getPolygons(polVert), polyCut);
 
-		for (IOrientableSurface os : polHorz) {
+        assert polHorz != null;
+        for (Polygon os : GeomUtils.getPolygons(polHorz)) {
 			PlanEquation pEq = new PlanEquation(os);
-
 			if (pEq.getNormale().getZ() < 0) {
-
-				IGeometry inter = os.intersection((IGeometry) polyCut.clone());
-
-				if (inter.area() < 3) {
+				Geometry inter = os.intersection(polyCut.copy());
+				if (inter.getArea() < 3) {
 					return null;
 				}
-
 				lOS.addAll(FromGeomToSurface.convertGeom(inter));
-
 			}
-
 		}
-
-		return new BuildingPart(new GM_MultiSurface<IOrientableSurface>(lOS));
+		BuildingPart bp = new BuildingPart();
+		bp.setGeometry(polyCut.getFactory().createMultiPolygon(lOS.toArray(new Polygon[0])));
+		return bp;
 	}
-
 }

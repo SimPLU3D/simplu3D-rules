@@ -80,7 +80,7 @@ public enum PrescriptionType {
 	UNKNOWN(99, "Inconnu");
 
 	private String text = "";
-	private int id;
+	private final int id;
 
 	PrescriptionType(int id, String text) {
 		this.text = text;
@@ -96,17 +96,12 @@ public enum PrescriptionType {
 	}
 
 	public static PrescriptionType getPrescriptionById(int id) {
-
 		PrescriptionType[] pTArray = PrescriptionType.values();
-		int length = pTArray.length;
-		for (int i = 0; i < length; i++) {
-			PrescriptionType pTTemp = pTArray[i];
-			if (pTTemp.getId() == id) {
-				return pTTemp;
-			}
-
-		}
-
+        for (PrescriptionType pTTemp : pTArray) {
+            if (pTTemp.getId() == id) {
+                return pTTemp;
+            }
+        }
 		return PrescriptionType.UNKNOWN;
 	}
 }

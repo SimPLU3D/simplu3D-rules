@@ -3,6 +3,7 @@ package fr.ign.cogit.simplu3d.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
@@ -15,46 +16,52 @@ import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+*/
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
+import fr.ign.common.conversion.FromGeomToLineString;
+import fr.ign.common.conversion.FromGeomToSurface;
+import fr.ign.common.extrusion.Extrusion2DObject;
+import fr.ign.common.util.GeomUtils;
+import fr.ign.common.util.Vecteur;
+import org.locationtech.jts.geom.*;
 
 public class SimpleBandProduction {
 
-  List<IMultiSurface<IOrientableSurface>> lOut = new ArrayList<>();
-  IMultiCurve<IOrientableCurve> iMSRoad = new GM_MultiCurve<>();
-  private IMultiCurve<IOrientableCurve> lineRoad = null;
+  List<MultiPolygon> lOut = new ArrayList<>();
+  MultiLineString iMSRoad = null;
+  private MultiLineString lineRoad = null;
 
-  @SuppressWarnings("unchecked")
   public SimpleBandProduction(BasicPropertyUnit bPU, ZoneRegulation r1,
       ZoneRegulation r2) {
 
     // On récupère le polygone surlequel on va faire la découpe
-    IPolygon pol_BPU = bPU.getPol2D();
+    Polygon pol_BPU = bPU.getPol2D();
 
     // On créé la géométrie des limites donnant sur la voirie
 
-    List<ParcelBoundary> lBordureVoirie = bPU.getCadastralParcels().get(0)
-        .getBoundariesByType(ParcelBoundaryType.ROAD);
+    List<ParcelBoundary> lBordureVoirie = bPU.getCadastralParcels().get(0).getBoundariesByType(ParcelBoundaryType.ROAD);
+    List<LineString> lineStrings = new ArrayList<>();
     for (ParcelBoundary sc : lBordureVoirie) {
-      iMSRoad.add((IOrientableCurve) sc.getGeom());
+      lineStrings.add((LineString) sc.getGeometry());
     }
+    iMSRoad = pol_BPU.getFactory().createMultiLineString(lineStrings.toArray(new LineString[0]));
 
     // System.out.println("size road" + iMSRoad.size());
 
     double profBande = r1.getBande();
     // BANDE Profondeur de la bande principale x > 0 profondeur de la bande
     // par rapport à la voirie
-    IMultiSurface<IOrientableSurface> iMSBande1;
+    MultiPolygon iMSBande1;
     if (profBande == 0) {
       iMSBande1 = FromGeomToSurface.convertMSGeom(pol_BPU);
     } else {
-      iMSBande1 = FromGeomToSurface
-          .convertMSGeom(pol_BPU.intersection(iMSRoad.buffer(profBande)));
+      iMSBande1 = FromGeomToSurface.convertMSGeom(pol_BPU.intersection(iMSRoad.buffer(profBande)));
     }
 
-    IMultiSurface<IOrientableSurface> iMSBande2 = null;
+    MultiPolygon iMSBande2 = null;
 
     // Idem s'il y a un règlement de deuxième bande
     if (r2 != null && !iMSRoad.isEmpty()) {
@@ -66,18 +73,20 @@ public class SimpleBandProduction {
 
     }
 
-    IGeometry geom = null;
+    Geometry geom = null;
     if (!iMSBande1.isEmpty()) {
       geom = Extrusion2DObject.convertFromMultiPolygon(iMSBande1, 0, 0);
     }
 
-    IGeometry geom2 = null;
+    Geometry geom2 = null;
     if (iMSBande2 != null) {
       geom2 = Extrusion2DObject.convertFromMultiPolygon(iMSBande2, 0, 0);
     }
 
     // 2 bandes
+    assert geom != null;
     lOut.add(FromGeomToSurface.convertMSGeom(geom));
+    assert geom2 != null;
     lOut.add(FromGeomToSurface.convertMSGeom(geom2));
 
     r1.setGeomBande(iMSBande1);
@@ -88,7 +97,7 @@ public class SimpleBandProduction {
 
       if (rArt6 == 0) {
         // Soit le long de la limite donnant sur la voirie
-        lineRoad = (IMultiCurve<IOrientableCurve>) (iMSRoad.clone());
+        lineRoad = (MultiLineString) (iMSRoad.copy());
       } else {
         // Soit en appliquant un petit décalage
         lineRoad = shiftRoad(bPU, rArt6);
@@ -103,57 +112,39 @@ public class SimpleBandProduction {
    * de l'unité foncière (bPU) les limites donnant sur la voirie d'une distance
    * (valShiftB)
    * 
-   * @param bPU
-   * @param valShiftB
-   * @return
    */
-  private IMultiCurve<IOrientableCurve> shiftRoad(BasicPropertyUnit bPU,
-      double valShiftB) {
-
-    IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
-
-    IDirectPosition centroidParcel = bPU.getPol2D().centroid();
-
-    for (IOrientableCurve oC : iMSRoad) {
-
+  private MultiLineString shiftRoad(BasicPropertyUnit bPU, double valShiftB) {
+    List<LineString> lineStrings = new ArrayList<>();
+    Coordinate centroidParcel = bPU.getPol2D().getCentroid().getCoordinate();
+    for (int index = 0; index < iMSRoad.getNumGeometries(); index++) {
+      LineString oC = (LineString) iMSRoad.getGeometryN(index);
       if (oC.isEmpty()) {
         continue;
       }
-
-      IDirectPosition centroidGeom = oC.coord().get(0);
+      Coordinate centroidGeom = oC.getCoordinateN(0);
       Vecteur v = new Vecteur(centroidParcel, centroidGeom);
-
-      Vecteur v2 = new Vecteur(oC.coord().get(0),
-          oC.coord().get(oC.coord().size() - 1));
+      Vecteur v2 = new Vecteur(oC.getCoordinateN(0),
+          oC.getCoordinateN(oC.getCoordinates().length - 1));
       v2.setZ(0);
       v2.normalise();
-
       Vecteur vOut = v2.prodVectoriel(new Vecteur(0, 0, 1));
-
-      IGeometry geom = ((IGeometry) oC.clone());
-
+      Geometry geom = oC.copy();
       if (v.prodScalaire(vOut) < 0) {
         vOut = vOut.multConstante(-1);
       }
-
-      IGeometry geom2 = geom.translate(valShiftB * vOut.getX(),
+      Geometry geom2 = GeomUtils.translate(geom,valShiftB * vOut.getX(),
           valShiftB * vOut.getY(), 0);
-
-      if (!geom2.intersects(bPU.getGeom())) {
-        geom2 = geom.translate(-valShiftB * vOut.getX(),
+      assert geom2 != null;
+      if (!geom2.intersects(bPU.getGeometry())) {
+        geom2 = GeomUtils.translate(geom, -valShiftB * vOut.getX(),
             -valShiftB * vOut.getY(), 0);
       }
-
-      iMS.addAll(FromGeomToLineString.convert(geom2));
-
+      lineStrings.addAll(FromGeomToLineString.convert(geom2));
     }
-
-    return iMS;
-
+    return bPU.getGeometry().getFactory().createMultiLineString(lineStrings.toArray(new LineString[0]));
   }
 
-  public IMultiCurve<IOrientableCurve> getLineRoad() {
+  public MultiLineString getLineRoad() {
     return this.lineRoad;
   }
-
 }

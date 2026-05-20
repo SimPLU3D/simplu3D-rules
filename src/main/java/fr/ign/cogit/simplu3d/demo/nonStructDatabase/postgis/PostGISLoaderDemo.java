@@ -1,155 +1,112 @@
 package fr.ign.cogit.simplu3d.demo.nonStructDatabase.postgis;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileWriter;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis.LoaderPostGIS;
-import fr.ign.cogit.simplu3d.model.AbstractBuilding;
-import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
-import fr.ign.cogit.simplu3d.model.CadastralParcel;
-import fr.ign.cogit.simplu3d.model.Environnement;
-import fr.ign.cogit.simplu3d.model.ParcelBoundary;
-import fr.ign.cogit.simplu3d.model.Road;
-import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
+import fr.ign.cogit.simplu3d.model.*;
+import fr.ign.common.io.AttributeManager;
+import fr.ign.common.util.GeomUtils;
+import fr.ign.common.io.ShapefileWriter;
+import fr.ign.common.util.Vecteur;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
- * 
+ *
  *        This software is released under the licence CeCILL
- * 
+ * <p>
  *        see LICENSE.TXT
- * 
- *        http://www.cecill.info/
- * 
- * 
- * 
+ * <p>
+ *        <a href="http://www.cecill.info/">...</a>
+ * <p>
+ *
+ *
  * copyright IGN
- * 
+ *
  * @author Brasebin Mickaël
- * 
+ *
  * @version 1.0
  **/
 public class PostGISLoaderDemo {
-
-  public static IFeatureCollection<IFeature> featC = new FT_FeatureCollection<>();
-
+  private static final Logger logger = Logger.getLogger(PostGISLoaderDemo.class.getName());
   public static void main(String[] args) throws Exception {
-    String folder = "E:/mbrasebin/Donnees/Strasbourg/GTRU/ProjectT3/";
+    String folder = "./ProjectT3/";//FIXME
     String folderOut = folder + "out/";
-
     double valShiftB = 1.5;
-
-    LoaderPostGIS lP = new LoaderPostGIS("localhost", "5432", "gtru", "postgres",
-        "postgres");
+    LoaderPostGIS lP = new LoaderPostGIS(
+            "localhost",
+            "5432",
+            "gtru",
+            "postgres",
+            "postgres");
 
     Environnement env = lP.load();
 
     UrbaDocument plu = env.getUrbaDocument();
 
-    System.out.println("Nombre de zones dans le PLU : "
-        + env.getUrbaZones().size());
+    logger.info("Nombre de zones dans le PLU : " + env.getUrbaZones().size());
 
-
-    IFeatureCollection<IFeature> bordures_translated = new FT_FeatureCollection<>();
-    IFeatureCollection<ParcelBoundary> bordures = new FT_FeatureCollection<ParcelBoundary>();
+    Collection<ParcelBoundary> bordures_translated = new ArrayList<>();
+    Collection<ParcelBoundary> bordures = new ArrayList<>();
 
     int count = 0;
-
-    System.out.println("nb Parcelles : " + env.getCadastralParcels().size());
-
+    logger.info("nb Parcelles : " + env.getCadastralParcels().size());
     for (BasicPropertyUnit bPU : env.getBpU()) {
-
       for (CadastralParcel sp : bPU.getCadastralParcels()) {
-
         count = count + sp.getBoundaries().size();
+        Coordinate centroidParcel = sp.getGeometry().getCentroid().getCoordinate();
 
-        IDirectPosition centroidParcel = sp.getGeom().centroid();
-
-        AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");
-        AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(),
-            "Integer");
-        AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(),
-            "Integer");
-
+        AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");//FIXME
+        AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(), "Integer");
+        AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(), "Integer");
         for (ParcelBoundary b : sp.getBoundaries()) {
           bordures.add(b);
-
-          AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");
-          AttributeManager.addAttribute(b, "Type", b.getType(), "Integer");
-          AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");
-
+          AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");//FIXME
+          AttributeManager.addAttribute(b, "Type", b.getParcelBoundaryType(), "Integer");
+          AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");//FIXME
           if (b.getFeatAdj() != null) {
-
             if (b.getFeatAdj() instanceof CadastralParcel) {
-
-              AttributeManager.addAttribute(b, "Adj",
-                  ((CadastralParcel) b.getFeatAdj()).getId(), "Integer");
+              AttributeManager.addAttribute(b, "Adj", ((CadastralParcel) b.getFeatAdj()).getId(), "Integer");//FIXME
             } else if (b.getFeatAdj() instanceof Road) {
-              AttributeManager.addAttribute(b, "Adj",
-                  ((Road) b.getFeatAdj()).getId(), "Integer");
+              AttributeManager.addAttribute(b, "Adj", ((Road) b.getFeatAdj()).getId(), "Integer");//FIXME
             }
-
           } else {
             AttributeManager.addAttribute(b, "Adj", 0, "Integer");
-
           }
-
-          IDirectPosition centroidGeom = b.getGeom().coord().get(0);
-
+          Coordinate centroidGeom = b.getGeometry().getCoordinates()[0];
           Vecteur v = new Vecteur(centroidParcel, centroidGeom);
-
-          Vecteur v2 = new Vecteur(b.getGeom().coord().get(0), b.getGeom()
-              .coord().get(b.getGeom().coord().size() - 1));
+          Vecteur v2 = new Vecteur(b.getGeometry().getCoordinates()[0], b.getGeometry()
+              .getCoordinates()[b.getGeometry().getCoordinates().length - 1]);
           v2.setZ(0);
           v2.normalise();
-
           Vecteur vOut = v2.prodVectoriel(new Vecteur(0, 0, 1));
-
-          IGeometry geom = ((IGeometry) b.getGeom().clone());
-
+          Geometry geom = b.getGeometry().copy();
           if (v.prodScalaire(vOut) < 0) {
             vOut = vOut.multConstante(-1);
           }
-
-          IGeometry geom2 = geom.translate(valShiftB * vOut.getX(), valShiftB
+          Geometry geom2 = GeomUtils.translate(geom, valShiftB * vOut.getX(), valShiftB
               * vOut.getY(), 0);
-
-          if (!geom2.intersects(sp.getGeom())) {
-            geom2 = geom.translate(-valShiftB * vOut.getX(),
-                -valShiftB * vOut.getY(), 0);
+          if (!geom2.intersects(sp.getGeometry())) {
+            geom2 = GeomUtils.translate(geom, -valShiftB * vOut.getX(),
+                    -valShiftB * vOut.getY(), 0);
           }
-
-          IFeature feat = new DefaultFeature(geom2);
-
-          AttributeManager.addAttribute(feat, "Type", b.getType(), "Integer");
+          ParcelBoundary feat = new ParcelBoundary(geom2);
+          AttributeManager.addAttribute(feat, "Type", b.getParcelBoundaryType(), "Integer");
           bordures_translated.add(feat);
-
         }
-
       }
     }
-
-    System.out.println("Nombre sbordurs" + count);
-
+    logger.info("Nombre de bordures" + count);
     // Export des parcelles
-
     ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
     ShapefileWriter.write(bordures, folderOut + "bordures.shp");
-    ShapefileWriter.write(bordures_translated, folderOut
-        + "bordures_translated.shp");
-
-    ShapefileWriter.write(featC, folderOut + "buffer.shp");
-
-    System.out.println("Nombre de bpu : " + env.getBpU().size());
-
+    ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
+    //ShapefileWriter.write(featC, folderOut + "buffer.shp");
+    logger.info("Nombre de bpu : " + env.getBpU().size());
     ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
-
     /*
      * IFeatureCollection<Alignement> featAL = new
      * FT_FeatureCollection<Alignement>();
@@ -162,61 +119,42 @@ public class PostGISLoaderDemo {
      * 
      * AttributeManager.addAttribute(a, "ID", a.getId(), "Integer"); }
      */
-
-    System.out.println("Sous Parcelles  " + env.getSubParcels().size());
-
+    logger.info("Sous Parcelles  " + env.getSubParcels().size());
     for (SubParcel sp : env.getSubParcels()) {
       AttributeManager.addAttribute(sp, "Test", 0, "Integer");
-      AttributeManager.addAttribute(sp, "NB Bat",
-          sp.getBuildingsParts().size(), "Integer");
+      AttributeManager.addAttribute(sp, "NB Bat", sp.getBuildingsParts().size(), "Integer");
     }
-
     ShapefileWriter.write(env.getSubParcels(), folderOut + "sousParcelles.shp");
-
-    IFeatureCollection<IFeature> featToits = new FT_FeatureCollection<IFeature>();
-
-    System.out.println("NB emprise " + env.getBuildings().size());
-    for (AbstractBuilding b : env.getBuildings()) {
-      featToits.add(new DefaultFeature(b.getFootprint()));
+    Collection<BuildingPart> featToits = new ArrayList<>();
+    logger.info("NB emprise " + env.getBuildings().size());
+    for (Building b : env.getBuildings()) {
+      BuildingPart roof = new BuildingPart();
+      roof.setGeometry(b.getFootprint());
+      featToits.add(roof);//TODO better class?
     }
-
     ShapefileWriter.write(featToits, folderOut + "emprise.shp");
-
-    IFeatureCollection<IFeature> featFaitage = new FT_FeatureCollection<IFeature>();
-    for (AbstractBuilding b : env.getBuildings()) {
-      featFaitage.add(new DefaultFeature(b.getRoof().getRoofing()));
+    Collection<BuildingPart> featFaitage = new ArrayList<>();
+    for (Building b : env.getBuildings()) {
+      BuildingPart faitage = new BuildingPart();
+      faitage.setGeometry(b.getRoof().getRoofing());
+      featFaitage.add(faitage);//TODO better class?
     }
-
-    System.out.println("Faitage : " + featFaitage.size());
-
+    logger.info("Faitages : " + featFaitage.size());
     ShapefileWriter.write(featFaitage, folderOut + "pignon.shp");
-
-    IFeatureCollection<IFeature> featRoute = new FT_FeatureCollection<>();
-
+    Collection<Road> featRoute = new ArrayList<>();
     for (Road r : env.getRoads()) {
-
-      AttributeManager.addAttribute(r, "Nom", r.getName(), "String");
+      AttributeManager.addAttribute(r, "Nom", r.getRoadName(), "String");
       featRoute.add(r);
-
     }
-
     ShapefileWriter.write(featRoute, folderOut + "roads.shp");
-
-    IFeatureCollection<IFeature> featOutTestCons = new FT_FeatureCollection<>();
+    Collection<CadastralParcel> featOutTestCons = new ArrayList<>();
     for (CadastralParcel sp : env.getCadastralParcels()) {
-
-      featOutTestCons.add(new DefaultFeature(sp.getConsLine()));
-
-      System.out.println(sp.getBoundaries().size());
-
+      featOutTestCons.add(new CadastralParcel((MultiPolygon) sp.getConsLine()));//FIXME
+      logger.info("Boundaries " + sp.getBoundaries().size());
     }
-
     ShapefileWriter.write(featOutTestCons, folderOut + "featConsF.shp");
-
-    System.out.println("Chat qui râle");
-
+    logger.info("Chat qui râle");
   }
-
   /*
    * 
    * 
@@ -225,5 +163,4 @@ public class PostGISLoaderDemo {
    * System.out.println("Nombre d'alignements concernés" + featAL.size());
    * ShapefileWriter.write(featAL, folderOut + "alignements.shp");
    */
-
 }

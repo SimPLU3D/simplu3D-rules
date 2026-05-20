@@ -1,19 +1,24 @@
 package fr.ign.cogit.simplu3d.model;
 
+/*
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+*/
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.locationtech.jts.geom.MultiPolygon;
 
+/*
 import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
 import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
 import fr.ign.cogit.geoxygene.util.conversion.AdapterFactory;
+*/
 
 /**
  * Define rule parameters
@@ -21,12 +26,16 @@ import fr.ign.cogit.geoxygene.util.conversion.AdapterFactory;
  * 
  * @author Brasebin Mickaël
  */
+/*
 @Entity
 @Table(name = "simplu_regulation")
+*/
 public class ZoneRegulation implements IZoneRegulation {
 
+/*
 	@Id
 	@GeneratedValue
+*/
 	private Long id;
 
 	private int numBand;
@@ -341,8 +350,8 @@ public class ZoneRegulation implements IZoneRegulation {
 		return art14;
 	}
 
-	@Transient
-	IMultiSurface<IOrientableSurface> geomBande = null;
+//	@Transient
+	MultiPolygon geomBande = null;
 
 	
 	@Override
@@ -364,14 +373,15 @@ public class ZoneRegulation implements IZoneRegulation {
 				+ ", art5=" + art5 + ", art72=" + art72 + ", art73=" + art73 + ", art8=" + art8 + ", art6=" + art6
 				+ ", art9=" + art9 + ", art102=" + art102 + ", art12=" + art12 + ", art14=" + art14 + ", art13=" + art13
 				+ ", art101=" + art101 + ", geomBande=" + geomBande + ", epsilonBuffer=" + epsilonBuffer
-				+ ", jtsGeometry=" + jtsGeometry + "]";
+				//+ ", jtsGeometry=" + jtsGeometry
+				+ "]";
 	}
 
 	/**
 	 * @return the geomBande
 	 */
 	@JsonIgnore
-	public IMultiSurface<IOrientableSurface> getGeomBande() {
+	public MultiPolygon getGeomBande() {
 		return geomBande;
 	}
 
@@ -379,30 +389,31 @@ public class ZoneRegulation implements IZoneRegulation {
 	public Geometry getEpsilonBuffer() {
 
 		if (epsilonBuffer == null) {
-			epsilonBuffer = this.getJTSBand().buffer(0.5);
+			epsilonBuffer = this.getGeomBande().buffer(0.5);
 		}
 
 		return epsilonBuffer;
 	}
 
-	@Transient
+	//@Transient
 	Geometry epsilonBuffer = null;
 
 	/**
 	 * @param geomBande
 	 *            the geomBande to set
 	 */
-	public void setGeomBande(IMultiSurface<IOrientableSurface> geomBande) {
+	public void setGeomBande(MultiPolygon geomBande) {
 		this.geomBande = geomBande;
-		this.jtsGeometry = null;
+		//this.jtsGeometry = null;
 		this.epsilonBuffer = null;
 	}
 
-	@Transient
-	Geometry jtsGeometry = null;
+	//@Transient
+	//Geometry jtsGeometry = null;
 
 	private static GeometryFactory gf = new GeometryFactory();
 
+/*
 	@JsonIgnore
 	public Geometry getJTSBand() {
 
@@ -416,12 +427,14 @@ public class ZoneRegulation implements IZoneRegulation {
 		}
 		return jtsGeometry;
 	}
+*/
 
 	
 	public void setEpsilonBuffer(Geometry epsilonBuffer) {
 		this.epsilonBuffer = epsilonBuffer;
 	}
 	
+/*
 	@JsonIgnore
 	public Geometry getJtsGeometry() {
 		return jtsGeometry;
@@ -430,6 +443,7 @@ public class ZoneRegulation implements IZoneRegulation {
 	public void setJtsGeometry(Geometry jtsGeometry) {
 		this.jtsGeometry = jtsGeometry;
 	}
+*/
 
 	public static void setGf(GeometryFactory gf) {
 		ZoneRegulation.gf = gf;

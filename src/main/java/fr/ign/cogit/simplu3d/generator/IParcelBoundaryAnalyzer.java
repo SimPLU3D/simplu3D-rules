@@ -1,9 +1,8 @@
 package fr.ign.cogit.simplu3d.generator;
 
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
+import fr.ign.common.topo.CarteTopo;
+import fr.ign.common.topo.Face;
 
 public interface IParcelBoundaryAnalyzer {
-
-	public void analyze(Face f);
-	
+	void analyze(CarteTopo carteTopo, Face f);
 }

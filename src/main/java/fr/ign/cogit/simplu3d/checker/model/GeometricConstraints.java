@@ -2,8 +2,8 @@ package fr.ign.cogit.simplu3d.checker.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.simplu3d.serializer.IGeometrySerializer;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
@@ -17,14 +17,14 @@ public class GeometricConstraints {
 
 	String message;
 	@JsonSerialize(using = IGeometrySerializer.class)
-	IGeometry geometry;
+    Geometry geometry;
 	String code;
 
 	public GeometricConstraints() {
 
 	}
 
-	public GeometricConstraints(String message, IGeometry geom, String code) {
+	public GeometricConstraints(String message, Geometry geom, String code) {
 		this.message = message;
 		this.geometry = geom;
 		this.code = code;
@@ -46,11 +46,11 @@ public class GeometricConstraints {
 		return code;
 	}
 
-	public IGeometry getGeometry() {
+	public Geometry getGeometry() {
 		return geometry;
 	}
 
-	public void setGeometry(IGeometry geometry) {
+	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 

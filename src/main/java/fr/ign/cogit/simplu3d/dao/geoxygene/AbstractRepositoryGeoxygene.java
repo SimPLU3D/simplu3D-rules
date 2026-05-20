@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IEnvelope;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.simplu3d.io.feature.IFeatureReader;
+import fr.ign.cogit.simplu3d.model.UrbanFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
+import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * 
@@ -26,27 +25,25 @@ public class AbstractRepositoryGeoxygene<T> {
 	/**
 	 * helper for IFeature/domain conversion
 	 */
-	private IFeatureReader<T> featureAdapter ;
+	private final IFeatureReader<T> featureAdapter;
 	/**
 	 * Items read from geoxygene's feature collection
 	 */
-	private List<T> items ;
+	private final List<T> items;
 	
 	/**
 	 * Cached spatial index
 	 */
 	private SpatialIndex spatialIndex;
 
-	
-	public AbstractRepositoryGeoxygene(IFeatureCollection<IFeature> features, IFeatureReader<T> featureAdapter){
+	public AbstractRepositoryGeoxygene(DefaultFeatureCollection features, IFeatureReader<T> featureAdapter){
 		this.featureAdapter = featureAdapter;
 		this.items = new ArrayList<>(features.size());
-		for (IFeature feature : features) {
+		for (SimpleFeature feature : features) {
 			T item = featureAdapter.read(feature) ;
 			this.items.add(item);
 		}
 	}
-
 
 	protected IFeatureReader<T> getFeatureAdapter() {
 		return featureAdapter;
@@ -68,35 +65,23 @@ public class AbstractRepositoryGeoxygene<T> {
 	@SuppressWarnings("unchecked")
 	public Collection<T> findByEnvelope(Envelope bbox){
 		buildSpatialIndex();
-		
 		return spatialIndex.query(bbox);
 	}
 
 	/**
 	 * Build spatial index for input features
 	 */
-	private void buildSpatialIndex(){
-		if ( spatialIndex != null ){
+	private void buildSpatialIndex() {
+		if (spatialIndex != null) {
 			return;
 		}
 		spatialIndex = new STRtree();
 		for (T item : items) {
-			if ( ! (item instanceof IFeature) ){
+			if (!(item instanceof UrbanFeature)) {
 				continue;
 			}
-			IGeometry geometry = ((IFeature) item).getGeom();
-			IEnvelope envelope = geometry.getEnvelope();
-			if ( envelope.isEmpty() ){
-				continue;
-			}
-			spatialIndex.insert( 
-				new Envelope(
-					envelope.getLowerCorner().getX(), envelope.getUpperCorner().getX(),
-					envelope.getLowerCorner().getY(), envelope.getUpperCorner().getY()
-				), 
-				item
-			);
+			Geometry geometry = ((UrbanFeature) item).getGeometry();
+			spatialIndex.insert(geometry.getEnvelopeInternal(), item);
 		}
 	}
-
 }

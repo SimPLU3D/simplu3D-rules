@@ -5,43 +5,29 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.sig3d.Messages;
-import fr.ign.cogit.geoxygene.sig3d.geometry.Box3D;
-import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
-import fr.ign.cogit.geoxygene.sig3d.semantic.DTM;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPosition;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.DirectPositionList;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_LineString;
-import fr.ign.cogit.geoxygene.spatial.coordgeom.GM_Triangle;
-import fr.ign.cogit.geoxygene.spatial.geomprim.GM_Point;
-import fr.ign.cogit.geoxygene.spatial.geomroot.GM_Object;
+import fr.ign.common.dtm.AbstractDTM;
+import fr.ign.common.util.Box3D;
+import fr.ign.common.dtm.DTM;
+import fr.ign.common.util.Vecteur;
+import org.locationtech.jts.geom.*;
 
 /**
- * 
+ *
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
- * see http://www.cecill.info/
- * 
- * 
- * 
+ * <p>
+ * see <a href="http://www.cecill.info/">...</a>
+ * <p>
+ *
+ *
  * copyright IGN
- * 
+ *
  * @author Brasebin Mickaël
- * 
+ *
  * @version 1.0
  **/
 public class DTMPostGISNoJava3D extends AbstractDTM {
@@ -69,23 +55,21 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 	protected int nY;
 	protected double noDataValue;
 
-	private final static Logger logger = LogManager.getLogger(DTMPostGISNoJava3D.class.getCanonicalName());
+	private final static Logger logger = LogManager.getLogManager().getLogger(DTMPostGISNoJava3D.class.getCanonicalName());
 
 	private String host = "";
 	private String port = "";
 	private String base = "";
-	private String tablename = "";
+	private final String tablename;
 	private String user = "";
 	private String pw = "";
-	private String schema = "";
+	private final String schema;
 
 	double[][] tabAlt = null;
 
 	public DTMPostGISNoJava3D(String host, String port, String base, String schema, String tablename, String user,
 			String pw) throws SQLException {
-
 		super();
-
 		this.path = null;
 		this.imagePath = null;
 		this.imageEnvelope = null;
@@ -101,7 +85,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 		isWellLoaded = load();
 	}
 
-	private boolean isWellLoaded;
+	private final boolean isWellLoaded;
 
 	/**
 	 * @return Indicate if the DTM is well loaded
@@ -111,122 +95,82 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 	}
 
 	private boolean load() throws SQLException {
-
 		// Les informations concernant le coin supérieur gauche du MNT
 		double shiftX = 0;
 		double shiftY = 0;
-
 		// Valeur indiquant l'absence de données
 		this.noDataValue = -9999.0;
-
 		// Lecture du fichier et récupèration des différentes valeurs citées
 		// précédemment
-
 		this.zMin = Double.POSITIVE_INFINITY;
 		this.zMax = Double.NEGATIVE_INFINITY;
-
 		// Liste des entités que l'on souhaite charger
 		java.sql.Connection conn;
-
 		// Création des paramètres de connexion
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + base;
-		logger.debug(url);
-
-		logger.info(Messages.getString("PostGIS.Try") + url);
+		//logger.debug(url);
+		//logger.info(Messages.getString("PostGIS.Try") + url);
+		logger.info("PostGIS.Try: " + url);
 		conn = DriverManager.getConnection(url, user, pw);
-
 		String requestSelect = "SELECT ST_Height(rast), ST_width(rast), ST_UpperLeftX(rast), ST_UpperLeftY(rast), ST_PixelHeight(rast), ST_PixelWidth(rast) from "
 				+ schema + "." + tablename;
-
 		// System.out.println(requestSelect);
-		logger.debug(requestSelect);
-
+		//logger.debug(requestSelect);
 		Statement s = conn.createStatement();
-
 		ResultSet rMeta = s.executeQuery(requestSelect);
-
 		// Une seule ligne normalement
 		if (!rMeta.next()) {
 			return false;
 		}
-
 		String str_height = rMeta.getString(1);
 		int nrows = Integer.parseInt(str_height);
-
 		String str_width = rMeta.getString(2);
 		int ncols = Integer.parseInt(str_width);
-
 		String str_PixelH = rMeta.getString(5);
 		double cellesizeY = Double.parseDouble(str_PixelH);
-
 		String str_PixelW = rMeta.getString(6);
 		double cellesizeX = Double.parseDouble(str_PixelW);
-
 		String str_upLeftX = rMeta.getString(3);
-
 		shiftX = Double.parseDouble(str_upLeftX);
-
 		String str_upLeftY = rMeta.getString(4);
 		shiftY = Double.parseDouble(str_upLeftY) - cellesizeY * nrows;
-
 		String sum = "select ST_SummaryStats(rast) from " + schema + "." + tablename;
 		Statement s1 = conn.createStatement();
-
 		ResultSet rStats = s1.executeQuery(sum);
 		rStats.next();
 		String res = rStats.getString(1);
-
 		String[] tabPars = res.split(",");
-
 		String strZmax = tabPars[tabPars.length - 1];
 		strZmax = strZmax.substring(0, strZmax.length() - 1);
-
 		zMax = Double.parseDouble(strZmax);
 		zMin = Double.parseDouble(tabPars[tabPars.length - 2]);
-
-		logger.debug(requestSelect);
-
+		//logger.debug(requestSelect);
 		// On prépare le nombre de lignes
 		nrows = nrows / this.echantillonage;
 		ncols = ncols / this.echantillonage;
-
 		tabAlt = new double[nrows][ncols];
-
 		// On renseigne les différentes valeurs donnant des informations sur
 		// le MNT
 		this.xIni = shiftX + this.stepX / 2;
 		this.yIni = shiftY + this.stepY / 2;
-
 		int currentRow = 1;
-
 		ResultSet rs = null;
-
 		// On traite le fichier ligne par ligne
 		for (int j = 0; j < nrows; j++) {
-
 			// On charge la ligne en mémoire
-
 			rs = getLine(currentRow, ncols, conn);
-
 			// Pour chaque colonne que l'on souhaite récupèrer
 			for (int i = 0; i < ncols; i++) {
-
 				rs.next();
-
 				tabAlt[j][i] = Double.parseDouble(rs.getString(2));
 			}
-
 			currentRow++;
-
 		}
-
 		conn.close();
-
 		this.stepX = this.echantillonage * cellesizeX;
 		this.stepY = this.echantillonage * cellesizeY;
 		this.nX = ncols;
 		this.nY = nrows;
-
 		return true;
 	}
 
@@ -237,7 +181,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 		String sql = "SELECT y, ST_Value(rast, 1, y, " + indexLine
 				+ ",  false) As b1val FROM mnt CROSS JOIN generate_series(1, " + nbCol + "," + this.echantillonage
 				+ ") As y ;";
-		logger.debug(sql);
+		//logger.debug(sql);
 
 		return s.executeQuery(sql);
 
@@ -254,16 +198,12 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 	 */
 	@Override
 	public MultiPolygon processSurfacicGrid(double xmin, double xmax, double ymin, double ymax) {
-
 		GeometryFactory fac = new GeometryFactory();
-
 		// On récupère dans quels triangles se trouvent dpMin et dpMax
 		int posxMin = (int) ((xmin - this.xIni) / (this.stepX * this.echantillonage));
 		int posyMin = (int) ((ymin - this.yIni) / (this.stepY * this.echantillonage));
-
 		int posxMax = 1 + (int) ((xmax - this.xIni) / (this.stepX * this.echantillonage));
 		int posyMax = 1 + (int) ((ymax - this.yIni) / (this.stepY * this.echantillonage));
-
 		// On récupère les sommets extérieurs de ces triangles (ceux qui
 		// permettent d'englober totalement le rectangle dpMin, dpMax
 		Coordinate dpOrigin = new Coordinate(posxMin * this.stepX + this.xIni, posyMin * this.stepY + this.yIni);
@@ -271,7 +211,7 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 
 		// On évalue le nombre de mailles à couvrir
 		int nbInterX = Math.max(1, (int) ((dpFin.x - dpOrigin.x) / this.stepX));
-		int nbInterY = Math.max(1, (int) ((int) ((dpFin.y - dpOrigin.y) / this.stepY)));
+		int nbInterY = Math.max(1, (int) ((dpFin.y - dpOrigin.y) / this.stepY));
 
 		Polygon[] lPolys = new Polygon[2 * nbInterX * nbInterY];
 		int indPoly = 0;
@@ -279,35 +219,27 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 		// (2 triangles par maille)
 		for (int i = 0; i < nbInterX; i++) {
 			for (int j = 0; j < nbInterY; j++) {
-
 				Coordinate dp1 = new Coordinate(dpOrigin.x + i * this.stepX, dpOrigin.y + j * this.stepY);
 				Coordinate dp2 = new Coordinate(dpOrigin.x + (i + 1) * this.stepX, dpOrigin.y + j * this.stepY);
 				Coordinate dp3 = new Coordinate(dpOrigin.x + i * this.stepX, dpOrigin.y + (j + 1) * this.stepY);
-
 				Coordinate dp4 = new Coordinate(dpOrigin.x + (i + 1) * this.stepX, dpOrigin.y + (j + 1) * this.stepY);
-
 				Coordinate[] coord = new Coordinate[4];
 				coord[0] = dp1;
 				coord[1] = dp2;
 				coord[2] = dp4;
 				coord[3] = dp1;
-
 				LinearRing l1 = fac.createLinearRing(coord);
-
 				Coordinate[] coord2 = new Coordinate[4];
 				coord2[0] = dp1;
 				coord2[1] = dp4;
 				coord2[2] = dp3;
 				coord2[3] = dp1;
-
 				LinearRing l2 = fac.createLinearRing(coord2);
 				lPolys[indPoly] = fac.createPolygon(l1, null);
 				indPoly++;
 				lPolys[indPoly] = fac.createPolygon(l2, null);
 				indPoly++;
-
 			}
-
 		}
 		// On renvoie la liste des triangles
 		return fac.createMultiPolygon(lPolys);
@@ -420,26 +352,20 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 	 * @param inferior la position du triangle par rapport à la maille
 	 * @return une liste de points correspondants au sommet du triangle concerné
 	 */
-	public DirectPositionList getTriangle(int indexX, int indexY, boolean inferior) {
-
+	public Coordinate[] getTriangle(int indexX, int indexY, boolean inferior) {
 		// Si les coordonnées ne sont pas dans le MNT, on renvoie null
 		if (indexX >= (this.nX - 1) || indexX < 0 || indexY >= (this.nY - 1) || indexY < 0) {
-
 			return null;
-
 		}
-
-		DirectPosition pt12D = new DirectPosition(indexX * stepX + this.xIni, indexY * stepY + this.yIni,
+		Coordinate pt12D = new Coordinate(indexX * stepX + this.xIni, indexY * stepY + this.yIni,
 				tabAlt[indexX][indexY]);
-		DirectPosition pt22D = new DirectPosition((indexX + this.echantillonage) * stepX + this.xIni,
+		Coordinate pt22D = new Coordinate((indexX + this.echantillonage) * stepX + this.xIni,
 				indexY * stepY + this.yIni, tabAlt[indexX + 1][indexY]);
-		DirectPosition pt32D = new DirectPosition(indexX * stepX + this.xIni,
+		Coordinate pt32D = new Coordinate(indexX * stepX + this.xIni,
 				(indexY + this.echantillonage) * stepY + this.yIni, tabAlt[indexX][indexY + 1]);
-		DirectPosition pt42D = new DirectPosition((indexX + this.echantillonage) * stepX + this.xIni,
+		Coordinate pt42D = new Coordinate((indexX + this.echantillonage) * stepX + this.xIni,
 				(indexY + this.echantillonage) * stepY + this.yIni, tabAlt[indexX + 1][indexY + 1]);
-
-		DirectPositionList dpl = new DirectPositionList();
-
+/*
 		if (inferior) {
 
 			dpl.add(pt12D);
@@ -452,8 +378,9 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 			dpl.add(pt22D);
 			dpl.add(pt32D);
 		}
+*/
 
-		return dpl;
+		return inferior ? new Coordinate[]{pt12D, pt22D, pt32D} : new Coordinate[]{pt42D, pt22D, pt32D};
 	}
 
 	/**
@@ -486,16 +413,16 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 			return new Coordinate(x, y, 0);
 		} else {
 
-			DirectPosition pt12D = new DirectPosition(posx * stepX + this.xIni, posy * stepY + this.yIni,
+			Coordinate pt12D = new Coordinate(posx * stepX + this.xIni, posy * stepY + this.yIni,
 					tabAlt[posx][posy]);
-			DirectPosition pt22D = new DirectPosition((posx + this.echantillonage) * stepX + this.xIni,
+			Coordinate pt22D = new Coordinate((posx + this.echantillonage) * stepX + this.xIni,
 					posy * stepY + this.yIni, tabAlt[posx + 1][posy]);
-			DirectPosition pt32D = new DirectPosition(posx * stepX + this.xIni,
+			Coordinate pt32D = new Coordinate(posx * stepX + this.xIni,
 					(posy + this.echantillonage) * stepY + this.yIni, tabAlt[posx][posy + 1]);
-			DirectPosition pt42D = new DirectPosition((posx + this.echantillonage) * stepX + this.xIni,
+			Coordinate pt42D = new Coordinate((posx + this.echantillonage) * stepX + this.xIni,
 					(posy + this.echantillonage) * stepY + this.yIni, tabAlt[posx + 1][posy + 1]);
 
-			DirectPosition ptloc2D = new DirectPosition(x, y);
+			Coordinate ptloc2D = new Coordinate(x, y);
 
 			double d1 = ptloc2D.distance(pt12D);
 			double d2 = ptloc2D.distance(pt22D);
@@ -557,27 +484,25 @@ public class DTMPostGISNoJava3D extends AbstractDTM {
 
 	public Box3D get3DEnvelope() {
 		if (this.emprise == null) {
-
 			return new Box3D(this.xIni, this.yIni, this.zMin, this.xIni + this.nX * this.stepX,
 					this.yIni + this.nY * this.stepY, this.zMax);
 		}
 		return this.emprise;
 	}
 
+	private static final GeometryFactory factory = new GeometryFactory();
 	@Override
-	public GM_Object getGeometryAt(double x, double y) {
+	public Geometry getGeometryAt(double x, double y) {
 		int posx = (int) ((x - this.xIni) / (this.stepX * this.echantillonage));
 		int posy = (int) ((y - this.yIni) / (this.stepY * this.echantillonage));
 
-		DirectPositionList lTri = this.getTriangle(posx, posy, true);
-		GM_Triangle tri = new GM_Triangle(new GM_LineString(lTri));
+		Coordinate[] lTri = this.getTriangle(posx, posy, true);
+		Polygon tri = factory.createPolygon(lTri);
 
-		if (tri.contains(new GM_Point(new DirectPosition(x, y)))) {
+		if (tri.contains(factory.createPoint(new Coordinate(x, y)))) {
 			return tri;
 		}
 		lTri = this.getTriangle(posx, posy, false);
-		return new GM_Triangle(new GM_LineString(lTri));
-
+		return factory.createPolygon(lTri);
 	}
-
 }

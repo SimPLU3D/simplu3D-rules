@@ -1,18 +1,10 @@
 package fr.ign.cogit.simplu3d.jpa;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import fr.ign.cogit.geoxygene.util.conversion.ParseException;
-import fr.ign.cogit.geoxygene.util.conversion.WktGeOxygene;
-import fr.ign.cogit.simplu3d.model.UrbaZone;
 import junit.framework.TestCase;
 
 public class UrbaZoneJpaTest extends TestCase {
 
+/*
 	private EntityManagerFactory emf;
 	
 	@Override
@@ -54,5 +46,6 @@ public class UrbaZoneJpaTest extends TestCase {
 		}
 		entityManager.close();
 	}
+*/
 
 }

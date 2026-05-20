@@ -1,9 +1,8 @@
 package fr.ign.cogit.simplu3d.generator;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.dao.UrbaZoneRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
@@ -11,6 +10,7 @@ import fr.ign.cogit.simplu3d.dao.geoxygene.UrbaZoneRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.common.io.ShapefileReader;
 import junit.framework.TestCase;
 
 public class SubParcelGeneratorTest extends TestCase {
@@ -23,18 +23,14 @@ public class SubParcelGeneratorTest extends TestCase {
 	protected void setUp() throws Exception {
 		// load urbaZones
 		{
-			File path = new File(
-				getClass().getClassLoader().getResource("demo-02/ZONE_URBA.shp").getPath()
-			);
-			UrbaZoneRepository repository = new UrbaZoneRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+			URL url = getClass().getClassLoader().getResource("demo-02/ZONE_URBA.shp");
+			UrbaZoneRepository repository = new UrbaZoneRepositoryGeoxygene(ShapefileReader.read(url));
 			urbaZones = repository.findAll();
 		}
 		// load cadastralParcels
 		{
-			File path = new File(
-				getClass().getClassLoader().getResource("demo-02/PARCELLE.SHP").getPath()
-			);
-			CadastralParcelRepository repository = new CadastralParcelRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+			URL url = getClass().getClassLoader().getResource("demo-02/PARCELLE.SHP");
+			CadastralParcelRepository repository = new CadastralParcelRepositoryGeoxygene(ShapefileReader.read(url));
 			cadastralParcels = repository.findAll();
 		}
 	}
@@ -54,8 +50,8 @@ public class SubParcelGeneratorTest extends TestCase {
 		// check relation SubParcel/CadastralParcel
 		assertSame(cadastralParcel, subParcel.getCadastralParcel());
 		
-		assertTrue(subParcel.getGeom().equals(cadastralParcel.getGeom())); // same geometry
-		assertNotSame(subParcel.getGeom(), cadastralParcel.getGeom()); // geom is cloned
+		assertTrue(subParcel.getGeometry().equals(cadastralParcel.getGeometry())); // same geometry
+		assertNotSame(subParcel.getGeometry(), cadastralParcel.getGeometry()); // geom is cloned
 	}
 	
 	
@@ -64,10 +60,9 @@ public class SubParcelGeneratorTest extends TestCase {
 		SubParcelGenerator generator = new SubParcelGenerator(urbaZones);
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
 			Collection<SubParcel> subParcels = generator.createSubParcels(cadastralParcel);
-			assertTrue( subParcels.size() >= 1 ); // at least one SubParcel
+            assertFalse(subParcels.isEmpty()); // at least one SubParcel
 		}
 	}
-	
 	
 	private CadastralParcel findParcelByCode(String code){
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
@@ -77,5 +72,4 @@ public class SubParcelGeneratorTest extends TestCase {
 		}
 		return null;
 	}
-	
 }

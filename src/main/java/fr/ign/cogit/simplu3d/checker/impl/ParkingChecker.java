@@ -20,33 +20,21 @@ public class ParkingChecker extends AbstractRuleChecker {
 
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
-		List<UnrespectedRule> lUNR = new ArrayList<>();
-
-		return lUNR;
+        return new ArrayList<>();
 	}
 
 	@Override
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
-
 		if (this.getRules() != null && this.getRules().getArt12() != 99) {
-
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules());
-			if (gc != null) {
-				geomConstraints.add(gc);
-
-			}
-
-		}
-
+            geomConstraints.add(gc);
+        }
 		return geomConstraints;
-
 	}
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
-
 		return new GeometricConstraints("Nombre de places de stationnement par logement : " + r1.getArt12(),
-				bPU.getGeom(), CODE_PARKING);
+				bPU.getGeometry(), CODE_PARKING);
 	}
-
 }

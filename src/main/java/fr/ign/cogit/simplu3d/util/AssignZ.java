@@ -19,16 +19,23 @@
  */
 package fr.ign.cogit.simplu3d.util;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+*/
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.common.dtm.AbstractDTM;
+import fr.ign.common.extrusion.Extrusion2DObject;
+import org.locationtech.jts.geom.Geometry;
+
+import java.util.Collection;
 
 /**
  * 
@@ -41,48 +48,30 @@ public class AssignZ {
   // IF no DTM is used a default Z can be set
   public static double DEFAULT_Z = 0;
 
-  public static void toParcelle(IFeatureCollection<CadastralParcel> parcelles,
-      AbstractDTM dtm, boolean sursampled) throws Exception {
-
+  public static void toParcelle(Collection<CadastralParcel> parcelles, AbstractDTM dtm, boolean sursampled) throws Exception {
     boolean isZSet = (dtm != null);
-
     for (CadastralParcel p : parcelles) {
-
       if (isZSet) {
-        IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
-        p.setGeom(geom);
-
+        Geometry geom = dtm.mapGeom(p.getGeometry(), 0, true, sursampled);
+        p.setGeometry(geom);
       } else {
-
-        p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(), DEFAULT_Z,
-            DEFAULT_Z));
-
+        p.setGeometry(Extrusion2DObject.convertFromGeometry(p.getGeometry(), DEFAULT_Z, DEFAULT_Z));
       }
-
       for (ParcelBoundary b : p.getBoundaries()) {
-
         if (isZSet) {
-          IGeometry geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);
-          
+          Geometry geomB = dtm.mapGeom(b.getGeometry(), 0, true, sursampled);
           if(geomB.isEmpty()){
-            geomB = dtm.mapGeom(b.getGeom(), 0, true, sursampled);
+            geomB = dtm.mapGeom(b.getGeometry(), 0, true, sursampled);
           }
-          
-          b.setGeom(geomB);
-
+          b.setGeometry(geomB);
         } else {
-          b.setGeom(Extrusion2DObject.convertFromGeometry(b.getGeom(),
-              DEFAULT_Z, DEFAULT_Z));
-
+          b.setGeometry(Extrusion2DObject.convertFromGeometry(b.getGeometry(), DEFAULT_Z, DEFAULT_Z));
         }
-        
       }
-
     }
-
   }
 
-  public static void toSousParcelle(IFeatureCollection<SubParcel> parcelles,
+  public static void toSousParcelle(Collection<SubParcel> parcelles,
       AbstractDTM dtm, boolean sursampled) throws Exception {
 
     boolean isZSet = (dtm != null);
@@ -90,10 +79,10 @@ public class AssignZ {
     for (SubParcel p : parcelles) {
 
       if (isZSet) {
-        IGeometry geom = dtm.mapGeom(p.getGeom(), 0, true, sursampled);
-        p.setGeom(geom);
+        Geometry geom = dtm.mapGeom(p.getGeometry(), 0, true, sursampled);
+        p.setGeometry(geom);
       } else {
-        p.setGeom(Extrusion2DObject.convertFromGeometry(p.getGeom(), DEFAULT_Z,
+        p.setGeometry(Extrusion2DObject.convertFromGeometry(p.getGeometry(), DEFAULT_Z,
             DEFAULT_Z));
 
       }
@@ -102,7 +91,7 @@ public class AssignZ {
 
   }
 
-  public static void toVoirie(IFeatureCollection<Road> voiries,
+  public static void toVoirie(Collection<Road> voiries,
       AbstractDTM dtm, boolean sursampled) throws Exception {
 
     boolean isZSet = (dtm != null);
@@ -111,10 +100,10 @@ public class AssignZ {
 
       if (isZSet) {
 
-        IGeometry geom = dtm.mapGeom(z.getGeom(), 0, true, sursampled);
-        z.setGeom(geom);
+        Geometry geom = dtm.mapGeom(z.getGeometry(), 0, true, sursampled);
+        z.setGeometry(geom);
       } else {
-        z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(), DEFAULT_Z,
+        z.setGeometry(Extrusion2DObject.convertFromGeometry(z.getGeometry(), DEFAULT_Z,
             DEFAULT_Z));
 
       }
@@ -123,12 +112,12 @@ public class AssignZ {
 
   }
 
-  public static void toZone(IFeatureCollection<UrbaZone> zones,
+  public static void toZone(Collection<UrbaZone> zones,
       AbstractDTM dtm, boolean sursampled) throws Exception {
 
     for (UrbaZone z : zones) {
 
-      z.setGeom(Extrusion2DObject.convertFromGeometry(z.getGeom(), DEFAULT_Z,
+      z.setGeometry(Extrusion2DObject.convertFromGeometry(z.getGeometry(), DEFAULT_Z,
           DEFAULT_Z));
 
     }
@@ -136,7 +125,7 @@ public class AssignZ {
   }
 
   public static void toPrescriptions(
-      IFeatureCollection<Prescription> prescriptions, AbstractDTM dtm,
+      Collection<Prescription> prescriptions, AbstractDTM dtm,
       boolean sursampled) throws Exception {
 
     boolean isZSet = (dtm != null);
@@ -144,10 +133,10 @@ public class AssignZ {
     for (Prescription a : prescriptions) {
       if (isZSet) {
 
-        IGeometry geom = dtm.mapGeom(a.getGeom(), 0, true, sursampled);
-        a.setGeom(geom);
+        Geometry geom = dtm.mapGeom(a.getGeometry(), 0, true, sursampled);
+        a.setGeometry(geom);
       } else {
-        a.setGeom(Extrusion2DObject.convertFromGeometry(a.getGeom(), DEFAULT_Z,
+        a.setGeometry(Extrusion2DObject.convertFromGeometry(a.getGeometry(), DEFAULT_Z,
             DEFAULT_Z));
       }
     }

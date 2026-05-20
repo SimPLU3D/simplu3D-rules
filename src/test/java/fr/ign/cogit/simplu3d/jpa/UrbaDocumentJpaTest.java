@@ -1,16 +1,10 @@
 package fr.ign.cogit.simplu3d.jpa;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
 public class UrbaDocumentJpaTest extends TestCase {
 
+/*
 	private EntityManagerFactory emf;
 	
 	@Override
@@ -47,5 +41,6 @@ public class UrbaDocumentJpaTest extends TestCase {
 		}
 		entityManager.close();
 	}
-	
+*/
+
 }

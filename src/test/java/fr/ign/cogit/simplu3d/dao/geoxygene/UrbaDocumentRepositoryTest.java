@@ -1,26 +1,21 @@
 package fr.ign.cogit.simplu3d.dao.geoxygene;
 
-import java.io.File;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
-import org.junit.Test;
+import fr.ign.common.io.ShapefileReader;
 
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.UrbaDocumentRepository;
 import fr.ign.cogit.simplu3d.io.feature.UrbaDocumentReader;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import junit.framework.TestCase;
 
 public class UrbaDocumentRepositoryTest extends TestCase {
-	
-	
-	@Test
+
 	public void testDemo01(){
-		File path = new File(
-			getClass().getClassLoader().getResource("demo-01/DOC_URBA.shp").getPath()
-		);
-		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		URL url = getClass().getClassLoader().getResource("demo-01/DOC_URBA.shp");
+		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(url));
 		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 		assertEquals(1, urbaDocuments.size());
 
@@ -44,12 +39,9 @@ public class UrbaDocumentRepositoryTest extends TestCase {
 		assertEquals("20150101",dateFormat.format(first.getDateRef()));		
 	}
 	
-	@Test
 	public void test44118(){
-		File path = new File(
-			getClass().getClassLoader().getResource("44118_PLU_20150219/DOC_URBA.shp").getPath()
-		);
-		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/DOC_URBA.shp");
+		UrbaDocumentRepository repository = new UrbaDocumentRepositoryGeoxygene(ShapefileReader.read(url));
 		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 /*
  * TODO allow EMPTY/NULL geometry in geoxygene https://github.com/IGNF/geoxygene/issues/3

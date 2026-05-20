@@ -1,6 +1,6 @@
 package fr.ign.cogit.simplu3d.checker;
 
-import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import fr.ign.cogit.simplu3d.checker.experiments.RennesChecker;
@@ -24,20 +24,16 @@ public class CheckerFunctionalTest extends TestCase {
 		AssignBuildingPartToSubParcel.ASSIGN_METHOD = 0;
 
 		try {
-			File path = new File(getClass().getClassLoader().getResource("demo-01").getPath());
-			Environnement env = LoaderSHP.loadNoDTM(path);
-			BasicPropertyUnit bPU = env.getBpU().get(20);
+			URL url = getClass().getClassLoader().getResource("demo-01");
+			Environnement env = LoaderSHP.loadNoDTM(url);
+			BasicPropertyUnit bPU = env.getBpU().toArray(new BasicPropertyUnit[0])[20];//FIXME
 			RuleContext context = new RuleContext();
-			ZoneRegulation r = RennesRegulationReader
-					.regulationFromLine("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7");
+			ZoneRegulation r = RennesRegulationReader.regulationFromLine("UB2,6,0.5,500,16,0.4,16.5,0,0,4,1,1,11,1,3,6,8.5,1,3.5,7");
 			List<UnrespectedRule> lSp = RennesChecker.check(bPU, r, context);
 			assertEquals(3, lSp.size());
 			// TODO complete test
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail(e.getMessage());
 		}
-
 	}
-
 }

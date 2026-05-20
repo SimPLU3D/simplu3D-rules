@@ -1,9 +1,9 @@
 /**
  * 
- *        This software is released under the licence CeCILL
- * 
+ *        This software is released under the license CeCILL
+ * <p>
  *        see LICENSE.TXT
- * 
+ * <p>
  *        see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -18,7 +18,6 @@ package fr.ign.cogit.simplu3d.analysis;
 
 import java.util.Collection;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
@@ -32,14 +31,12 @@ import fr.ign.cogit.simplu3d.model.Road;
  *
  */
 public class AssignRoadToParcelBoundary {
-
-	public static void process(Collection<CadastralParcel> cadastralParcels, IFeatureCollection<Road> roads) {
+	public static void process(Collection<CadastralParcel> cadastralParcels, Collection<Road> roads) {
 		NearestRoadFinder roadFinder = new NearestRoadFinder(roads);
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
 			for (ParcelBoundary boundary : cadastralParcel.getBoundariesByType(ParcelBoundaryType.ROAD)) {
-				boundary.setRoad(roadFinder.findNearestRoad(boundary.getGeom()));
+				boundary.setRoad(roadFinder.findNearestRoad(boundary.getGeometry()));
 			}
 		}
 	}
-
 }

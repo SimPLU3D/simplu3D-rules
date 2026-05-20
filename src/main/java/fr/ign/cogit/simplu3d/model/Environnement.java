@@ -16,10 +16,17 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.semantic.AbstractDTM;
+*/
+
+import fr.ign.common.dtm.AbstractDTM;
+import org.locationtech.jts.geom.Coordinate;
+
+import java.util.Collection;
 
 /**
  * 
@@ -39,23 +46,23 @@ public class Environnement {
 	/**
 	 * Indicate if activated the translation vector
 	 */
-	public static IDirectPosition dpTranslate = null;
+	public static Coordinate dpTranslate = null;
 
 	private static Environnement env = null;
 
 	private UrbaDocument urbaDoc;
 
-	private IFeatureCollection<BasicPropertyUnit> bpU = new FT_FeatureCollection<>();
-	private IFeatureCollection<CadastralParcel> cadastralParcels = new FT_FeatureCollection<>();
-	private IFeatureCollection<SubParcel> subParcels = new FT_FeatureCollection<>();
+	private Collection<BasicPropertyUnit> bpU = null;//TODO
+	private Collection<CadastralParcel> cadastralParcels = null;//TODO
+	private Collection<SubParcel> subParcels = null;//TODO
 
-	private IFeatureCollection<AbstractBuilding> buildings = new FT_FeatureCollection<>();
+	private Collection<Building> buildings = null;//TODO
 
-	private IFeatureCollection<UrbaZone> urbaZones = new FT_FeatureCollection<>();
-	private IFeatureCollection<Prescription> prescriptions = new FT_FeatureCollection<>();
+	private Collection<UrbaZone> urbaZones = null;//TODO
+	private Collection<Prescription> prescriptions = null;//TODO
 
 	private AbstractDTM terrain;
-	private IFeatureCollection<Road> roads = new FT_FeatureCollection<Road>();
+	private Collection<Road> roads = null;//TODO
 
 	protected Environnement() {
 
@@ -84,43 +91,43 @@ public class Environnement {
 		return env;
 	}
 
-	public IFeatureCollection<CadastralParcel> getCadastralParcels() {
+	public Collection<CadastralParcel> getCadastralParcels() {
 		return cadastralParcels;
 	}
 
-	public void setCadastralParcels(IFeatureCollection<CadastralParcel> cadastralParcels) {
+	public void setCadastralParcels(Collection<CadastralParcel> cadastralParcels) {
 		this.cadastralParcels = cadastralParcels;
 	}
 
-	public IFeatureCollection<SubParcel> getSubParcels() {
+	public Collection<SubParcel> getSubParcels() {
 		return subParcels;
 	}
 
-	public void setSubParcels(IFeatureCollection<SubParcel> subParcels) {
+	public void setSubParcels(Collection<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
 
-	public IFeatureCollection<AbstractBuilding> getBuildings() {
+	public Collection<Building> getBuildings() {
 		return buildings;
 	}
 
-	public void setBuildings(IFeatureCollection<AbstractBuilding> buildings) {
+	public void setBuildings(Collection<Building> buildings) {
 		this.buildings = buildings;
 	}
 
-	public IFeatureCollection<UrbaZone> getUrbaZones() {
+	public Collection<UrbaZone> getUrbaZones() {
 		return urbaZones;
 	}
 
-	public void setUrbaZones(IFeatureCollection<UrbaZone> urbaZones) {
+	public void setUrbaZones(Collection<UrbaZone> urbaZones) {
 		this.urbaZones = urbaZones;
 	}
 
-	public IFeatureCollection<Prescription> getPrescriptions() {
+	public Collection<Prescription> getPrescriptions() {
 		return prescriptions;
 	}
 
-	public void setPrescriptions(IFeatureCollection<Prescription> prescriptions) {
+	public void setPrescriptions(Collection<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
 	}
 
@@ -132,27 +139,27 @@ public class Environnement {
 		this.terrain = terrain;
 	}
 
-	public static IDirectPosition getDpTranslate() {
+	public static Coordinate getDpTranslate() {
 		return dpTranslate;
 	}
 
-	public static void setDpTranslate(IDirectPosition dpTranslate) {
+	public static void setDpTranslate(Coordinate dpTranslate) {
 		Environnement.dpTranslate = dpTranslate;
 	}
 
-	public IFeatureCollection<Road> getRoads() {
+	public Collection<Road> getRoads() {
 		return roads;
 	}
 
-	public void setRoads(IFeatureCollection<Road> roads) {
+	public void setRoads(Collection<Road> roads) {
 		this.roads = roads;
 	}
 
-	public IFeatureCollection<BasicPropertyUnit> getBpU() {
+	public Collection<BasicPropertyUnit> getBpU() {
 		return bpU;
 	}
 
-	public void setBpU(IFeatureCollection<BasicPropertyUnit> bpU) {
+	public void setBpU(Collection<BasicPropertyUnit> bpU) {
 		this.bpU = bpU;
 	}
 

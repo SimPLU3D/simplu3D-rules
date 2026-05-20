@@ -1,57 +1,48 @@
 package fr.ign.cogit.simplu3d.generator.boundary;
 
+import fr.ign.cogit.simplu3d.model.UrbanFeature;
+import fr.ign.common.topo.Arc;
+import fr.ign.common.topo.CarteTopo;
+
 import java.util.Collection;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IPopulation;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.ILineString;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.CarteTopo;
-import fr.ign.cogit.geoxygene.sig3d.convert.geom.FromPolygonToLineString;
+import java.util.logging.Logger;
 
 /**
  * Create a topology ("CarteTopo") from a set of CadastralParcels
- * 
+ * <p>
  * TODO add(CadastralParcel) / build() : CarteTopo (keep newCarteTopo as a facade)
  * 
  * @author MBrasebin
  *
  */
 public class CarteTopoParcelBoundaryBuilder {
-	
-	private static Logger logger = LogManager.getLogger(CarteTopoParcelBoundaryBuilder.class);
-	
-	
+
+	private static final Logger logger = Logger.getLogger(CarteTopoParcelBoundaryBuilder.class.getName());
+
 	public static CarteTopo newCarteTopo(
-		String name, 
-		Collection<? extends IFeature> features,
-		double threshold
+			Collection<? extends UrbanFeature> features,
+			double threshold
 	) {
-		logger.info("Create a CarteTopo for "+features.size()+" feature(s)");
+		logger.fine("Create a CarteTopo for " + features.size() + " feature(s)");
 		try {
 			// Initialisation d'une nouvelle CarteTopo
-			CarteTopo carteTopo = new CarteTopo(name);
+			CarteTopo carteTopo = new CarteTopo();
+			carteTopo.addFeatures(features);
+			/*
 			carteTopo.setBuildInfiniteFace(false);
 			// Récupération des arcs de la carteTopo
-			IPopulation<Arc> arcs = carteTopo.getPopArcs();
+			Collection<Arc> arcs = new ArrayList<>();
+			//carteTopo.getPopArcs();
 			// Import des arcs de la collection dans la carteTopo
-			for (IFeature feature : features) {
-
-				List<ILineString> lLLS = FromPolygonToLineString.convertPolToLineStrings((IPolygon) feature.getGeom());
-
-				for (ILineString ls : lLLS) {
+			for (UrbanFeature feature : features) {
+				List<LineString> lLLS = FromPolygonToLineString.convertPolToLineStrings((Polygon) feature.getGeometry());
+				for (LineString ls : lLLS) {
 					//TODO use threshold?
-					if (ls.length() == 0) {
-						logger.warn("Ignore null length edge");
+					if (ls.getLength() == 0) {
+						logger.warning("Ignore null length edge");
 					}
-
 					// création d'un nouvel élément
-					Arc arc = arcs.nouvelElement();
+					Arc arc = new Arc();//arcs.nouvelElement();
 					// affectation de la géométrie de l'objet issu de la
 					// collection
 					// à l'arc de la carteTopo
@@ -59,23 +50,20 @@ public class CarteTopoParcelBoundaryBuilder {
 					// instanciation de la relation entre l'arc créé et l'objet
 					// issu de la collection
 					arc.addCorrespondant(feature);
-
+					arcs.add(arc);
 				}
-
 			}
-
-			if ( ! hasNullLengthEdge(carteTopo) ) {
-				logger.warn("null length edges found");
+			if (!hasNullLengthEdge(carteTopo)) {
+				logger.warning("null length edges found");
 			}
-
 			logger.info("Create missing nodes at the end of edges...");
 			carteTopo.creeNoeudsManquants(-1);
 
-			if ( ! hasNullLengthEdge(carteTopo) ) {
-				logger.warn("null length edges found");
+			if (!hasNullLengthEdge(carteTopo)) {
+				logger.warning("null length edges found");
 			}
 
-			logger.info("Merge nodes with a threshold ("+threshold+")...");
+			logger.info("Merge nodes with a threshold (" + threshold + ")...");
 			carteTopo.fusionNoeuds(threshold);
 
 			logger.info("Remove duplicate edges...");
@@ -93,8 +81,8 @@ public class CarteTopoParcelBoundaryBuilder {
 			carteTopo.creeTopologieArcsNoeuds(threshold);
 			logger.info("Build faces...");
 			carteTopo.creeTopologieFaces();
-			
-			if ( carteTopo.getPopFaces().isEmpty() ){
+*/
+			if (carteTopo.getPopFaces().isEmpty()) {
 				throw new RuntimeException("no faces created!");
 			}
 
@@ -106,12 +94,10 @@ public class CarteTopoParcelBoundaryBuilder {
 	}
 
 	private static boolean hasNullLengthEdge(CarteTopo ct) {
-
 		for (Arc a : ct.getPopArcs()) {
-			if (a.getGeometrie().length() == 0) {
+			if (a.getGeometrie().getLength() == 0) {
 				return false;
 			}
-
 		}
 		return true;
 	}

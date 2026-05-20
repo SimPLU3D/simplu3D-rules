@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -20,31 +20,37 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.sig3d.semantic.DTMArea;
-import fr.ign.cogit.geoxygene.sig3d.util.ColorShade;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.io.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.Environnement;
 import fr.ign.cogit.simplu3d.util.FileLocator;
+import fr.ign.common.dtm.AbstractDTM;
+import fr.ign.common.dtm.DTMArea;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.FeatureIterator;
 
 /**
  * 
  * Helper to load shapefile data
- * 
- * TODO move constants to "final"
- * 
+ * <p>
+ *
  * @author MBrasebin
  *
  */
 public class LoaderSHP {
-	private static Logger logger = LogManager.getLogger(LoaderSHP.class);
+	private static final Logger logger = Logger.getLogger(LoaderSHP.class.getName());
 
 	/*
 	 * Nom des fichiers en entrée
@@ -59,110 +65,120 @@ public class LoaderSHP {
 	public static final String NOM_FICHIER_PRESC_SURFACIQUE = "prescription_surf.shp";
 	public static final String NOM_FICHIER_PLU = "doc_urba.shp";
 
-	public static Environnement load(File simuFile , File fileDoc ,File fileZonage, File fileParcels, File fileVoirie,  File fileBuild, File filePrescPonct,File filePrescLin,File filePrescSurf, InputStream dtmStream) throws Exception{
-		IFeatureCollection<IFeature> pluColl = readShapefile(fileDoc);
-		IFeatureCollection<IFeature> zoneColl = readShapefile(fileZonage);
-		IFeatureCollection<IFeature> parcelleColl = readShapefile(fileParcels);
-		IFeatureCollection<IFeature> voirieColl = readShapefile(fileVoirie);
-		IFeatureCollection<IFeature> batiColl = readShapefile(fileBuild);
-		IFeatureCollection<IFeature> prescriptions = readShapefile(filePrescLin);
-		prescriptions.addAll(readShapefile(filePrescPonct));
-		prescriptions.addAll(readShapefile(filePrescSurf));
-		IFeature featPLU = null;
+	public static Environnement load(
+			URL fileDoc ,
+			URL fileZonage,
+			URL fileParcels,
+			URL fileVoirie,
+			URL fileBuild,
+			URL filePrescPonct,
+			URL filePrescLin,
+			URL filePrescSurf,
+			InputStream dtmStream) throws Exception{
+		DefaultFeatureCollection pluColl = readShapefile(fileDoc);
+		DefaultFeatureCollection zoneColl = readShapefile(fileZonage);
+		DefaultFeatureCollection parcelleColl = readShapefile(fileParcels);
+		DefaultFeatureCollection voirieColl = readShapefile(fileVoirie);
+		DefaultFeatureCollection batiColl = readShapefile(fileBuild);
+		DefaultFeatureCollection prescriptions = readShapefile(filePrescLin);
+		prescriptions.addAll(readShapefile(filePrescPonct).stream().toList());
+		prescriptions.addAll(readShapefile(filePrescSurf).stream().toList());
+		SimpleFeature featPLU = null;
 		if (!pluColl.isEmpty()) {
-			featPLU = pluColl.get(0);
+			featPLU = pluColl.stream().toList().get(0);
 		}
 		
 		DTMArea dtm = null;
-
 		if (dtmStream != null) {
-			dtm = new DTMArea(dtmStream, "Terrain", true, 1, ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
+			dtm = new DTMArea(dtmStream, "Terrain", 1);
 		}
-		
-		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
-				prescriptions, dtm);
-
-		
-	
-		return env;
+        return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, dtm);
 	}
 	
-	public static Environnement load(File folder) throws Exception {
+	public static Environnement load(URL url) throws Exception {
+		File folder = new File(url.toURI());
 		File terrainFile = FileLocator.findFile(folder, NOM_FICHIER_TERRAIN);
 		if (terrainFile == null) {
 			throw new FileNotFoundException((new File(folder, NOM_FICHIER_TERRAIN)).toString());
 		}
-		return load(folder, new FileInputStream(terrainFile));
+		return load(url, new FileInputStream(terrainFile));
 	}
 
-	public static Environnement loadNoDTM(File folder) throws Exception {
-		return load(folder, null);
+	public static Environnement loadNoDTM(URL url) throws Exception {
+		return load(url, null);
 	}
 
-	public static Environnement load(File folder, InputStream dtmStream) throws Exception {
-
+	public static Environnement load(URL url, InputStream dtmStream) throws Exception {
 		// Chargement des fichiers
-		IFeatureCollection<IFeature> pluColl = readShapefile(folder, NOM_FICHIER_PLU);
-		IFeature featPLU = null;
+		DefaultFeatureCollection pluColl = readShapefile(url, NOM_FICHIER_PLU);
+		SimpleFeature featPLU = null;
 		if (!pluColl.isEmpty()) {
-			featPLU = pluColl.get(0);
+			FeatureIterator<SimpleFeature> iterator = pluColl.features();
+			featPLU = iterator.next();
+			iterator.close();
 		} else {
-		  logger.warn("No PLU file found");
+		  logger.fine("No PLU file found");
 		}
-		IFeatureCollection<IFeature> zoneColl = readShapefile(folder, NOM_FICHIER_ZONAGE);
-		logger.warn(zoneColl.size() + " zones found");
-		IFeatureCollection<IFeature> parcelleColl = readShapefile(folder, NOM_FICHIER_PARCELLE);
-		logger.warn(parcelleColl.size() + " parcels found");
-		IFeatureCollection<IFeature> voirieColl = readShapefile(folder, NOM_FICHIER_VOIRIE);
-		IFeatureCollection<IFeature> batiColl = readShapefile(folder, NOM_FICHIER_BATIMENTS);
-		IFeatureCollection<IFeature> prescriptions = readShapefile(folder, NOM_FICHIER_PRESC_LINEAIRE);
-		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_LINEAIRE));
-		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_PONCTUELLE));
-		prescriptions.addAll(readShapefile(folder, NOM_FICHIER_PRESC_SURFACIQUE));
+		DefaultFeatureCollection zoneColl = readShapefile(url, NOM_FICHIER_ZONAGE);
+		logger.finer(zoneColl.size() + " zones found");
+		DefaultFeatureCollection parcelleColl = readShapefile(url, NOM_FICHIER_PARCELLE);
+		logger.finer(parcelleColl.size() + " parcels found");
+		DefaultFeatureCollection voirieColl = readShapefile(url, NOM_FICHIER_VOIRIE);
+		logger.finer(voirieColl.size() + " roads found");
+		DefaultFeatureCollection batiColl = readShapefile(url, NOM_FICHIER_BATIMENTS);
+		logger.finer(batiColl.size() + " buildings found");
+		DefaultFeatureCollection prescriptions = readShapefile(url, NOM_FICHIER_PRESC_LINEAIRE);
+		prescriptions.addAll(readShapefile(url, NOM_FICHIER_PRESC_PONCTUELLE).stream().toList());
+		prescriptions.addAll(readShapefile(url, NOM_FICHIER_PRESC_SURFACIQUE).stream().toList());
+		logger.finer(prescriptions.size() + " prescriptions found");
 		// sous-parcelles route sans z, zonage, les bordures etc...
-		DTMArea dtm = null;
-
+		AbstractDTM dtm = null;
 		if (dtmStream != null) {
-			dtm = new DTMArea(dtmStream, "Terrain", true, 1, ColorShade.BLUE_CYAN_GREEN_YELLOW_WHITE);
+			dtm = new DTMArea(dtmStream, "Terrain", 1);
 		}
-
-		Environnement env = LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl,
-				prescriptions, dtm);
-	
-		
-		
-		return env;
+        return LoadFromCollection.load(featPLU, zoneColl, parcelleColl, voirieColl, batiColl, prescriptions, dtm);
 	}
 
-	private static IFeatureCollection<IFeature> readShapefile(File folder) {
-		if(folder == null) {
-			logger.warn("LoaderSHP : File  not found  " + folder);
-			return new FT_FeatureCollection<>();
+	private static DefaultFeatureCollection readShapefile(URL url) throws MalformedURLException {
+		if (url.getPath().isEmpty()) {
+			logger.warning("LoaderSHP : File  not found  " + url);
+			return new DefaultFeatureCollection();
 		}
+		File folder = new File(url.getPath());
 		String fileName = folder.getName();
-		return readShapefile(folder.getParentFile(), fileName);
+		return readShapefile(folder.getParentFile().toURI().toURL(), fileName);
 	}
-	
-	
+
 	/**
-	 * helper to read a shapefile with case insensitive name
+	 * helper to read a shapefile with case insensitive name.
 	 * 
-	 * @param folder
-	 * @param filename
-	 * @return
+	 * @param url the folder url
+	 * @param filename the filename
+	 * @return a feature collection
 	 */
-	private static IFeatureCollection<IFeature> readShapefile(File folder, String filename) {
-		if(! folder.exists()) {
-			logger.warn("File " + filename + " not found in " + folder);
-			return new FT_FeatureCollection<>();
+	private static DefaultFeatureCollection readShapefile(URL url, String filename) {
+		File folder = new File(url.getPath());
+		if(!folder.exists()) {
+			logger.fine("File " + filename + " not found in " + folder);
+			return new DefaultFeatureCollection();
 		}
 		File file = FileLocator.findFile(folder, filename);
 		if (null == file) {
-			logger.warn("File " + filename + " not found in " + folder);
-			return new FT_FeatureCollection<>();
+			logger.fine("File " + filename + " not found in " + folder);
+			return new DefaultFeatureCollection();
 		}
-		logger.info("Loading features from " + file);
-		return ShapefileReader.read(file.toString());
+		logger.finer("Loading features from " + file);
+        try {
+			Map<String, Object> map = new HashMap<>();
+            map.put("url", file.toURI().toURL());
+			DataStore dataStore = DataStoreFinder.getDataStore(map);
+			String typeName = dataStore.getTypeNames()[0];
+			FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
+			Filter filter = Filter.INCLUDE;
+			return DataUtilities.collection(source.getFeatures(filter));
+        } catch (Exception e) {
+            logger.warning("Can't load url from " + file);
+        }
+		return new DefaultFeatureCollection();
 	}
-
 }

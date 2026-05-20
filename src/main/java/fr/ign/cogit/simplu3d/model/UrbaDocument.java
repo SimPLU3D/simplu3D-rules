@@ -20,26 +20,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
- * 
+ *
  * Un document d'urbanisme porteur d'une liste de zone d'urbanisme.
- * 
- * see DOC_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
+ * <p>
+ * see DOC_URBA <a href="http://cnig.gouv.fr/wp-content/uploads/2014/10/">...</a>
  *      141002_Standard_CNIG_PLU_diffusion.pdf
- * 
+ *
  * @author Brasebin Mickaël
  *
  */
-@Entity
+//@Entity
 public class UrbaDocument {
 	
+/*
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+*/
 	private int id ;
 	
 	private String idUrba = "";

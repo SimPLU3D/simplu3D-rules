@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -20,34 +20,40 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import org.locationtech.jts.geom.Geometry;
 
 /**
- * 
+ *
  * Une zone d'urbanisme servant de support à la définition de règles.
- * 
- * see ZONE_URBA http://cnig.gouv.fr/wp-content/uploads/2014/10/
+ * <p>
+ * see ZONE_URBA <a href="http://cnig.gouv.fr/wp-content/uploads/2014/10/">...</a>
  *      141002_Standard_CNIG_PLU_diffusion.pdf
- * 
+ *
  * @author Brasebin Mickaël
  *
  */
-@Entity
-public class UrbaZone extends DefaultFeature {
+//@Entity
+public class UrbaZone implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 
 	/**
 	 * Les sous parcelles correspondant à la zone d'urbanisme (les parcelles
 	 * peuvent être à cheval sur plusieurs zone d'urbanisme)
 	 */
-	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	private List<SubParcel> subParcels = new ArrayList<>();
 
 	private String libelle = "";
 	private String libelong = "";
@@ -68,21 +74,12 @@ public class UrbaZone extends DefaultFeature {
 	public UrbaZone() {
 		super();
 	}
-
-	@Override
-	@Id
-	@GeneratedValue
-	public int getId() {
-		return id;
-	}
-	
+/*
 	@Override
 	@Type(type = "fr.ign.cogit.geoxygene.datatools.hibernate.GeOxygeneGeometryUserType")
-	public IGeometry getGeom() {
-		return geom;
-	}
+*/
 
-	@Transient
+//	@Transient
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}

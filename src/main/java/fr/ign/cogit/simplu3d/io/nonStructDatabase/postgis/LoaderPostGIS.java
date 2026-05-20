@@ -1,11 +1,17 @@
 package fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
 import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
 import fr.ign.cogit.geoxygene.sig3d.io.vector.PostgisManager;
+*/
 import fr.ign.cogit.simplu3d.io.LoadFromCollection;
 import fr.ign.cogit.simplu3d.model.Environnement;
+import fr.ign.common.io.PostgisManager;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.DefaultFeatureCollection;
 
 /**
  * 
@@ -59,20 +65,22 @@ public class LoaderPostGIS {
 	}
 
 	public Environnement load() throws Exception {
-	
-		IFeatureCollection<IFeature> pluColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PLU);
-		IFeature featPLU = null;
+
+		DefaultFeatureCollection pluColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PLU);
+		SimpleFeature featPLU = null;
 		if (!pluColl.isEmpty()) {
-			featPLU = pluColl.get(0);
+			SimpleFeatureIterator iterator = pluColl.features();
+			featPLU = iterator.next();
+			iterator.close();
 		}
 
-		IFeatureCollection<IFeature> zoneColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_ZONAGE);
-		IFeatureCollection<IFeature> parcelleColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PARCELLE);
-		IFeatureCollection<IFeature> voirieColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_VOIRIE);
-		IFeatureCollection<IFeature> batiColl =loadGeometricTableOrEmptyCollection(	NOM_TABLE_BATIMENTS);
-		IFeatureCollection<IFeature> prescriptions = loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_LINEAIRE);
-		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_PCT));
-		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_SURF));
+		DefaultFeatureCollection zoneColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_ZONAGE);
+		DefaultFeatureCollection parcelleColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_PARCELLE);
+		DefaultFeatureCollection voirieColl = loadGeometricTableOrEmptyCollection(NOM_TABLE_VOIRIE);
+		DefaultFeatureCollection batiColl =loadGeometricTableOrEmptyCollection(	NOM_TABLE_BATIMENTS);
+		DefaultFeatureCollection prescriptions = loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_LINEAIRE);
+		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_PCT).stream().toList());
+		prescriptions.addAll(loadGeometricTableOrEmptyCollection(NOM_TABLE_PRESC_SURF).stream().toList());
 		
 		DTMPostGISNoJava3D dtm = new DTMPostGISNoJava3D(host, port, database, schema, NOM_TABLE_TERRAIN, user, pw);
 		
@@ -87,11 +95,11 @@ public class LoaderPostGIS {
 
 	}
 
-	private IFeatureCollection<IFeature> loadGeometricTableOrEmptyCollection(String tableName) throws Exception {
-		IFeatureCollection<IFeature> featColl = PostgisManager.loadGeometricTable(host, port, database, schema,
+	private DefaultFeatureCollection loadGeometricTableOrEmptyCollection(String tableName) throws Exception {
+		DefaultFeatureCollection featColl = PostgisManager.loadGeometricTable(host, port, database, schema,
 				tableName, user, pw);
 		if (featColl == null) {
-			return new FT_FeatureCollection<>();
+			return new DefaultFeatureCollection();
 		}
 		return featColl;
 	}

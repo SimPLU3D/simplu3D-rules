@@ -1,44 +1,32 @@
 package fr.ign.cogit.simplu3d.dao.geoxygene;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 
-import org.junit.Test;
+import fr.ign.common.io.ShapefileReader;
+import org.geotools.feature.DefaultFeatureCollection;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.BuildingRepository;
 import fr.ign.cogit.simplu3d.model.Building;
 import junit.framework.TestCase;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public class BuildingRepositoryTest extends TestCase {
-	
 	BuildingRepository repository ;
-
 	@Override
 	public void setUp() throws Exception {
-		File path = new File(
-			getClass().getClassLoader().getResource("demo-01/BATIMENT.shp").getPath()
-		);
-		IFeatureCollection<IFeature> features = ShapefileReader.read(path.toString());
+		URL url = getClass().getClassLoader().getResource("demo-01/BATIMENT.shp");
+		DefaultFeatureCollection features = ShapefileReader.read(url);
 		this.repository = new BuildingRepositoryGeoxygene(features);
 	}
 
-	
-	@Test
 	public void testDemo01(){
 		Collection<Building> buildings = repository.findAll();
 		assertEquals(117, buildings.size());
-
 		Building first = buildings.iterator().next();
-		
-		assertNotNull(first.getGeom());
-		assertTrue( first.getGeom() instanceof IMultiSurface<?>);
-
+		assertNotNull(first.getGeometry());
+		assertTrue(first.getGeometry() instanceof MultiPolygon);
 		// TODO change behavior
 		assertNotNull(first.getRoof());
 	}
-	
 }

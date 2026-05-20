@@ -14,9 +14,9 @@ public enum ParcelBoundarySide {
 
 	private final static Logger logger = Logger.getLogger(ParcelBoundarySide.class.getName());
 
-	private int value;
+	private final int value;
 
-	private ParcelBoundarySide(int type) {
+	ParcelBoundarySide(int type) {
 		value = type;
 	}
 
@@ -26,11 +26,11 @@ public enum ParcelBoundarySide {
 
 	public static ParcelBoundarySide getTypeFromInt(int type) {
 		ParcelBoundarySide[] val = ParcelBoundarySide.values();
-		for (int i = 0; i < val.length; i++) {
-			if (val[i].getValueType() == type) {
-				return val[i];
-			}
-		}
+        for (ParcelBoundarySide parcelBoundarySide : val) {
+            if (parcelBoundarySide.getValueType() == type) {
+                return parcelBoundarySide;
+            }
+        }
 		
 		logger.warning("ParcelBoundarySide : value not found : " + type);
 

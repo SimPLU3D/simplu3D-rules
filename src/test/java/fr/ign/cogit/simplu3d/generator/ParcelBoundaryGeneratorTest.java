@@ -1,13 +1,13 @@
 package fr.ign.cogit.simplu3d.generator;
 
-import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.CadastralParcelRepository;
 import fr.ign.cogit.simplu3d.dao.geoxygene.CadastralParcelRepositoryGeoxygene;
 import fr.ign.cogit.simplu3d.generator.boundary.Method1BoundaryAnalyzer;
@@ -16,35 +16,40 @@ import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
+import fr.ign.common.io.ShapefileReader;
 import junit.framework.TestCase;
+import org.geotools.feature.DefaultFeatureCollection;
 
 public class ParcelBoundaryGeneratorTest extends TestCase {
-	
-	private CadastralParcelRepository repository ;
-	
-	private List<CadastralParcel> cadastralParcels ;
+	private static final Logger logger = Logger.getLogger(ParcelBoundaryGeneratorTest.class.getName());
+
+    private List<CadastralParcel> cadastralParcels ;
 	
 	@Override
 	public void setUp() throws Exception {
-		File path = new File(
-			getClass().getClassLoader().getResource("cadastral-parcel-01/PARCELLE.shp").getPath()
-		);
-		repository = new CadastralParcelRepositoryGeoxygene(ShapefileReader.read(path.toString()));
+		URL url = getClass().getClassLoader().getResource("cadastral-parcel-01/PARCELLE.shp");
+		logger.fine("READ");
+		DefaultFeatureCollection collection = ShapefileReader.read(url);
+		logger.fine("FOUND " + collection.size() + " features");
+        CadastralParcelRepository repository = new CadastralParcelRepositoryGeoxygene(collection);
+		logger.fine("REPO with " + repository.count() + " features");
 		cadastralParcels = new ArrayList<>(repository.findAll());
 	}
-	
-	
 
 	public void testParcel0001(){
+		logger.fine("testParcel0001");
 		CadastralBoundaryGenerator builder = new CadastralBoundaryGenerator(cadastralParcels);
+		logger.fine("builder");
 		CadastralParcel cadastralParcel = cadastralParcels.get(0);
+		logger.fine(cadastralParcel + " code = " + cadastralParcel.getCode());
 		assertEquals("0001", cadastralParcel.getCode());
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
+		logger.fine(cadastralParcel + " boundaries = " + boundaries.size());
 		assertEquals(4, boundaries.size());
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 		// NullFaceAnalyzer => check UNKNOWN
 		for (ParcelBoundary specificCadastralBoundary : boundaries) {
-			assertEquals(ParcelBoundaryType.UNKNOWN, specificCadastralBoundary.getType());
+			assertEquals(ParcelBoundaryType.UNKNOWN, specificCadastralBoundary.getParcelBoundaryType());
 			assertEquals(ParcelBoundarySide.UNKNOWN, specificCadastralBoundary.getSide());
 		}
 	}
@@ -56,23 +61,21 @@ public class ParcelBoundaryGeneratorTest extends TestCase {
 		assertEquals("0001", cadastralParcel.getCode());
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
 		assertEquals(4, boundaries.size());
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 		// NullFaceAnalyzer => check UNKNOWN
 		for (ParcelBoundary specificCadastralBoundary : boundaries) {
-			assertEquals(ParcelBoundaryType.ROAD, specificCadastralBoundary.getType());
+			assertEquals(ParcelBoundaryType.ROAD, specificCadastralBoundary.getParcelBoundaryType());
 			//TODO ensure this behavior
 			//assertEquals(SpecificCadastralBoundarySide.UNKNOWN, specificCadastralBoundary.getSide());
 		}
 	}
 
-	
 	public void testParcel0002(){
 		CadastralBoundaryGenerator builder = new CadastralBoundaryGenerator(cadastralParcels);
 		CadastralParcel cadastralParcel = cadastralParcels.get(1);
 		assertEquals("0002", cadastralParcel.getCode());
-		
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 	}
 	
 	public void testParcel0002WithMethod1(){
@@ -82,23 +85,23 @@ public class ParcelBoundaryGeneratorTest extends TestCase {
 		assertEquals("0002", cadastralParcel.getCode());
 
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 		
 		Map<ParcelBoundaryType, Integer> countTypes = new HashMap<>();
 		
 		for (ParcelBoundary boundary : boundaries) {
-			if ( countTypes.containsKey(boundary.getType()) ){
-				countTypes.put( boundary.getType(), countTypes.get(boundary.getType()) + 1 );
+			if ( countTypes.containsKey(boundary.getParcelBoundaryType()) ){
+				countTypes.put( boundary.getParcelBoundaryType(), countTypes.get(boundary.getParcelBoundaryType()) + 1 );
 			}else{
-				countTypes.put( boundary.getType(), 1 );
+				countTypes.put( boundary.getParcelBoundaryType(), 1 );
 			}
 		}
 		assertTrue(countTypes.containsKey(ParcelBoundaryType.ROAD));
 		assertTrue(countTypes.containsKey(ParcelBoundaryType.LAT));
 		assertEquals(2,countTypes.size());
-		
-		assertTrue(4 == countTypes.get(ParcelBoundaryType.ROAD));
-		assertTrue(3 == countTypes.get(ParcelBoundaryType.LAT));
+
+        assertEquals(4, (int) countTypes.get(ParcelBoundaryType.ROAD));
+        assertEquals(3, (int) countTypes.get(ParcelBoundaryType.LAT));
 	}
 	
 	public void testParcel0002WithMethod2(){
@@ -106,57 +109,44 @@ public class ParcelBoundaryGeneratorTest extends TestCase {
 		builder.setBoundaryAnalyzer(new Method2BoundaryAnalyzer());
 		CadastralParcel cadastralParcel = cadastralParcels.get(1);
 		assertEquals("0002", cadastralParcel.getCode());
-
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
-		
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 		Map<ParcelBoundaryType, Integer> countTypes = new HashMap<>();
-		
 		for (ParcelBoundary boundary : boundaries) {
-			if ( countTypes.containsKey(boundary.getType()) ){
-				countTypes.put( boundary.getType(), countTypes.get(boundary.getType()) + 1 );
-			}else{
-				countTypes.put( boundary.getType(), 1 );
+			if (countTypes.containsKey(boundary.getParcelBoundaryType())) {
+				countTypes.put(boundary.getParcelBoundaryType(), countTypes.get(boundary.getParcelBoundaryType()) + 1);
+			} else {
+				countTypes.put(boundary.getParcelBoundaryType(), 1);
 			}
 		}
 		assertTrue(countTypes.containsKey(ParcelBoundaryType.ROAD));
 		assertTrue(countTypes.containsKey(ParcelBoundaryType.LAT));
 		assertEquals(2,countTypes.size());
-		
-		assertTrue(4 == countTypes.get(ParcelBoundaryType.ROAD));
-		assertTrue(3 == countTypes.get(ParcelBoundaryType.LAT));
+        assertEquals(4, (int) countTypes.get(ParcelBoundaryType.ROAD));
+        assertEquals(3, (int) countTypes.get(ParcelBoundaryType.LAT));
 	}
-	
-	
 
 	public void testParcel0003(){
 		CadastralBoundaryGenerator builder = new CadastralBoundaryGenerator(cadastralParcels);
 		CadastralParcel cadastralParcel = cadastralParcels.get(2);
 		assertEquals("0003", cadastralParcel.getCode());
-		
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 	}
 	
 	public void testParcel0004(){
 		CadastralBoundaryGenerator builder = new CadastralBoundaryGenerator(cadastralParcels);
 		CadastralParcel cadastralParcel = cadastralParcels.get(3);
 		assertEquals("0004", cadastralParcel.getCode());
-		
 		Collection<ParcelBoundary> boundaries = builder.createParcelBoundaries(cadastralParcel);
-		assertTrue( Math.abs(sumLength(boundaries) - cadastralParcel.getGeom().length()) < 1.0e-8 );
+		assertEquals(sumLength(boundaries), cadastralParcel.getGeometry().getLength(), 0.1);
 	}
 
-	
 	private double sumLength(Collection<ParcelBoundary> boundaries){
 		double perimeter = 0.0;
 		for (ParcelBoundary specificCadastralBoundary : boundaries) {
-			perimeter += specificCadastralBoundary.getGeom().length();
+			perimeter += specificCadastralBoundary.getGeometry().getLength();
 		}
 		return perimeter;
 	}
-	
-	
-	
 }
-

@@ -3,10 +3,6 @@ package fr.ign.cogit.simplu3d.checker.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.checker.model.AbstractRuleChecker;
 import fr.ign.cogit.simplu3d.checker.model.GeometricConstraints;
 import fr.ign.cogit.simplu3d.checker.model.RuleContext;
@@ -14,6 +10,9 @@ import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
@@ -80,20 +79,16 @@ public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
 
-		IMultiSurface<IOrientableSurface> ims = new GM_MultiSurface<>();
-
+		List<Polygon> polygons = new ArrayList<>();
 		for (Building b : bPU.getBuildings()) {
-			ims.addAll(FromGeomToSurface.convertGeom(b.getFootprint().buffer(r1.getArt8())));
+			polygons.addAll(FromGeomToSurface.convertGeom(b.getFootprint().buffer(r1.getArt8())));
 		}
-
-		if (ims.isEmpty()) {
+		if (polygons.isEmpty()) {
 			return null;
 		}
-
-		GeometricConstraints gC = new GeometricConstraints("Distance entre bâtiments de " + r1.getArt8() + " m", ims,
-				CODE_DISTANCE_BULDINGS);
-
-		return gC;
+		MultiPolygon ims = bPU.getGeometry().getFactory().createMultiPolygon(polygons.toArray(new Polygon[0]));
+        return new GeometricConstraints("Distance entre bâtiments de " + r1.getArt8() + " m", ims,
+                CODE_DISTANCE_BULDINGS);
 	}
 
 }

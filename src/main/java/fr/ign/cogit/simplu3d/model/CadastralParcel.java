@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p></p>
  * see LICENSE.TXT
- * 
+ *<p></p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -20,14 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.common.conversion.FromGeomToLineString;
+import org.locationtech.jts.geom.*;
 
 /**
  * 
@@ -37,7 +31,22 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
  * @author Brasebin Mickaël
  *
  */
-public class CadastralParcel extends DefaultFeature {
+public class CadastralParcel implements UrbanFeature {
+
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 
 	/**
 	 * Parent BasicPropertyUnit
@@ -47,18 +56,18 @@ public class CadastralParcel extends DefaultFeature {
 	/**
 	 * Children SubParcel
 	 */
-	private List<SubParcel> subParcels = new ArrayList<SubParcel>();
+	private List<SubParcel> subParcels = new ArrayList<>();
 
 	/**
-	 * Boundaries for the CadastralParcel
-	 * 
+	 * Boundaries for the CadastralParcel.
+	 * <p></p>
 	 * TODO see if it's possible to store boundaries only on subParcels
 	 */
-	private List<ParcelBoundary> boundaries = new ArrayList<ParcelBoundary>();
+	private List<ParcelBoundary> boundaries = new ArrayList<>();
 
 	/**
-	 * Logical identifier of the CadastralParcel
-	 * 
+	 * Logical identifier of the CadastralParcel.
+	 * <p></p>
 	 * For BDParcellaire (france) : INSEE_COMMUNE + COMM_ABS + SECTION + NUMERO (ex : 15012011AD250)
 	 */
 	private String code;
@@ -71,7 +80,7 @@ public class CadastralParcel extends DefaultFeature {
 	/**
 	 * (cached) Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
 	 */
-	private IGeometry consLine = null;
+	private Geometry consLine = null;
 
 	/**
 	 * Cached area
@@ -79,13 +88,10 @@ public class CadastralParcel extends DefaultFeature {
 	private double area = Double.NaN;
 
 	public CadastralParcel() {
-		super();
 	}
 
-	public CadastralParcel(IMultiSurface<IOrientableSurface> iMS) {
-		super();
-
-		this.setGeom(iMS);
+	public CadastralParcel(MultiPolygon iMS) {
+		this.setGeometry(iMS);
 	}
 
 	public BasicPropertyUnit getbPU() {
@@ -96,7 +102,6 @@ public class CadastralParcel extends DefaultFeature {
 		this.bPU = bPU;
 	}
 
-
 	public List<SubParcel> getSubParcels() {
 		return subParcels;
 	}
@@ -104,38 +109,35 @@ public class CadastralParcel extends DefaultFeature {
 	public void setSubParcels(List<SubParcel> subParcels) {
 		this.subParcels = subParcels;
 	}
-
 	
 	public List<ParcelBoundary> getBoundaries() {
 		return boundaries;
 	}
 
 	public List<ParcelBoundary> getBoundariesByType(ParcelBoundaryType type) {
-		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		List<ParcelBoundary> result = new ArrayList<>();
 		for (ParcelBoundary boundary : getBoundaries()) {
-			if ( boundary.getType().equals(type) ) {
+			if ( boundary.getParcelBoundaryType().equals(type) ) {
 				result.add(boundary);
 			}
 		}
 		return result;
 	}
 	
-	
 	public List<ParcelBoundary> getBoundariesByTypes(List<ParcelBoundaryType> types) {
-		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		List<ParcelBoundary> result = new ArrayList<>();
 		for (ParcelBoundary boundary : getBoundaries()) {
 			for(ParcelBoundaryType type: types ){
-				if ( boundary.getType().equals(type) ) {
+				if ( boundary.getParcelBoundaryType().equals(type) ) {
 					result.add(boundary);
 				}	
 			}
 		}
 		return result;
 	}
-	
 
 	public List<ParcelBoundary> getBoundariesBySide(ParcelBoundarySide side) {
-		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		List<ParcelBoundary> result = new ArrayList<>();
 		for (ParcelBoundary boundary : getBoundaries()) {
 			if ( boundary.getSide().equals(side) ) {
 				result.add(boundary);
@@ -143,26 +145,22 @@ public class CadastralParcel extends DefaultFeature {
 		}
 		return result;
 	}
-	
-	
+
 	public List<ParcelBoundary> getBoundariesBySides(List<ParcelBoundarySide> sides) {
-		List<ParcelBoundary> result = new ArrayList<ParcelBoundary>();
+		List<ParcelBoundary> result = new ArrayList<>();
 		for (ParcelBoundary boundary : getBoundaries()) {
 			for(ParcelBoundarySide side: sides ){
 				if ( boundary.getSide().equals(side) ) {
 					result.add(boundary);
 				}
 			}
-	
 		}
 		return result;
 	}
 
-
 	public void setBoundaries(List<ParcelBoundary> bordures) {
 		this.boundaries = bordures;
 	}
-
 	
 	public String getCode() {
 		return code;
@@ -171,7 +169,6 @@ public class CadastralParcel extends DefaultFeature {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
 	
 	public boolean hasToBeSimulated() {
 		return hasToBeSimulated;
@@ -180,25 +177,27 @@ public class CadastralParcel extends DefaultFeature {
 	public void setHasToBeSimulated(boolean hasToBeSimulated) {
 		this.hasToBeSimulated = hasToBeSimulated;
 	}
-
 	
-	public IGeometry getConsLine() {
+	public Geometry getConsLine() {
 		if (consLine == null) {
-			IMultiCurve<IOrientableCurve> iMS = new GM_MultiCurve<>();
+			List<LineString> lineStrings = new ArrayList<>();
 			Collection<ParcelBoundary> sCP = getBoundariesByType(ParcelBoundaryType.ROAD);
 			for (ParcelBoundary sCB : sCP) {
-				iMS.addAll(FromGeomToLineString.convert(sCB.getGeom()));
+				lineStrings.addAll(FromGeomToLineString.convert(sCB.getGeometry()));
 			}
-			consLine = iMS;
+			consLine = new GeometryFactory().createMultiLineString(lineStrings.toArray(new LineString[0]));
 		}
 		return consLine;
 	}
-	
-	
+
 	public double getArea() {
 		if (Double.isNaN(area)) {
-			area = this.getGeom().area();
+			area = this.getGeometry().getArea();
 		}
 		return area;
+	}
+	@Override
+	public String toString() {
+		return "Parcel " + getId() + " - " + getGeometry();
 	}
 }

@@ -1,19 +1,20 @@
 package fr.ign.cogit.simplu3d.analysis;
 
 import java.util.Collection;
+import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPositionList;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.Road;
+import fr.ign.cogit.simplu3d.model.UrbanFeature;
+import fr.ign.common.util.Vecteur;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
+import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * 
  * Find nearest road from a given geometry
- * 
+ * <p>
  * TODO externalize and test matching distance? Find an existing matching
  * algorithm in geoxygene?
  * 
@@ -22,17 +23,11 @@ import fr.ign.cogit.simplu3d.model.Road;
  *
  */
 public class NearestRoadFinder {
-
-	private IFeatureCollection<Road> roads;
-
+	private final Collection<Road> roads;
 	private static double maximumDistance = 10.0;
 
-	public NearestRoadFinder(IFeatureCollection<Road> roads) {
+	public NearestRoadFinder(Collection<Road> roads) {
 		this.roads = roads;
-
-		if (!this.roads.hasSpatialIndex()) {
-			this.roads.initSpatialIndex(Tiling.class, false);
-		}
 	}
 
 	public  static double getMaximumDistance() {
@@ -49,40 +44,37 @@ public class NearestRoadFinder {
 	 * @param geometry the geometry used to find the nearest road
 	 * @return the best Road, null if no Road found
 	 */
-	public Road findNearestRoad(IGeometry geometry) {
-
-		return (Road) findNearest(roads, geometry, getMaximumDistance());
+	public Road findNearestRoad(Geometry geometry) {
+		return findNearest(roads, geometry, getMaximumDistance());
 	}
 
-	public static IFeature findNearest(IFeatureCollection<? extends IFeature> featColl, IGeometry geometry,
-			double distMax) {
-
-		IGeometry buffer = geometry.buffer(distMax);
-
-		if (!featColl.hasSpatialIndex()) {
-			featColl.initSpatialIndex(Tiling.class, true);
+	public static <U extends UrbanFeature> U findNearest(Collection<U> featColl, Geometry geometry, double distMax) {
+		Geometry buffer = geometry.buffer(distMax);
+		SpatialIndex index = new STRtree();
+		for (U item : featColl) {
+			index.insert(item.getGeometry().getEnvelopeInternal(), item);
 		}
-
-		Collection<? extends IFeature> candidates = featColl.select(buffer);
-
-
+		@SuppressWarnings("unchecked")
+		List<U> candidates = index.query(buffer.getEnvelopeInternal());
 		if (candidates.isEmpty()) {
 			return null;
 		}
-
 		if (candidates.size() == 1) {
 			return candidates.iterator().next();
 		}
-
 		// Find best orientation
-		IDirectPositionList dpl = geometry.coord();
-		Vecteur v = new Vecteur(dpl.get(0), dpl.get(dpl.size() - 1));
+        return getBestCandidate(geometry, candidates);
+	}
+
+	private static <U extends UrbanFeature> U getBestCandidate(Geometry geometry, List<U> candidates) {
+		Coordinate[] dpl = geometry.getCoordinates();
+		Vecteur v = new Vecteur(dpl[0], dpl[dpl.length - 1]);
 		v.normalise();
-		IFeature bestCandidate = null;
+		U bestCandidate = null;
 		double bestScore = Double.NEGATIVE_INFINITY;
-		for (IFeature candidate : candidates) {
-			IDirectPositionList dpl2 = geometry.coord();
-			Vecteur v2 = new Vecteur(dpl2.get(0), dpl2.get(dpl2.size() - 1));
+		for (U candidate : candidates) {
+			Coordinate[] dpl2 = geometry.getCoordinates();
+			Vecteur v2 = new Vecteur(dpl2[0], dpl2[dpl2.length - 1]);
 			v2.normalise();
 			double cos = Math.abs(v.prodScalaire(v2));
 			if (cos > Math.cos(Math.PI / 5)) {
@@ -93,8 +85,6 @@ public class NearestRoadFinder {
 				}
 			}
 		}
-
 		return bestCandidate;
 	}
-
 }

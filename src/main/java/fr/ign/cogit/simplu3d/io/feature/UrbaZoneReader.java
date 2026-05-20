@@ -18,9 +18,14 @@ package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
+/*
 import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
+*/
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
@@ -59,9 +64,9 @@ public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone> {
   }
 
   @Override
-  public UrbaZone read(IFeature feature) {
+  public UrbaZone read(SimpleFeature feature) {
     UrbaZone z = new UrbaZone();
-    z.setGeom(FromGeomToSurface.convertMSGeom(feature.getGeom()));
+    z.setGeometry(FromGeomToSurface.convertMSGeom((Geometry) feature.getDefaultGeometry()));
 
     // Pour le Libelle de la zone urba
     z.setLibelle(readStringAttribute(feature, ATT_LIBELLE));

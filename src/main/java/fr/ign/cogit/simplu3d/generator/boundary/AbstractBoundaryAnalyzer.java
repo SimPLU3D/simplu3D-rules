@@ -1,88 +1,66 @@
 package fr.ign.cogit.simplu3d.generator.boundary;
 
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Arc;
-import fr.ign.cogit.geoxygene.contrib.cartetopo.Face;
-import fr.ign.cogit.geoxygene.util.algo.SmallestSurroundingRectangleComputation;
 import fr.ign.cogit.simplu3d.generator.IParcelBoundaryAnalyzer;
 import fr.ign.cogit.simplu3d.model.ParcelBoundarySide;
+import fr.ign.common.topo.Arc;
+import fr.ign.common.topo.CarteTopo;
+import fr.ign.common.topo.Face;
+import fr.ign.common.util.SmallestSurroundingRectangleComputation;
+import org.locationtech.jts.geom.Polygon;
 
 public abstract class AbstractBoundaryAnalyzer implements IParcelBoundaryAnalyzer {
-
 	private static double THRESHOLDINI = 3.0;
-
 	public AbstractBoundaryAnalyzer() {
-	
 	}
-
 	public double getThresholdIni() {
 		return THRESHOLDINI;
 	}
-
 	public static void setThresholdIni(double thresholdIni) {
 		AbstractBoundaryAnalyzer.THRESHOLDINI = thresholdIni;
 	}
-
 	protected static double determineThreshold(Face f, double thresholdIni) {
-		IPolygon poly = SmallestSurroundingRectangleComputation.getSSR(f.getGeometrie());
-		
+		Polygon poly = SmallestSurroundingRectangleComputation.getSSR(f.getGeometrie());
 		if(poly == null) {
-			poly = f.getGeometrie().envelope().getGeom();
+			poly = (Polygon) f.getGeometrie().getEnvelope();
 		}
-		double l1 = poly.coord().get(0).distance2D(poly.coord().get(1));
-		double l2 = poly.coord().get(1).distance2D(poly.coord().get(2));
-
+		double l1 = poly.getCoordinates()[0].distance(poly.getCoordinates()[1]);
+		double l2 = poly.getCoordinates()[1].distance(poly.getCoordinates()[2]);
 		double largeur = Math.min(l1, l2);
-
-		// System.out.println(largeur);
-
-		if (largeur / 2.5 < thresholdIni) {
-
-			// System.out.println("Modification de la largeur de dépassementj'y
-			// passe");
-
-			return largeur / 2.5;
-		}
-
-		return thresholdIni;
-	}
-	
+        return Math.min(largeur / 2.5, thresholdIni);
+    }
 
 	protected static void determineSide(Arc aTemp, Arc a, Face f) {
-
-
 		// C'est un arc direct
 		if (f.equals(aTemp.getFaceGauche())) {
 
-			if (aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
+			if (aTemp.getNoeudFin().getGeom().distance(a.getGeometrie()) < 0.01) {
 
-				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
+				aTemp.setSide(ParcelBoundarySide.LEFT.getValueType());
 				return;
-			}else if(aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
+			}else if(aTemp.getNoeudIni().getGeom().distance(a.getGeometrie()) < 0.01) {
 
-				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
+				aTemp.setSide(ParcelBoundarySide.RIGHT.getValueType());
 				return;
 			}
 			
 		}
 
-		
 		// C'est un arc direct
 		if (f.equals(aTemp.getFaceDroite())) {
 
-			if (aTemp.getNoeudIni().getGeom().distance(a.getGeom()) < 0.01) {
+			if (aTemp.getNoeudIni().getGeom().distance(a.getGeometrie()) < 0.01) {
 
-				aTemp.setPoids(ParcelBoundarySide.LEFT.getValueType());
+				aTemp.setSide(ParcelBoundarySide.LEFT.getValueType());
 				return;
-			} else if(aTemp.getNoeudFin().getGeom().distance(a.getGeom()) < 0.01) {
+			} else if(aTemp.getNoeudFin().getGeom().distance(a.getGeometrie()) < 0.01) {
 
-				aTemp.setPoids(ParcelBoundarySide.RIGHT.getValueType());
+				aTemp.setSide(ParcelBoundarySide.RIGHT.getValueType());
 				return;
 			}
 		
 		}
-		aTemp.setPoids(ParcelBoundarySide.UNKNOWN.getValueType());
-
+		aTemp.setSide(ParcelBoundarySide.UNKNOWN.getValueType());
 	}
 
+	public abstract void analyze(CarteTopo carteTopo, Face f);
 }

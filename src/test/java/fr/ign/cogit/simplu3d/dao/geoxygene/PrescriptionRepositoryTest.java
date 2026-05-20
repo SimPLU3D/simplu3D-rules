@@ -1,30 +1,23 @@
 package fr.ign.cogit.simplu3d.dao.geoxygene;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 
-import org.junit.Test;
+import fr.ign.common.io.ShapefileReader;
 
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.PrescriptionRepository;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import junit.framework.TestCase;
 
 public class PrescriptionRepositoryTest extends TestCase {
 	
-	@Test
 	public void testReadLinearPrescription(){
-		File path = new File(
-			getClass().getClassLoader().getResource("44118_PLU_20150219/PRESCRIPTION_LIN.shp").getPath()
-		);
-		PrescriptionRepository repository = new PrescriptionRepositoryGeoxygene(
-			ShapefileReader.read(path.toString())
-		);
+		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/PRESCRIPTION_LIN.shp");
+		PrescriptionRepository repository = new PrescriptionRepositoryGeoxygene(ShapefileReader.read(url));
 		Collection<Prescription> prescription = repository.findAll();
 		assertEquals(466, prescription.size());
-
 		Prescription first = prescription.iterator().next();
-		assertNotNull(first.getGeom());
+		assertNotNull(first.getGeometry());
 		//TODO check type
 		assertEquals(
 			"Patrimoine protégé au titre de la Loi paysage - Murs à préserver", 
@@ -32,6 +25,4 @@ public class PrescriptionRepositoryTest extends TestCase {
 		);
 		//TODO check other attributes
 	}
-	
-	
 }

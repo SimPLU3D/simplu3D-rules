@@ -8,24 +8,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class IAUIDFRegulationReader {
+	private static final Logger logger = Logger.getLogger(IAUIDFRegulationReader.class.getName());
 
 	public IAUIDFRegulationReader() {
 
 	}
 
 	
-	public List<ZoneRegulation> transformFeatureToRules(IFeature feature){
-
-		System.out.println("*************************************************");
-
+	public List<ZoneRegulation> transformFeatureToRules(SimpleFeature feature){
+		logger.info("*************************************************");
 		List<ZoneRegulation> lRegulation = new ArrayList<>();
-		
-
 		int code_imu = 0;
 		String libelle_zone = feature.getAttribute("Libelle_Zo").toString(); // LIBELLE_ZONE
 		String insee = feature.getAttribute("INSEE").toString();
@@ -63,7 +61,7 @@ public class IAUIDFRegulationReader {
 		lRegulation.add(r);
 		r.setNumBand(1);
 
-		System.out.println(r.toString());
+		logger.info(r.toString());
 
 		if (bande != 0) {
 			int fonctions_2 = Integer.parseInt(feature.getAttribute("B2_FONCT").toString());
@@ -90,13 +88,13 @@ public class IAUIDFRegulationReader {
 					art_5_2, art_6_2, art_71_2, art_72_2, art_73_2, art_74_2, art_8_2, art_9_2, art_10_top_2,
 					art_101_2, art_102_2, art_12_2, art_13_2, art_14_2);
 
-			System.out.println(r2.toString());
+			logger.info(r2.toString());
 
 			lRegulation.add(r2);
 			r2.setNumBand(2);
 		}
 
-		System.out.println("*************************************************");
+		logger.info("*************************************************");
 		return lRegulation;
 	}
 	
@@ -126,8 +124,8 @@ public class IAUIDFRegulationReader {
 
 			}
 
-			System.out.println("*************************************************");
-			System.out.println("*******************" + listValue[0] + "******************");
+			logger.info("*************************************************");
+			logger.info("*******************" + listValue[0] + "******************");
 
 			int code_imu = 0;
 			String libelle_zone = newmap.get("Libelle_Zo").toString(); // LIBELLE_ZONE
@@ -166,7 +164,7 @@ public class IAUIDFRegulationReader {
 			lRegulation.add(r);
 			r.setNumBand(1);
 
-			System.out.println(r.toString());
+			logger.info(r.toString());
 
 			if (bande != 0) {
 				int fonctions_2 = Integer.parseInt(newmap.get("B2_FONCT").toString());
@@ -193,13 +191,13 @@ public class IAUIDFRegulationReader {
 						art_5_2, art_6_2, art_71_2, art_72_2, art_73_2, art_74_2, art_8_2, art_9_2, art_10_top_2,
 						art_101_2, art_102_2, art_12_2, art_13_2, art_14_2);
 
-				System.out.println(r2.toString());
+				logger.info(r2.toString());
 
 				lRegulation.add(r2);
 				r2.setNumBand(2);
 			}
 
-			System.out.println("*************************************************");
+			logger.info("*************************************************");
 
 		}
 

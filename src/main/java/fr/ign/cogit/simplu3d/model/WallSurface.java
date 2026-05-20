@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,27 +16,38 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 
 /**
  * 
  * @author Brasebin Mickaël
  *
  */
-public class WallSurface extends DefaultFeature {
+public class WallSurface implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 
 	private WallSurfaceType type;
 	private Materiau material;
 	private boolean isWindowLess;
 
 	public WallSurface() {
-		super();
 	}
 
 	public WallSurface(WallSurfaceType type, boolean isWindowLess) {
-		super();
 		this.type = type;
 		this.isWindowLess = isWindowLess;
 	}
@@ -65,9 +76,7 @@ public class WallSurface extends DefaultFeature {
 		this.type = type;
 	}
 
-	@SuppressWarnings("unchecked")
-	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return (IMultiSurface<IOrientableSurface>) this.getGeom();
+	public MultiPolygon getLod2MultiSurface() {
+		return (MultiPolygon) this.getGeometry();
 	}
-
 }

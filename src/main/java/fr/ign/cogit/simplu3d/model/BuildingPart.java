@@ -16,7 +16,11 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+/*
 import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
+*/
+
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
@@ -33,10 +37,12 @@ public class BuildingPart extends AbstractBuilding {
 		super();
 	}
 	
+/*
 	@Deprecated
-	public BuildingPart(IGeometry geom) {
+	public BuildingPart(Geometry geom) {
 		super(geom);
 	}
+*/
 
 	public SubParcel getSubParcel() {
 		return subParcel;
@@ -48,7 +54,8 @@ public class BuildingPart extends AbstractBuilding {
 
 	@Override
 	public AbstractBuilding clone() {
-		BuildingPart b = new BuildingPart((IGeometry) this.getGeom().clone());
+		BuildingPart b = new BuildingPart();
+		b.setGeometry(this.getGeometry().copy());
 		b.setNew(this.isNew());
 		return b;
 	}

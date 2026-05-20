@@ -16,7 +16,6 @@ public abstract class AbstractRuleChecker implements IRuleChecker {
 	protected final Logger logger = Logger.getLogger(getClass().getCanonicalName());
 
 	public AbstractRuleChecker() {
-
 	}
 
 	public AbstractRuleChecker(ZoneRegulation rules) {
@@ -32,5 +31,4 @@ public abstract class AbstractRuleChecker implements IRuleChecker {
 	public void setRules(ZoneRegulation rules) {
 		this.rules = rules;
 	}
-
 }

@@ -1,16 +1,10 @@
 package fr.ign.cogit.simplu3d.jpa;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import junit.framework.TestCase;
 
 public class RegulationJpaTest extends TestCase {
 
+/*
 	private EntityManagerFactory emf;
 	
 	@Override
@@ -29,7 +23,8 @@ public class RegulationJpaTest extends TestCase {
 		assertEquals(0,items.size());
 		entityManager.close();
 	}
-//	
+*/
+//
 //	public void testCreate(){
 //		EntityManager entityManager = emf.createEntityManager();
 //		{

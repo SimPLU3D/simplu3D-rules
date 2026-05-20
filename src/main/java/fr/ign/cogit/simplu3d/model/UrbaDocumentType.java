@@ -8,9 +8,9 @@ package fr.ign.cogit.simplu3d.model;
 public enum UrbaDocumentType {
 	PLU(0), POS(1), OTHER(99), PSMV(2);
 
-	private int value;
+	private final int value;
 
-	private UrbaDocumentType(int type) {
+	UrbaDocumentType(int type) {
 		value = type;
 	}
 
@@ -20,13 +20,11 @@ public enum UrbaDocumentType {
 
 	public static UrbaDocumentType getTypeFromInt(int type) {
 		UrbaDocumentType[] val = UrbaDocumentType.values();
-		for (int i = 0; i < val.length; i++) {
-			if (val[i].getValueType() == type) {
-				return val[i];
-			}
-		}
-
+        for (UrbaDocumentType urbaDocumentType : val) {
+            if (urbaDocumentType.getValueType() == type) {
+                return urbaDocumentType;
+            }
+        }
 		return null;
 	}
-
 }

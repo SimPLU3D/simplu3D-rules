@@ -22,51 +22,34 @@ public class EmptySpaceChecker extends AbstractRuleChecker {
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> lUNR = new ArrayList<>();
-
 		if (this.getRules().getArt12() == 99 || this.getRules().getArt12() == 88) {
 			return lUNR;
 		}
-
 		double totalArea = 0;
 		for (Building b : bPU.getBuildings()) {
-			totalArea = totalArea + b.getFootprint().area();
-
+			totalArea = totalArea + b.getFootprint().getArea();
 		}
-
-		double aireParcelle = bPU.getGeom().area();
-
+		double aireParcelle = bPU.getGeometry().getArea();
 		double calculateEmptySpace = 1 - totalArea / aireParcelle;
-
 		if (calculateEmptySpace < this.getRules().getArt12()) {
 			lUNR.add(new UnrespectedRule("Le taux d'espace vide n'est pas respecté. Mesurée : " + calculateEmptySpace
-					+ "   attendu " + this.getRules().getArt12(), bPU.getGeom(), CODE_EMPTY_SPACE));
+					+ "   attendu " + this.getRules().getArt12(), bPU.getGeometry(), CODE_EMPTY_SPACE));
 		}
-
 		return lUNR;
 	}
 
 	@Override
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> geomConstraints = new ArrayList<>();
-
 		if (this.getRules() != null && this.getRules().getArt12() != 99) {
-
 			GeometricConstraints gc = generateGEometricConstraintsForOneRegulation(bPU, this.getRules());
-			if (gc != null) {
-				geomConstraints.add(gc);
-
-			}
-
-		}
-
+            geomConstraints.add(gc);
+        }
 		return geomConstraints;
-
 	}
 
 	private GeometricConstraints generateGEometricConstraintsForOneRegulation(BasicPropertyUnit bPU, ZoneRegulation r1) {
-
-		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt12(), bPU.getGeom(),
+		return new GeometricConstraints("Coefficient d’emprise au sol maximum" + r1.getArt12(), bPU.getGeometry(),
 				CODE_EMPTY_SPACE);
 	}
-
 }

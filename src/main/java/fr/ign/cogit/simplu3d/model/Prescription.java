@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,13 +16,13 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
  * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un
  * document d'urbanisme
- * 
+ * <p></p>
  * TODO ajouter une zone d'influence pour éviter de gérer 45 types de relation
  * avec les objets du modèle et s'appuyer sur une relation spatiale?
  * 
@@ -30,7 +30,21 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * @author MBorne
  *
  */
-public class Prescription extends DefaultFeature {
+public class Prescription implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 
 	/**
 	 * Type of the prescription according to CNIG standard (TYPEPSC2)
@@ -61,21 +75,18 @@ public class Prescription extends DefaultFeature {
 		this.label = label;
 	}
 
-	double value;
+	Double value = null;
 
-	public double getValue() {
+	public Double getPrescriptionValue() {
 		return value;
 	}
 
-	public void setValue(double value) {
+	public void setPrescriptionValue(Double value) {
 		this.value = value;
 	}
 
 	@Override
 	public String toString() {
-		return "Prescription [type=" + type + ", label=" + label + ", value=" + value + ", geom" + this.getGeom()+  "]";
+		return "Prescription [type=" + type + ", label=" + label + ", value=" + value + ", geom" + this.getGeometry()+  "]";
 	}
-	
-	
-
 }

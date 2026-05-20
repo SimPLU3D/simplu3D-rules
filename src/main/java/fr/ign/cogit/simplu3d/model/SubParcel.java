@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,11 +16,10 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import org.locationtech.jts.geom.Geometry;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
 
 /**
  * 
@@ -29,8 +28,21 @@ import fr.ign.cogit.geoxygene.feature.DefaultFeature;
  * @author Brasebin Mickaël
  *
  */
-public class SubParcel extends DefaultFeature {
-
+public class SubParcel implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 	/**
 	 * Parent CadastralParcel
 	 */
@@ -57,7 +69,7 @@ public class SubParcel extends DefaultFeature {
 	/**
 	 * Boundaries TODO check construction / remove if useless?
 	 */
-	private List<ParcelBoundary> boundaries = new ArrayList<>();
+	private final List<ParcelBoundary> boundaries = new ArrayList<>();
 
 	/**
 	 * cached area
@@ -65,12 +77,10 @@ public class SubParcel extends DefaultFeature {
 	private double area = -1;
 
 	public SubParcel() {
-		super();
 	}
 
-	public SubParcel(IGeometry iMS) {
-		super();
-		this.setGeom(iMS);
+	public SubParcel(Geometry iMS) {
+		this.setGeometry(iMS);
 	}
 
 	public void setCadastralParcel(CadastralParcel cadastralParcel) {
@@ -111,7 +121,7 @@ public class SubParcel extends DefaultFeature {
 
 	public double getArea() {
 		if (area == -1) {
-			area = this.getGeom().area();
+			area = this.getGeometry().getArea();
 		}
 		return area;
 	}

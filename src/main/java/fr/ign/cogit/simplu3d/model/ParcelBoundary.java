@@ -16,21 +16,34 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
  * Frontière de parcelle
- * 
+ * <p></p>
  * 
  * Note that SpecificCadastralBoundary forms a topology map
  * 
  * @author Brasebin Mickaël
  *
  */
-public class ParcelBoundary extends DefaultFeature {
+public class ParcelBoundary implements UrbanFeature {
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
+
 	/**
 	 * CadastralParcel owning the boundary
 	 */
@@ -71,8 +84,8 @@ public class ParcelBoundary extends DefaultFeature {
 		
 	}
 	
-	public ParcelBoundary(IGeometry geom) {
-		this.setGeom(geom);
+	public ParcelBoundary(Geometry geom) {
+		this.setGeometry(geom);
 	}
 	
 	
@@ -84,11 +97,11 @@ public class ParcelBoundary extends DefaultFeature {
 		this.cadastralParcel = cadastralParcel;
 	}
 
-	public ParcelBoundaryType getType() {
+	public ParcelBoundaryType getParcelBoundaryType() {
 		return type;
 	}
 
-	public void setType(ParcelBoundaryType type) {
+	public void setParcelBoundaryType(ParcelBoundaryType type) {
 		this.type = type;
 	}
 
@@ -126,12 +139,12 @@ public class ParcelBoundary extends DefaultFeature {
 	 * @return the adjacent feature may be a cadastral parcel or a road
 	 */
 	@Deprecated
-	public IFeature getFeatAdj(){
-		if ( this.road != null ){
-			return this.road ;
-		}	else 		if ( this.spacePublic != null ){
-				return this.spacePublic ;
-		}else{
+	public Object getFeatAdj(){
+		if ( this.road != null ) {
+			return this.road;
+		} else if ( this.spacePublic != null ){
+			return this.spacePublic ;
+		} else {
 			return this.getAdjacentCadastralParcel();
 		}
 	}

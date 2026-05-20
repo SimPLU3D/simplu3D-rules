@@ -12,11 +12,6 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
  *
  */
 public interface IRuleChecker {
-
-
-	public abstract List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context);
-
-	
-	public abstract List<GeometricConstraints> generate(BasicPropertyUnit bPU , RuleContext context);
-
+	List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context);
+	List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext context);
 }

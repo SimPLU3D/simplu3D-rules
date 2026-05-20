@@ -2,8 +2,9 @@ package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
+//import fr.ign.cogit.geoxygene.api.feature.IFeature;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 
@@ -45,7 +46,7 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
   }
 
   @Override
-  public UrbaDocument read(IFeature feature) {
+  public UrbaDocument read(SimpleFeature feature) {
     UrbaDocument result = new UrbaDocument();
 
     // Id Document Urbanisme

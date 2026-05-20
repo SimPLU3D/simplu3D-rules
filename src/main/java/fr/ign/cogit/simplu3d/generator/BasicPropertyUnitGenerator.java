@@ -1,9 +1,9 @@
 /**
  * 
  *        This software is released under the licence CeCILL
- * 
+ * <p></p>
  *        see LICENSE.TXT
- * 
+ * <p></p>
  *        see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,23 +16,22 @@
  **/
 package fr.ign.cogit.simplu3d.generator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.feature.FT_FeatureCollection;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * 
  * Create BasicPropertyUnit as an aggregation of adjacent CadastralParcel's with
  * the same owner
- *  
+ *  <p></p>
  * warning aggregation is not yet implemented. A BasicPropertyUnit is
  *          associated to a CadastralParcel
  * 
@@ -46,8 +45,8 @@ public class BasicPropertyUnitGenerator {
 	/**
 	 * 
 	 */
-	private Collection<CadastralParcel> cadastralParcels;
-
+	private final Collection<CadastralParcel> cadastralParcels;
+	private final GeometryFactory geometryFactory = new GeometryFactory();
 	/**
 	 * TODO Constructor with a CadastralParcel iterator?
 	 * @param cadastralParcels the cadastral parcels used to generate basicproperty unit
@@ -60,31 +59,22 @@ public class BasicPropertyUnitGenerator {
 	 * TODO implement aggregation based on a "owerId"
 	 * @return a collection of basic property units
 	 */
-	public IFeatureCollection<BasicPropertyUnit> createPropertyUnits() {
-
-		IFeatureCollection<BasicPropertyUnit> result = new FT_FeatureCollection<BasicPropertyUnit>();
-
+	public Collection<BasicPropertyUnit> createPropertyUnits() {
+		Collection<BasicPropertyUnit> result = new ArrayList<>();
 		for (CadastralParcel cadastralParcel : cadastralParcels) {
 			BasicPropertyUnit bpU = new BasicPropertyUnit();
-			
 			// relation with CadastralParcel
 			bpU.getCadastralParcels().add(cadastralParcel);
 			cadastralParcel.setbPU(bpU);
-
 			// TODO find a better way to identify BasicPropertyUnits
 			bpU.setId(cadastralParcel.getId());
-			
 			// TODO check if it's possible to use a single setter
-			bpU.setPol2D((IPolygon) FromGeomToSurface.convertGeom(cadastralParcel.getGeom()).get(0));
-
-			IMultiSurface<IOrientableSurface> geom = new GM_MultiSurface<>();
-			geom.addAll(FromGeomToSurface.convertGeom(cadastralParcel.getGeom()));
-			bpU.setGeom(geom);
-			
+			bpU.setPol2D(FromGeomToSurface.convertGeom(cadastralParcel.getGeometry()).get(0));
+            List<Polygon> polys = new ArrayList<>(FromGeomToSurface.convertGeom(cadastralParcel.getGeometry()));
+			MultiPolygon geom = geometryFactory.createMultiPolygon(polys.toArray(new Polygon[0]));
+			bpU.setGeometry(geom);
 			result.add(bpU);
 		}
-
 		return result;
 	}
-
 }

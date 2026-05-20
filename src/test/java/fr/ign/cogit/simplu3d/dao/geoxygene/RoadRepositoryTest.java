@@ -1,13 +1,11 @@
 package fr.ign.cogit.simplu3d.dao.geoxygene;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 
-import org.junit.Test;
+import fr.ign.common.io.ShapefileReader;
+import org.geotools.feature.DefaultFeatureCollection;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.util.conversion.ShapefileReader;
 import fr.ign.cogit.simplu3d.dao.RoadRepository;
 import fr.ign.cogit.simplu3d.model.Road;
 import junit.framework.TestCase;
@@ -18,25 +16,17 @@ public class RoadRepositoryTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		File path = new File(
-			getClass().getClassLoader().getResource("demo-01/TRONCON_ROUTE.shp").getPath()
-		);
-		IFeatureCollection<IFeature> features = ShapefileReader.read(path.toString());
+		URL url = getClass().getClassLoader().getResource("demo-01/TRONCON_ROUTE.shp");
+		DefaultFeatureCollection features = ShapefileReader.read(url);
 		this.repository = new RoadRepositoryGeoxygene(features);
 	}
 
-	
-	@Test
 	public void testDemo01(){
 		Collection<Road> roads = repository.findAll();
 		assertEquals(39, roads.size());
-
 		Road first = roads.iterator().next();
 		assertEquals(4.0, first.getWidth());
-		assertTrue( Math.abs( first.getAxis().length() - 68.8) < 1.0 );
-		System.out.println(first.getGeom().area());
-		assertTrue( Math.abs( first.getGeom().area() - 601.0 ) < 1.0 );
-		
+		assertEquals(68.8, first.getAxis().getLength(), 1.0);
+		assertEquals(601.0, first.getGeometry().getArea(), 1.0);
 	}
-	
 }

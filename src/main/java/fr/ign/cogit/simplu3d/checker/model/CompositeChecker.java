@@ -14,7 +14,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
  */
 public class CompositeChecker implements IRuleChecker {
 
-	private List<IRuleChecker> children = new ArrayList<>();
+	private final List<IRuleChecker> children = new ArrayList<>();
 
 	public List<IRuleChecker> getChildren(){
 		return children;
@@ -49,5 +49,4 @@ public class CompositeChecker implements IRuleChecker {
 		}
 		return unrespectedRules;
 	}
-
 }

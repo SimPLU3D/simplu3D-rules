@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,14 +16,10 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.sig3d.indicator.RoofAngle;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
+import fr.ign.common.analysis.roof.RoofAngle;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
 
 /**
  * 
@@ -32,12 +28,28 @@ import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
  * @author Brasebin Mickaël
  *
  */
-public class RoofSurface extends DefaultFeature {
+public class RoofSurface implements UrbanFeature {
+	private Geometry geometry = null;
+	@Override
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	@Override
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
 
-	private IMultiCurve<IOrientableCurve> roofing;
-	private IMultiCurve<IOrientableCurve> gable;
-	private IMultiCurve<IOrientableCurve> gutter;
-	private IMultiCurve<IOrientableCurve> interiorEdge;
+	private MultiLineString roofing;
+	private MultiLineString gable;
+	private MultiLineString gutter;
+	private MultiLineString interiorEdge;
 
 	private Materiau material;
 
@@ -50,39 +62,39 @@ public class RoofSurface extends DefaultFeature {
 	 */
 	private double angleMin = Double.NaN;
 
+	public RoofSurface() {
+	}
 
-	public IMultiCurve<IOrientableCurve> getGable() {
+
+	public MultiLineString getGable() {
 		return gable;
 	}
 
-	public void setGable(IMultiCurve<? extends IOrientableCurve> pignons) {
-		this.gable = new GM_MultiCurve<IOrientableCurve>();
-		this.gable.addAll(pignons);
+	public void setGable(MultiLineString pignons) {
+		this.gable = (MultiLineString) pignons.copy();
 	}
 
-	public IMultiCurve<IOrientableCurve> getGutter() {
+	public MultiLineString getGutter() {
 		return gutter;
 	}
 
-	public void setGutter(IMultiCurve<? extends IOrientableCurve> ligneGoutierre) {
-		this.gutter = new GM_MultiCurve<IOrientableCurve>();
-		this.gutter.addAll(ligneGoutierre);
+	public void setGutter(MultiLineString ligneGoutierre) {
+		this.gutter = (MultiLineString) ligneGoutierre.copy();
 	}
 
-	public IMultiCurve<IOrientableCurve> getRoofing() {
+	public MultiLineString getRoofing() {
 		return roofing;
 	}
 
-	public void setRoofing(IMultiCurve<? extends IOrientableCurve> faitage) {
-		this.roofing = new GM_MultiCurve<IOrientableCurve>();
-		this.roofing.addAll(faitage);
+	public void setRoofing(MultiLineString faitage) {
+		this.roofing = (MultiLineString) faitage.copy();
 	}
 
-	public IMultiCurve<IOrientableCurve> getInteriorEdge() {
+	public MultiLineString getInteriorEdge() {
 		return interiorEdge;
 	}
 
-	public void setInteriorEdge(IMultiCurve<IOrientableCurve> interiorEdge) {
+	public void setInteriorEdge(MultiLineString interiorEdge) {
 		this.interiorEdge = interiorEdge;
 	}
 
@@ -95,7 +107,7 @@ public class RoofSurface extends DefaultFeature {
 	}
 
 	public double getAngleMax() {
-		if (angleMax == Double.NaN) {
+		if (Double.isNaN(angleMax)) {
 			angleMax = RoofAngle.angleMax(this);
 		}
 		return angleMax;
@@ -108,19 +120,15 @@ public class RoofSurface extends DefaultFeature {
 		return angleMin;
 	}
 
-	@SuppressWarnings("unchecked")
-	public IMultiSurface<IOrientableSurface> getLod2MultiSurface() {
-		return (IMultiSurface<IOrientableSurface>) this.getGeom();
+	public MultiPolygon getLod2MultiSurface() {
+		return (MultiPolygon) this.getGeometry();
 	}
 
-	@SuppressWarnings("unchecked")
-	public Object clone() {
+	public RoofSurface copy() {
 		RoofSurface tCopy = new RoofSurface();
-
-		tCopy.setGeom((IGeometry) this.getGeom().clone());
-		tCopy.setGutter((IMultiCurve<IOrientableCurve>) this.getGutter().clone());
-		tCopy.setRoofing((IMultiCurve<IOrientableCurve>) this.getRoofing().clone());
-
+		tCopy.setGeometry(this.getGeometry().copy());
+		tCopy.setGutter((MultiLineString) this.getGutter().copy());
+		tCopy.setRoofing((MultiLineString) this.getRoofing().copy());
 		return tCopy;
 	}
 }

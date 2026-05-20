@@ -2,14 +2,15 @@ package fr.ign.cogit.simplu3d.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * 
@@ -19,15 +20,12 @@ import fr.ign.cogit.simplu3d.model.UrbaZone;
  *
  */
 public class SubParcelGenerator {
-
 	/**
 	 * 
 	 */
-	private Collection<UrbaZone> urbaZones;
-
+	private final Collection<UrbaZone> urbaZones;
 	// removed : not the place to fix topology (snap geometries to each other)
 	// private double minArea;
-
 	/**
 	 * 
 	 * @param urbaZones the regulation urban zone used to split parcels
@@ -50,37 +48,30 @@ public class SubParcelGenerator {
 		 * create SubParcel as the intersection with UrbaZone
 		 */
 		for (UrbaZone urbaZone : urbaZones) {
-			IGeometry intersection = urbaZone.getGeom().intersection(cadastralParcel.getGeom());
+			Geometry intersection = urbaZone.getGeometry().intersection(cadastralParcel.getGeometry());
 			if (intersection == null || intersection.isEmpty()) {
-
 				continue;
 			}
-
 			SubParcel subParcel = createSubParcel(intersection);
 			if (subParcel == null) {
 				continue;
 			}
-
 			// CadastralParcel / SubParcel
 			subParcel.setCadastralParcel(cadastralParcel);
 			cadastralParcel.getSubParcels().add(subParcel);
-
 			// UrbaZone / SubParcel
 			subParcel.setZoneUrba(urbaZone);
 			urbaZone.getSubParcels().add(subParcel);
-
 			subParcels.add(subParcel);
 		}
-
 		/*
 		 * Compute SubParcel's union to create a SubParcel with a null UrbaZone to
 		 * ensure that the union of SubParcels is equal to CadastralParcel
 		 */
-		IGeometry union = unionAll(subParcels);
+		Geometry union = unionAll(subParcels);
 		if (union == null || union.isEmpty()) {
-			IGeometry nonSharedGeometry = (IGeometry) cadastralParcel.getGeom().clone();
+			Geometry nonSharedGeometry = cadastralParcel.getGeometry().copy();
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
-
 			if (subParcelWithoutZone != null) {
 				// CadastralParcel / SubParcel
 				subParcelWithoutZone.setCadastralParcel(cadastralParcel);
@@ -88,30 +79,28 @@ public class SubParcelGenerator {
 				subParcels.add(subParcelWithoutZone);
 			}
 
-		} else if (!(Math.abs(union.area() - cadastralParcel.getGeom().area()) < 0.001
-				* cadastralParcel.getGeom().area())) {
+		} else if (!(Math.abs(union.getArea() - cadastralParcel.getGeometry().getArea()) < 0.001
+				* cadastralParcel.getGeometry().getArea())) {
 			// part(s) of CadastralParcel belong to UrbaZone
-			IGeometry nonSharedGeometry = cadastralParcel.getGeom().difference(union);
+			Geometry nonSharedGeometry = cadastralParcel.getGeometry().difference(union);
 			SubParcel subParcelWithoutZone = createSubParcel(nonSharedGeometry);
 			if (subParcelWithoutZone != null) {
 				// CadastralParcel / SubParcel
 				subParcelWithoutZone.setCadastralParcel(cadastralParcel);
 				cadastralParcel.getSubParcels().add(subParcelWithoutZone);
-
 				subParcels.add(subParcelWithoutZone);
 			}
 		}
-
 		return subParcels;
 	}
 
-	private IGeometry unionAll(Collection<SubParcel> subParcels) {
-		IGeometry result = null;
+	private Geometry unionAll(Collection<SubParcel> subParcels) {
+		Geometry result = null;
 		for (SubParcel subParcel : subParcels) {
 			if (result == null) {
-				result = subParcel.getGeom();
+				result = subParcel.getGeometry();
 			} else {
-				result = result.union(subParcel.getGeom());
+				result = result.union(subParcel.getGeometry());
 			}
 		}
 		return result;
@@ -119,32 +108,24 @@ public class SubParcelGenerator {
 
 	/**
 	 * Create SubParcel from intersection's geometry
-	 * 
-	 * @param intersection
-	 * @return
+	 *
 	 */
-	private SubParcel createSubParcel(IGeometry intersection) {
+	private SubParcel createSubParcel(Geometry intersection) {
 		SubParcel subParcel = new SubParcel();
-
-		IMultiSurface<IOrientableSurface> iMS = FromGeomToSurface.convertMSGeom(intersection);
-
-		// TODO check this code (create a copy would be better?)
-		int nbContrib = iMS.size();
-		for (int i = 0; i < nbContrib; i++) {
-			IOrientableSurface os = iMS.get(i);
-
-			if (os == null || os.isEmpty()) {
-				iMS.remove(i);
-				i--;
-				nbContrib--;
+		MultiPolygon iMS = FromGeomToSurface.convertMSGeom(intersection);
+		// TODO check this code: we now create a copy
+		List<Polygon> polygons = new ArrayList<>();
+		for (int i = 0; i < iMS.getNumGeometries(); i++) {
+			Polygon os = (Polygon) iMS.getGeometryN(i);
+			if (os != null && !os.isEmpty()) {
+				polygons.add(os);
 			}
 		}
-
-		if (iMS == null || iMS.isEmpty()) {
+		MultiPolygon newGeometry = iMS.getFactory().createMultiPolygon(polygons.toArray(new Polygon[0]));
+		if (newGeometry == null || iMS.isEmpty()) {
 			return null;
 		}
-		subParcel.setGeom(iMS);
-
+		subParcel.setGeometry(newGeometry);
 		return subParcel;
 	}
 }

@@ -2,8 +2,8 @@ package fr.ign.cogit.simplu3d.checker.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
 import fr.ign.cogit.simplu3d.serializer.IGeometrySerializer;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 
@@ -15,14 +15,14 @@ import fr.ign.cogit.simplu3d.serializer.IGeometrySerializer;
 public class UnrespectedRule {
 	String message;
 	@JsonSerialize(using = IGeometrySerializer.class)
-	IGeometry geometry;
+    Geometry geometry;
 	String code;
 
 	public UnrespectedRule() {
 	
 	}
 	
-	public UnrespectedRule(String message, IGeometry geom, String code) {
+	public UnrespectedRule(String message, Geometry geom, String code) {
 		this.message = message;
 		this.geometry = geom;
 		this.code = code;
@@ -40,16 +40,15 @@ public class UnrespectedRule {
 		this.code = code ;
 	}
 	
-	public String getCode(){
+	public String getCode() {
 		return code;
 	}
 
-	public IGeometry getGeometry() {
+	public Geometry getGeometry() {
 		return geometry;
 	}
 
-	public void setGeometry(IGeometry geometry){
+	public void setGeometry(Geometry geometry){
 		this.geometry = geometry;
 	}
-	
 }

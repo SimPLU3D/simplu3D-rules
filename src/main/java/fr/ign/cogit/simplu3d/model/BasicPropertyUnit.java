@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,55 +16,58 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
+import fr.ign.common.conversion.FromGeomToSurface;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.feature.DefaultFeature;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiSurface;
-
 /**
- * 
+ *
  * Adjacent CadastralParcels with common owner
- * 
- * see http://inspire.ec.europa.eu/featureconcept/BasicPropertyUnit
- * 
+ * <p>
+ * see <a href="http://inspire.ec.europa.eu/featureconcept/BasicPropertyUnit">...</a>
+ *
  * @author Brasebin Mickaël
  *
  */
-public class BasicPropertyUnit extends DefaultFeature {
-  
+public class BasicPropertyUnit implements UrbanFeature {
 
+	private Geometry geometry = null;
+	public Geometry getGeometry() {
+		return this.geometry;
+	}
+	public void setGeometry(Geometry geom) {
+		this.geometry = geom;
+	}
   /**
 	 * Les parcelles cadastrales
 	 */
-	private List<CadastralParcel> cadastralParcels = new ArrayList<CadastralParcel>();
+	private List<CadastralParcel> cadastralParcels = new ArrayList<>();
 	/**
 	 * Les bâtiments présents sur la BasicPropertyUnit
 	 */
-	private List<Building> buildings = new ArrayList<Building>();
+	private List<Building> buildings = new ArrayList<>();
 	
 	/**
 	 * TODO remove this attribute and define geom when BasicPropertyUnit is created
 	 */
-	private IMultiSurface<IOrientableSurface> geometryFromChildren = null;
+	private MultiPolygon geometryFromChildren = null;
 
 	/**
 	 * TODO describe, duplicate geom?
 	 */
-	private IPolygon pol2D = null;
+	private Polygon pol2D = null;
 	/**
 	 * cached area
 	 */
 	private double area = -1;
 	
 	public BasicPropertyUnit() {
-		
-	}
+    }
 
 	public List<CadastralParcel> getCadastralParcels() {
 		return cadastralParcels;
@@ -98,46 +101,54 @@ public class BasicPropertyUnit extends DefaultFeature {
 
 	/**
 	 * Build geometry as the union of CadastralParcel's geometries
-	 * 
+	 * <p>
 	 * TODO remove and define geometry in BasicPropertyUnitGenerator
 	 * 
 	 * @return generate a geometry from the cadastral parcels that belong to the basicproperty unit
 	 */
-	public IMultiSurface<IOrientableSurface> generateGeom() {
+	public MultiPolygon generateGeom() {
 		if (geometryFromChildren == null) {
-			geometryFromChildren = new GM_MultiSurface<IOrientableSurface>();
-			for (CadastralParcel cP : this.getCadastralParcels()) {
-				IGeometry geomP = cP.getGeom();
-
+			GeometryFactory factory = new GeometryFactory();
+			List<Polygon> polygons =  new ArrayList<>();
+ 			for (CadastralParcel cP : this.getCadastralParcels()) {
+				Geometry geomP = cP.getGeometry();
 				if (geomP != null) {
-
-					List<IOrientableSurface> lG = FromGeomToSurface.convertGeom(geomP);
-					if (lG != null) {
-						geometryFromChildren.addAll(lG);
-					}
-				}
+					List<Polygon> lG = FromGeomToSurface.convertGeom(geomP);
+                    polygons.addAll(lG);
+                }
 			}
+			geometryFromChildren = factory.createMultiPolygon(polygons.toArray(new Polygon[0]));
 		}
 
 		return geometryFromChildren;
 	}
 
 
-	public IPolygon getPol2D() {
+	public Polygon getPol2D() {
 		return pol2D;
 	}
 
-	public void setPol2D(IPolygon pol) {
+	public void setPol2D(Polygon pol) {
 		pol2D = pol;
 	}
 
 
 	public double getArea() {
 		if (area == -1) {
-			area = this.getPol2D().area();
+			area = this.getPol2D().getArea();
 		}
 		return area;
 	}
-	
 
+	private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getId() {
+		return id;
+	}
+	@Override
+	public String toString() {
+		return "BPU " + getId() + " - " + getGeometry() + " - with " + getCadastralParcels().size() + " parcels";
+	}
 }

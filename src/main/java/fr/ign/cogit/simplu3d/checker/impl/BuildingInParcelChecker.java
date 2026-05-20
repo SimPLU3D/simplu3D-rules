@@ -13,7 +13,6 @@ import fr.ign.cogit.simplu3d.model.AbstractBuilding;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.SubParcel;
-import fr.ign.cogit.simplu3d.util.JTS;
 
 public class BuildingInParcelChecker extends AbstractRuleChecker {
 
@@ -22,14 +21,12 @@ public class BuildingInParcelChecker extends AbstractRuleChecker {
 	@Override
 	public List<UnrespectedRule> check(BasicPropertyUnit bPU, RuleContext context) {
 		List<UnrespectedRule> unrespectedRules = new ArrayList<>();
-
 		// TODO see why bPU.getBuildings() is empty (loader issue?)
-
 		for (CadastralParcel cP : bPU.getCadastralParcels()) {
 			for (SubParcel sP : cP.getSubParcels()) {
-				Geometry parcelGeometry = JTS.toJTS(sP.getGeom());
+				Geometry parcelGeometry = sP.getGeometry();
 				for (AbstractBuilding bP : sP.getBuildingsParts()) {
-					Geometry footprint = JTS.toJTS(bP.getFootprint());
+					Geometry footprint = bP.getFootprint();
 					if (footprint == null) {
 						throw new RuntimeException("No footprint!");
 					}
@@ -41,21 +38,17 @@ public class BuildingInParcelChecker extends AbstractRuleChecker {
 					if (area < 1.0) {
 						continue;
 					}
-					unrespectedRules.add(new UnrespectedRule("Le bâtiment est en dehors de la parcelle",
-							JTS.fromJTS(difference), CODE));
+					unrespectedRules.add(new UnrespectedRule("Le bâtiment est en dehors de la parcelle", difference, CODE));
 				}
 			}
 		}
-
 		return unrespectedRules;
 	}
-
 	@Override
 	public List<GeometricConstraints> generate(BasicPropertyUnit bPU, RuleContext ruleContext) {
 		List<GeometricConstraints> lGC = new ArrayList<>();
 		lGC.add(new GeometricConstraints("Le bâtiment doit être à l'intérieur de la parcelle",
-				bPU.getGeom().buffer(50).difference(bPU.getGeom()), CODE));
+				bPU.getGeometry().buffer(50).difference(bPU.getGeometry()), CODE));
 		return lGC;
 	}
-
 }

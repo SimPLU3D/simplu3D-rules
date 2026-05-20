@@ -1,51 +1,46 @@
 package fr.ign.cogit.simplu3d.analysis;
 
 import java.util.Collection;
+import java.util.List;
 
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.util.index.Tiling;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 
-public class BasicPropertyUnitFinder {
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
+import org.locationtech.jts.index.strtree.STRtree;
 
-	private IFeatureCollection<BasicPropertyUnit> basicPropertyUnits;
-		
-	public BasicPropertyUnitFinder(IFeatureCollection<BasicPropertyUnit> basicPropertyUnits){
-		this.basicPropertyUnits = basicPropertyUnits;
-		
-		if (! this.basicPropertyUnits.hasSpatialIndex()) {
-			this.basicPropertyUnits.initSpatialIndex(Tiling.class, false);
+public class BasicPropertyUnitFinder {
+    private final SpatialIndex index;
+	public BasicPropertyUnitFinder(Collection<BasicPropertyUnit> basicPropertyUnits){
+        this.index = new STRtree();
+		for (BasicPropertyUnit unit : basicPropertyUnits){
+			index.insert(unit.getGeometry().getEnvelopeInternal(), unit);
 		}
 	}
-	
-	
-	public BasicPropertyUnit findBestIntersections(IGeometry polyBat){
-		
+
+	public BasicPropertyUnit findBestIntersections(Geometry polyBat){
 		if(polyBat == null) {
 			return null;
 		}
-		double area = polyBat.area();
-		
+		double area = polyBat.getArea();
 		if(area == 0) {
 			return null;
 		}
-		
-		Collection<BasicPropertyUnit> candidates = basicPropertyUnits.select(polyBat);
-		
+		@SuppressWarnings("unchecked")
+		List<BasicPropertyUnit> candidates = index.query(polyBat.getEnvelopeInternal());
 		BasicPropertyUnit bestCandidate = null;
 		double maxRatio = 0.0;
 		for (BasicPropertyUnit candidate : candidates) {
-			IGeometry intersection = candidate.getGeom().intersection(polyBat);
+			Geometry intersection = candidate.getGeometry().intersection(polyBat);
 			if ( intersection == null || intersection.isEmpty() ){
 				continue;
 			}
-			double ratio = intersection.area() / area;
+			double ratio = intersection.getArea() / area;
 			if ( ratio > maxRatio ){
 				bestCandidate = candidate ;
 				maxRatio = ratio;
 			}
 		}
-		return bestCandidate ;		
+		return bestCandidate ;
 	}
 }
