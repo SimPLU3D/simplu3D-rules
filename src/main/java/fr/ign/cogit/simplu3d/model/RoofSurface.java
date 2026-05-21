@@ -28,24 +28,7 @@ import org.locationtech.jts.geom.MultiPolygon;
  * @author Brasebin Mickaël
  *
  */
-public class RoofSurface implements UrbanFeature {
-	private Geometry geometry = null;
-	@Override
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	@Override
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
-
+public class RoofSurface extends AbstractUrbanFeature {
 	private MultiLineString roofing;
 	private MultiLineString gable;
 	private MultiLineString gutter;

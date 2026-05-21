@@ -12,11 +12,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-*/
-
 /**
  * 
  * Partial implementation of IFeatureReader and helpers
@@ -26,14 +21,20 @@ import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
  * @param <T> the class of feature to read
  */
 public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
-
+	protected final FeatureType featureType;
+	public FeatureType getFeatureType() {
+		return featureType;
+	}
+    protected AbstractFeatureReader(FeatureType featureType) {
+        this.featureType = featureType;
+    }
 	@Override
 	public Collection<T> readAll(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
 		List<T> result = new ArrayList<>(collection.size());
         try (FeatureIterator<SimpleFeature> iterator = collection.features()) {
             while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                result.add(read(feature));
+                T feature = read(iterator.next());
+                result.add(feature);
             }
         }
 		return result;

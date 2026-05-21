@@ -14,7 +14,7 @@ public class PrescriptionRepositoryTest extends TestCase {
 	
 	public void testReadLinearPrescription(){
 		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/PRESCRIPTION_LIN.shp");
-		SpatialRepository<Prescription> repository = new SpatialRepository<>(new PrescriptionReader().readAll(ShapefileReader.read(url)));
+		SpatialRepository<Prescription> repository = new PrescriptionReader().create(ShapefileReader.read(url));
 		Collection<Prescription> prescription = repository.findAll();
 		assertEquals(466, prescription.size());
 		Prescription first = prescription.iterator().next();

@@ -1,6 +1,7 @@
 package fr.ign.cogit.simplu3d.analysis;
 
 import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.BasicPropertyUnitReader;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import junit.framework.TestCase;
 import org.locationtech.jts.geom.Coordinate;
@@ -20,7 +21,8 @@ public class BasicPropertyUnitFinderTest extends TestCase {
 		Collection<BasicPropertyUnit> list = new ArrayList<>();
 		list.add(createBpU("0",0,0,1.0));
 		list.add(createBpU("1",2,2,1.0));
-		basicPropertyUnits = new SpatialRepository<>(list);
+		BasicPropertyUnitReader reader = new BasicPropertyUnitReader();
+		basicPropertyUnits = new SpatialRepository<>(list, reader.getFeatureType(), null);
 	}
 	
 	private BasicPropertyUnit createBpU(String id,double x, double y, double r){

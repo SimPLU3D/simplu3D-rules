@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p>
  * see LICENSE.TXT
- * 
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -18,13 +18,12 @@ package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-*/
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.UrbaZone;
 import fr.ign.common.conversion.FromGeomToSurface;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -62,6 +61,21 @@ public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone> {
     ATT_TEXT = AttribNames.getATT_TEXT();
     DATE_FORMAT_DU1 = AttribNames.getDATE_FORMAT_DU1();
   }
+  public UrbaZoneReader() {
+    super(new FeatureType("UrbaZone"));
+    this.featureType.setGeometryType("MultiPolygon");
+    this.featureType.getAttributes().put(ATT_LIBELLE, "String");
+    this.featureType.getAttributes().put(ATT_LIBELONG, "String");
+    this.featureType.getAttributes().put(ATT_TYPE_ZONE, "String");
+    this.featureType.getAttributes().put(ATT_DESTDOMI, "String");
+    this.featureType.getAttributes().put(ATT_NOMFIC, "String");
+    this.featureType.getAttributes().put(ATT_URLFIC, "String");
+    this.featureType.getAttributes().put(ATT_INSEE, "String");
+    this.featureType.getAttributes().put(VALIDITY_DATE_APPRO, "String");
+    this.featureType.getAttributes().put(VALIDITY_DATE_VALID, "String");
+    this.featureType.getAttributes().put(ATT_TEXT, "String");
+    this.featureType.getAttributes().put(DATE_FORMAT_DU1, "String");
+  }
 
   @Override
   public UrbaZone read(SimpleFeature feature) {
@@ -91,15 +105,18 @@ public class UrbaZoneReader extends AbstractFeatureReader<UrbaZone> {
 
     // Pour la date d'approbation de la zone urba (date de début)
     SimpleDateFormat sdfdeb = new SimpleDateFormat(DATE_FORMAT_DU1);
-    z.setDateDeb(readDateAttribute(feature, VALIDITY_DATE_APPRO, sdfdeb));
+    z.setDateApprobation(readDateAttribute(feature, VALIDITY_DATE_APPRO, sdfdeb));
 
     // Pour la date de validité de la zone urba (date de fin)
-    z.setDateFin(readDateAttribute(feature, VALIDITY_DATE_VALID, sdfdeb));
+    z.setDateValidite(readDateAttribute(feature, VALIDITY_DATE_VALID, sdfdeb));
 
     // Pour les commentaires éventuels sur la zone urba
     z.setText(readStringAttribute(feature, ATT_TEXT));
 
     return z;
   }
-
+  @Override
+  public SpatialRepository<UrbaZone> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features) {
+    return new SpatialRepository<>(readAll(features), this.featureType, (features.getSchema() != null) ? features.getSchema().getCoordinateReferenceSystem() : null);
+  }
 }

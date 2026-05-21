@@ -24,12 +24,12 @@ public class SubParcelGeneratorTest extends TestCase {
 		// load urbaZones
 		{
 			URL url = getClass().getClassLoader().getResource("demo-02/ZONE_URBA.shp");
-            urbaZones = new AbstractRepository<>(new UrbaZoneReader().readAll(ShapefileReader.read(url)));
+            urbaZones = new UrbaZoneReader().create(ShapefileReader.read(url));
 		}
 		// load cadastralParcels
 		{
 			URL url = getClass().getClassLoader().getResource("demo-02/PARCELLE.SHP");
-			SpatialRepository<CadastralParcel> repository = new SpatialRepository<>(new CadastralParcelReader().readAll(ShapefileReader.read(url)));
+			SpatialRepository<CadastralParcel> repository = new CadastralParcelReader().create(ShapefileReader.read(url));
 			cadastralParcels = repository.findAll();
 		}
 	}

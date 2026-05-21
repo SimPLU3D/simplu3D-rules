@@ -15,7 +15,7 @@ public class UrbaDocumentRepositoryTest extends TestCase {
 
 	public void testDemo01(){
 		URL url = getClass().getClassLoader().getResource("demo-01/DOC_URBA.shp");
-		AbstractRepository<UrbaDocument> repository = new AbstractRepository<>(new UrbaDocumentReader().readAll(ShapefileReader.read(url)));
+		AbstractRepository<UrbaDocument> repository = new UrbaDocumentReader().create(ShapefileReader.read(url));
 		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 		assertEquals(1, urbaDocuments.size());
 
@@ -41,7 +41,7 @@ public class UrbaDocumentRepositoryTest extends TestCase {
 	
 	public void test44118(){
 		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/DOC_URBA.shp");
-		AbstractRepository<UrbaDocument> repository = new AbstractRepository<>(new UrbaDocumentReader().readAll(ShapefileReader.read(url)));
+		AbstractRepository<UrbaDocument> repository = new UrbaDocumentReader().create(ShapefileReader.read(url));
 		Collection<UrbaDocument> urbaDocuments = repository.findAll();
 /*
  * TODO allow EMPTY/NULL geometry in geoxygene https://github.com/IGNF/geoxygene/issues/3

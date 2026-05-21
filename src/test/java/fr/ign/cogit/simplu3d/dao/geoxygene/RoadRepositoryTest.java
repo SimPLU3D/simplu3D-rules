@@ -19,7 +19,7 @@ public class RoadRepositoryTest extends TestCase {
 	public void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/TRONCON_ROUTE.shp");
 		DefaultFeatureCollection features = ShapefileReader.read(url);
-		this.repository = new SpatialRepository<>(new RoadReader().readAll(features));
+		this.repository = new RoadReader().create(features);
 	}
 
 	public void testDemo01(){

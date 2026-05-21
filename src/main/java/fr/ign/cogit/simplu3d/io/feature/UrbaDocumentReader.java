@@ -2,9 +2,11 @@ package fr.ign.cogit.simplu3d.io.feature;
 
 import java.text.SimpleDateFormat;
 
-//import fr.ign.cogit.geoxygene.api.feature.IFeature;
+import fr.ign.cogit.simplu3d.dao.AbstractRepository;
 import fr.ign.cogit.simplu3d.model.UrbaDocument;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
 
 public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 
@@ -43,6 +45,26 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
     ATT_DATE_REF = AttribNames.getATT_DATE_REF();
     DATE_FORMAT_DU1 = AttribNames.getDATE_FORMAT_DU1();
     DATE_FORMAT_DU2 = AttribNames.getDATE_FORMAT_DU2();
+  }
+  public UrbaDocumentReader() {
+    super(new FeatureType("UrbaDocument"));
+    this.featureType.setGeometryType("Polygon");
+    this.featureType.getAttributes().put(ATT_ID_URBA, "String");
+    this.featureType.getAttributes().put(ATT_TYPE_DOC, "String");
+    this.featureType.getAttributes().put(ATT_DATE_APPRO, "String");
+    this.featureType.getAttributes().put(ATT_DATE_FIN, "String");
+    this.featureType.getAttributes().put(ATT_INTER_CO, "String");
+    this.featureType.getAttributes().put(ATT_SIREN, "String");
+    this.featureType.getAttributes().put(ATT_ETAT, "String");
+    this.featureType.getAttributes().put(ATT_NOM_REG, "String");
+    this.featureType.getAttributes().put(ATT_URL_REG, "String");
+    this.featureType.getAttributes().put(ATT_NOM_PLAN, "String");
+    this.featureType.getAttributes().put(ATT_URL_PLAN, "String");
+    this.featureType.getAttributes().put(ATT_SITE_WEB, "String");
+    this.featureType.getAttributes().put(ATT_TYPE_REF, "String");
+    this.featureType.getAttributes().put(ATT_DATE_REF, "String");
+    this.featureType.getAttributes().put(DATE_FORMAT_DU1, "String");
+    this.featureType.getAttributes().put(DATE_FORMAT_DU2, "String");
   }
 
   @Override
@@ -95,5 +117,8 @@ public class UrbaDocumentReader extends AbstractFeatureReader<UrbaDocument> {
 
     return result;
   }
-
+  @Override
+  public AbstractRepository<UrbaDocument> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features) {
+    return new AbstractRepository<>(readAll(features), this.featureType, (features.getSchema() != null) ? features.getSchema().getCoordinateReferenceSystem() : null);
+  }
 }

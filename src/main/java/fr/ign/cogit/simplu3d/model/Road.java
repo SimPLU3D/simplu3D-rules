@@ -18,8 +18,9 @@ package fr.ign.cogit.simplu3d.model;
 
 import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
+
+import static fr.ign.cogit.simplu3d.io.feature.RoadReader.*;
 
 /**
  * 
@@ -28,25 +29,11 @@ import org.locationtech.jts.geom.MultiLineString;
  * @author Brasebin Mickaël
  *
  */
-public class Road implements UrbanFeature {
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
+public class Road extends AbstractUrbanFeature {
 	private MultiLineString axis;
-	private String name;
-	private String type;
-	private double width;
+	//private String name;
+	//private String type;
+	//private double width;
 	private List<String> usages;
 
 	public Road() {
@@ -66,27 +53,21 @@ public class Road implements UrbanFeature {
 	}
 
 	public String getRoadName() {
-		return name;
+		return this.getAttribute(ATT_NOM_RUE).toString();
 	}
 
 	public void setRoadName(String name) {
-		this.name = name;
+		this.setAttribute(ATT_NOM_RUE, name);
+		//this.name = name;
 	}
 
 	public double getWidth() {
-		return width;
+		return Double.parseDouble(this.getAttribute(ATT_LARGEUR).toString());
 	}
 
 	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public String getRoadType() {
-		return type;
-	}
-
-	public void setRoadType(String type) {
-		this.type = type;
+		this.setAttribute(ATT_LARGEUR, width);
+		//this.width = width;
 	}
 
 	public List<String> getUsages() {

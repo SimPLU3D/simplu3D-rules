@@ -1,5 +1,8 @@
 package fr.ign.cogit.simplu3d.dao;
 
+import fr.ign.cogit.simplu3d.io.feature.FeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +15,17 @@ public class AbstractRepository<T> implements Repository<T> {
     public Collection<T> findAll() {
         return items;
     }
-    public AbstractRepository(Collection<T> items) {
+    private final FeatureType featureType;
+    public FeatureType getFeatureType() {
+        return featureType;
+    }
+    private CoordinateReferenceSystem crs;
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return crs;
+    }
+    public AbstractRepository(Collection<T> items, FeatureType featureType, CoordinateReferenceSystem crs) {
         this.items = new ArrayList<>(items);
+        this.featureType = featureType;
+        this.crs = crs;
     }
 }

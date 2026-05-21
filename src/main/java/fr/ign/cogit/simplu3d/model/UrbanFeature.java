@@ -7,4 +7,6 @@ public interface UrbanFeature {
     void setGeometry(Geometry geometry);
     void setId(String id);
     String getId();
+    Object getAttribute(String key);
+    void setAttribute(String key, Object value);
 }

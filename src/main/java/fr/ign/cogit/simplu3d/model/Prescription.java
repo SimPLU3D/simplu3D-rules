@@ -16,8 +16,6 @@
  **/
 package fr.ign.cogit.simplu3d.model;
 
-import org.locationtech.jts.geom.Geometry;
-
 /**
  * 
  * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un
@@ -30,22 +28,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author MBorne
  *
  */
-public class Prescription implements UrbanFeature {
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
-
+public class Prescription extends AbstractUrbanFeature {
 	/**
 	 * Type of the prescription according to CNIG standard (TYPEPSC2)
 	 */

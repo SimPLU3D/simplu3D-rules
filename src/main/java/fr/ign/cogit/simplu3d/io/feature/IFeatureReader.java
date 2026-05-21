@@ -1,7 +1,9 @@
 package fr.ign.cogit.simplu3d.io.feature;
 
+import fr.ign.cogit.simplu3d.dao.Repository;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.FeatureCollection;
 
 import java.util.Collection;
@@ -32,4 +34,5 @@ public interface IFeatureReader<T> {
 	 * @return a collection of read features
 	 */
     Collection<T> readAll(FeatureCollection<SimpleFeatureType, SimpleFeature> features);
+	Repository<T> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features);
 }

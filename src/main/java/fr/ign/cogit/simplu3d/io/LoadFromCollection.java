@@ -111,7 +111,7 @@ public class LoadFromCollection {
 
 		// Etape 2 : création des zones et assignation des règles aux zones
 		logger.fine("Loading UrbaZone...");
-		AbstractRepository<UrbaZone> urbaZoneRepository = new AbstractRepository<>(new UrbaZoneReader().readAll(zoneColl));
+		AbstractRepository<UrbaZone> urbaZoneRepository = new UrbaZoneReader().create(zoneColl);
 
 		// Etape 3 : assignement des zonages au PLU
 		env.setUrbaZones(urbaZoneRepository);
@@ -134,7 +134,7 @@ public class LoadFromCollection {
 			for (CadastralParcel cadastralParcel : parcelles.findAll()) {
 				sousParcelles.addAll(subParcelGenerator.createSubParcels(cadastralParcel));
 			}
-			env.setSubParcels(new SpatialRepository<>(sousParcelles));
+			env.setSubParcels(new SubParcelReader().create(sousParcelles, parcelles.getCoordinateReferenceSystem()));
 		}
 
 		// Etape 6 : création des unités foncirèes
@@ -145,7 +145,7 @@ public class LoadFromCollection {
 
 		// Etape 7 : import des bâtiments
 		logger.fine("Loading Buildings...");
-		SpatialRepository<Building> buildings = new SpatialRepository<>(new BuildingReader().readAll(batiColl));
+		SpatialRepository<Building> buildings = new BuildingReader().create(batiColl);
 		env.setBuildings(buildings);
 
 		// Etape 7.1 : assignation des batiments aux BpU
@@ -154,7 +154,7 @@ public class LoadFromCollection {
 
 		// Etape 8 : chargement des voiries
 		logger.fine("Loading Roads...");
-		SpatialRepository<Road> roads = new SpatialRepository<>(new RoadReader().readAll(voirieColl));
+		SpatialRepository<Road> roads = new RoadReader().create(voirieColl);
 		env.setRoads(roads);
 
 		// Etape 9 : on affecte les liens entre une bordure et ses objets
@@ -170,7 +170,7 @@ public class LoadFromCollection {
 		// Etape 11 : on importe les alignements
 		logger.fine("Loading Prescriptions...");
 		{
-			SpatialRepository<Prescription> prescriptionsRead = new SpatialRepository<>(new PrescriptionReader().readAll(prescriptions));
+			SpatialRepository<Prescription> prescriptionsRead = new PrescriptionReader().create(prescriptions);
 			env.setPrescriptions(prescriptionsRead);
 		}
 

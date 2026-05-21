@@ -20,8 +20,6 @@ import fr.ign.cogit.simplu3d.dao.*;
 import fr.ign.common.dtm.AbstractDTM;
 import org.locationtech.jts.geom.Coordinate;
 
-import java.util.Collection;
-
 /**
  * 
  * Regroupe les différents éléments nécessaire pour la vérification et la

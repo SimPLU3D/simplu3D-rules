@@ -28,21 +28,7 @@ import java.util.List;
  * @author Brasebin Mickaël
  *
  */
-public class SubParcel implements UrbanFeature {
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
+public class SubParcel extends AbstractUrbanFeature {
 	/**
 	 * Parent CadastralParcel
 	 */

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.BasicPropertyUnitReader;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.common.conversion.FromGeomToSurface;
@@ -76,6 +77,6 @@ public class BasicPropertyUnitGenerator {
 			bpU.setGeometry(geom);
 			collection.add(bpU);
 		}
-		return new SpatialRepository<>(collection);
+		return new BasicPropertyUnitReader().create(collection, cadastralParcels.getCoordinateReferenceSystem());
 	}
 }

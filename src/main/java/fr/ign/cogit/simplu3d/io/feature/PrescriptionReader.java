@@ -1,13 +1,12 @@
 package fr.ign.cogit.simplu3d.io.feature;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.util.attribute.AttributeManager;
-*/
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.PrescriptionType;
 import fr.ign.common.io.AttributeManager;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -27,6 +26,13 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
     ATT_TYPE = AttribNames.getATT_TYPE_PRESCRIPTION();
     ATT_RECOIL = AttribNames.getATT_RECOIL();
     ATT_LABEL = AttribNames.getATT_LABEL();
+  }
+  public PrescriptionReader() {
+    super(new FeatureType("Prescription"));
+    this.featureType.setGeometryType("LineString");
+    this.featureType.getAttributes().put(ATT_TYPE, "String");
+    this.featureType.getAttributes().put(ATT_LABEL, "String");
+    this.featureType.getAttributes().put(ATT_RECOIL, "Double");
   }
 
   @Override
@@ -60,5 +66,10 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
 
     int typeInt = Integer.parseInt(type);
     return PrescriptionType.getPrescriptionById(typeInt);
+  }
+
+  @Override
+  public SpatialRepository<Prescription> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features) {
+    return new SpatialRepository<>(readAll(features), this.featureType, (features.getSchema() != null) ? features.getSchema().getCoordinateReferenceSystem() : null);
   }
 }

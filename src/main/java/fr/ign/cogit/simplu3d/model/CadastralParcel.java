@@ -31,22 +31,7 @@ import org.locationtech.jts.geom.*;
  * @author Brasebin Mickaël
  *
  */
-public class CadastralParcel implements UrbanFeature {
-
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
+public class CadastralParcel extends AbstractUrbanFeature {
 
 	/**
 	 * Parent BasicPropertyUnit
@@ -88,9 +73,11 @@ public class CadastralParcel implements UrbanFeature {
 	private double area = Double.NaN;
 
 	public CadastralParcel() {
+		super();
 	}
 
 	public CadastralParcel(MultiPolygon iMS) {
+		super();
 		this.setGeometry(iMS);
 	}
 

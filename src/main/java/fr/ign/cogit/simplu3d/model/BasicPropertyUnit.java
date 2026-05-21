@@ -34,15 +34,8 @@ import java.util.List;
  * @author Brasebin Mickaël
  *
  */
-public class BasicPropertyUnit implements UrbanFeature {
+public class BasicPropertyUnit extends AbstractUrbanFeature {
 
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
   /**
 	 * Les parcelles cadastrales
 	 */
@@ -140,13 +133,6 @@ public class BasicPropertyUnit implements UrbanFeature {
 		return area;
 	}
 
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
 	@Override
 	public String toString() {
 		return "BPU " + getId() + " - " + getGeometry() + " - with " + getCadastralParcels().size() + " parcels";

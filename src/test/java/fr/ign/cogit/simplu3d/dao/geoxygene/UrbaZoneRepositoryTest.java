@@ -15,7 +15,7 @@ public class UrbaZoneRepositoryTest extends TestCase {
 	
 	public void testReadShapefile(){
 		URL url = getClass().getClassLoader().getResource("44118_PLU_20150219/ZONE_URBA.shp");
-		AbstractRepository<UrbaZone> repository = new AbstractRepository<>(new UrbaZoneReader().readAll(ShapefileReader.read(url)));
+		AbstractRepository<UrbaZone> repository = new UrbaZoneReader().create(ShapefileReader.read(url));
 		Collection<UrbaZone> urbaZones = repository.findAll();
 		assertEquals(124, urbaZones.size());
 		UrbaZone first = urbaZones.iterator().next();
@@ -30,8 +30,8 @@ public class UrbaZoneRepositoryTest extends TestCase {
 		assertEquals("",first.getUrlFic());
 		assertEquals("44118",first.getInsee());
 		SimpleDateFormat dateFormat = new SimpleDateFormat(UrbaZoneReader.DATE_FORMAT_DU1);
-		assertEquals("20150219",dateFormat.format(first.getDateDeb()));
-		assertNull(first.getDateFin());
+		assertEquals("20150219",dateFormat.format(first.getDateApprobation()));
+		assertNull(first.getDateValidite());
 		assertNull(first.getText());
 	}
 }

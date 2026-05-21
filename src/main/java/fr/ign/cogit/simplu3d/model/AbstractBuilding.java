@@ -39,16 +39,16 @@ import org.locationtech.jts.geom.*;
  * @author Brasebin Mickaël
  *
  */
-public abstract class AbstractBuilding implements UrbanFeature {
+public abstract class AbstractBuilding extends AbstractUrbanFeature {
 
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
+	@Override
 	public void setGeometry(Geometry geom) {
 		this.geometry = geom;
+		createElements();
+	}
+	private void createElements() {
 		// Etape 1 : détection du toit et des façades
-		List<Polygon> lOS = FromGeomToSurface.convertGeom(geom);
+		List<Polygon> lOS = FromGeomToSurface.convertGeom(this.geometry);
 		MultiPolygon surfaceRoof = RoofDetection.detectRoof(this, 0.2);
 		// Util.detectRoof(lOS, 0.2);
 		MultiPolygon surfaceWall = Util.detectVertical(lOS, 0.2);
@@ -61,7 +61,7 @@ public abstract class AbstractBuilding implements UrbanFeature {
 		// Etape 2 : on créé l'emprise du bâtiment
 		// FIXME ???
 		//footprint = FootprintGenerator.convert(surfaceRoof);
-		Geometry union = (surfaceRoof != null) ? surfaceRoof.union() : geom.union();
+		Geometry union = (surfaceRoof != null) ? surfaceRoof.union() : geometry.union();
 		if (union instanceof MultiPolygon) {
 			union = union.buffer(1).union().buffer(-1);
 		}
@@ -77,14 +77,6 @@ public abstract class AbstractBuilding implements UrbanFeature {
 			this.setRoofSurface(t);
 		}
 	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
-
 	private List<BuildingPart> buildingParts = new ArrayList<>();
 	private RoofSurface roofSurface = null;
 
@@ -114,6 +106,7 @@ public abstract class AbstractBuilding implements UrbanFeature {
 	private double storeyHeightsAboveGround;
 
 	protected AbstractBuilding() {
+		super();
 	}
 
 /*

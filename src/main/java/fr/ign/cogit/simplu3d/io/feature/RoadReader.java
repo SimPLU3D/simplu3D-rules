@@ -19,12 +19,15 @@ package fr.ign.cogit.simplu3d.io.feature;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.common.equation.ApproximatedPlanEquation;
 import fr.ign.common.conversion.FromGeomToSurface;
 import fr.ign.common.analysis.Proximity;
 import fr.ign.common.util.Vecteur;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.feature.FeatureCollection;
 import org.locationtech.jts.geom.*;
 
 /**
@@ -47,6 +50,13 @@ public class RoadReader extends AbstractFeatureReader<Road> {
     ATT_LARGEUR = AttribNames.getATT_LARGEUR();
     ATT_TYPE = AttribNames.getATT_TYPE_ROAD();
   }
+  public RoadReader() {
+    super(new FeatureType("Road"));
+    this.featureType.setGeometryType("MultiPolygon");
+    this.featureType.getAttributes().put(ATT_TYPE, "String");
+    this.featureType.getAttributes().put(ATT_NOM_RUE, "String");
+    this.featureType.getAttributes().put(ATT_LARGEUR, "Double");
+  }
 
   @Override
   public Road read(SimpleFeature feature) {
@@ -58,6 +68,7 @@ public class RoadReader extends AbstractFeatureReader<Road> {
       return null;
     }
     result.setWidth(width);
+    result.setAttribute(ATT_TYPE, readStringAttribute(feature, ATT_TYPE));
     List<String> usages = new ArrayList<>();
     usages.add(readStringAttribute(feature, ATT_TYPE));
     result.setUsages(usages);
@@ -99,5 +110,9 @@ public class RoadReader extends AbstractFeatureReader<Road> {
     MultiPolygon surfVoie = FromGeomToSurface.convertMSGeom(obj);
     result.setGeometry(surfVoie);
     return result;
+  }
+  @Override
+  public SpatialRepository<Road> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features) {
+    return new SpatialRepository<>(readAll(features), this.featureType, (features.getSchema() != null) ? features.getSchema().getCoordinateReferenceSystem() : null);
   }
 }

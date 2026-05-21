@@ -26,7 +26,7 @@ public class BasicPropertyUnitGeneratorTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/PARCELLE.shp");
-        cadastralParcels = new SpatialRepository<>(new CadastralParcelReader().readAll(ShapefileReader.read(url)));
+        cadastralParcels = new CadastralParcelReader().create(ShapefileReader.read(url));
 	}
 	
 	public void testAggregation(){

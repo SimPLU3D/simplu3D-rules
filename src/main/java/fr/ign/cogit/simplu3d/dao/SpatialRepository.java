@@ -1,6 +1,8 @@
 package fr.ign.cogit.simplu3d.dao;
 
+import fr.ign.cogit.simplu3d.io.feature.FeatureType;
 import fr.ign.cogit.simplu3d.model.UrbanFeature;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.SpatialIndex;
@@ -10,8 +12,8 @@ import java.util.Collection;
 
 public class SpatialRepository<T extends UrbanFeature> extends AbstractRepository<T> {
 	private SpatialIndex spatialIndex;
-	public SpatialRepository(Collection<T> items) {
-		super(items);
+	public SpatialRepository(Collection<T> items, FeatureType featureType, CoordinateReferenceSystem crs) {
+		super(items, featureType, crs);
 	}
 
 	/**

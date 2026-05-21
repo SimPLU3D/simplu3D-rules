@@ -29,7 +29,7 @@ public class ParcelBoundaryGeneratorTest extends TestCase {
 		logger.fine("READ");
 		DefaultFeatureCollection collection = ShapefileReader.read(url);
 		logger.fine("FOUND " + collection.size() + " features");
-        SpatialRepository<CadastralParcel> repository = new SpatialRepository<>(new CadastralParcelReader().readAll(collection));
+        SpatialRepository<CadastralParcel> repository = new CadastralParcelReader().create(collection);
 		logger.fine("REPO with " + repository.count() + " features");
 		cadastralParcels = repository;
 	}

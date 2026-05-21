@@ -23,7 +23,7 @@ import java.net.URL;
 public class LoaderSHPExec {
 	public static void main(String[] args) throws Exception {
 		URL folder = LoaderSHPExec.class.getClassLoader().getResource("fr/ign/cogit/simplu3d/data/");
-		String folderOut = "/tmp/tmp/";
+		String folderOut = "/tmp/simplu3d-rules/";
 		ExportInstance.export(folder, folderOut);
 	}
 }

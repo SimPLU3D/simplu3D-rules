@@ -3,7 +3,9 @@ package fr.ign.common.io;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.referencing.CRS;
 
 import java.io.IOException;
 import java.net.URL;

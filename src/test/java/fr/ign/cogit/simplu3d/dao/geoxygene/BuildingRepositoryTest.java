@@ -18,7 +18,7 @@ public class BuildingRepositoryTest extends TestCase {
 	public void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/BATIMENT.shp");
 		DefaultFeatureCollection features = ShapefileReader.read(url);
-		this.repository = new SpatialRepository<>(new BuildingReader().readAll(features));
+		this.repository = new BuildingReader().create(features);
 	}
 
 	public void testDemo01(){

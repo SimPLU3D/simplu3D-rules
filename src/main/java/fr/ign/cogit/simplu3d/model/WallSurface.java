@@ -24,22 +24,7 @@ import org.locationtech.jts.geom.MultiPolygon;
  * @author Brasebin Mickaël
  *
  */
-public class WallSurface implements UrbanFeature {
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
-
+public class WallSurface extends AbstractUrbanFeature {
 	private WallSurfaceType type;
 	private Materiau material;
 	private boolean isWindowLess;

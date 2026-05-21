@@ -31,22 +31,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Brasebin Mickaël
  *
  */
-public class PublicSpace implements UrbanFeature {
-	private Geometry geometry = null;
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-	public void setGeometry(Geometry geom) {
-		this.geometry = geom;
-	}
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getId() {
-		return id;
-	}
-
+public class PublicSpace extends AbstractUrbanFeature {
 	private String type;
 
 	public String getPublicSpaceType() {

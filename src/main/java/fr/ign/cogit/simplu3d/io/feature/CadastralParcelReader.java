@@ -5,14 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-/*
-import fr.ign.cogit.geoxygene.api.feature.IFeature;
-import fr.ign.cogit.geoxygene.api.feature.IFeatureCollection;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-*/
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.common.conversion.FromGeomToSurface;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -55,6 +48,18 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 		ATT_BDP_SECTION = AttribNames.getATT_BDP_SECTION();
 		ATT_BDP_NUMERO = AttribNames.getATT_BDP_NUMERO();
 		ATT_HAS_TO_BE_SIMULATED = AttribNames.getATT_HAS_TO_BE_SIMULATED();
+	}
+
+	public CadastralParcelReader() {
+		super(new FeatureType("Parcel"));
+		this.featureType.setGeometryType("Polygon");
+		this.featureType.getAttributes().put(ATT_CODE_PARC, "String");
+		this.featureType.getAttributes().put(ATT_BDP_CODE_DEP, "String");
+		this.featureType.getAttributes().put(ATT_BDP_CODE_COM, "String");
+		this.featureType.getAttributes().put(ATT_BDP_COM_ABS, "String");
+		this.featureType.getAttributes().put(ATT_BDP_SECTION, "String");
+		this.featureType.getAttributes().put(ATT_BDP_NUMERO, "String");
+		this.featureType.getAttributes().put(ATT_HAS_TO_BE_SIMULATED, "String");
 	}
 
 	@Override
@@ -131,5 +136,9 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 			throw new RuntimeException("CadastralParcel should be either Polygon or MultiPolygon with 1 polygon (" + polygons.size() + " found) - ID : " + code);
 		}
 		return cadastralParcel;
+	}
+	@Override
+	public SpatialRepository<CadastralParcel> create(FeatureCollection<SimpleFeatureType, SimpleFeature> features) {
+		return new SpatialRepository<>(readAll(features), this.featureType, (features.getSchema() != null) ? features.getSchema().getCoordinateReferenceSystem() : null);
 	}
 }

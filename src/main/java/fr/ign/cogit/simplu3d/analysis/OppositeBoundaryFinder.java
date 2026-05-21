@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.ParcelBoundaryReader;
 import fr.ign.cogit.simplu3d.model.CadastralParcel;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
@@ -28,7 +29,7 @@ public class OppositeBoundaryFinder {
 		for (CadastralParcel parcel : parcelles.findAll()) {
 			collection.addAll(parcel.getBoundariesByType(ParcelBoundaryType.ROAD));
 		}
-		boundaries = new SpatialRepository<>(collection);
+		boundaries = new ParcelBoundaryReader().create(collection, parcelles.getCoordinateReferenceSystem());
 	}
 
 	public ParcelBoundary find(ParcelBoundary bound, CadastralParcel parcel) {

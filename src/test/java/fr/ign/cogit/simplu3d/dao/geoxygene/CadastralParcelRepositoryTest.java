@@ -19,7 +19,7 @@ public class CadastralParcelRepositoryTest extends TestCase {
 	public void setUp() throws Exception {
 		URL url = getClass().getClassLoader().getResource("demo-01/PARCELLE.shp");
 		DefaultFeatureCollection features = ShapefileReader.read(url);
-		this.repository = new SpatialRepository<>(new CadastralParcelReader().readAll(features));
+		this.repository = new CadastralParcelReader().create(features);
 	}
 	
 	public void testDemo01(){

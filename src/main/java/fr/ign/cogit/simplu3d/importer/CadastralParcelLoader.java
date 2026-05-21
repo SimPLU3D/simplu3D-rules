@@ -46,7 +46,7 @@ public class CadastralParcelLoader {
 		/*
 		 * converts feature to CadastralParcel
 		 */
-		SpatialRepository<CadastralParcel> cadastralParcels = new SpatialRepository<>(new CadastralParcelReader().readAll(parcelCollection));
+		SpatialRepository<CadastralParcel> cadastralParcels = new CadastralParcelReader().create(parcelCollection);
 		CadastralBoundaryGenerator boundaryGenerator = new CadastralBoundaryGenerator(cadastralParcels);
 		logger.fine("CadastralBoundaryGenerator with " + cadastralParcels.count() + " parcels");
 		if ( TYPE_ANNOTATION == 1 ){
