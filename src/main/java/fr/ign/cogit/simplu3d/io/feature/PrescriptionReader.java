@@ -3,7 +3,6 @@ package fr.ign.cogit.simplu3d.io.feature;
 import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.Prescription;
 import fr.ign.cogit.simplu3d.model.PrescriptionType;
-import fr.ign.common.io.AttributeManager;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.FeatureCollection;
@@ -30,9 +29,9 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
   public PrescriptionReader() {
     super(new FeatureType("Prescription"));
     this.featureType.setGeometryType("LineString");
-    this.featureType.getAttributes().put(ATT_TYPE, "String");
-    this.featureType.getAttributes().put(ATT_LABEL, "String");
-    this.featureType.getAttributes().put(ATT_RECOIL, "Double");
+    this.featureType.addAttribute(ATT_TYPE, "String");
+    this.featureType.addAttribute(ATT_LABEL, "String");
+    this.featureType.addAttribute(ATT_RECOIL, "Double");
   }
 
   @Override
@@ -47,7 +46,7 @@ public class PrescriptionReader extends AbstractFeatureReader<Prescription> {
     Object o = feature.getAttribute(ATT_RECOIL);
 
     if (o != null) {
-      AttributeManager.addAttribute(prescription, ATT_RECOIL, Double.parseDouble(o.toString()), "Double");
+      prescription.setAttribute(ATT_RECOIL, o);
     }
 
     return prescription;

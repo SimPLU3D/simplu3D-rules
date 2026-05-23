@@ -1,14 +1,15 @@
 package fr.ign.cogit.simplu3d.demo.nonStructDatabase.postgis;
 
+import fr.ign.cogit.simplu3d.dao.SpatialRepository;
+import fr.ign.cogit.simplu3d.io.feature.FeatureType;
+import fr.ign.cogit.simplu3d.io.feature.ParcelBoundaryReader;
 import fr.ign.cogit.simplu3d.io.nonStructDatabase.postgis.LoaderPostGIS;
 import fr.ign.cogit.simplu3d.model.*;
-import fr.ign.common.io.AttributeManager;
 import fr.ign.common.util.GeomUtils;
 import fr.ign.common.io.ShapefileWriter;
 import fr.ign.common.util.Vecteur;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPolygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,34 +53,30 @@ public class PostGISLoaderDemo {
     Collection<ParcelBoundary> bordures_translated = new ArrayList<>();
     Collection<ParcelBoundary> bordures = new ArrayList<>();
 
-    int count = 0;
     logger.info("nb Parcelles : " + env.getCadastralParcels().count());
     for (BasicPropertyUnit bPU : env.getBpU().findAll()) {
       for (CadastralParcel sp : bPU.getCadastralParcels()) {
-        count = count + sp.getBoundaries().size();
         Coordinate centroidParcel = sp.getGeometry().getCentroid().getCoordinate();
-
-        AttributeManager.addAttribute(sp, "ID", sp.getId(), "Integer");//FIXME
-        AttributeManager.addAttribute(sp, "NBBord", sp.getBoundaries().size(), "Integer");
-        AttributeManager.addAttribute(sp, "NBBat", bPU.getBuildings().size(), "Integer");
+        sp.setAttribute("NBBord", sp.getBoundaries().size());
+        sp.setAttribute("NBBat", sp.getbPU().getBuildings().size());
         for (ParcelBoundary b : sp.getBoundaries()) {
           bordures.add(b);
-          AttributeManager.addAttribute(b, "ID", b.getId(), "Integer");//FIXME
-          AttributeManager.addAttribute(b, "Type", b.getParcelBoundaryType(), "Integer");
-          AttributeManager.addAttribute(b, "IDPar", sp.getId(), "Integer");//FIXME
+          b.setAttribute("Type", b.getParcelBoundaryType());//FIXME use setParcelBoundaryType?
+          b.setAttribute("IDPar", sp.getId());
           if (b.getFeatAdj() != null) {
             if (b.getFeatAdj() instanceof CadastralParcel) {
-              AttributeManager.addAttribute(b, "Adj", ((CadastralParcel) b.getFeatAdj()).getId(), "Integer");//FIXME
+              b.setAttribute("Adj", ((CadastralParcel) b.getFeatAdj()).getId());
             } else if (b.getFeatAdj() instanceof Road) {
-              AttributeManager.addAttribute(b, "Adj", ((Road) b.getFeatAdj()).getId(), "Integer");//FIXME
+              b.setAttribute("Adj", ((Road) b.getFeatAdj()).getId());
             }
           } else {
-            AttributeManager.addAttribute(b, "Adj", 0, "Integer");
+            b.setAttribute("Adj", 0);
           }
           Coordinate centroidGeom = b.getGeometry().getCoordinates()[0];
           Vecteur v = new Vecteur(centroidParcel, centroidGeom);
-          Vecteur v2 = new Vecteur(b.getGeometry().getCoordinates()[0], b.getGeometry()
-              .getCoordinates()[b.getGeometry().getCoordinates().length - 1]);
+          Vecteur v2 = new Vecteur(
+                  b.getGeometry().getCoordinates()[0],
+                  b.getGeometry().getCoordinates()[b.getGeometry().getCoordinates().length - 1]);
           v2.setZ(0);
           v2.normalise();
           Vecteur vOut = v2.prodVectoriel(new Vecteur(0, 0, 1));
@@ -94,80 +91,70 @@ public class PostGISLoaderDemo {
                     -valShiftB * vOut.getY(), 0);
           }
           ParcelBoundary feat = new ParcelBoundary(geom2);
-          AttributeManager.addAttribute(feat, "Type", b.getParcelBoundaryType(), "Integer");
+          feat.setAttribute("Type", b.getParcelBoundaryType());
           bordures_translated.add(feat);
         }
       }
     }
-    logger.info("Nombre de bordures" + count);
+    logger.info("Nombre de bordures" + bordures.size());
     // Export des parcelles
+    // add the missing attributes
+    env.getCadastralParcels().getFeatureType().addAttribute("NBBord", "Integer");
+    env.getCadastralParcels().getFeatureType().addAttribute("NBBat", "Integer");
     ShapefileWriter.write(env.getCadastralParcels(), folderOut + "parcelles.shp");
-//TODO should we write these?
-/*
-    ShapefileWriter.write(bordures, folderOut + "bordures.shp");
-    ShapefileWriter.write(bordures_translated, folderOut + "bordures_translated.shp");
-*/
+
+    SpatialRepository<ParcelBoundary> boundaries = new ParcelBoundaryReader().create(bordures, env.getCadastralParcels().getCoordinateReferenceSystem());
+    // add the missing attributes
+    boundaries.getFeatureType().addAttribute("Type", "Integer");
+    boundaries.getFeatureType().addAttribute("IDPar", "Integer");
+    boundaries.getFeatureType().addAttribute("Adj", "Integer");
+    ShapefileWriter.write(boundaries, folderOut + "bordures.shp");
+    SpatialRepository<ParcelBoundary> boundaries_translated = new ParcelBoundaryReader().create(bordures_translated, null);
+    ShapefileWriter.write(boundaries_translated, folderOut + "bordures_translated.shp");
     //ShapefileWriter.write(featC, folderOut + "buffer.shp");
     logger.info("Nombre de bpu : " + env.getBpU().count());
-
-    //TODO do we need to write these?
-    //ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
-    /*
-     * IFeatureCollection<Alignement> featAL = new
-     * FT_FeatureCollection<Alignement>();
-     * 
-     * 
-     * 
-     * for (Alignement a : env.getAlignements()) {
-     * 
-     * if (a != null) { featAL.add(a);
-     * 
-     * AttributeManager.addAttribute(a, "ID", a.getId(), "Integer"); }
-     */
+    ShapefileWriter.write(env.getBpU(), folderOut + "bpu.shp");
     logger.info("Sous Parcelles  " + env.getSubParcels().count());
     for (SubParcel sp : env.getSubParcels().findAll()) {
-      AttributeManager.addAttribute(sp, "Test", 0, "Integer");
-      AttributeManager.addAttribute(sp, "NB Bat", sp.getBuildingsParts().size(), "Integer");
+      sp.setAttribute("Test", 0);
+      sp.setAttribute("NB Bat", sp.getBuildingsParts().size());
     }
-    //TODO do we need to write these?
-    //ShapefileWriter.write(env.getSubParcels(), folderOut + "sousParcelles.shp");
-    Collection<BuildingPart> featToits = new ArrayList<>();
+    // add missing attributes
+    env.getSubParcels().getFeatureType().addAttribute("Test", "Integer");
+    env.getSubParcels().getFeatureType().addAttribute("NBBat", "Integer");
+    ShapefileWriter.write(env.getSubParcels(), folderOut + "sousParcelles.shp");
+    //roofs
+    Collection<AbstractUrbanFeature> featToits = new ArrayList<>();
     logger.info("NB emprise " + env.getBuildings().count());
     for (Building b : env.getBuildings().findAll()) {
-      BuildingPart roof = new BuildingPart();
+      AbstractUrbanFeature roof = new AbstractUrbanFeature();
       roof.setGeometry(b.getFootprint());
       featToits.add(roof);//TODO better class?
     }
-    //TODO do we need to write these?
-    //ShapefileWriter.write(featToits, folderOut + "emprise.shp");
-    Collection<BuildingPart> featFaitage = new ArrayList<>();
+    FeatureType roofFT = new FeatureType("Roof");
+    roofFT.setGeometryType("Polygon");
+    ShapefileWriter.write(featToits, roofFT, env.getBuildings().getCoordinateReferenceSystem(), folderOut + "emprise.shp");
+    Collection<AbstractUrbanFeature> featFaitage = new ArrayList<>();
     for (Building b : env.getBuildings().findAll()) {
-      BuildingPart faitage = new BuildingPart();
+      AbstractUrbanFeature faitage = new AbstractUrbanFeature();
       faitage.setGeometry(b.getRoof().getRoofing());
       featFaitage.add(faitage);//TODO better class?
     }
     logger.info("Faitages : " + featFaitage.size());
-    //TODO do we need to write these?
-    //ShapefileWriter.write(featFaitage, folderOut + "pignon.shp");
-    for (Road r : env.getRoads().findAll()) {
-      AttributeManager.addAttribute(r, "Nom", r.getRoadName(), "String");
-    }
+    FeatureType ridgeFT = new FeatureType("Ridge");
+    roofFT.setGeometryType("MultiLineString");
+    ShapefileWriter.write(featFaitage, ridgeFT, env.getBuildings().getCoordinateReferenceSystem(), folderOut + "pignon.shp");
     ShapefileWriter.write(env.getRoads(), folderOut + "roads.shp");
-    Collection<CadastralParcel> featOutTestCons = new ArrayList<>();
+    Collection<AbstractUrbanFeature> featOutTestCons = new ArrayList<>();
     for (CadastralParcel sp : env.getCadastralParcels().findAll()) {
-      featOutTestCons.add(new CadastralParcel((MultiPolygon) sp.getConsLine()));//FIXME
+      AbstractUrbanFeature feat = new AbstractUrbanFeature();
+      feat.setGeometry(sp.getConsLine());
+      featOutTestCons.add(feat);
       logger.info("Boundaries " + sp.getBoundaries().size());
     }
-    //TODO do we need to write these?
-    //ShapefileWriter.write(featOutTestCons, folderOut + "featConsF.shp");
+    FeatureType consFT = new FeatureType("ConsLine");
+    consFT.setGeometryType("MultiLineString");
+    ShapefileWriter.write(featOutTestCons, consFT, env.getCadastralParcels().getCoordinateReferenceSystem(), folderOut + "featConsF.shp");
     logger.info("Chat qui râle");
   }
-  /*
-   * 
-   * 
-   * 
-   * 
-   * System.out.println("Nombre d'alignements concernés" + featAL.size());
-   * ShapefileWriter.write(featAL, folderOut + "alignements.shp");
-   */
 }

@@ -6,6 +6,7 @@ import fr.ign.cogit.simplu3d.model.UrbanFeature;
 import org.geotools.api.data.*;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -20,10 +21,12 @@ import java.util.*;
 
 public class ShapefileWriter {
     public static void write(Repository<? extends UrbanFeature> features, String fileName) {
+        ShapefileWriter.write(features.findAll(), features.getFeatureType(), features.getCoordinateReferenceSystem(), fileName);
+    }
+    public static void write(Collection<? extends UrbanFeature> features, FeatureType featureType, CoordinateReferenceSystem crs, String fileName) {
         File file = new File(fileName);
         try {
             ShapefileDataStore store = new ShapefileDataStore(file.toURI().toURL());
-            FeatureType featureType = features.getFeatureType();
             SimpleFeatureType simpleFeatureType = featureType.toSimpleFeatureType();
             store.createSchema(simpleFeatureType);
             SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource(store.getSchema().getName());
@@ -31,7 +34,7 @@ public class ShapefileWriter {
             featureStore.setTransaction(t);
             DefaultFeatureCollection collection = new DefaultFeatureCollection(null, featureStore.getSchema());
             SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureStore.getSchema());
-            for (UrbanFeature f : features.findAll()) {
+            for (UrbanFeature f : features) {
                 List<Object> list = new ArrayList<>();
                 list.add(f.getGeometry());
                 for (Map.Entry<String, String> entry : featureType.getAttributes().entrySet()) {
@@ -41,8 +44,8 @@ public class ShapefileWriter {
                 collection.add(simpleFeature);
             }
             featureStore.addFeatures(collection);
-            if (features.getCoordinateReferenceSystem() != null)
-                store.forceSchemaCRS(features.getCoordinateReferenceSystem());
+            if (crs != null)
+                store.forceSchemaCRS(crs);
             t.commit();
             t.close();
             store.dispose();

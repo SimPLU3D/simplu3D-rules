@@ -57,9 +57,9 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 
 	/**
 	 * Read an integer
-	 * @param feature
-	 * @param attributeName
-	 * @return
+	 * @param feature a feature
+	 * @param attributeName an attribute name
+	 * @return an integer or null
 	 */
 	protected Integer readIntegerAttribute(SimpleFeature feature, String attributeName) {
 		Object object = findAttribute(feature,attributeName);
@@ -72,9 +72,9 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	
 	/**
 	 * Read a double 
-	 * @param feature
-	 * @param attributeName
-	 * @return a string or null
+	 * @param feature a feature
+	 * @param attributeName an attribute name
+	 * @return a double or null
 	 */
 	protected Double readDoubleAttribute(SimpleFeature feature, String attributeName) {
 		Object object = findAttribute(feature,attributeName);
@@ -88,10 +88,10 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	
 	/**
 	 * Read a date with a given format
-	 * @param feature
-	 * @param attributeName
-	 * @param dateFormat
-	 * @return
+	 * @param feature a feature
+	 * @param attributeName an attribute name
+	 * @param dateFormat a date format
+	 * @return a date or null
 	 */
 	protected Date readDateAttribute(SimpleFeature feature, String attributeName, DateFormat dateFormat) {
 		Object object = findAttribute(feature,attributeName);
@@ -109,12 +109,11 @@ public abstract class AbstractFeatureReader<T> implements IFeatureReader<T>{
 	/**
 	 * 
 	 * Find an attribute by name
-	 * 
 	 * TODO improve relying on a regexp?
-	 * 
-	 * @param feature
+	 *
+	 * @param feature a feature
 	 * @param attributeName upper case attribute name
-	 * @return
+	 * @return tre attribute value or null
 	 */
 	protected Object findAttribute(SimpleFeature feature, String attributeName){
 		Object result = feature.getAttribute(attributeName);

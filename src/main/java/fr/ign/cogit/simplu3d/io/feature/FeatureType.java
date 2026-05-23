@@ -5,8 +5,8 @@ import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class FeatureType {
     private final String featureTypeName;
@@ -24,6 +24,9 @@ public class FeatureType {
     public Map<String, String> getAttributes() {
         return attributes;
     }
+    public void addAttribute(String key, String value) {
+        this.attributes.put(key, value);
+    }
     public FeatureType(String featureTypeName) {
         this.featureTypeName = featureTypeName;
     }
@@ -31,9 +34,9 @@ public class FeatureType {
         return attribute + ":" + type;
     }
     public SimpleFeatureType toSimpleFeatureType() throws SchemaException {
-        String spec = attributes.entrySet().stream().map(entry -> makeType(entry.getKey(), entry.getValue()))
-                .collect(Collectors.joining(","));
-        return DataUtilities.createType(featureTypeName,
-                makeType("geometry", geometryType) + "," + spec);
+        List<String> specs = new java.util.ArrayList<>(attributes.entrySet().stream().map(entry -> makeType(entry.getKey(), entry.getValue())).toList());
+        specs.add(0, makeType("geometry", geometryType));
+        String typeSpec = String.join(", ", specs);
+        return DataUtilities.createType(featureTypeName, typeSpec);
     }
 }

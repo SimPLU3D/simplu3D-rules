@@ -5,7 +5,7 @@ import org.locationtech.jts.geom.Geometry;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractUrbanFeature implements UrbanFeature {
+public class AbstractUrbanFeature implements UrbanFeature {
     protected Geometry geometry = null;
     public Geometry getGeometry() {
         return this.geometry;
