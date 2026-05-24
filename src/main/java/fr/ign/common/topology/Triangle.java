@@ -68,10 +68,15 @@ public class Triangle {
     }
 
     public Coordinate getCenter(){
+        double xx = Arrays.stream(this.lVertices).mapToDouble(value -> value.getCoordinate().getX()).sum();
+        double yy = Arrays.stream(this.lVertices).mapToDouble(value -> value.getCoordinate().getY()).sum();
+        double zz = Arrays.stream(this.lVertices).mapToDouble(value -> value.getCoordinate().getZ()).sum();
+/*
         double x = (this.lVertices[0].coordinate.getX() + this.lVertices[1].coordinate.getX() + this.lVertices[2].coordinate.getX() )/3;
         double y = (this.lVertices[0].coordinate.getY() + this.lVertices[1].coordinate.getY() + this.lVertices[2].coordinate.getY() )/3;
         double z = (this.lVertices[0].coordinate.getZ() + this.lVertices[1].coordinate.getZ() + this.lVertices[2].coordinate.getZ() )/3;
-        return new Coordinate(x,y,z);
+*/
+        return new Coordinate(xx/3,yy/3,zz/3);
     }
 
     /**
@@ -304,59 +309,6 @@ public class Triangle {
         double prodS2 = pdVec2.prodScalaire(pdVec3);
         double prodS3 = pdVec3.prodScalaire(pdVec1);
         return (prodS1 * prodS2 * prodS3 > NUMERIC_TOLERANCE);
-    }
-
-    /**
-     * Calcul l'intersection entre 2 triangles TODO : finish this funtion
-     *
-     * @param t a triangle
-     */
-    @Deprecated
-    public void cut(Triangle t) {
-
-        if (!this.getBox3D().intersect(t.getBox3D())) {
-            return;
-        }
-
-        Coordinate[] ips = new Coordinate[2];
-        int index = 0;
-
-        Coordinate singleIP = null;
-
-        for (int i = 0; i < 3; i++) {
-            Coordinate ip = t.intersection(this.edgeContenus.get(i)).coordinate;
-
-            if (ip != null) {
-                if (singleIP == null || !GeomUtils.equals(singleIP, ip, this.TOLERANCE)) {
-                    singleIP = ip;
-                    ips[index++] = ip;
-                    if (index > 1) {
-                        break;
-                    }
-                }
-            }
-
-        }
-
-        // lines of t gets intersected with this plane
-        // Check for intersection points inside, if necessary
-        if (index < 2) {
-            for (int i = 0; i < 3; i++) {
-                Coordinate ip = this.intersection(this.edgeContenus.get(i)).coordinate;
-                if (ip != null) {
-                    if (singleIP == null || !GeomUtils.equals(singleIP, ip, this.TOLERANCE)) {
-                        ips[index++] = ip;
-                        if (index > 1) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        if (index == 2) {
-            // cutline.add(new UVLine(calculateUVCoord(ips[0]),
-            // calculateUVCoord(ips[1])));
-        }
     }
 
     /**
