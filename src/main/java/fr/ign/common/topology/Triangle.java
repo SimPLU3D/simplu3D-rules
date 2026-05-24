@@ -24,7 +24,6 @@ public class Triangle {
      * crée un triangle et affecte les sommes si ils sont au nombre de 3 sinon
      * renvoie un objet vide
      *
-     * @param listeSommets
      */
     public Triangle(Vertex[] listeSommets) {
         this.triangle = new org.locationtech.jts.geom.Triangle(listeSommets[0].coordinate, listeSommets[1].coordinate, listeSommets[2].coordinate);
@@ -42,9 +41,6 @@ public class Triangle {
     /**
      * créer un triangle à partir de 3 sommets
      *
-     * @param sommet1
-     * @param sommet2
-     * @param sommet3
      */
     public Triangle(Vertex sommet1, Vertex sommet2, Vertex sommet3) {
         this.triangle = new org.locationtech.jts.geom.Triangle(sommet1.coordinate, sommet2.coordinate, sommet3.coordinate);

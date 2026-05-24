@@ -15,15 +15,51 @@ public class PlanEquation {
      * Les coefficients, l'équation et la normale au plan
      */
     protected double coeffa;
+    public double getCoeffa() {
+        return coeffa;
+    }
     protected double coeffb;
+    public double getCoeffb() {
+        return coeffb;
+    }
     protected double coeffc;
+    public double getCoeffc() {
+        return coeffc;
+    }
     protected double coeffd;
+    public double getCoeffd() {
+        return this.coeffd;
+    }
 
     protected String equation;
     protected Vecteur normaleToPlane;
 
     public static double EPSILON = 0.001;
     public PlanEquation() {
+    }
+
+    public PlanEquation(Vecteur v1, Coordinate dp) {
+        if(v1.norme() == 0){
+            this.coeffa = Double.NaN;
+            this.coeffb = Double.NaN;
+            this.coeffc = Double.NaN;
+            this.coeffd = Double.NaN;
+        }else{
+            v1.normalise();
+            double a = v1.getX();
+            double b = v1.getY();
+            double c = v1.getZ();
+            // Calcul de d
+            double d = -a * dp.getX() - b * dp.getY() - c * dp.getZ();
+            this.coeffa = a;
+            this.coeffb = b;
+            this.coeffc = c;
+            this.coeffd = d;
+            this.normaleToPlane = new Vecteur(a, b, c);
+            this.normaleToPlane.normalise();
+        }
+        // Affichage de l'équation implicite de l'équation
+        this.equation = coeffa + "x +" + coeffb + "y +" + coeffc + "z +" + coeffd + " = 0";
     }
 
     public PlanEquation(double a, double b, double c, double d) {
@@ -45,6 +81,34 @@ public class PlanEquation {
     }
     public PlanEquation(Polygon polygon) {
         this(polygon.getCoordinates());
+    }
+
+    public PlanEquation(Coordinate dpCenter, Coordinate dp1, Coordinate dp2) {
+        // Création des vecteurs plans
+        Vecteur v1 = new Vecteur(dpCenter, dp1);
+        Vecteur v2 = new Vecteur(dpCenter, dp2);
+        v1.normalise();
+        v2.normalise();
+        // On utilise la forme paramètrique : vect AM = k.vectU + t.vectV (k,t)
+        // appart. à R2
+        Vecteur normale = v1.prodVectoriel(v2);
+        double a = normale.getX();
+        double b = normale.getY();
+        double c = normale.getZ();
+        if (a == 0 && b == 0 && c == 0) {
+            return;
+            //PlanEquation.logger.warn(Messages.getString("Plans.PointsAlignes"));
+        }
+        // Calcul de d
+        double d = -a * dpCenter.getX() - b * dpCenter.getY() - c * dpCenter.getZ();
+        this.coeffa = a;
+        this.coeffb = b;
+        this.coeffc = c;
+        this.coeffd = d;
+        this.normaleToPlane = new Vecteur(a, b, c);
+        this.normaleToPlane.normalise();
+        // Affichage de l'équation implicite de l'équation
+        this.equation = a + "x +" + b + "y +" + c + "z +" + d + " = 0";
     }
 
     public PlanEquation(Coordinate[] coordinates) {
@@ -106,74 +170,63 @@ public class PlanEquation {
         return this.normaleToPlane;
     }
 
-    public double getCoeffd() {
-        return this.coeffd;
-    }
-
     public Coordinate intersectionLinePlan(Coordinate dp1, Coordinate dp2) {
-// - 1 : Création d'un vecteur directeur de la droite
+        // - 1 : Création d'un vecteur directeur de la droite
         Vecteur vectDirecteur = new Vecteur(dp1, dp2);
         vectDirecteur = vectDirecteur.vectNorme();
         double coeffa = this.coeffa;
         double coeffb = this.coeffb;
         double coeffc = this.coeffc;
         double coeffd = this.coeffd;
-
         if (Math.abs(vectDirecteur.getX()) < PlanEquation.EPSILON) {
-
             vectDirecteur.setX(0.0);
         }
-
         if (Math.abs(vectDirecteur.getY()) < PlanEquation.EPSILON) {
-
             vectDirecteur.setY(0.0);
         }
-
         if (Math.abs(vectDirecteur.getZ()) < PlanEquation.EPSILON) {
-
             vectDirecteur.setZ(0.0);
         }
-
         if (Math.abs(coeffa) < PlanEquation.EPSILON) {
-
             coeffa = 0;
         }
-
         if (Math.abs(coeffb) < PlanEquation.EPSILON) {
-
             coeffb = 0;
         }
-
         if (Math.abs(coeffc) < PlanEquation.EPSILON) {
-
             coeffc = 0;
         }
-
         if (Math.abs(coeffd) < PlanEquation.EPSILON) {
-
             coeffd = 0;
         }
-
         // - 2 : Calcul du paramètre k : Coefficient de la forme paramètrique de
         // l'équation de la droite
         double k = -(coeffa * dp1.getX() + coeffb * dp1.getY() + coeffc
                 * dp1.getZ() + coeffd)
                 / (coeffa * vectDirecteur.getX() + coeffb * vectDirecteur.getY() + coeffc
                 * vectDirecteur.getZ());
-
         if (k < 0) {
-
             return null;
         }
-
         // - 3 : Calcul du point d'intersection
         Coordinate dpIntersectionDroitePlan = dp1.copy();
         dpIntersectionDroitePlan = GeomUtils.move(dpIntersectionDroitePlan, vectDirecteur.multConstante(k).getCoordinate());
-
         vectDirecteur.normalise();
         this.getNormale().normalise();
-
         return dpIntersectionDroitePlan;
+    }
+
+    public boolean intersectionLinePlan(Coordinate dp1, Vecteur v1, double dist) {
+        Coordinate dp2 = dp1.copy();
+        dp2 = GeomUtils.move(dp2, v1.getCoordinate());
+        Coordinate inter = this.intersectionLinePlan(dp1, dp2);
+        return (!(dp1.distance3D(inter) > dist)) && !Double.isNaN(inter.getX()) && !Double.isInfinite(inter.getX());
+    }
+
+    public Coordinate intersectionLinePlan(Coordinate dp1, Vecteur v1) {
+        Coordinate dp2 = dp1.copy();
+        dp2 = GeomUtils.move(dp2, v1.getCoordinate());
+        return this.intersectionLinePlan(dp1, dp2);
     }
 
     public double equationValue(Coordinate dp) {
@@ -242,5 +295,64 @@ public class PlanEquation {
             return tri.getPolygon().getFactory().createLineString(dpl.toArray(new Coordinate[0]));
         }
         return tri.getPolygon();
+    }
+
+    public double equationSignum(Coordinate dp) {
+        return Math.signum(this.coeffa * dp.getX() + this.coeffb * dp.getY() + this.coeffc * dp.getZ() + this.coeffd);
+    }
+
+    public boolean intersecteHalfLinePlan(Coordinate dp1, Coordinate dp2, double dist) {
+        Coordinate inter = this.intersectionLinePlan(dp1, dp2);
+        System.out.println("Intersection point: " + inter);
+        Vecteur vectDirecteur = new Vecteur(dp1, dp2);
+        // -----------------------------------------------------------------------------
+        // Testing parallel case
+        Vecteur n = new Vecteur(coeffa,coeffb,coeffc);
+        Vecteur v = new Vecteur(dp1,dp2);
+        System.out.println("prodScalaire: " + n.prodScalaire(v));
+        if (n.prodScalaire(v) == 0){
+            // Testing if dp1 belongs to the plan
+            return equationValue(dp1) == 0;
+        }
+        System.out.println("prodScalaire2: " + vectDirecteur.prodScalaire(new Vecteur(dp1, inter)));
+        System.out.println("distance: " + dp1.distance3D(inter));
+        // -----------------------------------------------------------------------------
+        return !(vectDirecteur.prodScalaire(new Vecteur(dp1, inter)) < 0)
+                && (!(dp1.distance3D(inter) > dist)) && !Double.isNaN(inter.getX())
+                && !Double.isInfinite(inter.getX());
+    }
+
+    public Object intersectionHalfLinePlan(Coordinate dp1, Vecteur v1) {
+        // -----------------------------------------------------------------------------
+        // Testing parallel case
+        Vecteur n = new Vecteur(coeffa,coeffb,coeffc);
+        if (n.prodScalaire(v1) == 0){
+            // Testing if dp1 belongs to the plan
+            if (equationValue(dp1) == 0){
+                // Number of intersections = infinity
+                return dp1;
+            }
+            else{
+                // 0 intersection
+                return null;
+            }
+        }
+        // -----------------------------------------------------------------------------
+        Coordinate dp2 = dp1.copy();
+        dp2 = GeomUtils.move(dp2, v1.getCoordinate());
+        Coordinate inter = this.intersectionLinePlan(dp1, dp2);
+        Vecteur vectDirecteur = new Vecteur(dp1, dp2);
+        if (vectDirecteur.prodScalaire(new Vecteur(dp1, inter)) > 0) {
+            return inter;
+        }
+        return null;
+    }
+
+    public double positionPointInPlan(Coordinate dp) {
+        return (this.coeffa * dp.getX()) + (this.coeffb * dp.getY()) + (this.coeffc * dp.getZ()) + this.coeffd;
+    }
+
+    public Coordinate normalCasting(Coordinate dp) {
+        return this.intersectionLinePlan(dp, this.getNormale());
     }
 }

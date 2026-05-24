@@ -71,7 +71,7 @@ public class Extrusion2DObject {
         return mls.getFactory().createMultiPolygon(mSurf.toArray(new Polygon[0]));
     }
 
-    private static Geometry convertFromLine(LineString lsIni, double zMin, double zMax) {
+    public static Geometry convertFromLine(LineString lsIni, double zMin, double zMax) {
         Coordinate[] coordSeq = lsIni.getCoordinates();
         List<Polygon> surf = new ArrayList<>();
         int nbpoints = coordSeq.length;
