@@ -23,7 +23,7 @@ import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.model.Road;
 import fr.ign.common.equation.ApproximatedPlanEquation;
 import fr.ign.common.conversion.FromGeomToSurface;
-import fr.ign.common.analysis.Proximity;
+import fr.ign.common.calculation.Proximity;
 import fr.ign.common.util.Vecteur;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;

@@ -14,6 +14,10 @@ public class FromGeomToSurface {
             for (int index = 0; index < geometry.getNumGeometries(); index++) {
                 polygons.add((Polygon) geometry.getGeometryN(index));
             }
+        } else if (geometry instanceof GeometryCollection) {
+            for (int index = 0; index < geometry.getNumGeometries(); index++) {
+                polygons.addAll(convertGeom(geometry.getGeometryN(index)));
+            }
         }
         return polygons;
     }

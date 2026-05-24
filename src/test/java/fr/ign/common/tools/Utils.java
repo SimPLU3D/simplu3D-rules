@@ -84,4 +84,14 @@ public class Utils {
         // Creating solid
         return factory.createGeometryCollection(BOUNDARY.toArray(new Geometry[0]));
     }
+
+    public static List<Coordinate> createPointsList(double s, double dx, double dy, double dz) {
+        List<Coordinate> POINTS = new ArrayList<>();
+        // Shifting second square
+        POINTS.add(new Coordinate(0+dx, 0+dy, dz));
+        POINTS.add(new Coordinate(s+dx, 0+dy, dz));
+        POINTS.add(new Coordinate(s+dx, s+dy, dz));
+        POINTS.add(new Coordinate(0+dx, s+dy, dz));
+        return POINTS;
+    }
 }
