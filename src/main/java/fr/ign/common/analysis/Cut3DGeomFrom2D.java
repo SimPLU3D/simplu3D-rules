@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+//FIXME ADD Tests
 public class Cut3DGeomFrom2D {
     private static final Logger logger = Logger.getLogger(Cut3DGeomFrom2D.class.getName());
 

@@ -18,11 +18,10 @@ import fr.ign.common.conversion.FromGeomToLineString;
 import fr.ign.common.conversion.FromGeomToSurface;
 import org.locationtech.jts.geom.*;
 
+//FIXME ADD TEST
 public class DistanceToRoadCheck extends AbstractRuleChecker  {
 
   public final static String CODE_DISTANCE_VOIRIE = "RECUL_VOIRIE";
-  
-
 
   public DistanceToRoadCheck(ZoneRegulation rules) {
 	  super(rules);

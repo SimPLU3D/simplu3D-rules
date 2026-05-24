@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import org.geotools.api.feature.simple.SimpleFeature;
 
+//FIXME ADD TEST
 public class IAUIDFRegulationReader {
 	private static final Logger logger = Logger.getLogger(IAUIDFRegulationReader.class.getName());
 

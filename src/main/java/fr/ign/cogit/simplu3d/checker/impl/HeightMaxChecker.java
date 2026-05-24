@@ -13,6 +13,7 @@ import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 import fr.ign.common.extrusion.Extrusion2DObject;
 
+//FIXME ADD TEST
 public class HeightMaxChecker extends AbstractRuleChecker {
 
 	public final static String CODE_HEIGHT_MAX = "HAUTEUR_MAX";

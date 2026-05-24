@@ -18,6 +18,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
+//FIXME ADD TEST
 public class OppositeProspectChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PROSPECT_LIMITE = "OPPOSITE_PROSPECT";

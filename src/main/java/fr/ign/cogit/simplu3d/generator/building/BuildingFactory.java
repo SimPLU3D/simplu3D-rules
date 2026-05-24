@@ -18,7 +18,7 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * 
  * @author MBorne
- *
+ * FIXME ADD TEST
  */
 public class BuildingFactory {
 	

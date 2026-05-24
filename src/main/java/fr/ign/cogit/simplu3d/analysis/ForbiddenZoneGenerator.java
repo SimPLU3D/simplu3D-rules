@@ -10,7 +10,7 @@ import fr.ign.cogit.simplu3d.model.PrescriptionType;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.SpatialIndex;
 import org.locationtech.jts.index.strtree.STRtree;
-
+//FIXME ADD TEST
 public class ForbiddenZoneGenerator {
     private static double DISTANCERECOILEVEGETATION = 3;
 	private static double DISTANCERECOILERESERVEDEMPLACEMENT = 3;

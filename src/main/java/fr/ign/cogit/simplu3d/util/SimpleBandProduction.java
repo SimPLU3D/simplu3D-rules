@@ -3,20 +3,6 @@ package fr.ign.cogit.simplu3d.util;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IDirectPosition;
-import fr.ign.cogit.geoxygene.api.spatial.coordgeom.IPolygon;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomaggr.IMultiSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableCurve;
-import fr.ign.cogit.geoxygene.api.spatial.geomprim.IOrientableSurface;
-import fr.ign.cogit.geoxygene.api.spatial.geomroot.IGeometry;
-import fr.ign.cogit.geoxygene.contrib.geometrie.Vecteur;
-import fr.ign.cogit.geoxygene.convert.FromGeomToLineString;
-import fr.ign.cogit.geoxygene.convert.FromGeomToSurface;
-import fr.ign.cogit.geoxygene.sig3d.convert.transform.Extrusion2DObject;
-import fr.ign.cogit.geoxygene.spatial.geomaggr.GM_MultiCurve;
-*/
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.ParcelBoundary;
 import fr.ign.cogit.simplu3d.model.ParcelBoundaryType;
@@ -28,8 +14,8 @@ import fr.ign.common.util.GeomUtils;
 import fr.ign.common.util.Vecteur;
 import org.locationtech.jts.geom.*;
 
+//FIXME ADD TEST
 public class SimpleBandProduction {
-
   List<MultiPolygon> lOut = new ArrayList<>();
   MultiLineString iMSRoad = null;
   private MultiLineString lineRoad = null;
@@ -102,8 +88,6 @@ public class SimpleBandProduction {
         // Soit en appliquant un petit décalage
         lineRoad = shiftRoad(bPU, rArt6);
       }
-    } else {
-
     }
   }
 
@@ -134,7 +118,6 @@ public class SimpleBandProduction {
       }
       Geometry geom2 = GeomUtils.translate(geom,valShiftB * vOut.getX(),
           valShiftB * vOut.getY(), 0);
-      assert geom2 != null;
       if (!geom2.intersects(bPU.getGeometry())) {
         geom2 = GeomUtils.translate(geom, -valShiftB * vOut.getX(),
             -valShiftB * vOut.getY(), 0);

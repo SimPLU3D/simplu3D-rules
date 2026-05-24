@@ -14,7 +14,7 @@ import org.locationtech.jts.geom.Geometry;
  * IGeometry serialization based on JTS
  * 
  * @author MBorne
- *
+ * FIXME ADD TEST
  */
 public class IGeometrySerializer extends JsonSerializer<Geometry>{
 	private final GeometrySerializer jtsSerializer = new GeometrySerializer();

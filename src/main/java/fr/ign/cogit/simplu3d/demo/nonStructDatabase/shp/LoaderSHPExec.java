@@ -17,7 +17,7 @@ import java.net.URL;
  * copyright IGN
  *
  * @author Brasebin Mickaël
- *
+ * FIXME ADD TEST
  * @version 1.0
  **/
 public class LoaderSHPExec {

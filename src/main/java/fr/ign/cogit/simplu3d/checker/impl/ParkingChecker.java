@@ -10,6 +10,7 @@ import fr.ign.cogit.simplu3d.checker.model.UnrespectedRule;
 import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
+//FIXME ADD TEST
 public class ParkingChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PARKING = "PLACE_PARKINGS";

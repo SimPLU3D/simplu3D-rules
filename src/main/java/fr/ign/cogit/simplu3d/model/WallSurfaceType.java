@@ -1,5 +1,5 @@
 package fr.ign.cogit.simplu3d.model;
-
+//FIXME ADD TEST
 public enum WallSurfaceType {
 	BOT(0), LAT(1), UNKNOWN(99), ROAD(2);
 

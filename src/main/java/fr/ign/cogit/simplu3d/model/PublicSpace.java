@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Polygon;
  * public place).
  * 
  * @author Brasebin Mickaël
- *
+ * FIXME ADD TEST
  */
 public class PublicSpace extends AbstractUrbanFeature {
 	private String type;

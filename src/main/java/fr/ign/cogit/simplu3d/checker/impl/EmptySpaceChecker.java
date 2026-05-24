@@ -11,6 +11,7 @@ import fr.ign.cogit.simplu3d.model.BasicPropertyUnit;
 import fr.ign.cogit.simplu3d.model.Building;
 import fr.ign.cogit.simplu3d.model.ZoneRegulation;
 
+//FIXME ADD TEST
 public class EmptySpaceChecker extends AbstractRuleChecker {
 
 	public final static String CODE_EMPTY_SPACE = "ESPACE LIBRE";

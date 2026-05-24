@@ -5,7 +5,7 @@ import fr.ign.common.conversion.FromGeomToSurface;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-
+//FIXME ADD TEST
 public class Extrusion {
   public MultiPolygon extrusion(Polygon pol, double hauteur) {
     Geometry geom = Extrusion2DObject.convertFromPolygon(pol, 0, hauteur);

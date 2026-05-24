@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.Geometry;
  * built according to Regulation
  * 
  * @author MBrabesin
- *
+ * FIXME ADD TEST
  */
 public class GeometricConstraints {
 

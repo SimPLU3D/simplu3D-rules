@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//FIXME ADD TEST
 public class ProspectCalculation {
     public static Geometry calculate(Geometry geomModif, Geometry geom, double pente, double hObj) {
         List<Coordinate> dplIni = new ArrayList<>(List.of(geomModif.getCoordinates()));

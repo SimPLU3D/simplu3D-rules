@@ -5,7 +5,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 
 import java.util.List;
-
+//FIXME ADD TEST
 public class OrientedBoundingBox {
     private Polygon poly = null;
     public OrientedBoundingBox(Geometry geometry) {

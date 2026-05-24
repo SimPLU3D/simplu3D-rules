@@ -3,6 +3,7 @@ package fr.ign.common.topo;
 import java.util.Collection;
 import java.util.List;
 
+//FIXME ADD TEST
 public class Groupe {
     Collection<Arc> edges;
     public void setListeArcs(List<Arc> listeArcs) {

@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.LineString;
  * Class to export instances from the simPLU3D model
  * 
  * @author mbrasebin
- *
+ * FIXME ADD TEST
  */
 public class ExportInstance {
 	private static final Logger logger = Logger.getLogger(ExportInstance.class.getName());

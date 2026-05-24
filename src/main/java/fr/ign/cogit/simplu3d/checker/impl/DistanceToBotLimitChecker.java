@@ -18,6 +18,7 @@ import fr.ign.common.conversion.FromGeomToLineString;
 import fr.ign.common.conversion.FromGeomToSurface;
 import org.locationtech.jts.geom.*;
 
+//FIXME ADD TEST
 public class DistanceToBotLimitChecker extends AbstractRuleChecker {
   public final static String CODE_DISTANCE_BOT = "RECUL_FOND";
   public DistanceToBotLimitChecker(ZoneRegulation rules){

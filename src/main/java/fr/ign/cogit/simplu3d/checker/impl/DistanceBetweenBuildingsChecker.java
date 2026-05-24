@@ -14,6 +14,7 @@ import fr.ign.common.conversion.FromGeomToSurface;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
+//FIXME ADD TEST
 public class DistanceBetweenBuildingsChecker extends AbstractRuleChecker {
 
 	public final static String CODE_DISTANCE_BULDINGS = "RECUL_BATIMENT";

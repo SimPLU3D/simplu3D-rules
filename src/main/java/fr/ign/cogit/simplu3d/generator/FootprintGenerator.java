@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  * Create footprint for building
  * 
  * @author MBrasebin
- *
+ * FIXME ADD TEST
  */
 public class FootprintGenerator {
 	private static final Logger logger = Logger.getLogger(FootprintGenerator.class.getName());

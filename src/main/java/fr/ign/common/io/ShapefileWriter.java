@@ -11,14 +11,11 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
 
 import java.io.File;
 import java.util.*;
 
+//FIXME ADD TEST
 public class ShapefileWriter {
     public static void write(Repository<? extends UrbanFeature> features, String fileName) {
         ShapefileWriter.write(features.findAll(), features.getFeatureType(), features.getCoordinateReferenceSystem(), fileName);

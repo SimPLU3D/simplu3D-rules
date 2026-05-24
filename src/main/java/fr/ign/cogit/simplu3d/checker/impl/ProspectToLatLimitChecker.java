@@ -21,6 +21,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
+//FIXME ADD TEST
 public class ProspectToLatLimitChecker extends AbstractRuleChecker {
 
 	public final static String CODE_PROSPECT_LIMITE = "PROSPECT_EXISTING";
