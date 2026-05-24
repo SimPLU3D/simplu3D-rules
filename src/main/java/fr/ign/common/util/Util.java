@@ -1,6 +1,8 @@
 package fr.ign.common.util;
 
+import fr.ign.common.equation.ApproximatedPlanEquation;
 import fr.ign.common.equation.PlanEquation;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -47,5 +49,59 @@ public class Util {
             }
         }
         return new GeometryFactory().createMultiPolygon(result.toArray(new Polygon[0]));
+    }
+
+    public static MultiPolygon detectRoof(ArrayList<Polygon> lSurf, double tolerance) {
+        List<Polygon> lFacesNVerticales = new ArrayList<>();
+        for (Polygon surfTemp : lSurf) {
+            Coordinate[] dplTemp = surfTemp.getCoordinates();
+            ApproximatedPlanEquation eqP = new ApproximatedPlanEquation(dplTemp);
+            Vecteur v = eqP.getNormale();
+            v.normalise();
+            if (Math.abs(v.getZ()) > tolerance) {
+                lFacesNVerticales.add(surfTemp);
+            }
+        }
+        int nFacesNVerticales = lFacesNVerticales.size();
+        if (nFacesNVerticales == 0) {
+            return null;
+        }
+        return new GeometryFactory().createMultiPolygon(lFacesNVerticales.toArray(new Polygon[0]));
+    }
+
+    public static MultiPolygon detectRoofTriangles(ArrayList<Polygon> lSurf, double tolerance) {
+        List<Polygon> lFacesNVerticales = new ArrayList<>();
+        for (Polygon surfTemp : lSurf) {
+            Coordinate[] dplTemp = surfTemp.getCoordinates();
+            ApproximatedPlanEquation eqP = new ApproximatedPlanEquation(dplTemp);
+            Vecteur v = eqP.getNormale();
+            v.normalise();
+            if (Math.abs(v.getZ()) > tolerance) {
+                lFacesNVerticales.add(surfTemp.getFactory().createPolygon(surfTemp.getExteriorRing()));
+            }
+        }
+        int nFacesNVerticales = lFacesNVerticales.size();
+        if (nFacesNVerticales == 0) {
+            return null;
+        }
+        return new GeometryFactory().createMultiPolygon(lFacesNVerticales.toArray(new Polygon[0]));
+    }
+
+    public static MultiPolygon detectFloorTriangles(ArrayList<Polygon> lSurf, double tolerance) {
+        List<Polygon> lFacesNVerticales = new ArrayList<>();
+        for (Polygon surfTemp : lSurf) {
+            Coordinate[] dplTemp = surfTemp.getCoordinates();
+            ApproximatedPlanEquation eqP = new ApproximatedPlanEquation(dplTemp);
+            Vecteur v = eqP.getNormale();
+            v.normalise();
+            if (v.getZ() < -tolerance) {
+                lFacesNVerticales.add(surfTemp.getFactory().createPolygon(surfTemp.getExteriorRing()));
+            }
+        }
+        int nFacesNVerticales = lFacesNVerticales.size();
+        if (nFacesNVerticales == 0) {
+            return null;
+        }
+        return new GeometryFactory().createMultiPolygon(lFacesNVerticales.toArray(new Polygon[0]));
     }
 }
