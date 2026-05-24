@@ -1,6 +1,6 @@
 package fr.ign.common.topology;
 
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.util.GeomUtils;
 import fr.ign.common.equation.PlanEquation;
 import fr.ign.common.util.Vecteur;

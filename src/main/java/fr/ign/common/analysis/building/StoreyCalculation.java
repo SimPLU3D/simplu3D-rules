@@ -1,7 +1,7 @@
 package fr.ign.common.analysis.building;
 
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.analysis.roof.RoofDetection;
 
 import java.util.Objects;

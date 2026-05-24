@@ -1,7 +1,7 @@
 package fr.ign.common.analysis.parcel;
 
 import fr.ign.cogit.simplu3d.model.AbstractBuilding;
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.conversion.FromGeomToSurface;
 import fr.ign.common.analysis.building.StoreyCalculation;
 import fr.ign.common.analysis.building.CutBuilding;

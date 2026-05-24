@@ -1,9 +1,13 @@
-package fr.ign.common.util;
+package fr.ign.common.geometry;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Box3D {
     private final Coordinate pMin;
@@ -80,5 +84,27 @@ public class Box3D {
         Coordinate pmin = new Coordinate(xmin, ymin, zmin);
         Coordinate pmax = new Coordinate(xmax, ymax, zmax);
         return new Box3D(pmin, pmax);
+    }
+
+    public Box3D union(Box3D b) {
+        Coordinate pMin = new Coordinate(Math.min(this.getLLDP().getX(), b
+                .getLLDP().getX()),
+                Math.min(this.getLLDP().getY(), b.getLLDP().getY()), Math.min(this
+                .getLLDP().getZ(), b.getLLDP().getZ()));
+        Coordinate pMax = new Coordinate(Math.max(this.getURDP().getX(), b
+                .getURDP().getX()),
+                Math.max(this.getURDP().getY(), b.getURDP().getY()), Math.max(this
+                .getURDP().getZ(), b.getURDP().getZ()));
+        return new Box3D(pMin, pMax);
+    }
+
+    public Polygon to2D() {
+        List<Coordinate> dpl = new ArrayList<>();
+        dpl.add(new Coordinate(this.getLLDP().getX(), this.getLLDP().getY(), 0));
+        dpl.add(new Coordinate(this.getURDP().getX(), this.getLLDP().getY(), 0));
+        dpl.add(new Coordinate(this.getURDP().getX(), this.getURDP().getY(), 0));
+        dpl.add(new Coordinate(this.getLLDP().getX(), this.getURDP().getY(), 0));
+        dpl.add(new Coordinate(this.getLLDP().getX(), this.getLLDP().getY(), 0));
+        return new GeometryFactory().createPolygon(dpl.toArray(new Coordinate[0]));
     }
 }

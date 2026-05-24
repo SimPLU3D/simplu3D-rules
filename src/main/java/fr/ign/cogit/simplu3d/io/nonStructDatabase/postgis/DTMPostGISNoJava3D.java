@@ -9,7 +9,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import fr.ign.common.dtm.AbstractDTM;
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.dtm.DTM;
 import fr.ign.common.util.Vecteur;
 import org.locationtech.jts.geom.*;

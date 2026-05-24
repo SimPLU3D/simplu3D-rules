@@ -1,6 +1,6 @@
 package fr.ign.common.equation;
 
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import org.locationtech.jts.geom.*;
 
 import java.util.ArrayList;

@@ -24,7 +24,7 @@ import fr.ign.common.analysis.building.HauteurCalculation;
 import fr.ign.common.analysis.building.StoreyCalculation;
 import fr.ign.common.analysis.roof.RoofDetection;
 import fr.ign.common.conversion.FromGeomToSurface;
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.util.Util;
 import org.locationtech.jts.geom.*;
 

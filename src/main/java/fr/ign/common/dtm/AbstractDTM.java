@@ -2,7 +2,7 @@ package fr.ign.common.dtm;
 
 import fr.ign.common.extrusion.Extrusion2DObject;
 import fr.ign.common.extrusion.Extrusion3DObject;
-import fr.ign.common.util.Box3D;
+import fr.ign.common.geometry.Box3D;
 import fr.ign.common.util.GeomUtils;
 import fr.ign.common.util.Vecteur;
 import org.locationtech.jts.geom.*;
