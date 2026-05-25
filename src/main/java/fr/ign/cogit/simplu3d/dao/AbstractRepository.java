@@ -12,14 +12,14 @@ public class AbstractRepository<T> implements Repository<T> {
     public int count(){
         return items.size();
     }
-    public Collection<T> findAll() {
+    public List<T> findAll() {
         return items;
     }
     private final FeatureType featureType;
     public FeatureType getFeatureType() {
         return featureType;
     }
-    private CoordinateReferenceSystem crs;
+    private final CoordinateReferenceSystem crs;
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }

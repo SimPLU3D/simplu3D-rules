@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * <p></p>
+ * <p>
  * see LICENSE.TXT
- * <p></p>
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -16,8 +16,6 @@
  **/
 package fr.ign.cogit.simplu3d.importer;
 
-import java.util.Collection;
-
 import fr.ign.cogit.simplu3d.analysis.BasicPropertyUnitFinder;
 import fr.ign.cogit.simplu3d.dao.SpatialRepository;
 import fr.ign.cogit.simplu3d.generator.BuildingPartToSubParcelAssigner;
@@ -27,7 +25,7 @@ import fr.ign.cogit.simplu3d.model.Building;
 /**
  * 
  * Assign BuildingPart to SubParcel 
- * <p></p>
+ * <p>
  * ASSIGN_METHOD = 0 : find the best SubParcel
  * ASSIGN_METHOD = 1 : split building according to SubParcels
  * 

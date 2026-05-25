@@ -54,11 +54,13 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 		super(new FeatureType("Parcel"));
 		this.featureType.setGeometryType("Polygon");
 		this.featureType.getAttributes().put(ATT_CODE_PARC, "String");
+/*
 		this.featureType.getAttributes().put(ATT_BDP_CODE_DEP, "String");
 		this.featureType.getAttributes().put(ATT_BDP_CODE_COM, "String");
 		this.featureType.getAttributes().put(ATT_BDP_COM_ABS, "String");
 		this.featureType.getAttributes().put(ATT_BDP_SECTION, "String");
 		this.featureType.getAttributes().put(ATT_BDP_NUMERO, "String");
+*/
 		this.featureType.getAttributes().put(ATT_HAS_TO_BE_SIMULATED, "String");
 	}
 
@@ -101,9 +103,17 @@ public class CadastralParcelReader extends AbstractFeatureReader<CadastralParcel
 			String section = readStringAttribute(feature, ATT_BDP_SECTION);
 			String numero = readStringAttribute(feature, ATT_BDP_NUMERO);
 			// complete BDP
+			/*
 			if (codeDep != null && codeCom != null && comAbs != null && section != null && numero != null) {
 				code = codeDep + codeCom + comAbs + section + numero;
 			}
+			*/
+			// Building code with all non-null codes from the parcels
+            StringBuilder codeBuilder = new StringBuilder();
+            for (String attribute : new String[]{codeDep, codeCom, comAbs, section, numero}) {
+				if (attribute != null) codeBuilder.append(attribute);
+			}
+            code = codeBuilder.toString();
 		}
 		cadastralParcel.setCode(code);
 

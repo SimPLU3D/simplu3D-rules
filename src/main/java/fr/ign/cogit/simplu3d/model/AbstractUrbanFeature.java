@@ -28,6 +28,13 @@ public class AbstractUrbanFeature implements UrbanFeature {
         Object value = this.attributes.get(key);
         return (value != null) ? value.toString() : null;
     }
+    public boolean getBooleanAttribute(String key) {
+        Object value = this.attributes.get(key);
+        if (value instanceof Boolean b) {
+            return b;
+        }
+        return Boolean.parseBoolean(value.toString());
+    }
     public void setAttribute(String key, Object value) {
         this.attributes.put(key, value);
     }

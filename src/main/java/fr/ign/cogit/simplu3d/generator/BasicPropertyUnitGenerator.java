@@ -1,9 +1,9 @@
 /**
  * 
  *        This software is released under the licence CeCILL
- * <p></p>
+ * <p>
  *        see LICENSE.TXT
- * <p></p>
+ * <p>
  *        see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.Polygon;
  * 
  * Create BasicPropertyUnit as an aggregation of adjacent CadastralParcel's with
  * the same owner
- *  <p></p>
+ *  <p>
  * warning aggregation is not yet implemented. A BasicPropertyUnit is
  *          associated to a CadastralParcel
  * 

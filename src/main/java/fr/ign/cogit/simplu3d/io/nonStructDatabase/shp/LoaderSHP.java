@@ -43,8 +43,7 @@ import org.geotools.feature.FeatureIterator;
 
 /**
  * 
- * Helper to load shapefile data
- * <p>
+ * Helper to load shapefile datas
  *
  * @author MBrasebin
  *

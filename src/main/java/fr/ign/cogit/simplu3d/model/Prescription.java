@@ -20,7 +20,7 @@ package fr.ign.cogit.simplu3d.model;
  * 
  * CNIG PLU - Prescription ponctuelle, linéaire ou surfacique portée par un
  * document d'urbanisme
- * <p></p>
+ * <p>
  * TODO ajouter une zone d'influence pour éviter de gérer 45 types de relation
  * avec les objets du modèle et s'appuyer sur une relation spatiale?
  * 

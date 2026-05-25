@@ -22,9 +22,6 @@ import java.util.logging.Logger;
  *        see LICENSE.TXT
  * <p>
  *        <a href="http://www.cecill.info/">...</a>
- * <p>
- *
- *
  * copyright IGN
  *
  * @author Brasebin Mickaël

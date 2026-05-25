@@ -20,13 +20,11 @@ import org.locationtech.jts.geom.Geometry;
 /**
  *
  * This software is released under the licence CeCILL
- * <p></p>
+ * <p>
  * see LICENSE.TXT
- * <p></p>
+ * <p>
  * see <a href="http://www.cecill.info/">...</a>
- * <p></p>
- *
- *
+ * <p>
  * copyright IGN
  *
  * @author Brasebin Mickaël

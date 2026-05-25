@@ -38,7 +38,7 @@
 			<name>Mickael Brasebin</name>
 			<email>mickael.brasebin(at)ign.fr</email>
 			<organization>Laboratoire COGIT, IGN</organization>
-			<organizationUrl>http://recherche.ign.fr</organizationUrl>
+			<organizationUrl>https://recherche.ign.fr</organizationUrl>
 			<roles>
 				<role>Administrator</role>
 				<role>Java Developer</role>
@@ -49,7 +49,7 @@
 			<name>Julien Perret</name>
 			<email>julien.perret(at)ign.fr</email>
 			<organization>Laboratoire COGIT, IGN</organization>
-			<organizationUrl>http://recherche.ign.fr</organizationUrl>
+			<organizationUrl>https://recherche.ign.fr</organizationUrl>
 			<roles>
 				<role>Administrator</role>
 				<role>Java Developer</role>
@@ -60,7 +60,7 @@
 			<name>Florian Masson</name>
 			<email>florian.masson(at)ign.fr</email>
 			<organization>Laboratoire COGIT, IGN</organization>
-			<organizationUrl>http://recherche.ign.fr</organizationUrl>
+			<organizationUrl>https://recherche.ign.fr</organizationUrl>
 			<roles>
 				<role>Java Developer</role>
 			</roles>
@@ -200,6 +200,8 @@
 					<publishingServerId>central</publishingServerId>
 				</configuration>
         	</plugin>
+
+<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -212,16 +214,15 @@
 							<goal>sign</goal>
 						</goals>
 						<configuration>
-							<!--suppress UnresolvedMavenProperty -->
 							<keyname>${my.gpg.keyname}</keyname>
-							<!--suppress UnresolvedMavenProperty -->
 							<passphraseServerId>${my.gpg.keyname}</passphraseServerId>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+-->
 
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>

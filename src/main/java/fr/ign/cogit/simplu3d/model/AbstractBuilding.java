@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * <p></p>
+ * <p>
  * see LICENSE.TXT
- * <p></p>
+ * <p>
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -32,7 +32,7 @@ import org.locationtech.jts.geom.*;
  *
  * Un bâtiment abstrait (AbstractBuilding) qui est soit un Building soit un
  * BuildingPart et qui est composé de BuildingParts.
- * <p></p>
+ * <p>
  * see CityGML
  * <a href="http://www.citygml.org/fileadmin/citygml/docs/CityGML_2_0_0_UML_diagrams.pdf">...</a>
  *
@@ -46,7 +46,7 @@ public abstract class AbstractBuilding extends AbstractUrbanFeature {
 		this.geometry = geom;
 		createElements();
 	}
-	private void createElements() {
+	public void createElements() {
 		// Etape 1 : détection du toit et des façades
 		List<Polygon> lOS = FromGeomToSurface.convertGeom(this.geometry);
 		MultiPolygon surfaceRoof = RoofDetection.detectRoof(this, 0.2);
@@ -162,7 +162,10 @@ public abstract class AbstractBuilding extends AbstractUrbanFeature {
 	}
 
 	public MultiPolygon getLod2MultiSurface() {
-		return (MultiPolygon) getGeometry();
+		if (this.geometry instanceof MultiPolygon) {
+			return (MultiPolygon) this.geometry;
+		}
+		return this.geometry.getFactory().createMultiPolygon(new Polygon[] { (Polygon) this.geometry });
 	}
 
 	public void setStoreysAboveGround(int storeysAboveGround) {

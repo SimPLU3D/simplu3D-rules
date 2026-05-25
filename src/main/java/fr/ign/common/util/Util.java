@@ -104,4 +104,21 @@ public class Util {
         }
         return new GeometryFactory().createMultiPolygon(lFacesNVerticales.toArray(new Polygon[0]));
     }
+    /**
+     * Indicate if a liste of source is only composed by triangles.
+     */
+    public static boolean containOnlyTriangleFaces(List<Polygon> lS) {
+        for (Polygon surfTemp : lS) {
+            Coordinate[] dpl = surfTemp.getCoordinates();
+            if (dpl.length > 4) {
+                return false;
+            }
+            if (dpl.length == 4) {
+                if (!dpl[0].equals(dpl[dpl.length - 1])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

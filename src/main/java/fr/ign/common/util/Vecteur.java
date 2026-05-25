@@ -45,6 +45,9 @@ public class Vecteur {
         }
     }
 
+    public Vecteur(double x, double y){
+        coordinate = new Coordinate(x,y);
+    }
     public Vecteur(double x, double y, double z) {
         coordinate = new Coordinate(x, y, Double.isNaN(z) ? 0 : z);
     }
@@ -137,6 +140,11 @@ public class Vecteur {
             return new Vecteur(new Coordinate(this.getX() / norm, this.getY() / norm, this.getZ() / norm));
         }
         return new Vecteur(new Coordinate(this.getX() / norm, this.getY() / norm, Double.NaN));
+    }
+
+    /** Angle entre l'axe des X et le vecteur this projeté sur le plan XY */
+    public double getDirection() {
+        return Math.atan2(this.getY(), this.getX());
     }
 
     public String toString() {

@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import fr.ign.cogit.simplu3d.io.feature.AttribNames;
+import fr.ign.cogit.simplu3d.io.feature.CadastralParcelReader;
 import fr.ign.common.conversion.FromGeomToLineString;
 import org.locationtech.jts.geom.*;
 
@@ -55,12 +57,12 @@ public class CadastralParcel extends AbstractUrbanFeature {
 	 * <p></p>
 	 * For BDParcellaire (france) : INSEE_COMMUNE + COMM_ABS + SECTION + NUMERO (ex : 15012011AD250)
 	 */
-	private String code;
+	//private String code;
 	
 	/**
 	 * TODO déplacer au niveau applicatif?
 	 */
-	private boolean hasToBeSimulated = false;
+	//private boolean hasToBeSimulated = false;
 
 	/**
 	 * (cached) Géométrie contenant la ligne contre laquelle un bâtiment doit être construit
@@ -150,19 +152,19 @@ public class CadastralParcel extends AbstractUrbanFeature {
 	}
 	
 	public String getCode() {
-		return code;
+		return this.getStringAttribute(CadastralParcelReader.ATT_CODE_PARC);
 	}
 
 	public void setCode(String code) {
-		this.code = code;
+		this.setAttribute(AttribNames.getATT_CODE_PARC(), code);
 	}
 	
 	public boolean hasToBeSimulated() {
-		return hasToBeSimulated;
+		return this.getBooleanAttribute(CadastralParcelReader.ATT_HAS_TO_BE_SIMULATED);
 	}
 
 	public void setHasToBeSimulated(boolean hasToBeSimulated) {
-		this.hasToBeSimulated = hasToBeSimulated;
+		this.setAttribute(CadastralParcelReader.ATT_HAS_TO_BE_SIMULATED, hasToBeSimulated);
 	}
 	
 	public Geometry getConsLine() {

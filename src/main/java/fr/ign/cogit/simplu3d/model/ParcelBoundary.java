@@ -1,9 +1,9 @@
 /**
  * 
  * This software is released under the licence CeCILL
- * 
+ * <p> 
  * see LICENSE.TXT
- * 
+ * <p> 
  * see <http://www.cecill.info/ http://www.cecill.info/
  * 
  * 
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * 
  * Frontière de parcelle
- * <p></p>
+ * <p>
  * 
  * Note that SpecificCadastralBoundary forms a topology map
  * 

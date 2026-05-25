@@ -24,7 +24,7 @@ public class BuildingFactory {
 	
 	/**
 	 * Create a building from a IMultiSurface.
-	 * <p></p>
+	 * <p>
 	 * warning wall, roof, etc. are computed
 	 * 
 	 * @param geom a new 3D building

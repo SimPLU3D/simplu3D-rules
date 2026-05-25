@@ -3,10 +3,8 @@ package fr.ign.common.calculation;
 import fr.ign.common.util.Util;
 import junit.framework.TestCase;
 import org.junit.Assert;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
+import org.junit.Test;
+import org.locationtech.jts.geom.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -278,5 +276,66 @@ public class TestUtil extends TestCase {
         MultiPolygon MS = Util.detectFloorTriangles(AT, epsilon);
         // Comparison
         assertNull("Wrong number of floor surfaces has been detected", MS);
+    }
+
+    // --------------------------------------------------------------------------------
+    // Test for method to know if a list contains only triangular surfaces
+    // --------------------------------------------------------------------------------
+    public void testCenterOf16() {
+        log.info("Test for method to know if a list contains only triangular surfaces");
+        // Creating list of surfaces
+        ArrayList<Polygon> AS = new ArrayList<>();
+        // Surface 1 : triangle
+        CoordinateList dpl1 = new CoordinateList();
+        dpl1.add(new Coordinate(0,0,0));
+        dpl1.add(new Coordinate(0,2,0));
+        dpl1.add(new Coordinate(2,2,0));
+        dpl1.add(new Coordinate(0,0,0));
+        Polygon surface1 = geometryFactory.createPolygon(dpl1.toArray(new Coordinate[0]));
+        // Surface 2 :
+        CoordinateList dpl2 = new CoordinateList();
+        dpl2.add(new Coordinate(0,0,0));
+        dpl2.add(new Coordinate(0,0,1));
+        dpl2.add(new Coordinate(1,0,1));
+        dpl2.add(new Coordinate(1,0,2));
+        dpl2.add(new Coordinate(0,0,0));
+        Polygon surface2 = geometryFactory.createPolygon(dpl2.toArray(new Coordinate[0]));
+        // Filling surface list
+        AS.add(surface1);
+        AS.add(surface2);
+        // Recovering result
+        boolean bf = Util.containOnlyTriangleFaces(AS);
+        // Removing non triangle surface
+        AS.remove(1);
+        // Adding polygon triangle
+        dpl2.remove(3);
+        surface2 = geometryFactory.createPolygon(dpl2.toArray(new Coordinate[0]));
+        AS.add(surface2);
+        // Recovering result
+        boolean bt1 = Util.containOnlyTriangleFaces(AS);
+        // Removing polygon triangle surface
+        AS.remove(1);
+        // Adding triangle
+        surface2 = geometryFactory.createPolygon(dpl2.toArray(new Coordinate[0]));
+        AS.add(surface2);
+        // Recovering result
+        boolean bt2 = Util.containOnlyTriangleFaces(AS);
+        // Comparison
+        assertFalse("List does not contain only triangular surfaces", bf);
+        assertTrue("List contain only triangular surfaces", bt1);
+        assertTrue("List contain only triangular surfaces", bt2);
+    }
+
+    // --------------------------------------------------------------------------------
+    // Test for method to know if an empty list contains only triangular surfaces
+    // --------------------------------------------------------------------------------
+    public void testCenterOf17() {
+        log.info("Test for method to know if an empty list contains only triangular surfaces");
+        // Creating list of surfaces
+        ArrayList<Polygon> AS = new ArrayList<>();
+        // Recovering result
+        boolean bt = Util.containOnlyTriangleFaces(AS);
+        // Comparison
+        assertTrue("List does not contain non-triangular surfaces (empty list)", bt);
     }
 }
